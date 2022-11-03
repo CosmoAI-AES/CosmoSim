@@ -29,9 +29,9 @@ cmake -D CMAKE_C_COMPILER=icc -D CMAKE_CXX_COMPILER=icc ..
 ```
 export PATH="$HOME/local/usr/sbin:$HOME/local/usr/bin:$HOME/local/bin:$PATH"
 export MANPATH="$HOME/local/usr/share/man:$MANPATH"
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/local/usr/lib:$HOME/local/usr/lib64"
+export LD_LIBRARY_PATH="$HOME/local/usr/lib:$HOME/local/usr/lib64:$LD_LIBRARY_PATH"
 export LD_RUN_PATH="$LD_RUN_PATH:$HOME/local/usr/lib:$HOME/local/usr/lib64"
-export CPATH=$CPATH:$HOME/local/usr/include
+export CPATH=$HOME/local/usr/include:$CPATH
 ```
 
 
