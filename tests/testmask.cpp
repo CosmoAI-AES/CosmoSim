@@ -2,7 +2,8 @@
 
 #include <unistd.h>
 #include <string>
-#include "Simulator.h"
+
+#include "cosmosim/Simulator.h"
 
 std::string convertToString(char*) ;
 

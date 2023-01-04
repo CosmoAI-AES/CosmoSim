@@ -1,6 +1,7 @@
 /* (C) 2022: Hans Georg Schaathun <georg@schaathun.net> */
-#include "Simulator.h"
-#include "Window.h"
+#include "cosmosim/Simulator.h"
+#include "cosmosim/Window.h"
+
 #include <fstream>
 
 int main()

@@ -17,51 +17,32 @@ matter of the Universe.  This is work in progress.
 
 # Build and Run
 
-Provided a full C++ installation is available with cmake and conan,
-the system is built with
+Provided a full C++ installation is available with cmake and vcpkg,
+the system is built with:
 
 ```sh
 mkdir build && cd build
-conan install ..
-cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_TOOLCHAIN_FILE=[path to vcpkg]/scripts/buildsystems/vcpkg.cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build .
 cmake --install . --prefix ..
 ```
 
 Binaries will be located under bin/.
 
-The [Conan Tutorial](https://docs.conan.io/en/latest/getting_started.html)
-recommends the following settings (before building):
-
-```
-conan profile new default --detect  # Generates default profile detecting GCC and sets old ABI
-conan profile update settings.compiler.libcxx=libstdc++11 default  # Sets libcxx to C++11 ABI
-```
-
 ## Install Dependencies
 
+[vcpkg](https://vcpkg.io/en/index.html) can be used to automatically fetch third party dependencies.
+Simply add `-DCMAKE_TOOLCHAIN_FILE=[path to vcpkg]/scripts/buildsystems/vcpkg.cmake` to the CMake configure command.
+
+Depending on the platform, vcpkg may or may not install other dependencies.
+A message explaining what to install should be provided (if any).
 The following dependencies were required on Debian 11.
-The critical part is conan (as well as cmake and make).
-Depending on the platform, conan may or may not install other dependencies.
-On Debian it just gives an error message explaining what to install.
 
 ```sh
-sudo pip3 install conan
-
 sudo apt-get install libgtk2.0-dev libva-dev libx11-xcb-dev libfontenc-dev libxaw7-dev libxkbfile-dev libxmuu-dev libxpm-dev libxres-dev libxtst-dev libxvmc-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev libxcb-dri3-dev libxcb-util-dev libxcb-util0-dev libvdpau-dev
 ```
 
-It is also necessary to install pybind11.
-
-## Notes
-
-Adjustmentss may be needed depending on the version of conan.
-Currently it is set up to use wayland/1.21.0 to override a
-transitive dependency on wayland/1.20.0 which failed with the
-latest conan. We should possibly upgrade the other dependencies
-and remove wayland.
-
-## Installation without Conan
+### Installation without vcpkg
 
 If conan is not available, OpenCV and SymEngine must be installed
 on the system.  We have set up cmake not to use conan when the
@@ -284,5 +265,6 @@ by `calculateAlphaBeta()` when parameters change.
 
 + **Idea and Current Maintainance** Hans Georg Schaathun <hasc@ntnu.no>
 + **Mathematical Models** Ben David Normann
++ **Misc Refactoring** Lars Ivar Hatledal
 + **Initial Prototype** Simon Ingebrigtsen, Sondre Westbø Remøy,
   Einar Leite Austnes, and Simon Nedreberg Runde
