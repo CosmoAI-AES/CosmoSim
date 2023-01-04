@@ -44,7 +44,7 @@ sudo apt-get install libgtk2.0-dev libva-dev libx11-xcb-dev libfontenc-dev libxa
 
 ### Installation without vcpkg
 
-If conan is not available, OpenCV and SymEngine must be installed
+If vcpkg is not available, Pybind, OpenCV and SymEngine must be installed
 on the system.  We have set up cmake not to use conan when the
 hostname starts with `idun`, in which case the `idunbuild.sh`
 script can be used for installation.  This has been designed
