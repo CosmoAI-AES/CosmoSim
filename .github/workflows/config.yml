@@ -15,10 +15,19 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Restore artifacts, or run vcpkg, build (and cache artifacts as post step)
+        uses: lukka/run-vcpkg@v10
+        id: runvcpkg
+        with:
+          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+          vcpkgGitCommitId: '12c2a93b4007612b5ffa980c9d2235eb0bcac10f'
+          vcpkgJsonGlob: '**/vcpkg.json'
+          appendedCacheKey: vcpkginstall
+
       - name: Configure and build
         run: |
-          cmake . -A x64 -B build -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" -DCMAKE_BUILD_TYPE="Release"
-          cmake --build build --config Release
+          cmake . -A x64 -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg//scripts/buildsystems/vcpkg.cmake" -DCMAKE_BUILD_TYPE="Release"
+          cmake --build build --config Release --target CosmoSimPy
 
 
   vcpkg-on-linux:
@@ -32,10 +41,19 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Restore artifacts, or run vcpkg, build (and cache artifacts as post step)
+        uses: lukka/run-vcpkg@v10
+        id: runvcpkg
+        with:
+          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+          vcpkgGitCommitId: '12c2a93b4007612b5ffa980c9d2235eb0bcac10f'
+          vcpkgJsonGlob: '**/vcpkg.json'
+          appendedCacheKey: vcpkginstall
+
       - name: Configure and build
         run: |
-          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="/usr/local/share/vcpkg/scripts/buildsystems/vcpkg.cmake"-DCMAKE_BUILD_TYPE="Release"
-          cmake --build build
+          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake"-DCMAKE_BUILD_TYPE="Release"
+          cmake --build build --target CosmoSimPy
   
 
   vcpkg-on-darwin:
@@ -49,7 +67,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Restore artifacts, or run vcpkg, build (and cache artifacts as post step)
+        uses: lukka/run-vcpkg@v10
+        id: runvcpkg
+        with:
+          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+          vcpkgGitCommitId: '12c2a93b4007612b5ffa980c9d2235eb0bcac10f'
+          vcpkgJsonGlob: '**/vcpkg.json'
+          appendedCacheKey: vcpkginstall
+
       - name: Configure and build
         run: |
-          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="/usr/local/share/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_BUILD_TYPE="Release"
-          cmake --build build
+          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_BUILD_TYPE="Release"
+          cmake --build build --target CosmoSimPy
