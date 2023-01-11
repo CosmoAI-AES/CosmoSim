@@ -23,10 +23,12 @@ the system is built with
 ```sh
 mkdir build && cd build
 conan install ..
-cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_BUILD_TYPE=Release .
 cmake --build .
 cmake --install . --prefix ..
 ```
+
+If on Windows, you will have to remove the wayland line from conanfile.txt.
 
 Binaries will be located under bin/.
 
