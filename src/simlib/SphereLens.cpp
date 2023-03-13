@@ -12,20 +12,20 @@
 double factorial_(unsigned int n);
 
 SphereLens::SphereLens() :
-   LensModel::LensModel()
+   RouletteLens::RouletteLens()
 { 
     std::cout << "Instantiating SphereLens ... \n" ;
     initAlphasBetas();
 }
 SphereLens::SphereLens(bool centred) :
-   LensModel::LensModel(centred)
+   RouletteLens::RouletteLens(centred)
 { 
     std::cout << "Instantiating SphereLens ... \n" ;
     initAlphasBetas();
 }
 SphereLens::SphereLens(std::string fn, bool centred) :
    filename(fn),
-   LensModel::LensModel(centred)
+   RouletteLens::RouletteLens(centred)
 { 
     std::cout << "Instantiating SphereLens ... \n" ;
     initAlphasBetas();

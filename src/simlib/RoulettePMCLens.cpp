@@ -1,6 +1,6 @@
 /* (C) 2022: Hans Georg Schaathun <georg@schaathun.net> */
 
-#include "cosmosim/PixMap.h"
+#include "cosmosim/Roulette.h"
 
 #include <symengine/expression.h>
 #include <symengine/lambda_double.h>
@@ -10,63 +10,6 @@
 #include <fstream>
 
 double factorial_(unsigned int n);
-
-/*
-RoulettePMCLens::RoulettePMCLens() :
-   PixMapLens::PixMapLens()
-{ 
-    std::cout << "Instantiating RoulettePMCLens ... \n" ;
-    initAlphasBetas();
-}
-RoulettePMCLens::RoulettePMCLens(bool centred) :
-   PixMapLens::PixMapLens(centred)
-{ 
-    std::cout << "Instantiating RoulettePMCLens ... \n" ;
-    initAlphasBetas();
-}
-RoulettePMCLens::RoulettePMCLens(std::string fn, bool centred) :
-   filename(fn),
-   PixMapLens::PixMapLens(centred)
-{ 
-    std::cout << "Instantiating RoulettePMCLens ... \n" ;
-    initAlphasBetas();
-}
-void RoulettePMCLens::setFile( std::string fn ) {
-    filename = fn ;
-} 
-*/
-void RoulettePMCLens::initAlphasBetas() {
-
-    auto x = SymEngine::symbol("x");
-    auto y = SymEngine::symbol("y");
-    auto g = SymEngine::symbol("g");
-    auto c = SymEngine::symbol("c");
-
-    std::ifstream input;
-    input.open(filename);
-
-    if (!input.is_open()) {
-        throw std::runtime_error("Could not open file: " + filename);
-    }
-
-    while (input) {
-        std::string m, s;
-        std::string alpha;
-        std::string beta;
-        std::getline(input, m, ':');
-        std::getline(input, s, ':');
-        std::getline(input, alpha, ':');
-        std::getline(input, beta);
-        if (input) {
-            auto alpha_sym = SymEngine::parse(alpha);
-            auto beta_sym = SymEngine::parse(beta);
-            // The following two variables are unused.
-            // SymEngine::LambdaRealDoubleVisitor alpha_num, beta_num;
-            alphas_l[std::stoi(m)][std::stoi(s)].init({x, y, g}, *alpha_sym);
-            betas_l[std::stoi(m)][std::stoi(s)].init({x, y, g}, *beta_sym);
-        }
-    }
-}
 
 void RoulettePMCLens::calculateAlphaBeta() {
     std::cout << "RoulettePMCLens calculateAlphaBeta\n" ;

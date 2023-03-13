@@ -2,7 +2,7 @@
 
 #include "cosmosim/Roulette.h"
 
-void SphereLens::maskImage( cv::InputOutputArray imgD ) {
+void RouletteLens::maskImage( cv::InputOutputArray imgD ) {
       std::cout << "RouletteLens::maskImage\n" ;
       int R = getCentre() ;
       cv::Mat mask( imgD.size(), CV_8UC1, cv::Scalar(255) ) ;
@@ -13,7 +13,7 @@ void SphereLens::maskImage( cv::InputOutputArray imgD ) {
       cv::circle( mask, origo, maskRadius, cv::Scalar(0), cv::FILLED ) ;
       black.copyTo( imgD, mask ) ;
 }
-void SphereLens::markMask( cv::InputOutputArray imgD ) {
+void RouletteLens::markMask( cv::InputOutputArray imgD ) {
       std::cout << "RouletteLens::maskImage\n" ;
       int R = getCentre() ;
       cv::Point origo(

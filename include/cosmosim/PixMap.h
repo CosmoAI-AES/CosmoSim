@@ -32,20 +32,5 @@ protected:
 
 };
 
-class RoulettePMCLens : public PixMapLens { 
-public:
-    using PixMapLens::PixMapLens ;
-    /*
-    RoulettePMCLens();
-    RoulettePMCLens(bool);
-    RoulettePMCLens(std::string,bool);
-    */
-protected:
-    virtual void calculateAlphaBeta();
-    virtual std::pair<double, double> getDistortedPos(double r, double theta) const;
-    virtual void updateApparentAbs() ;
-private:
-    void initAlphasBetas();
-};
 
 #endif // PIXMAP_H
