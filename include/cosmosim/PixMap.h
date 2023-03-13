@@ -3,8 +3,7 @@
 
 #include "Simulator.h"
 
-
-class PixMapLens : public LensModel { 
+class LensMap { 
 
 protected:
     cv::Mat psi, einsteinMap, massMap ;
@@ -12,8 +11,6 @@ protected:
 private:
 
 public:
-    using LensModel::LensModel ;
-
     void setEinsteinMap( cv::Mat ) ;
     cv::Mat getPsi( ) ;
     cv::Mat getMassMap( ) ;
@@ -21,10 +18,10 @@ public:
 
 };
 
-class PMCLens : public PixMapLens { 
+class PMCLens : public LensMap, public LensModel { 
 
 public:
-    using PixMapLens::PixMapLens ;
+    using LensModel::LensModel ;
 
 protected:
     virtual std::pair<double, double> getDistortedPos(double r, double theta) const;

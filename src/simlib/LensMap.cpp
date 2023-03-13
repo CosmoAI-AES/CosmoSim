@@ -9,16 +9,16 @@
 #include <thread>
 #include <fstream>
 
-cv::Mat PixMapLens::getPsi() {
+cv::Mat LensMap::getPsi() {
    return psi ;
 }
-cv::Mat PixMapLens::getMassMap() {
+cv::Mat LensMap::getMassMap() {
    return massMap ;
 }
-cv::Mat PixMapLens::getEinsteinMap() {
+cv::Mat LensMap::getEinsteinMap() {
    return einsteinMap ;
 }
-void PixMapLens::setEinsteinMap( cv::Mat map ) {
+void LensMap::setEinsteinMap( cv::Mat map ) {
    einsteinMap = map ;
    // Calculate psi and massMap here
 }
