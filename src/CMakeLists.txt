@@ -1,5 +1,7 @@
 
 set(SimLibFiles
+        simlib/PMCLens.cpp
+        simlib/RouletteLens.cpp
         simlib/EllipsoidSource.cpp
         simlib/LensModel.cpp
         simlib/PointMassLens.cpp
@@ -10,7 +12,6 @@ set(SimLibFiles
         simlib/SphericalSource.cpp
         simlib/TriangleSource.cpp
         simlib/PixMapLens.cpp
-        simlib/PMCLens.cpp
         simlib/RoulettePMCLens.cpp
         )
 

@@ -1,6 +1,6 @@
 /* (C) 2022: Hans Georg Schaathun <georg@schaathun.net> */
 
-#include "cosmosim/Simulator.h"
+#include "cosmosim/Roulette.h"
 
 #include <symengine/expression.h>
 #include <symengine/lambda_double.h>
@@ -42,15 +42,4 @@ void RoulettePMLens::updateApparentAbs( ) {
     maskRadius = apparentAbs = actualAbs/2 + root ;
     apparentAbs2 = actualAbs/2 - root ;
     tentativeCentre = apparentAbs ;
-}
-void RoulettePMLens::markMask( cv::InputOutputArray imgD ) {
-   // Note.  This should identical to the method in SphereLens.
-      std::cout << "SphereLens::maskImage\n" ;
-      int R = getCentre() ;
-      cv::Point origo(
-            R*cos(phi) + imgD.cols()/2,
-            - R*sin(phi) + imgD.rows()/2) ;
-      cv::circle( imgD, origo, maskRadius, cv::Scalar(255), 1 ) ;
-      cv::circle( imgD, origo, 3, cv::Scalar(0), 1 ) ;
-      cv::circle( imgD, origo, 1, cv::Scalar(0), cv::FILLED ) ;
 }
