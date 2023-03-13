@@ -12,6 +12,7 @@ class CosmoSimConan(ConanFile):
     requires = (
         "symengine/0.9.0",
         "opencv/4.5.5",
+        "xz_utils/5.4.0",
         "zlib/1.2.13"
     )
 
