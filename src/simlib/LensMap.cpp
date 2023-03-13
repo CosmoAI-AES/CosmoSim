@@ -24,6 +24,6 @@ void LensMap::setPsi( cv::Mat map ) {
    // Calculate einsteinMap and massMap here
 }
 void LensMap::loadPsi( std::string fn ) {
-   psi = imread( fn ) ;
+   psi = cv::imread( fn ) ;
    // Calculate einsteinMap and massMap here
 }

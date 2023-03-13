@@ -14,8 +14,9 @@ void RoulettePMCLens::calculateAlphaBeta() {
 
     // calculate all amplitudes for given X, Y, einsteinR
     // This is done here to before the code is parallellised
-    for (int m = 1; m <= nterms; m++){
-        for (int s = (m+1)%2; s <= (m+1); s+=2){
+    for (int mp = 1; mp <= nterms; mp++){
+        for (int s = 0; s <= mp; s+=2){
+            int m = mp - s ;
             alphas_val[m][s] = 0 ;
             betas_val[m][s] =  0 ;
         }
