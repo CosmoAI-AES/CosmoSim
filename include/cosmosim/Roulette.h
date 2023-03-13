@@ -14,11 +14,10 @@ class RouletteLens : public LensModel {
 public:
     using LensModel::LensModel ;
 protected:
-    std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> alphas_l;
-    std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> betas_l;
     std::array<std::array<double, 202>, 201> alphas_val;
     std::array<std::array<double, 202>, 201> betas_val;
 
+    virtual std::pair<double, double> getDistortedPos(double r, double theta) const;
     virtual void markMask( cv::InputOutputArray ) ;
     virtual void maskImage( cv::InputOutputArray ) ;
 };
@@ -37,11 +36,14 @@ class SphereLens : public RouletteLens {
     SphereLens(bool);
     SphereLens(std::string,bool);
     void setFile(std::string) ;
+
   protected:
     virtual void calculateAlphaBeta();
-    virtual std::pair<double, double> getDistortedPos(double r, double theta) const;
     virtual void updateApparentAbs() ;
   private:
+    std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> alphas_l;
+    std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> betas_l;
+
     std::string filename = "50.txt" ;
     void initAlphasBetas();
 };
@@ -51,7 +53,6 @@ public:
     using RouletteLens::RouletteLens ;
 protected:
     virtual void calculateAlphaBeta();
-    virtual std::pair<double, double> getDistortedPos(double r, double theta) const;
     virtual void updateApparentAbs() ;
 };
 
