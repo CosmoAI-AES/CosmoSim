@@ -41,8 +41,6 @@ public:
     RoulettePMCLens(std::string,bool);
     */
 protected:
-    virtual void maskImage( cv::InputOutputArray ) ;
-    virtual void markMask( cv::InputOutputArray ) ;
     virtual void calculateAlphaBeta();
     virtual std::pair<double, double> getDistortedPos(double r, double theta) const;
     virtual void updateApparentAbs() ;
