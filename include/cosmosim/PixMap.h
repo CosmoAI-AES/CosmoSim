@@ -13,6 +13,7 @@ private:
 public:
     // void setEinsteinMap( cv::Mat ) ;
     void setPsi( cv::Mat ) ;
+    void LensMap::loadPsi( std::string ) ;
     cv::Mat getPsi( ) ;
     cv::Mat getMassMap( ) ;
     cv::Mat getEinsteinMap( ) ;
