@@ -11,7 +11,8 @@ protected:
 private:
 
 public:
-    void setEinsteinMap( cv::Mat ) ;
+    // void setEinsteinMap( cv::Mat ) ;
+    void setPsi( cv::Mat ) ;
     cv::Mat getPsi( ) ;
     cv::Mat getMassMap( ) ;
     cv::Mat getEinsteinMap( ) ;

@@ -18,8 +18,8 @@ cv::Mat LensMap::getMassMap() {
 cv::Mat LensMap::getEinsteinMap() {
    return einsteinMap ;
 }
-void LensMap::setEinsteinMap( cv::Mat map ) {
-   einsteinMap = map ;
-   // Calculate psi and massMap here
-}
 
+void LensMap::setPsi( cv::Mat map ) {
+   psi = map ;
+   // Calculate einsteinMap and massMap here
+}
