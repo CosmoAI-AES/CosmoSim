@@ -2,6 +2,7 @@
 #define ROULETTE_H
 
 #include "Simulator.h"
+#include "PixMap.h"
 
 #include <symengine/expression.h>
 #include <symengine/lambda_double.h>
@@ -48,7 +49,7 @@ class SphereLens : public RouletteLens {
     void initAlphasBetas();
 };
 
-class RoulettePMCLens : public RouletteLens { 
+class RoulettePMCLens : public RouletteLens, public LensMap { 
 public:
     using RouletteLens::RouletteLens ;
 protected:
