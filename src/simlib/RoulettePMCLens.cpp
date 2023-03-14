@@ -47,7 +47,7 @@ void RoulettePMCLens::calculateAlphaBeta() {
         diffY(matBouter, matBy) ;
 
         double C = (m+1)/(m+1+s) ;
-        if ( s != 1 ) C *= 2 ;
+        //  if ( s != 1 ) C *= 2 ; // This is impossible, but used in the formula.
 
         // matA = matAouter = C*(matAx - matBy)
         // matB = matBouter = C*(matBx + matAy)
