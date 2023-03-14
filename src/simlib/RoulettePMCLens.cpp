@@ -23,37 +23,35 @@ void RoulettePMCLens::calculateAlphaBeta() {
     // Calculate all amplitudes for given X, Y, einsteinR
 
     cv::Mat matA, matB, matAouter, matBouter, matAx, matAy, matBx, matBy ;
-    int mp=1, m=0, s=1 ;
+    int mp, m, s ;
     double x = CHI*apparentAbs, y = 0 ;
     cv::Mat psi = getPsi() ;
 
     std::cout << "RoulettePMCLens calculateAlphaBeta\n" ;
 
-    diffX(psi, matA) ;
-    diffY(psi, matB) ;
-
-    // Note! The lens potential \psi is negative; in the code psi refers
-    // to the absolute value of \psi.
-
-    // This is the outer base case, for m=0, s=1
-    alphas_val[m][s] = matA.at<double>( x, y ) ;
-    betas_val[m][s] =  matB.at<double>( x, y ) ;
-
-    for ( mp = 1; mp <= nterms; mp++){
+    for ( mp = 0; mp <= nterms; mp++){
         s = mp+1 ; m = mp ;
-        diffX(matAouter, matAx) ;
-        diffY(matAouter, matAy) ;
-        diffX(matBouter, matBx) ;
-        diffY(matBouter, matBy) ;
+        if ( mp > 0 ) {
+          diffX(matAouter, matAx) ;
+          diffY(matAouter, matAy) ;
+          diffX(matBouter, matBx) ;
+          diffY(matBouter, matBy) ;
 
-        double C = (m+1)/(m+1+s) ;
-        //  if ( s != 1 ) C *= 2 ; // This is impossible, but used in the formula.
+          double C = (m+1)/(m+1+s) ;
+          //  if ( s != 1 ) C *= 2 ; // This is impossible, but used in the formula.
 
-        // matA = matAouter = C*(matAx - matBy)
-        // matB = matBouter = C*(matBx + matAy)
+          matA = matAouter = C*(matAx - matBy) ;
+          matB = matBouter = C*(matBx + matAy) ;
+        } else {
+          // This is the outer base case, for m=0, s=1
+          diffX(psi, matAouter) ;
+          diffY(psi, matBouter) ;
+          // Note! The lens potential \psi is negative; in the code psi refers
+          // to the absolute value of \psi.
+        }
 
-        alphas_val[m][s] = matA.at<double>( x, y ) ;
-        betas_val[m][s] =  matB.at<double>( x, y ) ;
+        alphas_val[m][s] = matAouter.at<double>( x, y ) ;
+        betas_val[m][s] =  matBouter.at<double>( x, y ) ;
 
         while( s > 0 && m < nterms ) {
             ++m ; --s ;
@@ -65,8 +63,8 @@ void RoulettePMCLens::calculateAlphaBeta() {
             diffX(matB, matBx) ;
             diffY(matB, matBy) ;
 
-            // matA = C*(matAx + matBy)
-            // matB = C*(matBx - matAy)
+            matA = C*(matAx + matBy) ;
+            matB = C*(matBx - matAy) ;
 
             alphas_val[m][s] = matA.at<double>( x, y ) ;
             betas_val[m][s] =  matB.at<double>( x, y ) ;
