@@ -24,7 +24,7 @@ void RoulettePMCLens::calculateAlphaBeta() {
 
     cv::Mat matA, matB, matAouter, matBouter, matAx, matAy, matBx, matBy ;
     int mp, m, s ;
-    double x = CHI*apparentAbs, y = 0 ;
+    double C, x = CHI*apparentAbs, y = 0 ;
     cv::Mat psi = getPsi() ;
 
     std::cout << "RoulettePMCLens calculateAlphaBeta\n" ;
@@ -37,7 +37,7 @@ void RoulettePMCLens::calculateAlphaBeta() {
           diffX(matBouter, matBx) ;
           diffY(matBouter, matBy) ;
 
-          double C = (m+1)/(m+1+s) ;
+          C = (m+1)/(m+1+s) ;
           //  if ( s != 1 ) C *= 2 ; // This is impossible, but used in the formula.
 
           matA = matAouter = C*(matAx - matBy) ;
