@@ -17,7 +17,8 @@ cv::Mat LensMap::getMassMap() {
    return massMap ;
 }
 cv::Mat LensMap::getEinsteinMap() {
-   return einsteinMap ;
+   throw NotImplemented() ;
+   // return einsteinMap ;
 }
 
 void LensMap::setPsi( cv::Mat map ) {
