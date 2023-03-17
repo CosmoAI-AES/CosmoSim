@@ -1,7 +1,7 @@
 
 set(SimLibFiles
         simlib/LensMap.cpp
-        simlib/RoulettePMCLens.cpp
+        simlib/SampledLens.cpp
         simlib/PMCLens.cpp
         simlib/RouletteLens.cpp
         simlib/EllipsoidSource.cpp

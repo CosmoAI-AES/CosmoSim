@@ -8,6 +8,7 @@
 
 #include <thread>
 #include <fstream>
+#include "simaux.h"
 
 cv::Mat LensMap::getPsi() {
    return psi ;
@@ -20,10 +21,15 @@ cv::Mat LensMap::getEinsteinMap() {
 }
 
 void LensMap::setPsi( cv::Mat map ) {
+   cv::Mat tmp, psix, psiy ;
    psi = map ;
+   diffX( psi, tmp ) ; diffX( tmp, psix ) ;
+   diffY( psi, tmp ) ; diffY( tmp, psiy ) ;
+   massMap = ( psix + psiy ) / 2 ;
+
    // Calculate einsteinMap and massMap here
 }
 void LensMap::loadPsi( std::string fn ) {
-   psi = cv::imread( fn ) ;
+   setPsi( cv::imread( fn ) ) ;
    // Calculate einsteinMap and massMap here
 }

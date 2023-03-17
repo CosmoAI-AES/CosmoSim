@@ -41,3 +41,12 @@ double factorial_(unsigned int n){
     }
     return a;
 }
+
+void diffX(cv::InputArray src, cv::OutputArray out) {
+   return Sobel(src, out, -1, 1, 0 ) ;
+   // Sobel(src, out, ddepth, 1, 0, ksize, scale, delta, BORDER_DEFAULT);
+}
+void diffY(cv::InputArray src, cv::OutputArray out) {
+   return Sobel(src, out, -1, 0, 1 ) ;
+   // Sobel(src, out, ddepth, 0, 1, ksize, scale, delta, BORDER_DEFAULT);
+}

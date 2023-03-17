@@ -9,16 +9,9 @@
 #include <thread>
 #include <fstream>
 
-void diffX(cv::InputArray src, cv::OutputArray out) {
-   return Sobel(src, out, -1, 1, 0 ) ;
-   // Sobel(src, out, ddepth, 1, 0, ksize, scale, delta, BORDER_DEFAULT);
-}
-void diffY(cv::InputArray src, cv::OutputArray out) {
-   return Sobel(src, out, -1, 0, 1 ) ;
-   // Sobel(src, out, ddepth, 0, 1, ksize, scale, delta, BORDER_DEFAULT);
-}
+#include "simaux.h"
 
-void RoulettePMCLens::calculateAlphaBeta() {
+void SampledLens::calculateAlphaBeta() {
 
     // Calculate all amplitudes for given X, Y, einsteinR
 
@@ -73,7 +66,7 @@ void RoulettePMCLens::calculateAlphaBeta() {
 }
 
 
-void RoulettePMCLens::updateApparentAbs( ) {
+void SampledLens::updateApparentAbs( ) {
    cv::Point2f eta( actualAbs, 0 ) ;
    cv::Point2f xi0( actualAbs, 0 ) ;
    cv::Mat alpha, beta ;

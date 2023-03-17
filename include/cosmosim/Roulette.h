@@ -49,7 +49,7 @@ class SphereLens : public RouletteLens {
     void initAlphasBetas();
 };
 
-class RoulettePMCLens : public RouletteLens, public LensMap { 
+class SampledLens : public RouletteLens, public LensMap { 
 public:
     using RouletteLens::RouletteLens ;
 protected:
