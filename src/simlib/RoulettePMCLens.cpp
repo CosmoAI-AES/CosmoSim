@@ -74,5 +74,23 @@ void RoulettePMCLens::calculateAlphaBeta() {
 
 
 void RoulettePMCLens::updateApparentAbs( ) {
-    maskRadius = apparentAbs = actualAbs + einsteinR/CHI ;
+   cv::Point2f eta( actualAbs, 0 ) ;
+   cv::Point2f xi0( actualAbs, 0 ) ;
+   cv::Mat alpha, beta ;
+   int cont = 1, count = 0 ;
+   double dist, threshold = 0.1 ;
+
+   diffX( psi, alpha ) ;
+   diffY( psi, beta ) ;
+
+   while ( cont ) {
+      double x = alpha.at<double>( xi0 ), y = beta.at<double>( xi0 ) ;
+      std::cout << "xi = " << x << ", " << y << "\n" ;
+      cv::Point2f xi = CHI*eta + cv::Point2f( x, y ) ;
+      dist = cv::norm( cv::Mat(xi-xi0), cv::NORM_L2 ) ;
+      if ( dist < threshold ) cont = 0 ;
+      if ( ++count > 1000 ) cont = 0 ;
+   }
+
+   maskRadius = apparentAbs ;
 }
