@@ -1,0 +1,6 @@
+
+1.  Test current
+2.  Validate distort
+    - Note Source image is drawn at the origin
+    - check rotations - origin is fixed?
+3.  Document flow of image transformations
