@@ -46,7 +46,7 @@ public:
     LensModel(bool);
     ~LensModel();
     void update();
-    void update( cv::Mat );
+    virtual void update( cv::Mat );
     void setCentred( bool ) ;
     void setMaskMode( bool ) ;
     void setBGColour( int ) ;
@@ -65,7 +65,7 @@ public:
     void setNterms(int);
     void updateAll( double, double, double, double, int ) ;
     void setSource(Source*) ;
-    double getCentre() ;
+    cv::Point2f getCentre() ;
 
     cv::Mat getActual() ;
     cv::Mat getApparent() ;

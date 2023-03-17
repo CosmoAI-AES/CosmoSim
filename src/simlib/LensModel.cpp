@@ -152,7 +152,7 @@ void LensModel::setCentred(bool b) { centredMode = b ; }
 void LensModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) {
     // Iterate over the pixels in the image distorted image.
     // (row,col) are pixel co-ordinates
-    int R = getCentre() ;
+    cv::Point2f R = getCentre() ;
     for (int row = begin; row < end; row++) {
         for (int col = 0; col < dst.cols; col++) {
 
@@ -161,8 +161,8 @@ void LensModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) {
 
             // Set coordinate system with origin at the centre of mass
             // in the distorted image in the lens plane.
-            double x = (col - dst.cols / 2.0 - R) * CHI;
-            double y = (dst.rows / 2.0 - row) * CHI;
+            double x = (col - dst.cols / 2.0 - R.x) * CHI;
+            double y = (dst.rows / 2.0 - row + R.y) * CHI;
             // (x,y) are coordinates in the lens plane, and hence the
             // multiplication by CHI
 
@@ -275,6 +275,6 @@ void LensModel::maskImage( cv::InputOutputArray r ) {
 void LensModel::markMask( cv::InputOutputArray r ) {
    throw NotImplemented() ;
 }
-double LensModel::getCentre( ) {
-  return centredMode ? tentativeCentre : apparentAbs ;
+cv::Point2f LensModel::getCentre( ) {
+  return cv::Point2f( centredMode ? tentativeCentre : apparentAbs, 0.0 ) ;
 }
