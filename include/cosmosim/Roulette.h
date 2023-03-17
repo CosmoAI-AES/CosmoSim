@@ -52,9 +52,11 @@ class SphereLens : public RouletteLens {
 class SampledLens : public RouletteLens, public LensMap { 
 public:
     using RouletteLens::RouletteLens ;
+    virtual void update( cv::Mat );
 protected:
     virtual void calculateAlphaBeta();
     virtual void updateApparentAbs() ;
+    virtual cv::Mat getActual() ;
 };
 
 #endif // ROULETTE_H

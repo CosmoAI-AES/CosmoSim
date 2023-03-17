@@ -87,3 +87,39 @@ void SampledLens::updateApparentAbs( ) {
 
    maskRadius = apparentAbs ;
 }
+
+/* Getters for the images */
+cv::Mat SampledLens::getActual() { 
+   cv::Mat imgApparent = getApparent() ;
+
+   cv::Mat imgActual 
+        = cv::Mat::zeros(imgApparent.size(), imgApparent.type());
+
+   cv::Mat tr = (cv::Mat_<double>(2,3) << 1, 0, actualX, 0, 1, -actualY);
+
+   std::cout << "getActual() (x,y)=(" << actualX << "," << actualY << ")\n" ;
+
+   cv::warpAffine(imgApparent, imgActual, tr, imgApparent.size()) ;
+   return imgActual ; 
+}
+
+void SampledLens::update( cv::Mat imgApparent ) {
+
+    auto startTime = std::chrono::system_clock::now();
+    
+    std::cout << "update() x=" << actualX << "; y= " << actualY 
+              << "; R=" << actualAbs << "; theta=" << phi
+              << "; R_E=" << einsteinR << "; CHI=" << CHI << "\n" ;
+
+    // Make Distorted Image
+    parallelDistort(imgApparent, imgDistorted);
+
+    std::cout << "update() (x,y) = (" << actualX << ", " << actualY << ")\n" ;
+
+    // Calculate run time for this function and print diagnostic output
+    auto endTime = std::chrono::system_clock::now();
+    std::cout << "Time to update(): " 
+              << std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count() 
+              << " milliseconds" << std::endl;
+
+}
