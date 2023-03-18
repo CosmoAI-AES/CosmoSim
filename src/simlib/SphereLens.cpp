@@ -79,5 +79,5 @@ void SphereLens::calculateAlphaBeta() {
 
 
 void SphereLens::updateApparentAbs( ) {
-    maskRadius = apparentAbs = actualAbs + einsteinR/CHI ;
+    maskRadius = apparentAbs = getEtaAbs() + einsteinR/CHI ;
 }

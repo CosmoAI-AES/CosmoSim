@@ -62,8 +62,7 @@ void SampledLens::calculateAlphaBeta() {
 
 
 void SampledLens::updateApparentAbs( ) {
-   cv::Point2f eta( actualAbs, 0 ) ;
-   cv::Point2f xi1, xi0( actualAbs, 0 ) ;
+   cv::Point2f xi1, xi0( getEtaAbs(), 0 ) ;
    cv::Mat alpha, beta ;
    int cont = 1, count = 0 ;
    double dist, threshold = 0.1 ;
@@ -103,9 +102,9 @@ cv::Mat SampledLens::getActual() {
    cv::Mat imgActual 
         = cv::Mat::zeros(imgApparent.size(), imgApparent.type());
 
-   cv::Mat tr = (cv::Mat_<double>(2,3) << 1, 0, actualX, 0, 1, -actualY);
+   cv::Mat tr = (cv::Mat_<double>(2,3) << 1, 0, getEta().x, 0, 1, -getEta().y);
 
-   std::cout << "getActual() (x,y)=(" << actualX << "," << actualY << ")\n" ;
+   std::cout << "getActual() (x,y)=(" << getEta().x << "," << getEta().y << ")\n" ;
 
    cv::warpAffine(imgApparent, imgActual, tr, imgApparent.size()) ;
    return imgActual ; 
@@ -115,14 +114,14 @@ void SampledLens::update( cv::Mat imgApparent ) {
 
     auto startTime = std::chrono::system_clock::now();
     
-    std::cout << "update() x=" << actualX << "; y= " << actualY 
-              << "; R=" << actualAbs << "; theta=" << phi
+    std::cout << "update() x=" << getEta().x << "; y= " << getEta().y 
+              << "; R=" << getEtaAbs() << "; theta=" << phi
               << "; R_E=" << einsteinR << "; CHI=" << CHI << "\n" ;
 
     // Make Distorted Image
     parallelDistort(imgApparent, imgDistorted);
 
-    std::cout << "update() (x,y) = (" << actualX << ", " << actualY << ")\n" ;
+    std::cout << "update() (x,y) = (" << getEta().x << ", " << getEta().y << ")\n" ;
 
     // Calculate run time for this function and print diagnostic output
     auto endTime = std::chrono::system_clock::now();

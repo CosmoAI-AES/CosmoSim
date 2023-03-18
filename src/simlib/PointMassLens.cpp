@@ -18,9 +18,9 @@ std::pair<double, double> PointMassLens::getDistortedPos(double r, double theta)
 void PointMassLens::updateApparentAbs( ) {
     // The apparent position is the solution to a quadratic equation.
     // thus there are two solutions.
-    double root = sqrt(0.25*actualAbs*actualAbs + einsteinR*einsteinR/(CHI*CHI));
+    double root = sqrt(0.25*getEtaSquare() + einsteinR*einsteinR/(CHI*CHI));
 
-    apparentAbs = actualAbs/2 + root ;
-    apparentAbs2 = actualAbs/2 - root ;
+    apparentAbs = getEtaAbs()/2 + root ;
+    apparentAbs2 = getEtaAbs()/2 - root ;
     tentativeCentre = apparentAbs ;
 }

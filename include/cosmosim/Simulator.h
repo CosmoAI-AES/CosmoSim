@@ -21,9 +21,7 @@ protected:
 
     int bgcolour = 0;
 
-    double actualX{};
-    double actualY{};
-    double actualAbs{};
+    cv::Point2f eta ;  // Actual position in the source plane
     double phi{};
     double apparentAbs{};
     double apparentAbs2{};
@@ -53,6 +51,9 @@ public:
 
     virtual double getXiAbs() const ;
     virtual cv::Point2f getXi() const ;
+    double getEtaAbs() const ;
+    double getEtaSquare() const ;
+    cv::Point2f getEta() const ;
 
     void updateXY(double, double, double, double) ;
     void setXY(double, double, double, double) ;

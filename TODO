@@ -2,6 +2,7 @@
 1.  Test current version
     - Test framemork - compare versions
     - Regression test against v2.0.2
+    - Comparison of Roulette SIS and PM
 2.  Distinguish between True xi and Nominal xi
 2.  Validate distort
     - Note Source image is drawn at the origin
