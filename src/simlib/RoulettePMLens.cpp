@@ -32,7 +32,6 @@ void RoulettePMLens::updateApparentAbs( ) {
     // This is overridden only to set maskRadius.
     double root = sqrt(0.25*actualAbs*actualAbs + einsteinR*einsteinR/(CHI*CHI));
 
-    maskRadius = apparentAbs = actualAbs/2 + root ;
+    tentativeCentre = maskRadius = apparentAbs = actualAbs/2 + root ;
     apparentAbs2 = actualAbs/2 - root ;
-    tentativeCentre = apparentAbs ;
 }

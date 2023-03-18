@@ -80,6 +80,10 @@ void SampledLens::updateApparentAbs( ) {
       if ( ++count > 1000 ) cont = 0 ;
       xi0 = xi1 ;
    }
+   if ( dist > threshold ) {
+      std::cout << "Bad approximation of xi: xi0=" << xi0 
+            << "; xi1=" << xi1 << "\n" ;
+   }
    xi = xi1 ;
 
    maskRadius = getXiAbs() ;
