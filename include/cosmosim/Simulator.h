@@ -51,6 +51,8 @@ public:
     void setMaskMode( bool ) ;
     void setBGColour( int ) ;
 
+    double getXiAbs() ;
+
     void updateXY(double, double, double, double) ;
     void setXY(double, double, double, double) ;
     void setPolar(double, double, double, double) ;

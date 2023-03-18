@@ -6,7 +6,7 @@
  * It would be better to make the class abstract and move this definition to the 
  * subclass. */
 std::pair<double, double> PointMassLens::getDistortedPos(double r, double theta) const {
-    double R = apparentAbs * CHI ;
+    double R = getXiAbs() * CHI ;
     double frac = (einsteinR * einsteinR * r) / (r * r + R * R + 2 * r * R * cos(theta));
     double nu1 = r*cos(theta) + frac * (r / R + cos(theta)) ;
     double nu2 = r*sin(theta) - frac * sin(theta) ;
@@ -20,7 +20,5 @@ void PointMassLens::updateApparentAbs( ) {
     // thus there are two solutions.
     double root = sqrt(0.25*actualAbs*actualAbs + einsteinR*einsteinR/(CHI*CHI));
 
-    apparentAbs = actualAbs/2 + root ;
-    apparentAbs2 = actualAbs/2 - root ;
-    tentativeCentre = apparentAbs ;
+    tentativeCentre = apparentAbs = actualAbs/2 + root ;
 }

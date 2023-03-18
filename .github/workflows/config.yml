@@ -57,7 +57,7 @@ jobs:
           libxcb-dri3-dev \
           libxcb-util-dev \
           libxcb-util0-dev \
-          libopenjp2-dev
+          libopenjp2-7-dev
           sudo pip3 install conan==1.59
       - name: Run conan
         run: |
