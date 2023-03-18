@@ -272,12 +272,12 @@ void LensModel::markMask( cv::InputOutputArray r ) {
    throw NotImplemented() ;
 }
 cv::Point2f LensModel::getCentre( ) {
-  return centredMode ? cv::Point2f( tentativeCentre, 0.0 ) : getXi() ;
+  return centredMode ? cv::Point2f( tentativeCentre, 0.0 ) : getNu() ;
 }
-double LensModel::getXiAbs() const {
+double LensModel::getNuAbs() const {
    return apparentAbs ;
 }
-cv::Point2f LensModel::getXi() const {
+cv::Point2f LensModel::getNu() const {
    return cv::Point2f( apparentAbs, 0.0 ) ;
 }
 double LensModel::getEtaSquare() const {

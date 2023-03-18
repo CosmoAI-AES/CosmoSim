@@ -12,7 +12,7 @@ void SampledLens::calculateAlphaBeta() {
 
     cv::Mat matA, matB, matAouter, matBouter, matAx, matAy, matBx, matBy ;
     int mp, m, s ;
-    double C, x = CHI*getXiAbs(), y = 0 ;
+    double C, x = CHI*getNuAbs(), y = 0 ;
     cv::Mat psi = getPsi() ;
 
     std::cout << "RoulettePMCLens calculateAlphaBeta\n" ;
@@ -62,7 +62,8 @@ void SampledLens::calculateAlphaBeta() {
 
 
 void SampledLens::updateApparentAbs( ) {
-   cv::Point2f xi1, xi0( getEtaAbs(), 0 ) ;
+   cv::Point2f xi1, chieta = CHI*eta ;
+   cv::Point2f xi0 = chieta ;
    cv::Mat alpha, beta ;
    int cont = 1, count = 0 ;
    double dist, threshold = 0.1 ;
@@ -73,7 +74,7 @@ void SampledLens::updateApparentAbs( ) {
    while ( cont ) {
       double x = alpha.at<double>( xi0 ), y = beta.at<double>( xi0 ) ;
       std::cout << "xi = " << x << ", " << y << "\n" ;
-      xi1 = CHI*eta + cv::Point2f( x, y ) ;
+      xi1 = chieta + cv::Point2f( x, y ) ;
       dist = cv::norm( cv::Mat(xi1-xi0), cv::NORM_L2 ) ;
       if ( dist < threshold ) cont = 0 ;
       if ( ++count > 1000 ) cont = 0 ;
@@ -83,16 +84,16 @@ void SampledLens::updateApparentAbs( ) {
       std::cout << "Bad approximation of xi: xi0=" << xi0 
             << "; xi1=" << xi1 << "\n" ;
    }
-   xi = xi1 ;
+   nu = xi1/CHI ;
 
-   maskRadius = getXiAbs() ;
+   maskRadius = getNuAbs() ;
 }
 
-double SampledLens::getXiAbs() const {
-   return cv::norm( cv::Mat(xi), cv::NORM_L2 ) ;
+double SampledLens::getNuAbs() const {
+   return cv::norm( cv::Mat(nu), cv::NORM_L2 ) ;
 }
-cv::Point2f SampledLens::getXi() const {
-   return xi ;
+cv::Point2f SampledLens::getNu() const {
+   return nu ;
 }
 
 /* Getters for the images */
