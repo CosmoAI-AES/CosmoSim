@@ -54,6 +54,7 @@ public:
     using RouletteLens::RouletteLens ;
     virtual void update( cv::Mat );
     virtual double getXiAbs() const ;
+    virtual cv::Point2f getXi() const ;
 protected:
     cv::Point2f xi ;  // Apparent position in the lens plane
     virtual void calculateAlphaBeta();

@@ -52,6 +52,7 @@ public:
     void setBGColour( int ) ;
 
     virtual double getXiAbs() const ;
+    virtual cv::Point2f getXi() const ;
 
     void updateXY(double, double, double, double) ;
     void setXY(double, double, double, double) ;

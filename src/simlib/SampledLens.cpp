@@ -92,6 +92,9 @@ void SampledLens::updateApparentAbs( ) {
 double SampledLens::getXiAbs() const {
    return cv::norm( cv::Mat(xi), cv::NORM_L2 ) ;
 }
+cv::Point2f SampledLens::getXi() const {
+   return xi ;
+}
 
 /* Getters for the images */
 cv::Mat SampledLens::getActual() { 
