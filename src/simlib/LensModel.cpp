@@ -123,8 +123,9 @@ void LensModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
     int n_threads = std::thread::hardware_concurrency();
     if ( DEBUG ) std::cout << "Running with " << n_threads << " threads.\n" ;
     std::vector<std::thread> threads_vec;
-    if ( maskRadius > dst.rows/2.0 ) maskRadius = dst.rows/2.0 ;
+    // if ( maskRadius > dst.rows/2.0 ) maskRadius = dst.rows/2.0 ;
     int lower = 0, upper = dst.rows, rng1 ;
+    double maskRadius = getMaskRadius() ;
     if ( maskMode ) {
 	int lower0 = floor( dst.rows/2.0 - eta.y - maskRadius ) ;
 	int upper0 = ceil( dst.rows/2.0 - eta.y + maskRadius ) + 1 ;
@@ -153,6 +154,7 @@ void LensModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) {
     // Iterate over the pixels in the image distorted image.
     // (row,col) are pixel co-ordinates
     cv::Point2f R = getCentre() ;
+    double maskRadius = getMaskRadius()*CHI ;
     for (int row = begin; row < end; row++) {
         for (int col = 0; col < dst.cols; col++) {
 
@@ -170,7 +172,7 @@ void LensModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) {
             // relative to CoM (origin)
             double r = sqrt(x * x + y * y);
 
-            if ( maskMode && r > maskRadius*CHI ) {
+            if ( maskMode && r > maskRadius ) {
             } else {
               double theta = x == 0 ? PI/2 : atan2(y, x);
               pos = this->getDistortedPos(r, theta);
@@ -289,3 +291,4 @@ double LensModel::getEtaAbs() const {
 cv::Point2f LensModel::getEta() const {
    return eta ;
 }
+double getMaskRadius() const { return 1024*1024 ; }

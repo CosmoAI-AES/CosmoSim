@@ -27,7 +27,8 @@ protected:
     double apparentAbs{};
     double apparentAbs2{};
     bool maskMode = false ;
-    double maskRadius = 1024*1024 ;
+    // double maskRadius = 1024*1024 ;
+    virtual double getMaskRadius() const ;
 
     // tentativeCentre is used as the shift when attempting 
     // to centre the distorted image in the image.

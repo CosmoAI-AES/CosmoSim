@@ -29,9 +29,9 @@ std::pair<double, double> RoulettePMLens::getDistortedPos(double r, double theta
 void RoulettePMLens::updateApparentAbs( ) {
     // The apparent position is the solution to a quadratic equation.
     // thus there are two solutions.
-    // This is overridden only to set maskRadius.
+    // This is identical to other Point Mass Models.
     double root = sqrt(0.25*getEtaSquare() + einsteinR*einsteinR/(CHI*CHI));
 
-    tentativeCentre = maskRadius = apparentAbs = getEtaAbs()/2 + root ;
+    tentativeCentre = apparentAbs = getEtaAbs()/2 + root ;
     apparentAbs2 = getEtaAbs()/2 - root ;
 }

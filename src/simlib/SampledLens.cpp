@@ -85,8 +85,6 @@ void SampledLens::updateApparentAbs( ) {
             << "; xi1=" << xi1 << "\n" ;
    }
    nu = xi1/CHI ;
-
-   maskRadius = getNuAbs() ;
 }
 
 double SampledLens::getNuAbs() const {

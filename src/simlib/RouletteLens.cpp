@@ -15,13 +15,13 @@ void RouletteLens::maskImage( cv::InputOutputArray imgD ) {
       cv::Point origo = getOrigin( getCentre(), phi, imgD.cols()/2, imgD.rows()/2 ) ;
       cv::Mat mask( imgD.size(), CV_8UC1, cv::Scalar(255) ) ;
       cv::Mat black( imgD.size(), imgD.type(), cv::Scalar(0) ) ;
-      cv::circle( mask, origo, maskRadius, cv::Scalar(0), cv::FILLED ) ;
+      cv::circle( mask, origo, getMaskRadius(), cv::Scalar(0), cv::FILLED ) ;
       black.copyTo( imgD, mask ) ;
 }
 void RouletteLens::markMask( cv::InputOutputArray imgD ) {
       std::cout << "RouletteLens::maskImage\n" ;
       cv::Point origo = getOrigin( getCentre(), phi, imgD.cols()/2, imgD.rows()/2 ) ;
-      cv::circle( imgD, origo, maskRadius, cv::Scalar(255), 1 ) ;
+      cv::circle( imgD, origo, getMaskRadius(), cv::Scalar(255), 1 ) ;
       cv::circle( imgD, origo, 3, cv::Scalar(0), 1 ) ;
       cv::circle( imgD, origo, 1, cv::Scalar(0), cv::FILLED ) ;
 }
@@ -54,3 +54,4 @@ std::pair<double, double> RouletteLens::getDistortedPos(double r, double theta) 
     nu2 /= CHI ;
     return {nu1, nu2};
 }
+double getMaskRadius() const { return getNuAbs() ; }
