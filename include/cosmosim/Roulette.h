@@ -58,5 +58,10 @@ protected:
     virtual void updateApparentAbs() ;
     virtual cv::Mat getActual() ;
 };
+class SampledSISLens : public SampledLens { 
+public:
+    using SampledLens::SampledLens ;
+protected:
+};
 
 #endif // ROULETTE_H
