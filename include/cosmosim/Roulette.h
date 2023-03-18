@@ -21,6 +21,7 @@ protected:
     virtual std::pair<double, double> getDistortedPos(double r, double theta) const;
     virtual void markMask( cv::InputOutputArray ) ;
     virtual void maskImage( cv::InputOutputArray ) ;
+    virtual double getMaskRadius() const ;
 };
 
 class RoulettePMLens : public RouletteLens { 

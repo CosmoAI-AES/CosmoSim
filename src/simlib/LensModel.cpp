@@ -291,4 +291,4 @@ double LensModel::getEtaAbs() const {
 cv::Point2f LensModel::getEta() const {
    return eta ;
 }
-double getMaskRadius() const { return 1024*1024 ; }
+double LensModel::getMaskRadius() const { return 1024*1024 ; }
