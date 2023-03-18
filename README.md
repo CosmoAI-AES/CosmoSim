@@ -165,8 +165,6 @@ scripts for post-processing and bulk processing of CSV files.
 
 ```sh
 bin/makeimage [-S] -x x -y y -s sigma -X chi -E einsteinR -n n -I imageSize -N name
-sh Scripts/olddatagen.sh < Dataset/debug.csv
-sh Scripts/polargen.sh < csvfile
 Python/centreimage.py [file ...]
 ```
 
