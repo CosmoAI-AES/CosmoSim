@@ -278,6 +278,6 @@ void LensModel::markMask( cv::InputOutputArray r ) {
 cv::Point2f LensModel::getCentre( ) {
   return cv::Point2f( centredMode ? tentativeCentre : getXiAbs(), 0.0 ) ;
 }
-double getXiAbs() {
+double LensModel::getXiAbs() const {
    return apparentAbs ;
 }

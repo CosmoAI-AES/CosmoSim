@@ -6,7 +6,7 @@
  * It would be better to make the class abstract and move this definition to the 
  * subclass. */
 std::pair<double, double> RoulettePMLens::getDistortedPos(double r, double theta) const {
-    double R = apparentAbs * CHI ;
+    double R = getXiAbs() * CHI ;
 
     double nu1 = r*cos(theta) ;
     double nu2 = r*sin(theta) ;

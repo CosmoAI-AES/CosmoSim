@@ -12,7 +12,7 @@ void SampledLens::calculateAlphaBeta() {
 
     cv::Mat matA, matB, matAouter, matBouter, matAx, matAy, matBx, matBy ;
     int mp, m, s ;
-    double C, x = CHI*apparentAbs, y = 0 ;
+    double C, x = CHI*getXiAbs(), y = 0 ;
     cv::Mat psi = getPsi() ;
 
     std::cout << "RoulettePMCLens calculateAlphaBeta\n" ;
@@ -63,7 +63,7 @@ void SampledLens::calculateAlphaBeta() {
 
 void SampledLens::updateApparentAbs( ) {
    cv::Point2f eta( actualAbs, 0 ) ;
-   cv::Point2f xi0( actualAbs, 0 ) ;
+   cv::Point2f xi1, xi0( actualAbs, 0 ) ;
    cv::Mat alpha, beta ;
    int cont = 1, count = 0 ;
    double dist, threshold = 0.1 ;
@@ -74,14 +74,19 @@ void SampledLens::updateApparentAbs( ) {
    while ( cont ) {
       double x = alpha.at<double>( xi0 ), y = beta.at<double>( xi0 ) ;
       std::cout << "xi = " << x << ", " << y << "\n" ;
-      cv::Point2f xi = CHI*eta + cv::Point2f( x, y ) ;
-      dist = cv::norm( cv::Mat(xi-xi0), cv::NORM_L2 ) ;
+      xi1 = CHI*eta + cv::Point2f( x, y ) ;
+      dist = cv::norm( cv::Mat(xi1-xi0), cv::NORM_L2 ) ;
       if ( dist < threshold ) cont = 0 ;
       if ( ++count > 1000 ) cont = 0 ;
-      xi0 = xi ;
+      xi0 = xi1 ;
    }
+   xi = xi1 ;
 
-   maskRadius = apparentAbs = cv::norm( cv::Mat(xi), cv::NORM_L2 ) ;
+   maskRadius = getXiAbs() ;
+}
+
+double SampledLens::getXiAbs() const {
+   return cv::norm( cv::Mat(xi), cv::NORM_L2 ) ;
 }
 
 /* Getters for the images */

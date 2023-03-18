@@ -51,7 +51,7 @@ public:
     void setMaskMode( bool ) ;
     void setBGColour( int ) ;
 
-    double getXiAbs() ;
+    virtual double getXiAbs() const ;
 
     void updateXY(double, double, double, double) ;
     void setXY(double, double, double, double) ;

@@ -53,7 +53,9 @@ class SampledLens : public RouletteLens, public LensMap {
 public:
     using RouletteLens::RouletteLens ;
     virtual void update( cv::Mat );
+    virtual double getXiAbs() const ;
 protected:
+    cv::Point2f xi ;  // Apparent position in the lens plane
     virtual void calculateAlphaBeta();
     virtual void updateApparentAbs() ;
     virtual cv::Mat getActual() ;
