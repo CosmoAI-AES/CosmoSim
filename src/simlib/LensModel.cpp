@@ -276,7 +276,7 @@ void LensModel::markMask( cv::InputOutputArray r ) {
    throw NotImplemented() ;
 }
 cv::Point2f LensModel::getCentre( ) {
-  return centredMode ? cv::Point2f( tentativeCentre, 0.0 ) : getXi() ) ;
+  return centredMode ? cv::Point2f( tentativeCentre, 0.0 ) : getXi() ;
 }
 double LensModel::getXiAbs() const {
    return apparentAbs ;

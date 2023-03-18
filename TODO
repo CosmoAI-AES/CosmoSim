@@ -1,8 +1,12 @@
 
 1.  Test current version
-2.  Test framemork - compare versions
-3.  Fix updateApparentAbs in SampledLens
+    - Test framemork - compare versions
+    - Regression test against v2.0.2
+2.  Distinguish between True xi and Nominal xi
 2.  Validate distort
     - Note Source image is drawn at the origin
     - check rotations - origin is fixed?
 3.  Document flow of image transformations
+5.  Clarify local co-ordinate system
+    - origin in the centre of the image
+    - horizontal first axis, vertical second axis
