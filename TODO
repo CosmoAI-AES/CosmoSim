@@ -1,5 +1,7 @@
 
-1.  Test current
+1.  Test current version
+2.  Test framemork - compare versions
+3.  Fix updateApparentAbs in SampledLens
 2.  Validate distort
     - Note Source image is drawn at the origin
     - check rotations - origin is fixed?

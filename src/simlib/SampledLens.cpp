@@ -78,9 +78,10 @@ void SampledLens::updateApparentAbs( ) {
       dist = cv::norm( cv::Mat(xi-xi0), cv::NORM_L2 ) ;
       if ( dist < threshold ) cont = 0 ;
       if ( ++count > 1000 ) cont = 0 ;
+      xi0 = xi ;
    }
 
-   maskRadius = apparentAbs ;
+   maskRadius = apparentAbs = cv::norm( cv::Mat(xi), cv::NORM_L2 ) ;
 }
 
 /* Getters for the images */

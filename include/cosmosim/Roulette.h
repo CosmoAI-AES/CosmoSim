@@ -62,6 +62,8 @@ class SampledSISLens : public SampledLens {
 public:
     using SampledLens::SampledLens ;
 protected:
+private: 
+    double psifunction( double, double ) ;
 };
 
 #endif // ROULETTE_H
