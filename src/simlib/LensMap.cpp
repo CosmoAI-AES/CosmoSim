@@ -8,7 +8,15 @@ cv::Mat LensMap::getPsi() const {
    return psi ;
 }
 cv::Mat LensMap::getPsiImage() const {
-   return psi ;
+   cv::Mat im, ps = getPsi() ;
+   double minVal, maxVal;
+   cv::Point minLoc, maxLoc;
+   minMaxLoc( ps, &minVal, &maxVal, &minLoc, &maxLoc ) ;
+   double s = std::max(-minVal,maxVal)*128 ;
+   ps /= s ;
+   ps += 128 ;
+   ps.convertTo( im, CV_8S ) ;
+   return im ;
 }
 cv::Mat LensMap::getMassMap() const {
    return massMap ;

@@ -1,5 +1,7 @@
 
-1.  Print mass map and psi map
+1.  Test program: Print mass map and psi map
+    - print \nabla\psi
+2.  P/Ben David: sign \psi
 1.  Test current version
     - Test Sampled Lens
     - Comparison of Roulette SIS and PM
