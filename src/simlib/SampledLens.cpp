@@ -63,23 +63,45 @@ void SampledLens::calculateAlphaBeta() {
 
 void SampledLens::updateApparentAbs( ) {
    cv::Point2f chieta = CHI*getEta() ;
-   cv::Point2f xi0, xi1 = getEta() ;
+   cv::Point2f xi0, xi1 = chieta ;
    cv::Mat alpha, beta ;
    int cont = 1, count = 0, maxcount = 100 ;
-   double dist, threshold = 0.1 ;
+   double dist, dist0=pow(10,12), threshold = 0.1 ;
 
    std::cout << "[SampledLens] updateApparentAbs()"
              << " chi*eta = " << chieta << "\n" ;
 
    this->updatePsi() ;
 
+   int ncols=psi.cols, nrows=psi.rows ;
+   std::cout << "[SampledLens] size: " << psi.size() << "\n" ;
+
    diffX( -psi, alpha ) ;
    diffY( -psi, beta ) ;
+   
+   for ( int i=0 ; i < nrows ; ++i ) {
+      for ( int j=0 ; j < ncols ; ++j ) {
+         cv::Point2f ij(i,j) ;
+         cv::Point2f xy = pointCoordinate( ij, psi ) ;
+         double x = alpha.at<double>( i, j ), y = beta.at<double>( i, j ) ;
+         cv::Point2f xitmp = chieta - cv::Point2f( x, y ) ;
+         dist = cv::norm( cv::Mat(xitmp-xy), cv::NORM_L2 ) ;
+         std::cout << "[SampledLens] (i,j)=(" << i << "," << j << ") xitmp= " 
+                   << xitmp << "; dist=" << dist << "\n" ;
+         if ( dist < dist0 ) {
+            dist0 = dist ;
+            xi0 = xitmp ;
+            std::cout << "[SampledLens] xitmp= " << xitmp 
+                      << "xy= " << xy << "; dist=" << dist0 << "\n" ;
+         } 
+      }
+   }
 
    while ( cont ) {
       xi0 = xi1 ;
       std::cout << "[SampledLens] updateApparentAbs: xi0=" << xi0 << "\n" ;
-      double x = alpha.at<double>( xi0 ), y = beta.at<double>( xi0 ) ;
+      cv::Point2f ij = imageCoordinate( xi0, psi ) ;
+      double x = alpha.at<double>( ij ), y = beta.at<double>( ij ) ;
       std::cout << "[SampledLens] Delta eta = " << x << ", " << y << "\n" ;
       xi1 = chieta - cv::Point2f( x, y ) ;
       dist = cv::norm( cv::Mat(xi1-xi0), cv::NORM_L2 ) ;

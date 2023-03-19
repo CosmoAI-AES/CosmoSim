@@ -50,3 +50,12 @@ void diffY(cv::InputArray src, cv::OutputArray out) {
    return Sobel(src, out, -1, 0, 1 ) ;
    // Sobel(src, out, ddepth, 0, 1, ksize, scale, delta, BORDER_DEFAULT);
 }
+
+cv::Point2f imageCoordinate( cv::Point2f pt, cv::Mat im ) {
+   int ncols=im.cols, nrows=im.rows ;
+   return cv::Point2f( nrows/2 - pt.y, pt.x + ncols/2 ) ;
+}
+cv::Point2f pointCoordinate( cv::Point2f pt, cv::Mat im ) {
+   int ncols=im.cols, nrows=im.rows ;
+   return cv::Point2f( pt.y - ncols/2, nrows/2 - pt.x ) ;
+}
