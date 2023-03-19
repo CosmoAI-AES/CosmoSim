@@ -64,10 +64,10 @@ void SampledLens::calculateAlphaBeta() {
 
 
 void SampledLens::updateApparentAbs( ) {
-   cv::Point2f xi1, chieta = CHI*getEta() ;
-   cv::Point2f xi0 = chieta ;
+   cv::Point2f chieta = CHI*getEta() ;
+   cv::Point2f xi0, xi1 = getEta() ;
    cv::Mat alpha, beta ;
-   int cont = 1, count = 0 ;
+   int cont = 1, count = 0, maxcount = 100 ;
    double dist, threshold = 0.1 ;
 
    std::cout << "[SampledLens] updateApparentAbs()"
@@ -79,18 +79,18 @@ void SampledLens::updateApparentAbs( ) {
    diffY( psi, beta ) ;
 
    while ( cont ) {
+      xi0 = xi1 ;
       std::cout << "[SampledLens] updateApparentAbs: xi0=" << xi0 << "\n" ;
       double x = alpha.at<double>( xi0 ), y = beta.at<double>( xi0 ) ;
       std::cout << "[SampledLens] Delta eta = " << x << ", " << y << "\n" ;
       xi1 = chieta + cv::Point2f( x, y ) ;
       dist = cv::norm( cv::Mat(xi1-xi0), cv::NORM_L2 ) ;
       if ( dist < threshold ) cont = 0 ;
-      if ( ++count > 1000 ) cont = 0 ;
-      xi0 = xi1 ;
+      if ( ++count > maxcount ) cont = 0 ;
    }
    if ( dist > threshold ) {
       std::cout << "Bad approximation of xi: xi0=" << xi0 
-            << "; xi1=" << xi1 << "\n" ;
+            << "; xi1=" << xi1 << "; dist=" << dist << "\n" ;
    } else {
       std::cout << "[SampledLens] xi0=" << xi0 
             << "; xi1=" << xi1 << "\n" ;
