@@ -83,7 +83,7 @@ void SampledLens::updateApparentAbs( ) {
       for ( int j=0 ; j < ncols ; ++j ) {
          cv::Point2f ij(i,j) ;
          cv::Point2f xy = pointCoordinate( ij, psi ) ;
-         double x = alpha.at<double>( i, j ), y = beta.at<double>( i, j ) ;
+         double x = alpha.at<double>( ij ), y = beta.at<double>( ij ) ;
          cv::Point2f xitmp = chieta - cv::Point2f( x, y ) ;
          dist = cv::norm( cv::Mat(xitmp-xy), cv::NORM_L2 ) ;
          std::cout << "[SampledLens] (i,j)=(" << i << "," << j << ") xitmp= " 
@@ -99,10 +99,10 @@ void SampledLens::updateApparentAbs( ) {
 
    while ( cont ) {
       xi0 = xi1 ;
-      std::cout << "[SampledLens] updateApparentAbs: xi0=" << xi0 << "\n" ;
       cv::Point2f ij = imageCoordinate( xi0, psi ) ;
       double x = alpha.at<double>( ij ), y = beta.at<double>( ij ) ;
-      std::cout << "[SampledLens] Delta eta = " << x << ", " << y << "\n" ;
+      std::cout << "[SampledLens] Fix pt it'n " << count
+           << "; xi0=" << xi0 << "; Delta eta = " << x << ", " << y << "\n" ;
       xi1 = chieta - cv::Point2f( x, y ) ;
       dist = cv::norm( cv::Mat(xi1-xi0), cv::NORM_L2 ) ;
       if ( dist < threshold ) cont = 0 ;
