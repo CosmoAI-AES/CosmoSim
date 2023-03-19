@@ -14,9 +14,11 @@ public:
     // void setEinsteinMap( cv::Mat ) ;
     void setPsi( cv::Mat ) ;
     void loadPsi( std::string ) ;
-    cv::Mat getPsi( ) ;
-    cv::Mat getMassMap( ) ;
-    cv::Mat getEinsteinMap( ) ;
+    cv::Mat getPsi( ) const ;
+    cv::Mat getPsiImage( ) const ;
+    cv::Mat getMassMap( ) const ;
+    cv::Mat getMassImage() const ;
+    cv::Mat getEinsteinMap( ) const ;
 
 };
 

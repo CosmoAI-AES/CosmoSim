@@ -4,13 +4,28 @@
 
 #include "simaux.h"
 
-cv::Mat LensMap::getPsi() {
+cv::Mat LensMap::getPsi() const {
    return psi ;
 }
-cv::Mat LensMap::getMassMap() {
+cv::Mat LensMap::getPsiImage() const {
+   return psi ;
+}
+cv::Mat LensMap::getMassMap() const {
    return massMap ;
 }
-cv::Mat LensMap::getEinsteinMap() {
+cv::Mat LensMap::getMassImage() const {
+   cv::Mat im, k ;
+   double minVal, maxVal;
+   cv::Point minLoc, maxLoc;
+
+   k = getMassMap() ;
+   minMaxLoc( k, &minVal, &maxVal, &minLoc, &maxLoc ) ;
+   k /= maxVal ;
+   k *= 255 ;
+   k.convertTo( im, CV_8S ) ;
+   return im ;
+}
+cv::Mat LensMap::getEinsteinMap() const {
    throw NotImplemented() ;
    // return einsteinMap ;
 }
