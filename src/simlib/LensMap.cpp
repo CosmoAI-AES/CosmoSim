@@ -20,8 +20,11 @@ cv::Mat LensMap::getMassImage() const {
 
    k = getMassMap() ;
    minMaxLoc( k, &minVal, &maxVal, &minLoc, &maxLoc ) ;
-   k /= maxVal ;
-   k *= 255 ;
+   assert ( minVal >= 0 ) ;
+   if ( maxVal > 255 ) {
+     k /= maxVal ;
+     k *= 255 ;
+   }
    k.convertTo( im, CV_8S ) ;
    return im ;
 }
