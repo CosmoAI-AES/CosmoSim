@@ -54,4 +54,4 @@ std::pair<double, double> RouletteLens::getDistortedPos(double r, double theta) 
     nu2 /= CHI ;
     return {nu1, nu2};
 }
-double getMaskRadius() const { return getNuAbs() ; }
+double RouletteLens::getMaskRadius() const { return getNuAbs() ; }
