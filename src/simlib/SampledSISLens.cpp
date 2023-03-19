@@ -3,7 +3,7 @@
 #include "cosmosim/Roulette.h"
 
 double SampledSISLens::psifunction( double x, double y ) {
-   return einsteinR*sqrt( x*x + y*y ) ;
+   return (-einsteinR*sqrt( x*x + y*y )) ;
 }
 
 void SampledSISLens::updatePsi() { 
