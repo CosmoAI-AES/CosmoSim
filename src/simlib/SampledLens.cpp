@@ -34,8 +34,6 @@ void SampledLens::calculateAlphaBeta() {
           // This is the outer base case, for m=0, s=1
           diffX(-psi, matAouter) ;
           diffY(-psi, matBouter) ;
-          // Note! The lens potential \psi is negative; in the code psi refers
-          // to the absolute value of \psi.
         }
 
         alphas_val[m][s] = matAouter.at<double>( x, y ) ;
