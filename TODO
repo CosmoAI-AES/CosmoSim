@@ -1,4 +1,7 @@
 
+1.  Find a correction to the fix-point method.
+    - can we do more high resolution sampling
+    - scaling function to satisfy the convergence criterion
 1.  Test program: Print mass map and psi map
     - print \nabla\psi
 2.  P/Ben David: sign \psi

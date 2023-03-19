@@ -78,6 +78,13 @@ void SampledLens::updateApparentAbs( ) {
 
    diffX( psi, psiRow ) ;
    diffY( psi, psiCol ) ;
+   double minVal, maxVal;
+
+   cv::Point minLoc, maxLoc;
+   minMaxLoc( psiRow, &minVal, &maxVal, &minLoc, &maxLoc ) ;
+   std::cout << "[SampledLens] psiRow min=" << minVal << "; max=" << maxVal << "\n" ;
+   minMaxLoc( psiCol, &minVal, &maxVal, &minLoc, &maxLoc ) ;
+   std::cout << "[SampledLens] psiCol min=" << minVal << "; max=" << maxVal << "\n" ;
    
    for ( int i=0 ; i < nrows ; ++i ) {
       for ( int j=0 ; j < ncols ; ++j ) {
