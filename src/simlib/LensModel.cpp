@@ -236,7 +236,7 @@ void LensModel::setXY( double X, double Y, double chi, double er ) {
     // Calculate Polar Co-ordinates
     phi = atan2(eta.y, eta.x); // Angle relative to x-axis
 
-    std::cout << "[setXY] Set position x=" << eta.x << "; y=" << eta.y
+    std::cout << "[setXY] X=" << X << " Y=" << Y << " eta=" << eta
               << "; R=" << getEtaAbs() << "; theta=" << phi << ".\n" ;
     updateApparentAbs() ;
 }

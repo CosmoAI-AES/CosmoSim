@@ -64,13 +64,14 @@ void SampledLens::calculateAlphaBeta() {
 
 
 void SampledLens::updateApparentAbs( ) {
-   cv::Point2f xi1, chieta = CHI*eta ;
+   cv::Point2f xi1, chieta = CHI*getEta() ;
    cv::Point2f xi0 = chieta ;
    cv::Mat alpha, beta ;
    int cont = 1, count = 0 ;
    double dist, threshold = 0.1 ;
 
-   std::cout << "[SampledLens] updateApparentAbs\n" ;
+   std::cout << "[SampledLens] updateApparentAbs()"
+             << " chi*eta = " << chieta << "\n" ;
 
    this->updatePsi() ;
 
@@ -78,8 +79,9 @@ void SampledLens::updateApparentAbs( ) {
    diffY( psi, beta ) ;
 
    while ( cont ) {
+      std::cout << "[SampledLens] updateApparentAbs: xi0=" << xi0 << "\n" ;
       double x = alpha.at<double>( xi0 ), y = beta.at<double>( xi0 ) ;
-      std::cout << "xi = " << x << ", " << y << "\n" ;
+      std::cout << "[SampledLens] Delta eta = " << x << ", " << y << "\n" ;
       xi1 = chieta + cv::Point2f( x, y ) ;
       dist = cv::norm( cv::Mat(xi1-xi0), cv::NORM_L2 ) ;
       if ( dist < threshold ) cont = 0 ;
