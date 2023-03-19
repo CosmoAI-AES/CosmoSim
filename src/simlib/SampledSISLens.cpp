@@ -2,11 +2,11 @@
 
 #include "cosmosim/Roulette.h"
 
-double psifunction( double x, double y ) {
-   psi = - einsteinR*sqrt( x**2 + y**2 ) ;
+double SampledSISLens::psifunction( double x, double y ) {
+   return ( - einsteinR*sqrt( x*x + y*y ) ) ;
 }
 
-void SampledLens::updatePsi() { 
+void SampledSISLens::updatePsi() { 
    cv::Mat im = getApparent() ;
    int nrows = im.rows ;
    int ncols = im.cols ;
