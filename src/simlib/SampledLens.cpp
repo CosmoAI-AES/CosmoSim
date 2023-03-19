@@ -138,6 +138,7 @@ void SampledLens::update( cv::Mat imgApparent ) {
     this->calculateAlphaBeta() ;
 
     // Make Distorted Image
+    imgDistorted = cv::Mat::zeros(imgApparent.size(), imgApparent.type()) ;
     parallelDistort(imgApparent, imgDistorted);
 
     std::cout << "update() (x,y) = (" << getEta().x << ", " << getEta().y << ")\n" ;
