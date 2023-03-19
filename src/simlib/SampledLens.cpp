@@ -85,7 +85,9 @@ void SampledLens::updateApparentAbs( ) {
             << "; xi1=" << xi1 << "\n" ;
    }
    nu = xi1/CHI ;
+   this->updatePsi() ;
 }
+void SampledLens::updatePsi() { return ; }
 
 double SampledLens::getNuAbs() const {
    return cv::norm( cv::Mat(nu), cv::NORM_L2 ) ;
@@ -116,6 +118,8 @@ void SampledLens::update( cv::Mat imgApparent ) {
     std::cout << "update() x=" << getEta().x << "; y= " << getEta().y 
               << "; R=" << getEtaAbs() << "; theta=" << phi
               << "; R_E=" << einsteinR << "; CHI=" << CHI << "\n" ;
+
+    this->calculateAlphaBeta() ;
 
     // Make Distorted Image
     parallelDistort(imgApparent, imgDistorted);

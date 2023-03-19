@@ -59,6 +59,7 @@ protected:
     virtual void calculateAlphaBeta();
     virtual void updateApparentAbs() ;
     virtual cv::Mat getActual() ;
+    virtual void updatePsi() ;
 };
 class SampledSISLens : public SampledLens { 
 public:
@@ -66,6 +67,7 @@ public:
 protected:
 private: 
     double psifunction( double, double ) ;
+    virtual void updatePsi() ;
 };
 
 #endif // ROULETTE_H
