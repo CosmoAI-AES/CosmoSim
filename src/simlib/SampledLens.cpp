@@ -15,18 +15,7 @@ void SampledLens::calculateAlphaBeta() {
     cv::Mat psi = getPsi() ;
     cv::Mat matA, matB, matAouter, matBouter, matAx, matAy, matBx, matBy ;
 
-    /*
-    cv::Mat matA = cv::zeros( psi.size(), psi.type() ),
-            matB = cv::zeros( psi.size(), psi.type() ),
-            matAouter = cv::zeros( psi.size(), psi.type() ),
-            matBouter = cv::zeros( psi.size(), psi.type() ),
-            matAx = cv::zeros( psi.size(), psi.type() ),
-            matAy = cv::zeros( psi.size(), psi.type() ),
-            matBx = cv::zeros( psi.size(), psi.type() ),
-            matBy = cv::zeros( psi.size(), psi.type() ) ;
-            */
-
-    std::cout << "RoulettePMCLens calculateAlphaBeta\n" ;
+    std::cout << "[SampledLens] calculateAlphaBeta\n" ;
 
     for ( mp = 0; mp <= nterms; mp++){
         s = mp+1 ; m = mp ;
@@ -99,6 +88,9 @@ void SampledLens::updateApparentAbs( ) {
    }
    if ( dist > threshold ) {
       std::cout << "Bad approximation of xi: xi0=" << xi0 
+            << "; xi1=" << xi1 << "\n" ;
+   } else {
+      std::cout << "[SampledLens] xi0=" << xi0 
             << "; xi1=" << xi1 << "\n" ;
    }
    nu = xi1/CHI ;
