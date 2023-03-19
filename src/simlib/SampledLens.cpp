@@ -32,8 +32,8 @@ void SampledLens::calculateAlphaBeta() {
           matB = matBouter = C*(matBx + matAy) ;
         } else {
           // This is the outer base case, for m=0, s=1
-          diffX(psi, matAouter) ;
-          diffY(psi, matBouter) ;
+          diffX(-psi, matAouter) ;
+          diffY(-psi, matBouter) ;
           // Note! The lens potential \psi is negative; in the code psi refers
           // to the absolute value of \psi.
         }
@@ -75,15 +75,15 @@ void SampledLens::updateApparentAbs( ) {
 
    this->updatePsi() ;
 
-   diffX( psi, alpha ) ;
-   diffY( psi, beta ) ;
+   diffX( -psi, alpha ) ;
+   diffY( -psi, beta ) ;
 
    while ( cont ) {
       xi0 = xi1 ;
       std::cout << "[SampledLens] updateApparentAbs: xi0=" << xi0 << "\n" ;
       double x = alpha.at<double>( xi0 ), y = beta.at<double>( xi0 ) ;
       std::cout << "[SampledLens] Delta eta = " << x << ", " << y << "\n" ;
-      xi1 = chieta + cv::Point2f( x, y ) ;
+      xi1 = chieta - cv::Point2f( x, y ) ;
       dist = cv::norm( cv::Mat(xi1-xi0), cv::NORM_L2 ) ;
       if ( dist < threshold ) cont = 0 ;
       if ( ++count > maxcount ) cont = 0 ;
