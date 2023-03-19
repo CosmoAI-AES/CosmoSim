@@ -11,6 +11,8 @@ void SampledSISLens::updatePsi() {
    int nrows = im.rows ;
    int ncols = im.cols ;
 
+   std::cout << "[SampledSISLens] updatePsi\n" ;
+
    psi = cv::Mat::zeros(im.size(), CV_64F );
 
    for ( int i=0 ; i<nrows ; ++i ) {

@@ -17,6 +17,7 @@ cv::Mat LensMap::getEinsteinMap() {
 
 void LensMap::setPsi( cv::Mat map ) {
    cv::Mat tmp, psix, psiy ;
+   std::cout << "[LensMap] setPsi()\n" ;
    psi = map ;
    diffX( psi, tmp ) ; diffX( tmp, psix ) ;
    diffY( psi, tmp ) ; diffY( tmp, psiy ) ;

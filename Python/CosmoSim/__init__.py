@@ -18,7 +18,7 @@ lensDict = {
         "r" : LensSpec.PointMassRoulettes,
         "s" : LensSpec.SIS,
         "sp" : LensSpec.Sampled,
-        "ssis" : LensSpec.SampledSIS,
+        "ss" : LensSpec.SampledSIS,
         }
 sourceDict = {
         "Spherical" : SourceSpec.Sphere,

@@ -10,10 +10,21 @@ void SampledLens::calculateAlphaBeta() {
 
     // Calculate all amplitudes for given X, Y, einsteinR
 
-    cv::Mat matA, matB, matAouter, matBouter, matAx, matAy, matBx, matBy ;
     int mp, m, s ;
     double C, x = CHI*getNuAbs(), y = 0 ;
     cv::Mat psi = getPsi() ;
+    cv::Mat matA, matB, matAouter, matBouter, matAx, matAy, matBx, matBy ;
+
+    /*
+    cv::Mat matA = cv::zeros( psi.size(), psi.type() ),
+            matB = cv::zeros( psi.size(), psi.type() ),
+            matAouter = cv::zeros( psi.size(), psi.type() ),
+            matBouter = cv::zeros( psi.size(), psi.type() ),
+            matAx = cv::zeros( psi.size(), psi.type() ),
+            matAy = cv::zeros( psi.size(), psi.type() ),
+            matBx = cv::zeros( psi.size(), psi.type() ),
+            matBy = cv::zeros( psi.size(), psi.type() ) ;
+            */
 
     std::cout << "RoulettePMCLens calculateAlphaBeta\n" ;
 
@@ -41,7 +52,8 @@ void SampledLens::calculateAlphaBeta() {
         alphas_val[m][s] = matAouter.at<double>( x, y ) ;
         betas_val[m][s] =  matBouter.at<double>( x, y ) ;
 
-        while( s > 0 && m < nterms ) {
+        if ( mp > 0 ) {
+          while( s > 0 && m < nterms ) {
             ++m ; --s ;
             C = (m+1)/(m+1-s) ;
             if ( s > 0 ) C /= 2 ;
@@ -56,6 +68,7 @@ void SampledLens::calculateAlphaBeta() {
 
             alphas_val[m][s] = matA.at<double>( x, y ) ;
             betas_val[m][s] =  matB.at<double>( x, y ) ;
+          }
         }
     }
 }
@@ -67,6 +80,10 @@ void SampledLens::updateApparentAbs( ) {
    cv::Mat alpha, beta ;
    int cont = 1, count = 0 ;
    double dist, threshold = 0.1 ;
+
+   std::cout << "[SampledLens] updateApparentAbs\n" ;
+
+   this->updatePsi() ;
 
    diffX( psi, alpha ) ;
    diffY( psi, beta ) ;
@@ -85,7 +102,6 @@ void SampledLens::updateApparentAbs( ) {
             << "; xi1=" << xi1 << "\n" ;
    }
    nu = xi1/CHI ;
-   this->updatePsi() ;
 }
 void SampledLens::updatePsi() { return ; }
 
