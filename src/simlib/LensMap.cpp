@@ -45,11 +45,13 @@ void LensMap::setPsi( cv::Mat map ) {
    cv::Mat tmp, psix, psiy ;
    std::cout << "[LensMap] setPsi()\n" ;
    psi = map ;
-   diffX( psi, tmp ) ; diffX( tmp, psix ) ;
-   diffY( psi, tmp ) ; diffY( tmp, psiy ) ;
+   // diffX( psi, tmp ) ; diffX( tmp, psix ) ;
+   // diffY( psi, tmp ) ; diffY( tmp, psiy ) ;
+   Sobel(psi,psix,CV_64FC1, 2, 0, 3, 1.0/8) ;
+   Sobel(psi,psiy,CV_64FC1, 0, 2, 3, 1.0/8) ;
    massMap = ( psix + psiy ) / 2 ;
 
-   // Calculate einsteinMap and massMap here
+   // Calculate einsteinMap 
 }
 void LensMap::loadPsi( std::string fn ) {
    setPsi( cv::imread( fn ) ) ;
