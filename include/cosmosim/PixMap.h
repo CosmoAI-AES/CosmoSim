@@ -28,7 +28,7 @@ public:
     using LensModel::LensModel ;
 
 protected:
-    virtual std::pair<double, double> getDistortedPos(double r, double theta) const;
+    virtual cv::Point2f getDistortedPos(double r, double theta) const;
     virtual void updateApparentAbs() ;
 
 };

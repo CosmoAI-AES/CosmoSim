@@ -81,7 +81,7 @@ public:
 
 protected:
     virtual void calculateAlphaBeta() ;
-    virtual std::pair<double, double> getDistortedPos(double r, double theta) const = 0 ;
+    virtual cv::Point2f getDistortedPos(double r, double theta) const = 0 ;
     void parallelDistort(const cv::Mat &src, cv::Mat &dst);
 
 private:
@@ -93,7 +93,7 @@ class PointMassLens : public LensModel {
 public:
     using LensModel::LensModel ;
 protected:
-    virtual std::pair<double, double> getDistortedPos(double r, double theta) const;
+    virtual cv::Point2f getDistortedPos(double r, double theta) const;
     virtual void updateApparentAbs() ;
 };
 
