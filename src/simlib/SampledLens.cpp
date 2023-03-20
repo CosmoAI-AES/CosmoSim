@@ -22,15 +22,12 @@ void SampledLens::calculateAlphaBeta() {
         s = mp+1 ; m = mp ;
         if ( mp == 0 ) {
           // This is the outer base case, for m=0, s=1
-          diffY(psi, matAouter) ;
-          diffX(psi, matBouter) ;
+          gradient(psi, matBouter, matAouter) ;
           matAouter *= -1 ;
           matBouter *= -1 ;
         } else {
-          diffY(matAouter, matAx) ;
-          diffX(matAouter, matAy) ;
-          diffY(matBouter, matBx) ;
-          diffX(matBouter, matBy) ;
+          gradient(matAouter, matAy, matAx) ;
+          gradient(matBouter, matBy, matBx) ;
 
           C = (m+1.0)/(m+1.0+s) ;
           //  if ( s == 1 ) C *= 2 ; // This is impossible, but used in the formula.
@@ -50,10 +47,8 @@ void SampledLens::calculateAlphaBeta() {
             C = (m+1.0)/(m+1.0-s) ;
             if ( s == 0 ) C /= 2.0 ;
 
-            diffY(matA, matAx) ;
-            diffX(matA, matAy) ;
-            diffY(matB, matBx) ;
-            diffX(matB, matBy) ;
+            gradient(matA, matAy, matAx) ;
+            gradient(matB, matBy, matBx) ;
 
             matA = C*(matAx + matBy) ;
             matB = C*(matBx - matAy) ;
