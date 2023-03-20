@@ -38,7 +38,6 @@ class SphereLens : public RouletteLens {
     SphereLens(bool);
     SphereLens(std::string,bool);
     void setFile(std::string) ;
-
   protected:
     virtual void calculateAlphaBeta();
     virtual void updateApparentAbs() ;
@@ -62,11 +61,11 @@ protected:
     virtual cv::Mat getActual() ;
     virtual void updatePsi() ;
 };
-class SampledSISLens : public SampledLens { 
+class SampledSISLens : public SampledLens {
 public:
     using SampledLens::SampledLens ;
 protected:
-private: 
+private:
     double psifunction( double, double ) ;
     virtual void updatePsi() ;
 };

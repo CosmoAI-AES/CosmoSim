@@ -12,7 +12,8 @@
 #define PI 3.14159265358979323846
 
 class LensModel {
-
+private:
+    cv::Point2f eta ;  // Actual position in the source plane
 protected:
     double CHI;
     Source *source ;
@@ -21,13 +22,11 @@ protected:
 
     int bgcolour = 0;
 
-    cv::Point2f eta ;  // Actual position in the source plane
     cv::Point2f nu ;   // Apparent position in the source plane
     double phi{};
     double apparentAbs{};
     double apparentAbs2{};
     bool maskMode = false ;
-    // double maskRadius = 1024*1024 ;
     virtual double getMaskRadius() const ;
 
     // tentativeCentre is used as the shift when attempting 
@@ -36,7 +35,6 @@ protected:
 
     cv::Mat imgApparent;
     cv::Mat imgDistorted;
-
 
 private:
     bool centredMode = false ;
@@ -96,7 +94,6 @@ protected:
     virtual cv::Point2f getDistortedPos(double r, double theta) const;
     virtual void updateApparentAbs() ;
 };
-
 
 /* simaux */
 void refLines(cv::Mat&) ;

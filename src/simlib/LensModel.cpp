@@ -1,4 +1,4 @@
-/* (C) 2022: Hans Georg Schaathun <georg@schaathun.net> *
+/* (C) 2023: Hans Georg Schaathun <georg@schaathun.net> *
  * Building on code by Simon Ingebrigtsen, Sondre Westbø Remøy,
  * Einar Leite Austnes, and Simon Nedreberg Runde
  */
@@ -236,7 +236,12 @@ void LensModel::setXY( double X, double Y, double chi, double er ) {
     // Calculate Polar Co-ordinates
     phi = atan2(eta.y, eta.x); // Angle relative to x-axis
 
-    std::cout << "[setXY] X=" << X << " Y=" << Y << " eta=" << eta
+    std::cout << "[setXY] eta.y=" << eta.y 
+              << "; actualY=" << Y 
+              << "; eta=" << eta 
+              << "\n" ;
+
+    std::cout << "[setXY] Set position x=" << eta.x << "; y=" << eta.y
               << "; R=" << getEtaAbs() << "; theta=" << phi << ".\n" ;
     updateApparentAbs() ;
 }
@@ -282,13 +287,15 @@ double LensModel::getNuAbs() const {
 cv::Point2f LensModel::getNu() const {
    return cv::Point2f( apparentAbs, 0.0 ) ;
 }
+
+cv::Point2f LensModel::getEta() const {
+   return eta ;
+}
 double LensModel::getEtaSquare() const {
    return eta.x*eta.x + eta.y*eta.y ;
 }
 double LensModel::getEtaAbs() const {
-   return cv::norm( cv::Mat(eta), cv::NORM_L2 ) ;
+   return sqrt( eta.x*eta.x + eta.y*eta.y ) ;
 }
-cv::Point2f LensModel::getEta() const {
-   return eta ;
-}
+
 double LensModel::getMaskRadius() const { return 1024*1024 ; }
