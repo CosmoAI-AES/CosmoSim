@@ -1,18 +1,14 @@
 
-1.  Find a correction to the fix-point method.
-    - can we do more high resolution sampling
-    - scaling function to satisfy the convergence criterion
-1.  Test program: Print mass map and psi map
+1.  Test program
     - print \nabla\psi
+    - Print mass map and psi map
 2.  P/Ben David: sign \psi
-1.  Test current version
-    - Test Sampled Lens
-    - Comparison of Roulette SIS and PM
-2.  Distinguish between True xi and Rotated xi (on the x-axis)
-2.  Validate distort
+3.  Comparison of Roulette SIS and PM
+4.  Distinguish between True xi and Rotated xi (on the x-axis)
+5.  Validate distort
     - Note Source image is drawn at the origin
     - check rotations - origin is fixed?
-3.  Document flow of image transformations
-5.  Clarify local co-ordinate system
+6.  Document flow of image transformations
+7.  Clarify local co-ordinate system
     - origin in the centre of the image
     - horizontal first axis, vertical second axis

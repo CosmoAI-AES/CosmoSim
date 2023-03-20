@@ -32,8 +32,8 @@ void SampledLens::calculateAlphaBeta() {
           matB = matBouter = C*(matBx + matAy) ;
         } else {
           // This is the outer base case, for m=0, s=1
-          diffX(-psi, matAouter) ;
-          diffY(-psi, matBouter) ;
+          diffX(psi, matAouter) ;
+          diffY(psi, matBouter) ;
         }
 
         alphas_val[m][s] = matAouter.at<double>( x, y ) ;
@@ -64,7 +64,7 @@ void SampledLens::calculateAlphaBeta() {
 void SampledLens::updateApparentAbs( ) {
    cv::Point2f chieta = CHI*getEta() ;
    cv::Point2f xi0, xi1 = chieta ;
-   cv::Mat psiRow, psiCol ;
+   cv::Mat psiX, psiY ;
    int cont = 1, count = 0, maxcount = 200 ;
    double dist, dist0=pow(10,12), threshold = 0.1 ;
 
@@ -76,21 +76,23 @@ void SampledLens::updateApparentAbs( ) {
    int ncols=psi.cols, nrows=psi.rows ;
    std::cout << "[SampledLens] size: " << psi.size() << "\n" ;
 
-   diffX( psi, psiRow ) ;
-   diffY( psi, psiCol ) ;
+   diffX( psi, psiX ) ;
+   diffY( psi, psiY ) ;
+   std::cout << "Types: " << psiX.type() << "/" << psiY.type() 
+             << "/" << psi.type() << "\n" ;
    double minVal, maxVal;
 
    cv::Point minLoc, maxLoc;
-   minMaxLoc( psiRow, &minVal, &maxVal, &minLoc, &maxLoc ) ;
-   std::cout << "[SampledLens] psiRow min=" << minVal << "; max=" << maxVal << "\n" ;
-   minMaxLoc( psiCol, &minVal, &maxVal, &minLoc, &maxLoc ) ;
-   std::cout << "[SampledLens] psiCol min=" << minVal << "; max=" << maxVal << "\n" ;
+   minMaxLoc( psiX, &minVal, &maxVal, &minLoc, &maxLoc ) ;
+   std::cout << "[SampledLens] psiX min=" << minVal << "; max=" << maxVal << "\n" ;
+   minMaxLoc( psiY, &minVal, &maxVal, &minLoc, &maxLoc ) ;
+   std::cout << "[SampledLens] psiY min=" << minVal << "; max=" << maxVal << "\n" ;
    
    for ( int i=0 ; i < nrows ; ++i ) {
       for ( int j=0 ; j < ncols ; ++j ) {
          cv::Point2f ij(i,j) ;
          cv::Point2f xy = pointCoordinate( ij, psi ) ;
-         double x = psiCol.at<double>( ij ), y = -psiRow.at<double>( ij ) ;
+         double x = psiY.at<double>( ij ), y = psiX.at<double>( ij ) ;
          cv::Point2f xitmp = chieta + cv::Point2f( x, y ) ;
          dist = cv::norm( cv::Mat(xitmp-xy), cv::NORM_L2 ) ;
          /*
@@ -109,7 +111,7 @@ void SampledLens::updateApparentAbs( ) {
    while ( cont ) {
       xi0 = xi1 ;
       cv::Point2f ij = imageCoordinate( xi0, psi ) ;
-      double x = psiCol.at<double>( ij ), y = -psiRow.at<double>( ij ) ;
+      double x = psiY.at<double>( ij ), y = psiX.at<double>( ij ) ;
       std::cout << "[SampledLens] Fix pt it'n " << count
            << "; xi0=" << xi0 << "; Delta eta = " << x << ", " << y << "\n" ;
       xi1 = chieta + cv::Point2f( x, y ) ;
