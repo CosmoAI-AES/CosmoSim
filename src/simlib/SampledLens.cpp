@@ -11,51 +11,55 @@ void SampledLens::calculateAlphaBeta() {
     // Calculate all amplitudes for given X, Y, einsteinR
 
     int mp, m, s ;
-    double C, x = CHI*getNuAbs(), y = 0 ;
+    double C ;
     cv::Mat psi = getPsi() ;
     cv::Mat matA, matB, matAouter, matBouter, matAx, matAy, matBx, matBy ;
+    cv::Point2f ij = imageCoordinate( CHI*getNu(), psi ) ;
 
     std::cout << "[SampledLens] calculateAlphaBeta\n" ;
 
     for ( mp = 0; mp <= nterms; mp++){
         s = mp+1 ; m = mp ;
-        if ( mp > 0 ) {
-          diffX(matAouter, matAx) ;
-          diffY(matAouter, matAy) ;
-          diffX(matBouter, matBx) ;
-          diffY(matBouter, matBy) ;
+        if ( mp == 0 ) {
+          // This is the outer base case, for m=0, s=1
+          diffY(psi, matAouter) ;
+          diffX(psi, matBouter) ;
+          matAouter *= -1 ;
+          matBouter *= -1 ;
+        } else {
+          diffY(matAouter, matAx) ;
+          diffX(matAouter, matAy) ;
+          diffY(matBouter, matBx) ;
+          diffX(matBouter, matBy) ;
 
           C = (m+1.0)/(m+1.0+s) ;
           //  if ( s != 1 ) C *= 2 ; // This is impossible, but used in the formula.
 
-          matA = matAouter = C*(matAx - matBy) ;
-          matB = matBouter = C*(matBx + matAy) ;
-        } else {
-          // This is the outer base case, for m=0, s=1
-          diffX(psi, matAouter) ;
-          diffY(psi, matBouter) ;
+          matAouter = C*(matAx - matBy) ;
+          matBouter = C*(matBx + matAy) ;
         }
 
-        alphas_val[m][s] = matAouter.at<double>( x, y ) ;
-        betas_val[m][s] =  matBouter.at<double>( x, y ) ;
+        matA = matAouter ;
+        matB = matBouter ;
 
-        if ( mp > 0 ) {
-          while( s > 0 && m < nterms ) {
+        alphas_val[m][s] = matA.at<double>( ij ) ;
+        betas_val[m][s] =  matB.at<double>( ij ) ;
+
+        while( s > 0 && m < nterms ) {
             ++m ; --s ;
             C = (m+1.0)/(m+1.0-s) ;
             if ( s > 0 ) C /= 2.0 ;
 
-            diffX(matA, matAx) ;
-            diffY(matA, matAy) ;
-            diffX(matB, matBx) ;
-            diffY(matB, matBy) ;
+            diffY(matA, matAx) ;
+            diffX(matA, matAy) ;
+            diffY(matB, matBx) ;
+            diffX(matB, matBy) ;
 
             matA = C*(matAx + matBy) ;
             matB = C*(matBx - matAy) ;
 
-            alphas_val[m][s] = matA.at<double>( x, y ) ;
-            betas_val[m][s] =  matB.at<double>( x, y ) ;
-          }
+            alphas_val[m][s] = matA.at<double>( ij ) ;
+            betas_val[m][s] =  matB.at<double>( ij ) ;
         }
     }
 }
