@@ -121,7 +121,7 @@ void SampledLens::updateApparentAbs( ) {
       std::cout << "Bad approximation of xi: xi0=" << xi0 
             << "; xi1=" << xi1 << "; dist=" << dist << "\n" ;
    } else {
-      std::cout << "[SampledLens] xi0=" << xi0 
+      std::cout << "[SampledLens] Good approximation: xi0=" << xi0 
             << "; xi1=" << xi1 << "\n" ;
    }
    nu = xi1/CHI ;
