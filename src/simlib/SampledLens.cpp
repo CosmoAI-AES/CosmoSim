@@ -66,28 +66,33 @@ void SampledLens::updateApparentAbs( ) {
    cv::Point2f xi0, xi1 = chieta ;
    cv::Mat psiX, psiY ;
    int cont = 1, count = 0, maxcount = 200 ;
-   double dist, dist0=pow(10,12), threshold = 0.1 ;
+   double dist, dist0=pow(10,12), threshold = 0.02 ;
+
+   /* Get the lens potential */
+   this->updatePsi() ;
+   int ncols=psi.cols, nrows=psi.rows ;
 
    std::cout << "[SampledLens] updateApparentAbs()"
-             << " chi*eta = " << chieta << "\n" ;
+             << " chi*eta = " << chieta 
+             << "; size: " << psi.size() << "\n" ;
 
-   this->updatePsi() ;
-
-   int ncols=psi.cols, nrows=psi.rows ;
-   std::cout << "[SampledLens] size: " << psi.size() << "\n" ;
-
+   /** Differentiate the lens potential */
    diffX( psi, psiX ) ;
    diffY( psi, psiY ) ;
    std::cout << "Types: " << psiX.type() << "/" << psiY.type() 
              << "/" << psi.type() << "\n" ;
-   double minVal, maxVal;
 
+   /* Diagnostic output */
+   double minVal, maxVal;
    cv::Point minLoc, maxLoc;
    minMaxLoc( psiX, &minVal, &maxVal, &minLoc, &maxLoc ) ;
    std::cout << "[SampledLens] psiX min=" << minVal << "; max=" << maxVal << "\n" ;
    minMaxLoc( psiY, &minVal, &maxVal, &minLoc, &maxLoc ) ;
    std::cout << "[SampledLens] psiY min=" << minVal << "; max=" << maxVal << "\n" ;
    
+   /** This block performs a linear search for \xi.
+    * It seems to work, but fix-point iteration should be faster
+    * and allow for subpixel accuracy.
    for ( int i=0 ; i < nrows ; ++i ) {
       for ( int j=0 ; j < ncols ; ++j ) {
          cv::Point2f ij(i,j) ;
@@ -95,10 +100,8 @@ void SampledLens::updateApparentAbs( ) {
          double x = psiY.at<double>( ij ), y = psiX.at<double>( ij ) ;
          cv::Point2f xitmp = chieta + cv::Point2f( x, y ) ;
          dist = cv::norm( cv::Mat(xitmp-xy), cv::NORM_L2 ) ;
-         /*
          std::cout << "[SampledLens] (i,j)=(" << i << "," << j << ") xitmp= " 
                    << xitmp << "; dist=" << dist << "\n" ;
-                   */
          if ( dist < dist0 ) {
             dist0 = dist ;
             xi0 = xitmp ;
@@ -107,7 +110,9 @@ void SampledLens::updateApparentAbs( ) {
          } 
       }
    }
+   */
 
+   /** This block makes a fix-point iteration to find \xi. */
    while ( cont ) {
       xi0 = xi1 ;
       cv::Point2f ij = imageCoordinate( xi0, psi ) ;
