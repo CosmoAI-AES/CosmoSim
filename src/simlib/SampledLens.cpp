@@ -33,14 +33,14 @@ void SampledLens::calculateAlphaBeta() {
           diffX(matBouter, matBy) ;
 
           C = (m+1.0)/(m+1.0+s) ;
-          //  if ( s != 1 ) C *= 2 ; // This is impossible, but used in the formula.
+          //  if ( s == 1 ) C *= 2 ; // This is impossible, but used in the formula.
 
           matAouter = C*(matAx - matBy) ;
           matBouter = C*(matBx + matAy) ;
         }
 
-        matA = matAouter ;
-        matB = matBouter ;
+        matA = matAouter.clone() ;
+        matB = matBouter.clone() ;
 
         alphas_val[m][s] = matA.at<double>( ij ) ;
         betas_val[m][s] =  matB.at<double>( ij ) ;
@@ -48,7 +48,7 @@ void SampledLens::calculateAlphaBeta() {
         while( s > 0 && m < nterms ) {
             ++m ; --s ;
             C = (m+1.0)/(m+1.0-s) ;
-            if ( s > 0 ) C /= 2.0 ;
+            if ( s == 0 ) C /= 2.0 ;
 
             diffY(matA, matAx) ;
             diffX(matA, matAy) ;

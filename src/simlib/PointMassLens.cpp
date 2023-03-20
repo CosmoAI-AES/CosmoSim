@@ -18,7 +18,6 @@ void PointMassLens::updateApparentAbs( ) {
     // thus there are two solutions.
     double root = sqrt(0.25*getEtaSquare() + einsteinR*einsteinR/(CHI*CHI));
 
-    apparentAbs = getEtaAbs()/2 + root ;
+    tentativeCentre = apparentAbs = getEtaAbs()/2 + root ;
     apparentAbs2 = getEtaAbs()/2 - root ;
-    tentativeCentre = apparentAbs ;
 }
