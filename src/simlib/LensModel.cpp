@@ -164,7 +164,7 @@ void LensModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) {
             // Set coordinate system with origin at the centre of mass
             // in the distorted image in the lens plane.
             double x = (col - dst.cols / 2.0 - R.x) * CHI;
-            double y = (dst.rows / 2.0 - row + R.y) * CHI;
+            double y = (dst.rows / 2.0 - row - R.y) * CHI;
             // (x,y) are coordinates in the lens plane, and hence the
             // multiplication by CHI
 

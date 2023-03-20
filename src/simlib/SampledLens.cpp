@@ -25,7 +25,7 @@ void SampledLens::calculateAlphaBeta() {
           diffX(matBouter, matBx) ;
           diffY(matBouter, matBy) ;
 
-          C = (m+1)/(m+1+s) ;
+          C = (m+1.0)/(m+1.0+s) ;
           //  if ( s != 1 ) C *= 2 ; // This is impossible, but used in the formula.
 
           matA = matAouter = C*(matAx - matBy) ;
@@ -42,8 +42,8 @@ void SampledLens::calculateAlphaBeta() {
         if ( mp > 0 ) {
           while( s > 0 && m < nterms ) {
             ++m ; --s ;
-            C = (m+1)/(m+1-s) ;
-            if ( s > 0 ) C /= 2 ;
+            C = (m+1.0)/(m+1.0-s) ;
+            if ( s > 0 ) C /= 2.0 ;
 
             diffX(matA, matAx) ;
             diffY(matA, matAy) ;
@@ -77,8 +77,7 @@ void SampledLens::updateApparentAbs( ) {
              << "; size: " << psi.size() << "\n" ;
 
    /** Differentiate the lens potential */
-   diffX( psi, psiX ) ;
-   diffY( psi, psiY ) ;
+   gradient( psi, psiX, psiY ) ;
    std::cout << "Types: " << psiX.type() << "/" << psiY.type() 
              << "/" << psi.type() << "\n" ;
 
@@ -124,14 +123,15 @@ void SampledLens::updateApparentAbs( ) {
       if ( dist < threshold ) cont = 0 ;
       if ( ++count > maxcount ) cont = 0 ;
    }
+   nu = xi1/CHI ;
    if ( dist > threshold ) {
       std::cout << "Bad approximation of xi: xi0=" << xi0 
-            << "; xi1=" << xi1 << "; dist=" << dist << "\n" ;
+            << "; xi1=" << xi1 << "; dist=" << dist 
+            << "; nu=" << nu << "\n" ;
    } else {
       std::cout << "[SampledLens] Good approximation: xi0=" << xi0 
-            << "; xi1=" << xi1 << "\n" ;
+            << "; xi1=" << xi1 << "; nu=" << nu << "\n" ;
    }
-   nu = xi1/CHI ;
 }
 void SampledLens::updatePsi() { return ; }
 
