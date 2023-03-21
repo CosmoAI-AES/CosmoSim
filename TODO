@@ -1,7 +1,8 @@
 
-1.  Test program
+1.  Test and clean up mass map and psi map
+    - export raw psi/kappa and make 3D plots
+    - compile a demo
     - print \nabla\psi
-    - Print mass map and psi map
 2.  Clean up test scripts
     - Rotation comparison
     - Comparison of Roulette PM and exact PM
