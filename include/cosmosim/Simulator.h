@@ -98,5 +98,10 @@ class NotImplemented : public std::logic_error
 public:
     NotImplemented() : std::logic_error("Function not yet implemented") { };
 };
+class NotSupported : public std::logic_error
+{
+public:
+    NotSupported() : std::logic_error("Function not supported for this model.") { };
+};
 
 #endif // COSMOSIM_H

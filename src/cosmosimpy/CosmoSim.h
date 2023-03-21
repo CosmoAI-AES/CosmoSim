@@ -29,6 +29,7 @@ private:
     int nterms=16 ;
     int bgcolour=0 ;
     LensModel *sim = NULL ;
+    SampledLens *sampledSim = NULL ;
     Source *src = NULL ;
     bool running = false ;
     bool maskmode ;
@@ -39,6 +40,9 @@ private:
 
 public:
     CosmoSim();
+
+    cv::Mat getMassImage() ;
+    cv::Mat getPsiImage() ;
 
     void setFile(std::string) ;
     void setXY(double, double) ;

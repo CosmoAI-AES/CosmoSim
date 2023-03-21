@@ -63,6 +63,24 @@ def makeSingle(sim,args,name=None):
        fn = os.path.join(args.directory,"apparent-" + str(name) + ".png" ) 
        im = sim.getApparentImage( reflines=args.reflines )
        cv.imwrite(fn,im)
+    if args.psimap:
+       fn = os.path.join(args.directory,"psi-" + str(name) + ".png" ) 
+       try:
+          im = sim.getPsiMap()
+       except Exception as e:
+           print(e)
+           print("This lens model does not support psi map")
+       else: 
+          cv.imwrite(fn,im)
+    if args.massmap:
+       fn = os.path.join(args.directory,"kappa-" + str(name) + ".png" ) 
+       try: 
+          im = sim.getMassMap()
+       except Exception as e:
+           print(e)
+           print("This lens model does not support Mass map")
+       else:
+          cv.imwrite(fn,im)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -105,6 +123,8 @@ if __name__ == "__main__":
     parser.add_argument('-F', '--amplitudes',help="Amplitudes file")
     parser.add_argument('-A', '--apparent',action='store_true',help="write apparent image")
     parser.add_argument('-a', '--actual',action='store_true',help="write actual image")
+    parser.add_argument('-K', '--massmap',action='store_true',help="write mass map image")
+    parser.add_argument('-P', '--psimap',action='store_true',help="write psi map image")
     parser.add_argument('-i', '--csvfile',
             help="Dataset to generate (CSV file)")
 

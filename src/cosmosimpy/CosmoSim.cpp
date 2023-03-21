@@ -34,6 +34,21 @@ void CosmoSim::setFile( std::string fn ) {
     filename = fn ;
 } 
 
+cv::Mat CosmoSim::getPsiImage(  ) {
+   if ( NULL == sampledSim ) {
+      std::cout << "getPsiImage not supported\n" ;
+      throw NotSupported() ;
+   } 
+   return this->sampledSim->getPsiImage() ;
+} 
+cv::Mat CosmoSim::getMassImage(  ) {
+   if ( NULL == sampledSim ) {
+      std::cout << "getMassImage not supported\n" ;
+      throw NotSupported() ;
+   }
+   return this->sampledSim->getMassImage() ;
+} 
+
 void CosmoSim::setCHI(int c) { chi = c/100.0 ; }
 void CosmoSim::setNterms(int c) { nterms = c ; }
 void CosmoSim::setXY( double x, double y) { xPos = x ; yPos = y ; rPos = -1 ; }
@@ -51,26 +66,30 @@ void CosmoSim::initLens() {
        case CSIM_LENS_SPHERE:
          std::cout << "Running SphereLens (mode=" << lensmode << ")\n" ;
          sim = new SphereLens(filename,centred) ;
+         sampledSim = NULL ;
          break ;
        case CSIM_LENS_SIS_ROULETTE:
          std::cout << "Running Roulette SIS Lens (mode=" << lensmode << ")\n" ;
          sim = new RouletteSISLens(filename,centred) ;
+         sampledSim = NULL ;
          break ;
        case CSIM_LENS_PM_ROULETTE:
          std::cout << "Running Roulette Point Mass Lens (mode=" << lensmode << ")\n" ;
          sim = new RoulettePMLens(centred) ;
+         sampledSim = NULL ;
          break ;
        case CSIM_LENS_PM:
          std::cout << "Running Point Mass Lens (mode=" << lensmode << ")\n" ;
          sim = new PointMassLens(centred) ;
+         sampledSim = NULL ;
          break ;
        case CSIM_LENS_SAMPLED:
          std::cout << "Running Sampled Lens (mode=" << lensmode << ")\n" ;
-         sim = new SampledLens(centred) ;
+         sim = sampledSim = new SampledLens(centred) ;
          break ;
        case CSIM_LENS_SAMPLED_SIS:
          std::cout << "Running Sampled SIS Lens (mode=" << lensmode << ")\n" ;
-         sim = new SampledSISLens(centred) ;
+         sim = sampledSim = new SampledSISLens(centred) ;
          break ;
        default:
          std::cout << "No such lens mode!\n" ;
@@ -197,6 +216,9 @@ PYBIND11_MODULE(CosmoSimPy, m) {
 
     m.def("helloworld", &helloworld, "A test function");
 
+    py::class_<NotSupported>(m, "NotSupported") ;
+    py::class_<NotImplemented>(m, "NotImplemented") ;
+
     py::class_<CosmoSim>(m, "CosmoSim")
         .def(py::init<>())
         .def("setLensMode", &CosmoSim::setLensMode)
@@ -207,6 +229,8 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setSourceParameters", &CosmoSim::setSourceParameters)
         .def("setXY", &CosmoSim::setXY)
         .def("setPolar", &CosmoSim::setPolar)
+        .def("getPsiImage", &CosmoSim::getPsiImage)
+        .def("getMassImage", &CosmoSim::getMassImage)
         .def("getActual", &CosmoSim::getActual)
         .def("getApparent", &CosmoSim::getApparent)
         .def("getDistorted", &CosmoSim::getDistorted)

@@ -23,6 +23,7 @@ void SampledSISLens::updatePsi() {
 	 psi.at<double>( ij ) = psifunction( xy.x, xy.y ) ;
       }
    }
+   setPsi( psi ) ;
 
    return ; 
 }

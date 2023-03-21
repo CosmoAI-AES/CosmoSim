@@ -112,6 +112,20 @@ class CosmoSim(cs.CosmoSim):
         im = np.array(self.getApparent(reflines),copy=False)
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
+    def getPsiMap(self):
+        """
+        Return the Actual Image from the simulator as a numpy array.
+        """
+        im = np.array(self.getPsiImage(),copy=False)
+        if im.shape[2] == 1 : im.shape = im.shape[:2]
+        return im
+    def getMassMap(self):
+        """
+        Return the Actual Image from the simulator as a numpy array.
+        """
+        im = np.array(self.getMassImage(),copy=False)
+        if im.shape[2] == 1 : im.shape = im.shape[:2]
+        return im
     def getActualImage(self,reflines=True):
         """
         Return the Actual Image from the simulator as a numpy array.
