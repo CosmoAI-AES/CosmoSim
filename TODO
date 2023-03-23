@@ -1,24 +1,23 @@
 
-1.  Change sign on psi.
-1.  Test and clean up mass map and psi map
+1.  Test GUI
+2.  Change sign on psi.
+3.  Test and clean up mass map and psi map
     - export raw psi/kappa and make 3D plots
     - compile a demo
     - print \nabla\psi
-2.  Clean up test scripts
-    - Rotation comparison
-    - Comparison of Roulette PM and exact PM
-    - High resolution sampling
-    - Review debug.csv
-3.  Alternative reference point for roulette
-4.  Documentation in paper
+4.  Alternative reference point for roulette
+    -  Clean up the secondary image
+5.  Prepare release
+    - check workflow targets
+    - CHANGELOG
+    - which issues should be fixed?
+6.  Documentation in paper
     - Document flow of image transformations
-4.  P/Ben David: sign \psi
-5.  Distinguish between True xi and Rotated xi (on the x-axis)
-6.  Validate distort
+7.  Validate distort
     - Note Source image is drawn at the origin
     - check rotations - origin is fixed?
-7.  Clarify local co-ordinate system
+8.  Clarify local co-ordinate system
     - origin in the centre of the image
     - horizontal first axis, vertical second axis
     - validate code
-8.  Clean up the secondary image
+9.  High resolution sampling

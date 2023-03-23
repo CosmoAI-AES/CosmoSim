@@ -4,6 +4,7 @@
  */
 
 #include "cosmosim/Simulator.h"
+#include "simaux.h"
 
 #include <thread>
 
@@ -28,13 +29,15 @@ LensModel::~LensModel() {
 
 /* Getters for the images */
 cv::Mat LensModel::getActual() { 
-   cv::Mat imgApparent = getApparent() ;
+   cv::Mat imgApparent = getSource() ;
    cv::Mat imgActual 
         = cv::Mat::zeros(imgApparent.size(), imgApparent.type());
 
-   if ( eta.x == 0 && eta.y == 0 ) {
-      return imgApparent ;
-   } else if ( rotatedMode ) {
+   /*
+   if ( rotatedMode ) {
+     if ( eta.x == 0 && eta.y == 0 ) {
+        return imgApparent ;
+     }
 
      // (x0,y0) is the centre of the image in pixel coordinates 
      double x0 = imgApparent.cols/2 ;
@@ -54,14 +57,30 @@ cv::Mat LensModel::getActual() {
 
      cv::warpAffine(imgApparent, imgActual, rot, imgApparent.size()) ;
    } else {
+   */
      cv::Mat tr = (cv::Mat_<double>(2,3) << 1, 0, getEta().x, 0, 1, -getEta().y);
      std::cout << "getActual() (x,y)=(" << getEta().x << "," << getEta().y << ")\n" ;
      cv::warpAffine(imgApparent, imgActual, tr, imgApparent.size()) ;
-   }
    return imgActual ; 
    exit(1) ;
 }
-cv::Mat LensModel::getApparent() { return source->getImage() ; }
+cv::Mat LensModel::getSource() { 
+   return source->getImage() ;
+}
+cv::Mat LensModel::getApparent() { 
+   cv::Mat src, dst ;
+   src = source->getImage() ;
+   if ( rotatedMode ) {
+       int nrows = src.rows ;
+       int ncols = src.cols ;
+       cv::Mat rot = cv::getRotationMatrix2D(cv::Point(nrows/2, ncols/2),
+             360-phi*180/PI, 1) ;
+       cv::warpAffine(src, dst, rot, src.size() ) ;
+      return dst ;
+   } else {
+      return src ;
+   }
+}
 cv::Mat LensModel::getDistorted() { return imgDistorted ; }
 
 cv::Mat LensModel::getDistorted( double app ) { 
@@ -133,11 +152,22 @@ void LensModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
     int n_threads = std::thread::hardware_concurrency();
     if ( DEBUG ) std::cout << "Running with " << n_threads << " threads.\n" ;
     std::vector<std::thread> threads_vec;
-    double maskRadius = getMaskRadius()*CHI ;
-    if ( maskRadius > dst.rows/2.0 ) maskRadius = dst.rows/2.0 ;
-    int lower = maskMode ? floor( dst.rows/2.0 - maskRadius ) : 0,
-         rng = maskMode ? ceil( 2.0*maskRadius ) + 1 : dst.rows,
-         rng1 = ceil( rng/ n_threads ) ;
+    double maskRadius = getMaskRadius() ;
+    int lower=0, rng=dst.rows, rng1 ; 
+    if ( maskMode ) {
+        double mrng ;
+        cv::Point2d ij = imageCoordinate( getNu(), dst ) ;
+        std::cout << "mask " << ij << " - " << getNu() << "\n" ;
+        lower = floor( ij.x - maskRadius ) ;
+        if ( lower < 0 ) lower = 0 ;
+        mrng = dst.rows - lower ;
+        rng = ceil( 2.0*maskRadius ) + 1 ;
+        if ( rng > mrng ) rng = mrng ;
+        std::cout << maskRadius << " - " << lower << "/" << rng << "\n" ;
+    } else {
+        std::cout << "[LensModel] No mask \n" ;
+    } 
+    rng1 = ceil( rng/ n_threads ) ;
     for (int i = 0; i < n_threads; i++) {
         int begin = lower+rng1*i, end = begin+rng1 ;
         std::thread t([begin, end, src, &dst, this]() { distort(begin, end, src, dst); });
@@ -160,7 +190,6 @@ void LensModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) {
     // (row,col) are pixel co-ordinates
     double maskRadius = getMaskRadius()*CHI ;
     cv::Point2d centre = getCentre() ;
-    std::cout << "[LensModel] distort() centre=" << centre << "\n" ;
     for (int row = begin; row < end; row++) {
         for (int col = 0; col < dst.cols; col++) {
 
