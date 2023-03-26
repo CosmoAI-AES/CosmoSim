@@ -60,11 +60,10 @@ class RouletteSISLens : public SphereLens {
 };
 
 
-class SampledLens : public RouletteLens, public LensMap { 
+class SampledRouletteLens : public RouletteLens, public LensMap { 
 public:
-    using RouletteLens::RouletteLens ;
-    SampledLens();
-    SampledLens(bool);
+    SampledRouletteLens();
+    SampledRouletteLens(bool);
     setLens( Lens );
     void updatePsi() ;
 protected:
@@ -76,9 +75,9 @@ private:
     Lens *lens ;
 
 };
-class SampledSISLens : public SampledLens {
+class SampledSISLens : public SampledRouletteLens {
 public:
-    using SampledLens::SampledLens ;
+    using SampledRouletteLens::SampledRouletteLens ;
 protected:
 private:
     double psifunction( double, double ) ;
