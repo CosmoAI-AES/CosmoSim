@@ -163,3 +163,6 @@ void SampledRouletteLens::updatePsi() {
 double SampledRouletteLens::psifunction(double x, double y) {
    return lens->psifunction(x,y) ;
 }
+void SampledRouletteLens::setLens( Lens l ) {
+   lens = l ;
+}
