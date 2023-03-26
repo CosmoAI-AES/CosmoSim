@@ -2,6 +2,7 @@
 #define ROULETTE_H
 
 #include "Simulator.h"
+#include "Lens.h"
 #include "PixMap.h"
 
 #include <symengine/expression.h>
@@ -64,10 +65,16 @@ public:
     using RouletteLens::RouletteLens ;
     SampledLens();
     SampledLens(bool);
+    setLens( Lens );
+    void updatePsi() ;
 protected:
     virtual void calculateAlphaBeta();
     virtual void updateApparentAbs() ;
     virtual void setXi( cv::Point2d ) ;
+    double psifunction( double, double ) ;
+private:
+    Lens *lens ;
+
 };
 class SampledSISLens : public SampledLens {
 public:
