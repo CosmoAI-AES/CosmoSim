@@ -1,7 +1,10 @@
 
 name: MacOS-arm64
 
-on: [workflow_dispatch]
+on: 
+   push:
+     branches: [workflow-arm64]
+   workflow_dispatch:
 
 jobs:
 
