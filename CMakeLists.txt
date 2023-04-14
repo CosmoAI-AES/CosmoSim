@@ -60,6 +60,6 @@ else()
 endif()
 
 message("Cross-Compile Options: ${CROSS_COMPILE}")
-if(${CROSS_COMPILE}")
+if(${CROSS_COMPILE})
   add_compile_options(-target arm64-apple-macos11)
 endif()
