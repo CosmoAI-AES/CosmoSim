@@ -1,11 +1,11 @@
 
 # CosmoSim Change Log
 
-## [2.2.1] - ? unreleased
+## [2.2.1] - 2023-07-04
 
 ### Added
 
-- Fixed image artifacts caused by losing remaining rows in parallelDistort().
+- New github workflow for regression test.
 
 ### Changed
 
@@ -13,7 +13,7 @@
 
 ### Fixed
 
-- New github workflow for regression test.
+- Fixed image artifacts caused by losing remaining rows in parallelDistort().
 - Bugfixes to make it work on Windows and MacOS.
   This includes making destructors virtual.
 
