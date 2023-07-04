@@ -104,5 +104,20 @@ public:
     virtual cv::Point2d getXi( cv::Point2d ) ;
 };
 
+class EIS : public PsiFunctionLens { 
+
+private:
+    double ellipticRatio = 1 ;
+
+public:
+    virtual double psifunction( double, double ) ;
+    virtual double psiXfunction( double, double ) ;
+    virtual double psiYfunction( double, double ) ;
+
+    virtual double getXiAbs( double ) ;
+    virtual cv::Point2d getXi( cv::Point2d ) ;
+
+    void setEllipticRatio( double ) ;
+};
 
 #endif // LENS_H

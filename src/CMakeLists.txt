@@ -5,6 +5,7 @@ set(SimLibFiles
         simlib/Lens.cpp
         simlib/PsiFunctionLens.cpp
         simlib/SIS.cpp
+        simlib/EIS.cpp
         simlib/RaytraceModel.cpp
 	simlib/RouletteModel.cpp
         simlib/EllipsoidSource.cpp
