@@ -36,9 +36,6 @@ public:
     cv::Mat getPsiX( ) const ;
     cv::Mat getPsiY( ) const ;
     cv::Mat getMassMap( ) const ;
-    cv::Mat getEinsteinMap( ) const ; // Not implemented
-    cv::Mat getPsiImage( ) const ;  // Discouraged
-    cv::Mat getMassImage() const ;  // Discouraged
 
     virtual void initAlphasBetas();
     virtual void calculateAlphaBeta( cv::Point2d xi );
@@ -52,12 +49,17 @@ public:
     double getAlphaXi( int m, int s ) ;
     double getBetaXi( int m, int s ) ;
 
-    virtual double getXiAbs( double ) ;
     virtual cv::Point2d getXi( cv::Point2d ) ;
 
     virtual double psiValue( double, double ) ;
     virtual double psiXvalue( double, double ) ;
     virtual double psiYvalue( double, double ) ;
+
+private: // These methods appear to be unused
+    virtual double getXiAbs( double ) ;
+    cv::Mat getPsiImage( ) const ;  // Discouraged
+    cv::Mat getMassImage() const ;  // Discouraged
+    cv::Mat getEinsteinMap( ) const ; // Not implemented
 };
 
 class SampledLens : public Lens {
@@ -67,10 +69,11 @@ public:
 } ;
 
 class PsiFunctionLens : public Lens {
-public:
+protected:
     virtual double psifunction( double, double ) = 0 ;
     virtual double psiXfunction( double, double ) = 0 ;
     virtual double psiYfunction( double, double ) = 0 ;
+public:
     virtual double psiValue( double, double ) ;
     virtual double psiXvalue( double, double ) ;
     virtual double psiYvalue( double, double ) ;
@@ -95,13 +98,15 @@ class SIS : public PsiFunctionLens {
 
 private:
 
-public:
+protected:
     virtual double psifunction( double, double ) ;
     virtual double psiXfunction( double, double ) ;
     virtual double psiYfunction( double, double ) ;
 
-    virtual double getXiAbs( double ) ;
+public:
     virtual cv::Point2d getXi( cv::Point2d ) ;
+private: // These methods appear to be unused
+    virtual double getXiAbs( double ) ;
 };
 
 
