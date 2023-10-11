@@ -76,18 +76,14 @@ Find your gcc version. This is needed for below.
 ```
 gcc --version
 ```
-Now we need to update the conan default profile.
+
+then update the conan default profile.
 
 ```
 conan profile update settings.compiler=gcc default
 conan profile update settings.compiler.libcxx=libstdc++11 default
 conan profile update settings.compiler.version=<gcc-version> default
-
-conan profile update env.CC=<path/to/gcc>
-conan profile update env.CXX=<path/to/g++>
 ```
-
-You should check your location of gcc and g++. 'usr/bin/' is probably a good bet, i.e. `usr/bin/gcc` and `usr/bin/g++`.
 
 ### **Step 2: Build**
 
@@ -287,6 +283,18 @@ be approximation errors.
 
 
 ## Troubleshooting
+
+### 1
+When running `conan install . -if build --build=missing`, you may the following: ERROR: compiler not defined for compiler.libcxx Please define compiler value first too:
+
+```
+conan profile update env.CC=<path/to/gcc>
+conan profile update env.CXX=<path/to/g++>
+```
+
+You should check your location of gcc and g++. 'usr/bin/' is probably a good bet, i.e. `usr/bin/gcc` and `usr/bin/g++`.
+
+### 2
 
 When running `cmake . -B build`, you may get an error between a mismach of gcc versions. This should be a triviol fix:
 
