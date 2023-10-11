@@ -42,8 +42,6 @@ The GUI has not been tested on Windows.
 The binaries are not signed, and on MacOS you will have to confirm
 that you trust the binary before it will run.
 
-The instructions to run from the precompiled versions are contained inside the package.
-
 ## Building from Source
 
 The build procedure is primarily developed on Debian Bullseye, but it now 
@@ -62,13 +60,6 @@ The following command is probably a good start to save some time later on.
 ```sh
 sudo apt-get install libgtk2.0-dev libva-dev libx11-xcb-dev libfontenc-dev libxaw7-dev libxkbfile-dev libxmuu-dev libxpm-dev libxres-dev libxtst-dev libxvmc-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev libxcb-dri3-dev libxcb-util-dev libxcb-util0-dev libvdpau-dev
 ```
-Make sure you have gcc and g++ installed (c++ compiler). They *may be already installed on some linux distros, or perhaps in the list above... maybe.
-
-```
-gcc --version
-g++ --version
-```
-Specifically, take note of the g++ version.
 
 ### **Step 1: Install Conan**
 
@@ -87,50 +78,7 @@ Find your gcc version. This is needed for below.
 ```
 gcc --version
 ```
-
-In ~/.conan/settings.yml, scroll down to the gcc section and make sure your version is in the list of versions. If not, add it there.
-
-```
-nano ~/.conan/settings.yml
-
-# Check this section, and make sure the output from gcc --version is in the list. If not, add it.
-
-    gcc: &gcc
-        version: ["4.1", "4.4", "4.5", "4.6", "4.7", "4.8", "4.9",
-                  "5", "5.1", "5.2", "5.3", "5.4", "5.5",
-                  "6", "6.1", "6.2", "6.3", "6.4", "6.5",
-                  "7", "7.1", "7.2", "7.3", "7.4", "7.5",
-                  "8", "8.1", "8.2", "8.3", "8.4", "8.5",
-                  "9", "9.1", "9.2", "9.3", "9.4", "9.5",
-                  "10", "10.1", "10.2", "10.3", "10.4",
-                  "11", "11.1", "11.2", "11.3", "11.4",
-                  "12", "12.1", "12.2"]
-```
 Now we need to update the conan default profile.
-First, run:
-
-```
-conan profile show default
-```
-and compare it to this:
-```
-[settings]
-os=Linux
-os_build=Linux
-arch=x86_64
-arch_build=x86_64
-build_type=Release
-compiler=gcc
-compiler.libcxx=libstdc++11
-compiler.version=11.4
-[options]
-[conf]
-[build_requires]
-[env]
-CC=/usr/bin/gcc
-CXX=/usr/bin/g++
-```
-You will need to update the settings if yours is considerably emptier. Most likely these parameters:
 
 ```
 conan profile update settings.compiler=gcc default
@@ -145,17 +93,10 @@ You should check your location of gcc and g++. 'usr/bin/' is probably a good bet
 
 ### **Step 2: Build**
 
-*NOTE: There are recurring problems with broken dependencies on conan.  This seems to be out of our control.  The building scripts suddenly break even with no change on our side. For instance, it may be necessary explicitly to build OpenCV:*
-
-```sh
-# if install command below fails, try:
-conan install . -if build --build=missing
-```
-
 To build the C++ library and the Python library (wrapper), we use cmake as follows.
 ```sh
-cd {/path/to/CosmoSim/root/dir}
-conan install . -if build
+conan install . -if build --build=missing
+
 cmake . -B build
 cmake --build build
 ```
@@ -345,3 +286,25 @@ be approximation errors.
 + **Mathematical Models** Ben David Normann
 + **Initial Prototype** Simon Ingebrigtsen, Sondre Westbø Remøy,
   Einar Leite Austnes, and Simon Nedreberg Runde
+
+
+## Troubleshooting
+
+When running `cmake . -B build`, you may get an error between a mismach of gcc versions. This should be a triviol fix:
+
+```
+# In ~/.conan/settings.yml scroll down to the gcc section and make sure your version is in the list of versions. If not, add it there:
+
+# Check this section, and make sure the output from gcc --version is in the list. If not, add it.
+
+    gcc: &gcc
+        version: ["4.1", "4.4", "4.5", "4.6", "4.7", "4.8", "4.9",
+                  "5", "5.1", "5.2", "5.3", "5.4", "5.5",
+                  "6", "6.1", "6.2", "6.3", "6.4", "6.5",
+                  "7", "7.1", "7.2", "7.3", "7.4", "7.5",
+                  "8", "8.1", "8.2", "8.3", "8.4", "8.5",
+                  "9", "9.1", "9.2", "9.3", "9.4", "9.5",
+                  "10", "10.1", "10.2", "10.3", "10.4",
+                  "11", "11.1", "11.2", "11.3", "11.4",
+                  "12", "12.1", "12.2"]
+```
