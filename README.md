@@ -68,21 +68,16 @@ for further information.)
 
 ```
 pip3 install conan==1.59
-conan profile new default --detect 
 ```
 
-Find your gcc version. This is needed for below.
+then create and update the conan default profile.
 
-```
-gcc --version
-```
+```sh
+conan profile new default --detect
 
-then update the conan default profile.
-
-```
 conan profile update settings.compiler=gcc default
 conan profile update settings.compiler.libcxx=libstdc++11 default
-conan profile update settings.compiler.version=<gcc-version> default
+conan profile update settings.compiler.version=<gcc --version> default
 ```
 
 ### **Step 2: Build**
