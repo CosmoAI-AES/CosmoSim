@@ -46,10 +46,9 @@ that you trust the binary before it will run.
 
 The build procedure is primarily developed on Debian Bullseye, but it now 
 also works reliable on github runners running Windows-2019, Ubuntu-20.04,
-or Ubuntu 22.04.  We also have it working on MacOS, but we also have problems
-with other macs, depending on their setup.  We do not have capacity to develop
-generic and robust build procedures, but we shall be happy to incorporate 
-contributions.
+or Ubuntu 22.04.  We also have it working on MacOS, but we also have problems with other macs, depending on their setup.  We do not have capacity to develop generic and robust build procedures, but we shall be happy to incorporate contributions.
+
+The following instructions are Linux specific.
 
 ### Dependencies and Prerequisites 
 
@@ -63,8 +62,7 @@ sudo apt-get install libgtk2.0-dev libva-dev libx11-xcb-dev libfontenc-dev libxa
 
 ### **Step 1: Install Conan**
 
-The build stack uses conan for dependencies.  It needs to be installed,
-in version 1.59, and configured to use the C++11 ABI.
+The build stack uses conan for dependencies.
 (See [Conan Tutorial](https://docs.conan.io/en/latest/getting_started.html)
 for further information.)
 
@@ -89,7 +87,7 @@ conan profile update env.CC=<path/to/gcc>
 conan profile update env.CXX=<path/to/g++>
 ```
 
-You should check your location of gcc and g++. 'usr/bin/' is probably a good bet. E.g I use usr/bin/gcc and usr/bin/g++ above.
+You should check your location of gcc and g++. 'usr/bin/' is probably a good bet, i.e. `usr/bin/gcc` and `usr/bin/g++`.
 
 ### **Step 2: Build**
 
