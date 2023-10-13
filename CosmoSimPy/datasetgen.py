@@ -34,8 +34,8 @@ def getline(idx,chi=0,nterms=16):
     y = R*np.sin(np.pi*phi/180)
 
     srcmode = srcmodes[randint(0,len(srcmodes)-1)]
-    lensmode = configs[randint(0,len(configs)-1)]
-    return f'"{idx:04}","image-{idx:04}.png",{srcmode},{lensmode},{chi},' \
+    config = configs[randint(0,len(configs)-1)]
+    return f'"{idx:04}","image-{idx:04}.png",{srcmode},{config},{chi},' \
          + f'{R},{phi},{einsteinR},{sigma},{sigma2},{theta},{nterms},{x},{y}'
 
 header = ( "index,filename,source,config,chi,"
