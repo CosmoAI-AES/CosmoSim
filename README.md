@@ -283,7 +283,7 @@ Run:
 ```
 conan profile show default
 ```
-and check (update) these if they are wrong. (You can check using gcc --version, and use the major version (e.g 11.4 -> 11))
+and check (update) these if they are wrong. Check using gcc --version, and use the major version e.g 11.4 -> 11.
 ```
 conan profile update settings.compiler=gcc default
 conan profile update settings.compiler.libcxx=libstdc++11 default
