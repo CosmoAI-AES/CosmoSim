@@ -283,10 +283,10 @@ Run:
 ```
 conan profile show default
 ```
-and check (update) these if they are wrong. Check using gcc --version, and use the major version e.g 11.4 -> 11.
+and check (update) these if they are wrong. Check gcc version using gcc --version.
 ```
 conan profile update settings.compiler=gcc default
 conan profile update settings.compiler.libcxx=libstdc++11 default
-conan profile update settings.compiler.version=11 default
+conan profile update settings.compiler.version=<gcc version e.g 11.4> default
 ```
 These are what I used on Ubuntu, but may vary from system to system.
