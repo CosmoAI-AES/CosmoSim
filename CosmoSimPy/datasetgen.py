@@ -6,11 +6,12 @@ import numpy as np
 
 from random import randint
 
-n = 300
+n = 24000
+i = int(n / 250)
 
 fn = "Datasets/dataset.csv"
-srcmodes = "e"
-configs = ["p", "r", "ss", "pss", "fs", "rs"]
+srcmodes = "s"
+configs = ["rs"]
 
 
 def getline(idx,chi=0,nterms=16):
@@ -19,8 +20,8 @@ def getline(idx,chi=0,nterms=16):
 
     # Source
     sigma = randint(1,60)
-    sigma2 = randint(1,40)
-    theta = randint(0,179)
+    sigma2 = 0
+    theta = 0
 
     # Lens
     einsteinR = randint(10,50)
@@ -35,7 +36,7 @@ def getline(idx,chi=0,nterms=16):
 
     srcmode = srcmodes[randint(0,len(srcmodes)-1)]
     config = configs[randint(0,len(configs)-1)]
-    return f'"{idx:04}","image-{idx:04}.png",{srcmode},{config},{chi},' \
+    return f'{idx},"image-{idx:04}.png",{srcmode},{config},{chi},' \
          + f'{R},{phi},{einsteinR},{sigma},{sigma2},{theta},{nterms},{x},{y}'
 
 header = ( "index,filename,source,config,chi,"

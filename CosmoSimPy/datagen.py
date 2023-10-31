@@ -11,6 +11,8 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
+import time
+
 from CosmoSim.Image import centreImage, drawAxes
 from CosmoSim import CosmoSim,getMSheaders
 
@@ -56,7 +58,7 @@ def makeSingle(sim,args,name=None,row=None,outstream=None):
     """
     if not row is None:
        setParameters( sim, row )
-       print( "index", row["index"] )
+       print( "\n\nindex", row["index"] )
        name=row["filename"].split(".")[0]
     elif name == None:
         name = args.name
@@ -243,6 +245,21 @@ if __name__ == "__main__":
            outstream.write(headers)
         for index,row in frame.iterrows():
             makeSingle(sim,args,row=row,outstream=outstream)
+    elif args.batchfolder:
+        print( "Load CSV files from batch: ", args.batchfolder)
+        files = sorted(os.listdir(args.batchfolder))
+        for f in files:
+            print( "Load CSV file:", f )
+            frame = pd.read_csv("{}/{}".format(args.batchfolder, f))
+            cols = frame.columns
+            print( "columns:", cols )
+            outcols = list(frame.columns)
+            if outstream != None:
+                headers = ",".join( outcols + relcols + getMSheaders(int(args.nterms)) )
+                headers += "\n"
+                outstream.write(headers)
+            for index,row in frame.iterrows():
+                makeSingle(sim,args,row=row,outstream=outstream)
     else:
         makeSingle(sim,args)
     sim.close()
