@@ -78,6 +78,18 @@ For instance, it may be necessary explicitly to build OpenCV:
 conan install . -if build --build=opencv
 ```
 
+### Using vcpkg
+
+As an alternative to conan, [vcpkg](https://vcpkg.io/en/index.html) may be used.
+To use vcpkg, pass
+```
+-DCMAKE_TOOLCHAIN_FILE="[path to vcpkg]/scripts/buildsystems/vcpkg.cmake"
+-DCOSMOSIM_USE_CONAN=OFF
+```
+to CMake. 
+
+> Note: On Windows you need to copy all .dll files from `/lib` into `CosmoSimPy/CosmoSim` in order to get the Python code to work.
+
 ### Dependencies
 
 Using conan, it will tell you about any missing libraries that have to 
