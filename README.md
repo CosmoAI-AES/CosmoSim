@@ -54,6 +54,24 @@ The following instructions are Linux specific.
 
 In order to build CosmoSim's C++ libararies, we will need to use conan. During the process, it will tell you about any missing libraries that have to be installed on the system level.  
 
+### Using vcpkg
+
+As an alternative to conan, [vcpkg](https://vcpkg.io/en/index.html) may be used.
+To use vcpkg, pass
+```
+-DCMAKE_TOOLCHAIN_FILE="[path to vcpkg]/scripts/buildsystems/vcpkg.cmake"
+-DCOSMOSIM_USE_CONAN=OFF
+```
+to CMake. 
+
+> Note: On Windows you need to copy all .dll files from `/lib` into `CosmoSimPy/CosmoSim` in order to get the Python code to work.
+
+### Dependencies
+
+Using conan, it will tell you about any missing libraries that have to 
+be installed system level.  The following commands is what I needed on a
+Debian system, and may be good start saving some time.  
+
 The following command is probably a good start to save some time later on. 
 
 ```sh

@@ -6,6 +6,7 @@ message("CMakeLists.txt - CosmoSim - Starting ...")
 cmake_minimum_required(VERSION 3.15)
 project(CosmoAi LANGUAGES CXX VERSION 1.1.0)
 
+option(COSMOSIM_USE_CONAN "Use conan" ON)
 option(COSMOSIM_BUILD_SIMULATOR "Build native cosmosim simulator executable" OFF)
 option(COSMOSIM_BUILD_MAKEIMAGE "Build native cosmosim makeimage executable" OFF)
 
@@ -27,16 +28,22 @@ if( ${host} MATCHES "idun.*")
 
 	find_package( OpenCV REQUIRED )
 	include_directories( ${OpenCV_INCLUDE_DIRS} )
-	find_package( Python COMPONENTS Development Interpreter ) 
+	find_package( Python COMPONENTS Development Interpreter )
 	include_directories( ${Python_INCLUDE_DIRS} )
 
 	message("LLIBS=${LLIBS}")
 	message("OpenCV_LIBS=${OpenCV_LIBS}")
-else()
+elseif (COSMOSIM_USE_CONAN)
       message("Including conan setup")
       include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
       conan_basic_setup()
-endif()
+else ()
+	#assuming vcpkg
+	find_package( OpenCV CONFIG REQUIRED )
+	link_libraries( ${OpenCV_LIBRARIES} )
+	find_package( SymEngine CONFIG REQUIRED)
+	link_libraries( symengine )
+endif ()
 
 include(FetchContent)
 FetchContent_Declare(
