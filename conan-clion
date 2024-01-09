@@ -1,0 +1,5 @@
+
+pip3 install conan==1.59
+conan profile new default --detect
+conan install . -if cmake-build-debug --build=missing
+
