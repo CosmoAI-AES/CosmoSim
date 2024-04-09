@@ -1,0 +1,2 @@
+index,   filename,     source, lens,      x, y, einsteinR, ellipseratio,sigma,sigma2,theta
+"sss01", oursie01.png, "s",    "OurSIE", 50, 0,   48,      3,            21,0,0,
