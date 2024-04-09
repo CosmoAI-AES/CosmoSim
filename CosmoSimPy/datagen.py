@@ -44,6 +44,8 @@ def setParameters(sim,row):
         sim.setCHI( row["chi"] )
     if row.get("einsteinR",None) != None:
         sim.setEinsteinR( row["einsteinR"] )
+    if row.get("ellipseratio",None) != None:
+        sim.setRatio( row["ellipseratio"] )
     if row.get("imagesize",None) != None:
         sim.setImageSize( row["imagesize"] )
         sim.setResolution( row["imagesize"] )
@@ -219,6 +221,8 @@ if __name__ == "__main__":
         sim.setCHI( float(args.chi) )
     if args.einsteinradius:
         sim.setEinsteinR( float(args.einsteinradius) )
+    if args.ellipseratio:
+        sim.setRatio( float(args.ellipseratio) )
     if args.imagesize:
         sim.setImageSize( int(args.imagesize) )
         sim.setResolution( int(args.imagesize) )

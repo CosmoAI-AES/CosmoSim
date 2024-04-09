@@ -221,6 +221,7 @@ void CosmoSim::initLens() {
     return ;
 }
 void CosmoSim::setEinsteinR(double r) { einsteinR = r ; }
+void CosmoSim::setRatio(double r) { ellipseratio = r ; }
 void CosmoSim::setImageSize(int sz ) { size = sz ; }
 void CosmoSim::setResolution(int sz ) { 
    basesize = sz ; 
@@ -284,7 +285,7 @@ bool CosmoSim::runSim() {
       }
       if ( lens != NULL ) {
          lens->setEinsteinR( einsteinR ) ;
-         lens->setEinsteinR( einsteinR ) ;
+         lens->setRatio( ellipseratio ) ;
       }
    }
    std::cout << "[runSim] set parameters, ready to run\n" ;
@@ -382,6 +383,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setSampled", &CosmoSim::setSampled)
         .def("setSourceMode", &CosmoSim::setSourceMode)
         .def("setEinsteinR", &CosmoSim::setEinsteinR)
+        .def("setRatio", &CosmoSim::setRatio)
         .def("setNterms", &CosmoSim::setNterms)
         .def("setCHI", &CosmoSim::setCHI)
         .def("setSourceParameters", &CosmoSim::setSourceParameters)
