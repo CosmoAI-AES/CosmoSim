@@ -154,6 +154,18 @@ void CosmoSim::initLens() {
    if ( sim ) delete sim ;
    psilens = NULL ;
    switch ( lensmode ) {
+       case CSIM_PSI_OurSIE:
+          std::cout << "[initLens] OurSIE\n" ;
+          lens = psilens = new OurSIE() ;
+          break ;
+       case CSIM_PSI_KormannSIE:
+          std::cout << "[initLens] KormannSIE\n" ;
+          lens = psilens = new KormannSIE() ;
+          break ;
+       case CSIM_PSI_SIE:
+          std::cout << "[initLens] SIE\n" ;
+          lens = psilens = new SIE() ;
+          break ;
        case CSIM_PSI_SIS:
           std::cout << "[initLens] SIS\n" ;
           lens = psilens = new SIS() ;
@@ -422,6 +434,9 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setBetaXi", &RouletteSim::setBetaXi) ;
 
     pybind11::enum_<PsiSpec>(m, "PsiSpec") 
+       .value( "SIE", CSIM_PSI_SIE )
+       .value( "OurSIE", CSIM_PSI_OurSIE )
+       .value( "KormannSIE", CSIM_PSI_KormannSIE )
        .value( "SIS", CSIM_PSI_SIS )
        .value( "PM", CSIM_NOPSI_PM ) 
        .value( "Roulette", CSIM_NOPSI_ROULETTE ) 

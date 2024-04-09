@@ -25,3 +25,10 @@ cv::Point2d SIE::getXi( cv::Point2d chieta ) {
    double phi = atan2(chieta.y, chieta.x); 
    return chieta + einsteinR*cv::Point2d( cos(phi), sin(phi) ) ;
 }
+
+double KormannSIE::psiXfunction( double x, double y ) {
+   throw NotImplemented() ;
+}
+double KormannSIE::psiYfunction( double x, double y ) {
+   throw NotImplemented() ;
+}

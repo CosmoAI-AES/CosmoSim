@@ -127,8 +127,8 @@ private:
 
 public:
     virtual double psifunction( double, double ) ;
-    // virtual double psiXfunction( double, double ) ;
-    // virtual double psiYfunction( double, double ) ;
+    virtual double psiXfunction( double, double ) ;
+    virtual double psiYfunction( double, double ) ;
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
 };

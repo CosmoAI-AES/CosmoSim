@@ -13,6 +13,9 @@ lensDict = {
         "SIS" : PsiSpec.SIS,
         "PM" : PsiSpec.PM,
         "Roulette" : PsiSpec.Roulette
+        "SIE" : PsiSpec.SIE,
+        "KormannSIE" : PsiSpec.KormannSIE,
+        "OurSIE" : PsiSpec.OurSIE,
         }
 modelDict = {
         "Raytrace" : ModelSpec.Raytrace,
