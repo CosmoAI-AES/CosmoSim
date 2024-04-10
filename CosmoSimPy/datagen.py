@@ -46,6 +46,8 @@ def setParameters(sim,row):
         sim.setEinsteinR( row["einsteinR"] )
     if row.get("ellipseratio",None) != None:
         sim.setRatio( row["ellipseratio"] )
+    if row.get("orientation",None) != None:
+        sim.setOrientation( row["orientation"] )
     if row.get("imagesize",None) != None:
         sim.setImageSize( row["imagesize"] )
         sim.setResolution( row["imagesize"] )
@@ -223,6 +225,8 @@ if __name__ == "__main__":
         sim.setEinsteinR( float(args.einsteinradius) )
     if args.ellipseratio:
         sim.setRatio( float(args.ellipseratio) )
+    if args.orientation:
+        sim.setOrientation( float(args.orientation) )
     if args.imagesize:
         sim.setImageSize( int(args.imagesize) )
         sim.setResolution( int(args.imagesize) )
