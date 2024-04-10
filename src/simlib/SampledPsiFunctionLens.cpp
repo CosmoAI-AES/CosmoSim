@@ -10,7 +10,7 @@ void SampledPsiFunctionLens::setEinsteinR( double r ) {
    lens->setEinsteinR( einsteinR = r ) ; 
 }
 void SampledPsiFunctionLens::setOrientation( double r ) {
-   lens->setOrientation( phi = r ) ; 
+   lens->setOrientation( orientation = r ) ; 
 }
 void SampledPsiFunctionLens::setRatio( double r ) {
    lens->setRatio( ellipseratio = r ) ; 

@@ -22,7 +22,7 @@ private:
 protected:
    double einsteinR /* R_E or \xi_0 */,
           ellipseratio=1 /* f */,
-	  phi=0 /* \phi */ ;
+	  orientation=0 /* \phi */ ;
    std::string filename = "50.txt" ;
    cv::Mat psi, psiX, psiY, einsteinMap ;
 

@@ -14,7 +14,7 @@ void Lens::updatePsi( cv::Size size ) {
 }
 void Lens::setEinsteinR( double r ) { einsteinR = r ; }
 void Lens::setRatio( double r ) { ellipseratio = r ; }
-void Lens::setOrientation( double r ) { phi = r ; }
+void Lens::setOrientation( double r ) { orientation = r ; }
 
 cv::Mat Lens::getPsi() const {
    return psi ;
@@ -104,10 +104,10 @@ void Lens::initAlphasBetas() {
 }
 
 double Lens::getAlpha( cv::Point2d xi, int m, int s ) {
-   return alphas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio, phi});
+   return alphas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio, orientation});
 }
 double Lens::getBeta( cv::Point2d xi, int m, int s ) {
-   return betas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio, phi});
+   return betas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio, orientation});
 }
 
 void Lens::calculateAlphaBeta( cv::Point2d xi ) {
@@ -117,8 +117,8 @@ void Lens::calculateAlphaBeta( cv::Point2d xi ) {
     // calculate all amplitudes for given xi, einsteinR
     for (int m = 1; m <= nterms; m++){
         for (int s = (m+1)%2; s <= (m+1); s+=2){
-            alphas_val[m][s] = alphas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio, phi});
-            betas_val[m][s] = betas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio, phi});
+            alphas_val[m][s] = alphas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio, orientation});
+            betas_val[m][s] = betas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio, orientation});
         }
     }
 }
