@@ -9,35 +9,37 @@
 // TODO \chi_L in terms of \chi
 
 double SIE::psifunction( double x, double y ) {
-   double sq = sqrt( 1 - ellipseratio*ellipseratio ) ;
-   double sqf = sqrt( ellipseratio )/sq ;
-   double theta = phi + atan2(y, x); 
-   double sintheta = sin(theta), costheta = cos(theta) ;
+   /* ellipseration = f */
+   double sq = sqrt( 1 - ellipseratio*ellipseratio ) ; /* $f'$ */
+   double sqf = sqrt( ellipseratio )/sq ;  /* $\sqrt(f)/f'$ */
+
    double R = sqrt( x*x + y*y ) ;
-   return einsteinR*R*sqf*(
-	   sintheta*asin( sq * sintheta )
-	   + costheta*asinh(costheta*sq/ellipseratio)
+   return einsteinR*sqf*(
+	   y*asin( sq * y/R )
+	   + x*asinh(x/R * sq/ellipseratio)
 	 ) ;
 }
 double SIE::psiXfunction( double x, double y ) {
-   double theta = phi + atan2(y, x); 
-   double sint = sin(theta) ;
-   double cost = cos(theta) ;
-   double f = ellipseratio ;
-   double f2 = f*f, cost2 = cost*cost, sint2 = sint*sint ;
-   return -sqrt(f)*einsteinR*(x*sqrt(f2*sint2 - sint2 + 1)*sqrt(-f2*cost2 + f2 + cost2)*sint*asin(sqrt(1 - f2)*sint) + x*sqrt(f2*sint2 - sint2 + 1)*sqrt(-f2*cost2 + f2 + cost2)*cost*asinh(sqrt(1 - f2)*cost/f) + y*sqrt(1 - f2)*sqrt(f2*sint2 - sint2 + 1)*sint*cost - y*sqrt(1 - f2)*sqrt(-f2*cost2 + f2 + cost2)*sint*cost + y*sqrt(f2*sint2 - sint2 + 1)*sqrt(-f2*cost2 + f2 + cost2)*sint*asinh(sqrt(1 - f2)*cost/f) - y*sqrt(f2*sint2 - sint2 + 1)*sqrt(-f2*cost2 + f2 + cost2)*cost*asin(sqrt(1 - f2)*sint)
-	 )*sqrt(1/(1 - f2))
-      / (sqrt(x*x + y*y)*sqrt(f2*sint2 - sint2 + 1)*sqrt(-f2*cost2 + f2 + cost2)) ;
+   double sq = sqrt( 1 - ellipseratio*ellipseratio ) ; /* $f'$ */
+   double sqf = sqrt( ellipseratio )/sq ;  /* $\sqrt(f)/f'$ */
+
+   double R = sqrt( x*x + y*y ) ;
+   return einsteinR*sqf*(
+	   + asinh(x/R * sq/ellipseratio)
+           - (x*y*y)*(  1/(r*(r*r-sq*sq*y*y))
+                       - 1/(r*(r*r+sqf*sqf*y*y) ) )
+	 ) ;
 }
 double SIE::psiYfunction( double x, double y ) {
-   double theta = phi + atan2(y, x); 
-   double sint = sin(theta) ;
-   double cost = cos(theta) ;
-   double f = ellipseratio ;
-   double f2 = f*f, cost2 = cost*cost, sint2 = sint*sint ;
-   return
-      -sqrt(f)*einsteinR*(-x*sqrt(1 - f2)*sqrt(f2*sint2 - sint2 + 1)*sint*cost + x*sqrt(1 - f2)*sqrt(-f2*cost2 + f2 + cost2)*sint*cost - x*sqrt(f2*sint2 - sint2 + 1)*sqrt(-f2*cost2 + f2 + cost2)*sint*asinh(sqrt(1 - f2)*cost/f) + x*sqrt(f2*sint2 - sint2 + 1)*sqrt(-f2*cost2 + f2 + cost2)*cost*asin(sqrt(1 - f2)*sint) + y*sqrt(f2*sint2 - sint2 + 1)*sqrt(-f2*cost2 + f2 + cost2)*sint*asin(sqrt(1 - f2)*sint) + y*sqrt(f2*sint2 - sint2 + 1)*sqrt(-f2*cost2 + f2 + cost2)*cost*asinh(sqrt(1 - f2)*cost/f))*sqrt(1/(1 - f2))
-      / (sqrt(x*x + y*y)*sqrt(f2*sint2 - sint2 + 1)*sqrt(-f2*cost2 + f2 + cost2)) ;
+   double sq = sqrt( 1 - ellipseratio*ellipseratio ) ; /* $f'$ */
+   double sqf = sqrt( ellipseratio )/sq ;  /* $\sqrt(f)/f'$ */
+
+   double R = sqrt( x*x + y*y ) ;
+   return einsteinR*sqf*(
+	   + asin(y/R * sq)
+           - (x*x*y)*(  1/(r*(r*r+sqf*sqf*x*x))
+                       - 1/(r*(r*r-sq*sq*y*y) ) )
+	 ) ;
 }
 
 cv::Point2d SIE::getXi( cv::Point2d chieta ) {

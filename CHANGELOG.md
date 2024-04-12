@@ -1,6 +1,19 @@
 
 # CosmoSim Change Log
 
+## Unreleased
+
+### Added
+
++ Installation instructions using vcpkg
+
+### Changed
+
++ Use fractional pixels when centring the image (centreImage function).
+  The old behaviour, using only integer translation is still supported as
+  an option (newbehaviour=False)
+
+
 ## [2.3.1] - 2023-08-03 
 
 ### Added
