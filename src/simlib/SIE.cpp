@@ -40,9 +40,9 @@ double SIE::psifunctionAligned( double x, double y ) {
 }
 
 double SIE::psifunction( double x, double y ) {
-   phi = x == 0 ? signf(y)*PI/2 : atan2(y, x);
-   R = sqrt ( x**x + y**y ) ;
-   return SIE::psiFunctionPolar( R, phi ) ;
+   double phi = x == 0 ? signf(y)*PI/2 : atan2(y, x);
+   double R = sqrt ( x*x + y*y ) ;
+   return SIE::psifunctionPolar( R, phi ) ;
 }
 
 cv::Point2d SIE::getXi( cv::Point2d chieta ) {

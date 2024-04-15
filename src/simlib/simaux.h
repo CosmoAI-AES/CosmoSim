@@ -2,6 +2,8 @@
 
 #include "cosmosim/Simulator.h"
 
+#define signf(y)  ( y < 0 ? -1 : +1 )
+
 // Add some lines to the image for reference
 void refLines(cv::Mat& ) ;
 double factorial_(unsigned int) ;

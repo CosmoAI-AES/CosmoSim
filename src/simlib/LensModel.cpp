@@ -12,8 +12,6 @@
 
 double factorial_(unsigned int n);
 
-#define signf(y)  ( y < 0 ? -1 : +1 )
-
 LensModel::LensModel() :
         CHI(0.5),
         nterms(10),
