@@ -24,6 +24,7 @@ void PsiFunctionLens::updatePsi( cv::Size size ) {
       }
    }
 
+   std::cout << "[PsiFunctionLens] updatePsi() returns\n" ;
    return ; 
 }
 

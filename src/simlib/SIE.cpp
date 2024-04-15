@@ -12,7 +12,7 @@
 // TODO \chi_L in terms of \chi
 
 double SIE::psifunctionPolar( double R, double phi ) {
-   /* ellipseration = f */
+   /* ellipseratio = f */
 
    double sq = sqrt( 1 - ellipseratio*ellipseratio ) ; /* $f'$ */
    double sqf = sqrt( ellipseratio )/sq ;  /* $\sqrt(f)/f'$ */
@@ -27,7 +27,7 @@ double SIE::psifunctionPolar( double R, double phi ) {
 	 ) ;
 }
 double SIE::psifunctionAligned( double x, double y ) {
-   /* ellipseration = f */
+   /* ellipseratio = f */
 
    double sq = sqrt( 1 - ellipseratio*ellipseratio ) ; /* $f'$ */
    double sqf = sqrt( ellipseratio )/sq ;  /* $\sqrt(f)/f'$ */
@@ -42,7 +42,7 @@ double SIE::psifunctionAligned( double x, double y ) {
 double SIE::psifunction( double x, double y ) {
    double phi = x == 0 ? signf(y)*PI/2 : atan2(y, x);
    double R = sqrt ( x*x + y*y ) ;
-   return SIE::psifunctionPolar( R, phi ) ;
+   return psifunctionPolar( R, phi ) ;
 }
 
 cv::Point2d SIE::getXi( cv::Point2d chieta ) {

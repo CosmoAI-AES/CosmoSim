@@ -135,6 +135,7 @@ public:
     virtual cv::Point2d getXi( cv::Point2d ) ;
 };
 
+/*
 class OurSIE : public SIE { 
 
 private:
@@ -154,5 +155,6 @@ public:
     virtual double psiYfunction( double, double ) ;
 
 };
+*/
 
 #endif // LENS_H

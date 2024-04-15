@@ -6,8 +6,6 @@ set(SimLibFiles
         simlib/PsiFunctionLens.cpp
         simlib/SIS.cpp
         simlib/SIE.cpp
-        simlib/OurSIE.cpp
-        simlib/KormannSIE.cpp
         simlib/RaytraceModel.cpp
 	simlib/RouletteModel.cpp
 	simlib/RotatedModel.cpp

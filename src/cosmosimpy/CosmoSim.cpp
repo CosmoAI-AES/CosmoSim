@@ -64,6 +64,7 @@ double CosmoSim::getAlpha(
       double x, double y, int m, int s 
  ) {
       double r ;
+      std::cout << "[CosmoSim] getAlpha()\n" ;
       cv::Point2d xi = cv::Point2d( x, y )*chi ;
       if ( NULL != psilens )
           r = psilens->getAlpha( xi, m, s ) ;
@@ -77,6 +78,7 @@ double CosmoSim::getBeta(
       double x, double y, int m, int s 
 ) {
       double r ;
+      std::cout << "[CosmoSim] getBeta()\n" ;
       cv::Point2d xi = cv::Point2d( x, y )*chi ;
       if ( NULL != psilens )
           r = psilens->getBeta( xi, m, s ) ;
@@ -88,6 +90,7 @@ double CosmoSim::getBeta(
 }
 
 void CosmoSim::diagnostics() {
+   std::cout << "[CosmoSim] diagnostisc()\n" ;
    if ( src ) {
       cv::Mat im = src->getImage() ;
       std::cout << "Source Image " << im.rows << "x" << im.cols 
@@ -154,6 +157,7 @@ void CosmoSim::initLens() {
    if ( sim ) delete sim ;
    psilens = NULL ;
    switch ( lensmode ) {
+          /*
        case CSIM_PSI_OurSIE:
           std::cout << "[initLens] OurSIE\n" ;
           lens = psilens = new OurSIE() ;
@@ -162,9 +166,13 @@ void CosmoSim::initLens() {
           std::cout << "[initLens] KormannSIE\n" ;
           lens = psilens = new KormannSIE() ;
           break ;
+          */
        case CSIM_PSI_SIE:
           std::cout << "[initLens] SIE\n" ;
           lens = psilens = new SIE() ;
+          std::cout << "Initialised SIE\n" ;
+          lens->setFile(filename) ;
+          lens->initAlphasBetas() ;
           break ;
        case CSIM_PSI_SIS:
           std::cout << "[initLens] SIS\n" ;
