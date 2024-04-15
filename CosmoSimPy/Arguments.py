@@ -28,7 +28,7 @@ class CosmoParser(argparse.ArgumentParser):
     self.add_argument('-X', '--chi', default=50, help="lens distance ration (chi)")
     self.add_argument('-E', '--einsteinradius', default=20, help="Einstein radius")
     self.add_argument('-r', '--ratio', default=20, help="Ratio (usually Elliptic eccentricity)")
-    self.add_argument('-o', '--orientation', default=0, help="Orientation of the lens")
+    self.add_argument('--orientation', default=0, help="Orientation of the lens")
 
     # Other parameters
     self.add_argument('-n', '--nterms', help="Number of Roulettes terms")

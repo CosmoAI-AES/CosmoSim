@@ -223,8 +223,8 @@ if __name__ == "__main__":
         sim.setCHI( float(args.chi) )
     if args.einsteinradius:
         sim.setEinsteinR( float(args.einsteinradius) )
-    if args.ellipseratio:
-        sim.setRatio( float(args.ellipseratio) )
+    if args.ratio:
+        sim.setRatio( float(args.ratio) )
     if args.orientation:
         sim.setOrientation( float(args.orientation) )
     if args.imagesize:
