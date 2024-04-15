@@ -1,7 +1,7 @@
 
 all: alltests
 
-status: 
+status: alltests
 	cat */*.status
 
 clean alltests:
@@ -11,7 +11,6 @@ clean alltests:
 	cd roulettepm ; $(MAKE) $@
 	cd roulettelens ; $(MAKE) $@
 	cd amplitudes ; $(MAKE) $@
-	$(MAKE) status
 
 baselines:
 	cd exactpm ; $(MAKE) baseline`date "+%Y%m%d"`

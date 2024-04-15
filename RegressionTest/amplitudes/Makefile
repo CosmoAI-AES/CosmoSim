@@ -11,3 +11,6 @@ all: 50.status
 %.status: %.new %.baseline
 	diff $^ && echo Regression test passes > $@
 
+clean:
+
+alltests: all
