@@ -1,2 +1,9 @@
-index,   filename,     source, lens,      x, y, einsteinR, ellipseratio,sigma,sigma2,theta
-"sss01", oursie01.png, "s",    "OurSIE", 50, 0,   48,      3,            21,0,0,
+index,filename,source,lens,x,y,einsteinR,ellipseratio,orientation,sigma,sigma2,theta
+"sie01",sie01.png,"e","SIE",50,0,48,0.5,0,20,30,0
+"sie02",sie02.png,"e","SIE",50,0,48,0.5,30,20,30,0
+"sie03",sie03.png,"e","SIE",50,0,48,0.5,60,20,30,0
+"sie04",sie04.png,"e","SIE",50,0,48,0.5,90,20,30,0
+"sie11",sie11.png,"e","SIE",50,0,48,0.2,0,20,30,0
+"sie12",sie12.png,"e","SIE",50,0,48,0.4,0,20,30,0
+"sie13",sie13.png,"e","SIE",50,0,48,0.6,0,20,30,0
+"sie14",sie14.png,"e","SIE",50,0,48,0.8,0,20,30,0
