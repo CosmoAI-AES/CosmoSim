@@ -3,6 +3,9 @@
 #include "cosmosim/Lens.h"
 #include "simaux.h"
 
+#define norm(x,y) sqrt( x*x + y*y ) 
+
+
 double SIS::psifunction( double x, double y ) {
    return einsteinR*sqrt( x*x + y*y ) ;
 }
@@ -16,8 +19,8 @@ double SIS::psiYfunction( double x, double y ) {
 }
 
 cv::Point2d SIS::getXi( cv::Point2d chieta ) {
-   double s = sqrt( x*x + y*y ) ;
-   return chieta + einsteinR*cv::Point2d( x/s, y/s ) ;
+   double s = norm(chieta.x, chieta.y) ;
+   return chieta + einsteinR*cv::Point2d( chieta.x/s, chieta.y/s ) ;
    /*
    double phi = atan2(chieta.y, chieta.x); 
    return chieta + einsteinR*cv::Point2d( cos(phi), sin(phi) ) ;
