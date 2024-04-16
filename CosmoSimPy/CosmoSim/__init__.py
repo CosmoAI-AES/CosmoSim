@@ -5,6 +5,8 @@ import numpy as np
 import threading as th
 import os
 
+import traceback
+
 ModelSpec = cs.ModelSpec
 SourceSpec = cs.SourceSpec
 PsiSpec = cs.PsiSpec
@@ -166,6 +168,7 @@ class CosmoSim(cs.CosmoSim):
         return super().setLensMode( int( lensDict[s] ) ) 
     def setModelMode(self,s):
         print( f"setModelMode({s})")
+        traceback.print_stack()
         return super().setModelMode( int( modelDict[s] ) ) 
     def setConfigMode(self,s):
         print( f"setConfigMode({s})")

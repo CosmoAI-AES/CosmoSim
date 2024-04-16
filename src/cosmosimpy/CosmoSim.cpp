@@ -128,6 +128,8 @@ void CosmoSim::setXY( double x, double y) { xPos = x ; yPos = y ; rPos = -1 ; }
 void CosmoSim::setPolar(int r, int theta) { rPos = r ; thetaPos = theta ; }
 void CosmoSim::setModelMode(int m) { 
    if ( modelmode != m ) {
+      std::cout << "[CosmoSim.cpp] setModelMode(" << modelmode 
+         << " -> " << m << ")\n" ;
       modelmode = m ; 
       modelchanged = 1 ;
    }
@@ -144,6 +146,8 @@ void CosmoSim::setLensMode(int m) {
 }
 void CosmoSim::setSampled(int m) { 
    if ( sampledlens != m ) {
+      std::cout << "[CosmoSim.cpp] setSampled(" << m 
+         << " -> " << m << ")\n" ;
       sampledlens = m ; 
       modelchanged = 1 ;
    }
@@ -153,6 +157,7 @@ void CosmoSim::setMaskMode(bool b) { maskmode = b ; }
 void CosmoSim::setBGColour(int b) { bgcolour = b ; }
 void CosmoSim::initLens() {
    std::cout << "[CosmoSim.cpp] initLens\n" ;
+   std::cout << "[initLens] ellipseratio = " << ellipseratio << "\n" ;
    if ( ! modelchanged ) return ;
    if ( sim ) delete sim ;
    psilens = NULL ;
@@ -226,6 +231,7 @@ void CosmoSim::initLens() {
          throw NotImplemented();
     }
     modelchanged = 0 ;
+    std::cout << "[initLens] ellipseratio = " << ellipseratio << "\n" ;
     return ;
 }
 void CosmoSim::setEinsteinR(double r) { einsteinR = r ; }
@@ -278,6 +284,7 @@ bool CosmoSim::runSim() {
       return false ;
    }
    std::cout << "[CosmoSim.cpp] runSim() - running similator\n" ;
+   std::cout << "[runSim] ellipseratio = " << ellipseratio << "\n" ;
    initLens() ;
    if ( sim == NULL ) {
       throw std::bad_function_call() ;
@@ -297,6 +304,7 @@ bool CosmoSim::runSim() {
       }
       if ( lens != NULL ) {
          lens->setEinsteinR( einsteinR ) ;
+	 std::cout << "[CosmoSimPy] Ready to call lens->setRatio(" << ellipseratio << ")\n" ;
          lens->setRatio( ellipseratio ) ;
          lens->setOrientation( orientation ) ;
       }

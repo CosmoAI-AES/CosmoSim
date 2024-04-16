@@ -13,8 +13,8 @@ void SampledPsiFunctionLens::setOrientation( double r ) {
    lens->setOrientation( orientation = r ) ; 
 }
 void SampledPsiFunctionLens::setRatio( double r ) {
-   std::cout << "[SampledPsiFunctionLens] setRatio(" << ellipseration << ")\n" ;
    lens->setRatio( ellipseratio = r ) ; 
+   std::cout << "[SampledPsiFunctionLens] setRatio(" << ellipseratio << ")\n" ;
 }
 
 void SampledPsiFunctionLens::updatePsi( cv::Size size ) { 

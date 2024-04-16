@@ -33,7 +33,8 @@ class CosmoSim {
 private:
     int size=512, basesize=512 ;
     double chi=0.5 ;
-    int modelmode=CSIM_MODEL_POINTMASS_EXACT, ellipseratio=20, orientation=0, einsteinR=20 ;
+    int modelmode=CSIM_MODEL_POINTMASS_EXACT ;
+    double ellipseratio=0.5, orientation=0, einsteinR=20 ;
     int sampledlens = 0, modelchanged = 1 ;
     int lensmode=CSIM_NOPSI_PM ;
     int srcmode=CSIM_SOURCE_SPHERE, sourceSize=20, sourceSize2=10,

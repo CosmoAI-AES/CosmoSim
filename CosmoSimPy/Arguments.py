@@ -8,9 +8,9 @@ class CosmoParser(argparse.ArgumentParser):
 
     # Model selection
     self.add_argument('-l', '--lensmode',
-            default="SIS", help="lens mode")
+            help="lens mode")
     self.add_argument('-L', '--modelmode',
-            default="Point Mass (exact)", help="lens mode")
+            help="lens mode")
     self.add_argument('-S', '--sourcemode',
             default="Spherical", help="source mode")
     self.add_argument('-G', '--sampled', action='store_true',
@@ -25,9 +25,9 @@ class CosmoParser(argparse.ArgumentParser):
     self.add_argument('-2', '--sigma2', default=10, help="secondary source size (sigma2)")
     self.add_argument('-t', '--theta', default=45, help="source rotation angle (theta)")
 
-    self.add_argument('-X', '--chi', default=50, help="lens distance ration (chi)")
+    self.add_argument('-X', '--chi', default=50, help="lens distance ratio (chi)")
     self.add_argument('-E', '--einsteinradius', default=20, help="Einstein radius")
-    self.add_argument('-r', '--ratio', default=20, help="Ratio (usually Elliptic eccentricity)")
+    self.add_argument('-r', '--ratio', help="Ratio (usually Elliptic eccentricity)")
     self.add_argument('--orientation', default=0, help="Orientation of the lens")
     self.add_argument('--config', default=0, help="Configuration (Model and Lens)")
 
