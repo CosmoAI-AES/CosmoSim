@@ -80,6 +80,8 @@ public:
     virtual double psiXvalue( double, double ) ;
     virtual double psiYvalue( double, double ) ;
     virtual void updatePsi( cv::Size ) ;
+
+    virtual cv::Point2d getXi( cv::Point2d ) ;
 } ;
 class PixMapLens : public SampledLens {
 public:
@@ -118,7 +120,6 @@ public:
     virtual double psiXfunction( double, double ) ;
     virtual double psiYfunction( double, double ) ;
 
-    virtual cv::Point2d getXi( cv::Point2d ) ;
 };
 
 class SIE : public PsiFunctionLens { 
@@ -132,7 +133,7 @@ public:
     virtual double psiXfunction( double, double ) ;
     virtual double psiYfunction( double, double ) ;
 
-    virtual cv::Point2d getXi( cv::Point2d ) ;
+    // virtual cv::Point2d getXi( cv::Point2d ) ;
 };
 
 /*
