@@ -7,3 +7,7 @@ index,filename,source,x,y,einsteinR,ellipseratio,orientation,sigma,sigma2,theta
 "sie12",sie12.png,"e",50,0,48,0.4,0,20,30,0
 "sie13",sie13.png,"e",50,0,48,0.6,0,20,30,0
 "sie14",sie14.png,"e",50,0,48,0.8,0,20,30,0
+"sie21",sie21.png,"e",50,0,48,0.99,0,20,30,0
+"sie22",sie22.png,"e",50,0,48,0.99,30,20,30,0
+"sie23",sie23.png,"e",50,0,48,0.99,60,20,30,0
+"sie24",sie24.png,"e",50,0,48,0.99,90,20,30,0
