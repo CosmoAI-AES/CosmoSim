@@ -220,6 +220,8 @@ if __name__ == "__main__":
         sim.setSampled( 0 )
     if args.lensmode:
         sim.setLensMode( args.lensmode )
+    if args.config:
+        sim.setConfigMode( args.config )
     if args.modelmode:
         sim.setModelMode( args.modelmode )
     if args.chi:

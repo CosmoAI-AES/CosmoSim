@@ -34,8 +34,10 @@ modelValues = {
         "Point Mass (roulettes)" : (ModelSpec.PointMassRoulettes,PsiSpec.PM,False),
         "Sampled Roulette SIS" : (ModelSpec.Roulette,PsiSpec.SIS,True),
         "Sampled Raytrace SIS" : (ModelSpec.Raytrace,PsiSpec.SIS,True),
+        "Sampled Raytrace SIE" : (ModelSpec.Raytrace,PsiSpec.SIE,True),
         "Roulette SIS" : (ModelSpec.Roulette,PsiSpec.SIS,False),
         "Raytrace SIS" : (ModelSpec.Raytrace,PsiSpec.SIS,False),
+        "Raytrace SIE" : (ModelSpec.Raytrace,PsiSpec.SIE,False),
         }
 configDict = modelValues.copy()
 configDict["p"] = configDict["Point Mass (exact)"]
