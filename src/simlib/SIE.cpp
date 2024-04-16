@@ -24,8 +24,9 @@ double SIE::psifunctionPolar( double R, double phi ) {
    double sqf = sqrt( ellipseratio )/sq ;  /* $\sqrt(f)/f'$ */
    // double R = sqrt( x*x + y*y ) ;
 
-   double x = cos( phi + orientation ) ;
-   double y = sin( phi + orientation ) ;
+   double theta = orientation*PI/180 ;
+   double x = cos( phi + theta ) ;
+   double y = sin( phi + theta ) ;
 
    return einsteinR*sqf*R*(
 	   y*asin( sq * y )
@@ -67,10 +68,11 @@ double SIE::psiXfunction( double x, double y ) {
    double sqf = sqrt( ellipseratio )/sq ;  /* $\sqrt(f)/f'$ */
 
    double R = sqrt( x*x + y*y ) ;
+   double theta = orientation*PI/180 ;
    return einsteinR*sqf*(
-      cos(orientation) *  asinh(x/R * sq/ellipseratio)
+      cos(theta) *  asinh(x/R * sq/ellipseratio)
       -
-      sin(orientation) * asin(y/R * sq) 
+      sin(theta) * asin(y/R * sq) 
       ) ;
 }
 double SIE::psiYfunction( double x, double y ) {
@@ -78,10 +80,11 @@ double SIE::psiYfunction( double x, double y ) {
    double sqf = sqrt( ellipseratio )/sq ;  /* $\sqrt(f)/f'$ */
 
    double R = sqrt( x*x + y*y ) ;
+   double theta = orientation*PI/180 ;
    return einsteinR*sqf*(
-      sin(orientation) *  asinh(x/R * sq/ellipseratio)
+      sin(theta) * asinh(x/R * sq/ellipseratio)
       +
-      cos(orientation) * asin(y/R * sq) 
+      cos(theta) * asin(y/R * sq) 
       );
 }
 
