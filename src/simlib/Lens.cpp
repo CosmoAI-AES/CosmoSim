@@ -13,7 +13,10 @@ void Lens::updatePsi( cv::Size size ) {
    return ; 
 }
 void Lens::setEinsteinR( double r ) { einsteinR = r ; }
-void Lens::setRatio( double r ) { ellipseratio = r ; }
+void Lens::setRatio( double r ) { 
+   ellipseratio = r ; 
+   std::cout << "[SampledPsiFunctionLens] setRatio(" << ellipseration << ")\n" ;
+}
 void Lens::setOrientation( double r ) { orientation = r ; }
 
 cv::Mat Lens::getPsi() const {
