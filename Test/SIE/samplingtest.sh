@@ -16,6 +16,7 @@ fn=sie.csv
 python3 $pdir/datagen.py $opt --config "Sampled Raytrace SIE" --directory="$dir1" --csvfile $fn  --actual
 python3 $pdir/datagen.py $opt --config "Raytrace SIE" --directory="$dir2" --csvfile $fn 
 
+rm -rf Actual
 mkdir -p Actual
 mv */actual*png Actual
 
