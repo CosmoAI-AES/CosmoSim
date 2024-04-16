@@ -64,12 +64,15 @@ def makeSingle(sim,args,name=None,row=None,outstream=None):
        name=row["filename"].split(".")[0]
     elif name == None:
         name = args.name
+    print ( "[datagen.py] ready for runSim()\n" ) ;
     sim.runSim()
+    print ( "[datagen.py] runSim() completed\n" ) ;
     centrepoint = makeOutput(sim,args,name,actual=args.actual,apparent=args.apparent,original=args.original,reflines=args.reflines)
     print( "[datagen.py] Centre Point", centrepoint, "(Centre of Luminence in Planar Co-ordinates)" )
     if args.join:
         # sim.setMaskMode(False)
         sim.runSim()
+        print ( "[datagen.py] runSim() completed\n" ) ;
         sim.maskImage(float(args.maskscale))
         joinim = sim.getDistorted(False)
         # joinim = sim.getDistortedImage(False)
