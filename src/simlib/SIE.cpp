@@ -69,6 +69,7 @@ double SIE::psiXfunction( double x, double y ) {
 
    double R = sqrt( x*x + y*y ) ;
    double theta = orientation*PI/180 ;
+
    return einsteinR*sqf*(
       cos(theta) *  asinh(x/R * sq/ellipseratio)
       -
