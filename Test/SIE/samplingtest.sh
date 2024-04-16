@@ -12,7 +12,6 @@ diffdir=diff
 mkdir -p $dir1 $dir2 $diffdir
 
 fn=sie.csv
-fn=test.csv
 
 python3 $pdir/datagen.py $opt --config "Sampled Raytrace SIE" --directory="$dir1" --csvfile $fn 
 python3 $pdir/datagen.py $opt --config "Raytrace SIE" --directory="$dir2" --csvfile $fn 
