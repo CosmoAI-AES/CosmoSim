@@ -57,10 +57,13 @@ void RotatedModel::updateInner( ) {
 }
 
 void RotatedModel::updateApparentAbs( ) {
-    std::cout << "[LensModel] updateApparentAbs() updates psi.\n" ;
+    std::cout << "[RotatedModel] updateApparentAbs() updates psi.\n" ;
     cv::Mat im = getActual() ;
     lens->updatePsi(im.size()) ;
+    std::cout << "[RotatedModel] updatePsi() has returned.\n" ;
     cv::Point2d chieta = cv::Point2d( CHI*getEtaAbs(), 0 ) ;
+    std::cout << "[RotatedModel] updateEtaAbs() has returned.\n" ;
     cv::Point2d xi1 = lens->getXi( chieta ) ;
+    std::cout << "[RotatedModel] updateXi() has returned.\n" ;
     setNu( xi1/CHI ) ;
 }
