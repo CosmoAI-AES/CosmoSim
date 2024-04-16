@@ -229,7 +229,10 @@ void CosmoSim::initLens() {
     return ;
 }
 void CosmoSim::setEinsteinR(double r) { einsteinR = r ; }
-void CosmoSim::setRatio(double r) { ellipseratio = r ; }
+void CosmoSim::setRatio(double r) { 
+   std::cout << "[setRatio] ellipseratio = " << r << "\n" ;
+   ellipseratio = r ; 
+}
 void CosmoSim::setOrientation(double r) { orientation = r ; }
 void CosmoSim::setImageSize(int sz ) { size = sz ; }
 void CosmoSim::setResolution(int sz ) { 

@@ -14,6 +14,12 @@
 double SIE::psifunctionPolar( double R, double phi ) {
    /* ellipseratio = f */
 
+   if ( ellipseratio >= 1 || ellipseratio <= 0 ) {
+      std::cout << "psiFunctionPolar - einsteinR = " << einsteinR << "\n" ;
+      std::cout << "psiFunctionPolar - ellipseratio = " << ellipseratio << 
+         "\nException!\n" ;
+      throw std::logic_error("ellipseration has to be in the (0,1) interval") ;
+   }
    double sq = sqrt( 1 - ellipseratio*ellipseratio ) ; /* $f'$ */
    double sqf = sqrt( ellipseratio )/sq ;  /* $\sqrt(f)/f'$ */
    // double R = sqrt( x*x + y*y ) ;
