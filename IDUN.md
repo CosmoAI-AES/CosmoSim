@@ -18,20 +18,12 @@ name, with a specific setup for IDUN.
 ## Intel Compiler
 
 It seems that the Intel compiler is not compatible with the most
-recent libraries.
-
-```
-module purge
-module load intel/2020b
-module load SciPy-bundle/2020.11-intel-2020b
-module load CMake/3.18.4-GCCcore-10.2.0
-```
-
-```
-cmake -D CMAKE_C_COMPILER=icc -D CMAKE_CXX_COMPILER=icc ..
-```
+recent libraries.  We use open source compilers in our setup.
 
 ## Libraries in User space
+
+It may be possible to install libraries in user space, but we
+never went through with this.
 
 + [Yum in User Space](https://stackoverflow.com/questions/36651091/how-to-install-packages-in-linux-centos-without-root-user-with-automatic-depen)
 

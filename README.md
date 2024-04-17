@@ -53,8 +53,8 @@ The following instructions are Linux specific.
 ### Using conan
 
 To install using conan, you can use the build script included,
-We require version 1.59 specifically.  The setup is not compatible 
-with conan 2.
+We require version 1.60.  The setup is not compatible with conan 2.x.
+On some architectures version 1.59 works.
 You may also have to create a default profile.
 (See [Conan Tutorial](https://docs.conan.io/en/latest/getting_started.html)
 for further information.)
@@ -114,11 +114,11 @@ The flags may be changed; `-C` centres det distorted image in the centre
 of the image (being debugged); `-Z` sets the image size; `-R` prints an
 axes cross.
 
-### N.B: Installation without Conan
+### N.B: Installation without Dependency managers
 
-If conan is not available, OpenCV and SymEngine must be installed
+If neither conan nor vcpkg can be used, OpenCV and SymEngine must be installed
 on the system.  We have set up cmake not to use conan when the
-hostname starts with `idun`, in which case the `idunbuild.sh`
+hostname starts with idun`, in which case the idunbuild.sh`
 script can be used for installation.  This has been designed
 for the NTNU Idun cluster, but can be tweaked for other systems.
 
@@ -137,7 +137,7 @@ image on the right.
 
 ### Sidenote: Running the GUI through docker 
 
-Docker images have been created to build and run the new python GUI.
+Docker images have been created to build and run the GUI.
 It should be possible to build and run them as follows, assuming a Unix like system.
 
 ```sh
@@ -147,7 +147,7 @@ docker run -ti --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -u $(id
 
 ### CLI
 
-To generate images specifying parameters, you can use
+To generate images from specified parameters, you can use
 ```sh
 python3 CosmoSimPy/datagen.py -S sourcemodel -L lensmodel -x x -y y -s sigma -X chi -E einsteinR -n n -I imageSize -N name -R -C
 ```
@@ -185,15 +185,6 @@ python3 CosmoSimPy/datasetgen.py
 
 It should be tweaked to get the desired distribution.
 
-
-
-## Scripts
-
-+ `amplitudes.py` generates the 50.txt file, which is used by all
-  the libraries to get formulæ for alpha and beta.
-+ `montage.sh` concatenates the different images for one source 
-  for easier display.
-    + This has not been tested with the latest updates.
 
 ## Use cases
 
@@ -241,26 +232,17 @@ the roulette model with SIS and functionally equivalent to «Roulette SIS«
 
 ## Versions
 
-The main branches are
-
-- develop is the current state of the art
-- master should be the last stable version
-
-## Releases
-
-- v-test-* are test releases, used to debug workflows.  Please ignore.
-- v2.0.0 (19 Dec 2022) provides the new GUI and CLI tools written
-  in Python, with several new features and corrected models.
-    - v2.0.1..3 patches to v2.0.0
-
-## Older Tags
-
-Prior to v2.0.0 some releases have been tagged, but not registered
++ The imortant git branches are
+    - develop is the current state of the art
+    - master should be the last stable version
++ Releases
+    - v-test-* are test releases, used to debug workflows.  Please ignore.
+    - see the releases on githun and CHANGELOG.md
++ Prior to v2.0.0 some releases have been tagged, but not registered
 as releases in github.
-
-- v0.1.0, v0.2.0, v1.0.0 are versions made by the u/g students
-  Spring 2022.
-- v1.0.1 is cleaned up to be able to build v1.0.0
+    - v0.1.0, v0.2.0, v1.0.0 are versions made by the u/g students
+      Spring 2022.
+    - v1.0.1 is cleaned up to be able to build v1.0.0
 
 ## Caveats
 
@@ -269,7 +251,7 @@ be approximation errors.
 
 1.  The images generated from the same parameters have changed slightly
     between version.  Some changes are because some unfortunate uses of
-    integers and single-precision numbers have been avoided, and some 
+    integers and single-precision numbers have later been avoided, and some 
     simply because the order of calculation has changed.
 1.  The SIS model is implemented in two versions, one rotating
     to have the source on the x-axis and one working directly with
@@ -288,6 +270,7 @@ be approximation errors.
 ## Troubleshooting
 
 ### ERROR: Compiler not defined for compiler.libcxx. Please define compiler value first too
+
 This occurs when conan does not correctly set up the default profile. Sometimes the compiler and version fields are missing.
 
 Run:
