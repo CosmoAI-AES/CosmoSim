@@ -25,8 +25,8 @@ double SIE::psifunctionPolar( double R, double phi ) {
    // double R = sqrt( x*x + y*y ) ;
 
    double theta = orientation*PI/180 ;
-   double x = cos( phi + theta ) ;
-   double y = sin( phi + theta ) ;
+   double x = cos( phi - theta ) ;
+   double y = sin( phi - theta ) ;
 
    return einsteinR*sqf*R*(
 	   y*asin( sq * y )
@@ -69,11 +69,18 @@ double SIE::psiXfunction( double x, double y ) {
 
    double R = sqrt( x*x + y*y ) ;
    double theta = orientation*PI/180 ;
+   double ct = cos(theta) ;
+   double st = sin(theta) ;
+   double xp = ct*x + st*y ;
+   double yp = - st*x + ct*y ;
+
+   // std::cout << "SIE psiXfunction " << cv::Point2d( x,y ) << " - "
+    // << cv::Point2d( xp,yp ) << " \n" ;
 
    return einsteinR*sqf*(
-      cos(theta) * asinh(x/R * sq/ellipseratio)
+      ct * asinh(xp/R * sq/ellipseratio)
       -
-      sin(theta) * asin(y/R * sq) 
+      st * asin(yp/R * sq) 
       ) ;
 }
 double SIE::psiYfunction( double x, double y ) {
@@ -82,10 +89,15 @@ double SIE::psiYfunction( double x, double y ) {
 
    double R = sqrt( x*x + y*y ) ;
    double theta = orientation*PI/180 ;
+   double ct = cos(theta) ;
+   double st = sin(theta) ;
+   double xp = ct*x + st*y ;
+   double yp = - st*x + ct*y ;
+
    return einsteinR*sqf*(
-      sin(theta) * asinh(x/R * sq/ellipseratio)
+      st * asinh(xp/R * sq/ellipseratio)
       +
-      cos(theta) * asin(y/R * sq) 
+      ct * asin(yp/R * sq) 
       );
 }
 
