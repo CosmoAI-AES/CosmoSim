@@ -6,8 +6,6 @@
 name: "Regression Test (legacy)"
 
 on: 
-   push:
-       branches: [ bug/parallel-ranges ]
    workflow_dispatch:
    workflow_call:
 
