@@ -2,19 +2,15 @@
 # (C) 2023: Hans Georg Schaathun <georg@schaathun.net>
 # Generate a set of lens/source parameters
 
-import multiprocessing as mp
-import sys
-import time
 import numpy as np
-
 
 from random import randint
 
 n = 300
 
-fn = "dataset.csv"
+fn = "Datasets/dataset.csv"
 srcmodes = "e"
-lensmodes = "pss"
+configs = ["p", "r", "ss", "pss", "fs", "rs"]
 
 
 def getline(idx,chi=0,nterms=16):
@@ -38,11 +34,11 @@ def getline(idx,chi=0,nterms=16):
     y = R*np.sin(np.pi*phi/180)
 
     srcmode = srcmodes[randint(0,len(srcmodes)-1)]
-    lensmode = lensmodes[randint(0,len(lensmodes)-1)]
-    return f'"{idx:04}","image-{idx:04}.png",{srcmode},{lensmode},{chi},' \
+    config = configs[randint(0,len(configs)-1)]
+    return f'"{idx:04}","image-{idx:04}.png",{srcmode},{config},{chi},' \
          + f'{R},{phi},{einsteinR},{sigma},{sigma2},{theta},{nterms},{x},{y}'
 
-header = ( "index,filename,source,lens,chi,"
+header = ( "index,filename,source,config,chi,"
          + "R,phi,einsteinR,sigma,sigma2,theta,nterms,x,y\n"
          )
 
