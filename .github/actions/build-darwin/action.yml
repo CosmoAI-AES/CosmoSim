@@ -21,7 +21,7 @@ runs:
 
       - name: Install prerequisites
         shell: bash
-        run: sudo pip3 install conan==1.59
+        run: sudo pip3 install conan==1.60
           ###       - name: Config Conan
           ###         shell: bash
           ###         run: |
