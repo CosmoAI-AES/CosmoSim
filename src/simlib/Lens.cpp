@@ -16,6 +16,8 @@ void Lens::setEinsteinR( double r ) { einsteinR = r ; }
 void Lens::setRatio( double r ) { 
    ellipseratio = r ; 
    std::cout << "[SampledPsiFunctionLens] setRatio(" << ellipseratio << ")\n" ;
+   if ( r >= 1 ) ellipseratio = 0.999 ;
+   if ( r <= 0 ) ellipseratio = 0.001 ;
 }
 void Lens::setOrientation( double r ) { orientation = r ; }
 

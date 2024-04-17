@@ -248,6 +248,8 @@ class LensPane(ttk.Frame):
             toval=50,
             default=16 )
         self.einsteinSlider.var.trace_add( "write", self.push ) 
+        self.ratioSlider.var.trace_add( "write", self.push ) 
+        self.orientationSlider.var.trace_add( "write", self.push ) 
         self.chiSlider.var.trace_add( "write", self.push ) 
         self.ntermsSlider.var.trace_add( "write", self.push ) 
 
@@ -268,6 +270,8 @@ class LensPane(ttk.Frame):
         self.sim.setNterms( self.ntermsSlider.get() )
         self.sim.setCHI( self.chiSlider.get() )
         self.sim.setEinsteinR( self.einsteinSlider.get())
+        self.sim.setRatio( self.ratioSlider.get())
+        self.sim.setOrientation( self.orientationSlider.get())
         self.sim.setMaskMode( self.maskModeVar.get())
         if runsim: self.sim.runSimulator()
 class PosPane(ttk.Frame):
