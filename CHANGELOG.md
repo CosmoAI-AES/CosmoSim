@@ -6,6 +6,7 @@
 ### Added
 
 + Installation instructions using vcpkg
++ SIE lens model
 
 ### Changed
 
