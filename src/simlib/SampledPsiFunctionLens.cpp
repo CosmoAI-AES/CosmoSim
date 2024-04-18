@@ -26,3 +26,6 @@ void SampledPsiFunctionLens::updatePsi( cv::Size size ) {
 
    return ; 
 }
+double SampledPsiFunctionLens::criticalXi( double phi ) {
+   return lens->criticalXi( phi ) ;
+}

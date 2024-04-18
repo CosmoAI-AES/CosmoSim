@@ -4,7 +4,7 @@
 
 rm -rf build
 
-if /bin/false
+if /bin/true
 then
    conan install . -s build_type=Release -if build -b missing
    # conan install . -if build

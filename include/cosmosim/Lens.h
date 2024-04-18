@@ -100,6 +100,7 @@ class SampledPsiFunctionLens : public SampledLens {
       virtual void setEinsteinR( double ) ;
       virtual void setOrientation( double ) ;
       virtual void setRatio( double ) ;
+      virtual double criticalXi( double ) ;
 } ;
 
 class PointMass : public PsiFunctionLens { 

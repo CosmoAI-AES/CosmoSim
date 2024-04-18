@@ -104,5 +104,5 @@ double SIE::psiYfunction( double x, double y ) {
 double SIE::criticalXi( double phi ) {
    double c = cos(phi) ;
    double s = sin(phi) ;
-   return sqrt( f/(c*c + s*s) ) ;
+   return sqrt( ellipseratio/(c*c + s*s) ) ;
 }

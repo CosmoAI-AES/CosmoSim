@@ -54,6 +54,22 @@ void LensModel::update( cv::Point2d xi ) {
    setXi( xi ) ;
    return updateInner() ;
 }
+void LensModel::drawCritical( ) {
+   for ( int i=0 ; i < 360 ; ++i ) {
+      double phi = i*PI/180 ;
+      double xi = lens->criticalXi( phi ) ;
+      double x = cos(phi)*xi ;
+      double y = sin(phi)*xi ;
+      cv::Point2d xy = cv::Point( x, y ) ;
+      cv::Point2d ij = imageCoordinate( xy, imgDistorted ) ;
+      cv::Vec3b red = (0,0,255) ;
+      if ( 3 == imgDistorted.channels() ) {
+         imgDistorted.at<cv::Vec3b>( ij.x, ij.y ) = red ;
+      } else {
+         imgDistorted.at<uchar>( ij.x, ij.y ) = 255 ;
+      }
+   }
+}
 void LensModel::updateInner( ) {
     cv::Mat imgApparent = getApparent() ;
 

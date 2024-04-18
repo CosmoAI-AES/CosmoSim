@@ -153,6 +153,6 @@ double Lens::psiYvalue( double x, double y ) {
    cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
    return -psiX.at<double>( ij ) ;
 }
-double SIE::criticalXi( double phi ) {
+double Lens::criticalXi( double phi ) {
    throw NotImplemented() ;
 }
