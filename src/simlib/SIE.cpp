@@ -90,7 +90,7 @@ double SIE::psiYfunction( double x, double y ) {
    double R = sqrt( x*x + y*y ) ;
    double theta = orientation*PI/180 ;
    double ct = cos(theta) ;
-   double st = sin(theta) ;
+   double st = f*sin(theta) ;
    double xp = ct*x + st*y ;
    double yp = - st*x + ct*y ;
 
