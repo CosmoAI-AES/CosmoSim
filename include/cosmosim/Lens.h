@@ -63,6 +63,8 @@ public:
     virtual double psiValue( double, double ) ;
     virtual double psiXvalue( double, double ) ;
     virtual double psiYvalue( double, double ) ;
+
+    virtual double criticalXi( double ) ;
 };
 
 class SampledLens : public Lens {
@@ -133,7 +135,8 @@ public:
     virtual double psiXfunction( double, double ) ;
     virtual double psiYfunction( double, double ) ;
 
-    // virtual cv::Point2d getXi( cv::Point2d ) ;
+    virtual double criticalXi( double ) ;
+
 };
 
 /*
