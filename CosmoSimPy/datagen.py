@@ -67,20 +67,20 @@ def makeSingle(sim,args,name=None,row=None,outstream=None):
     print ( "[datagen.py] ready for runSim()\n" ) ;
     sim.runSim()
     print ( "[datagen.py] runSim() completed\n" ) ;
-    centrepoint = makeOutput(sim,args,name,actual=args.actual,apparent=args.apparent,original=args.original,reflines=args.reflines)
+    centrepoint = makeOutput(sim,args,name,actual=args.actual,apparent=args.apparent,original=args.original,reflines=args.reflines,critical=args.criticalcurves)
     print( "[datagen.py] Centre Point", centrepoint, "(Centre of Luminence in Planar Co-ordinates)" )
     if args.join:
         # sim.setMaskMode(False)
         sim.runSim()
         print ( "[datagen.py] runSim() completed\n" ) ;
         sim.maskImage(float(args.maskscale))
-        joinim = sim.getDistorted(False)
+        joinim = sim.getDistorted(False,args.criticalcurves)
         # joinim = sim.getDistortedImage(False)
         nc = int(args.components)
         for i in range(1,nc):
            sim.moveSim(rot=2*i*np.pi/nc,scale=1)
            sim.maskImage(float(args.maskscale))
-           im = sim.getDistorted(False)
+           im = sim.getDistorted(False,args.criticalcurves)
            # im = sim.getDistortedImage(False)
            joinim = np.maximum(joinim,im)
         fn = os.path.join(args.directory,"join-" + str(name) + ".png" ) 
@@ -147,9 +147,10 @@ def makeSingle(sim,args,name=None,row=None,outstream=None):
         outstream.write( line )
 
 
-def makeOutput(sim,args,name=None,rot=0,scale=1,actual=False,apparent=False,original=False,reflines=False):
+def makeOutput(sim,args,name=None,rot=0,scale=1,actual=False,apparent=False,original=False,reflines=False,critical=False):
     im = sim.getDistortedImage( 
                     reflines=False,
+                    critical=critical,
                     showmask=args.showmask
                 ) 
 

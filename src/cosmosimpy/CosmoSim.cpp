@@ -370,11 +370,13 @@ void CosmoSim::showMask() {
           sim->markMask() ;
 }
 
-cv::Mat CosmoSim::getDistorted(bool refLinesMode) {
+cv::Mat CosmoSim::getDistorted(bool refLinesMode, bool criticalCurvesMode ) {
    if ( NULL == sim )
       throw std::bad_function_call() ;
    cv::Mat im ;
+   std::cout << "[getDistorted] " << refLinesMode << criticalCurvesMode << "\n" ;
    im = sim->getDistorted() ;
+   if (criticalCurvesMode) sim->drawCritical() ;
    std::cout << "[getDistorted] size=" << im.size << "\n" ;
    if ( basesize < size ) {
       std::cout << "basesize=" << basesize << "; size=" << size << "\n" ;

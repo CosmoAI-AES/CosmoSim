@@ -39,6 +39,8 @@ class CosmoParser(argparse.ArgumentParser):
     # Output configuration 
     self.add_argument('-R', '--reflines',action='store_true',
             help="Add reference (axes) lines")
+    self.add_argument( '--criticalcurves',action='store_true',
+            help="Add critical curves to the distorted image")
     self.add_argument('-C', '--centred',action='store_true', help="centre image")
     self.add_argument('-M', '--mask',action='store_true',
             help="Mask out the convergence circle")

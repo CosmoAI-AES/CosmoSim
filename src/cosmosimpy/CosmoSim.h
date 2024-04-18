@@ -87,7 +87,7 @@ public:
 
     cv::Mat getSource(bool) ;
     cv::Mat getActual(bool) ;
-    cv::Mat getDistorted(bool) ;
+    cv::Mat getDistorted(bool,bool) ;
 
     cv::Mat getPsiMap() ;
     cv::Mat getMassMap() ;

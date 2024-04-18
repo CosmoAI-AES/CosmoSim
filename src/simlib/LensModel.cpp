@@ -55,6 +55,7 @@ void LensModel::update( cv::Point2d xi ) {
    return updateInner() ;
 }
 void LensModel::drawCritical( ) {
+   std::cout << "[drawCritical] \n" ;
    for ( int i=0 ; i < 360 ; ++i ) {
       double phi = i*PI/180 ;
       double xi = lens->criticalXi( phi ) ;
