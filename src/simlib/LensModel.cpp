@@ -63,6 +63,7 @@ void LensModel::drawCritical( ) {
       double y = sin(phi)*xi ;
       cv::Point2d xy = cv::Point( x, y ) ;
       cv::Point2d ij = imageCoordinate( xy, imgDistorted ) ;
+      std::cout << "[drawCritical] " << ij << "\n" ;
       cv::Vec3b red = (0,0,255) ;
       if ( 3 == imgDistorted.channels() ) {
          imgDistorted.at<cv::Vec3b>( ij.x, ij.y ) = red ;
