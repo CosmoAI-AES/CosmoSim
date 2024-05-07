@@ -59,7 +59,7 @@ You may also have to create a default profile.
 (See [Conan Tutorial](https://docs.conan.io/en/latest/getting_started.html)
 for further information.)
 ```sh
-pip3 install conan==1.59
+pip3 install conan==1.60
 conan profile new default --detect
 sh build.sh
 ```
