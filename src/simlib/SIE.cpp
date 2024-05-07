@@ -102,8 +102,8 @@ double SIE::psiYfunction( double x, double y ) {
 }
 
 double SIE::criticalXi( double phi ) {
-   double c = cos(phi-orientation) ;
-   double s = sin(phi-orientation) ;
+   double c = cos(phi-orientation*PI/180) ;
+   double s = sin(phi-orientation*PI/180) ;
    double f = ellipseratio ;
    double xicrit =  (sqrt(f)*einsteinR)/sqrt( ellipseratio/(c*c + f*f*s*s) ) ;
    return xicrit ;
