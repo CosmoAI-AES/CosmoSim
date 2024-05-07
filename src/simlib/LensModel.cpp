@@ -59,8 +59,8 @@ void LensModel::drawCritical( ) {
    for ( int i=0 ; i < 360 ; ++i ) {
       double phi = i*PI/180 ;
       double xi = lens->criticalXi( phi )/CHI ;
-      double x = cos(phi)*xi ;
-      double y = sin(phi)*xi ;
+      double x = cos(phi-orientation)*xi ;
+      double y = sin(phi-orientation)*xi ;
       cv::Point2d xy = cv::Point( x, y ) ;
       cv::Point2d ij = imageCoordinate( xy, imgDistorted ) ;
       std::cout << "[drawCritical] " << ij << "\n" ;
