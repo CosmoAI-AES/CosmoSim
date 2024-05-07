@@ -42,3 +42,6 @@ index,filename,source,lens,x,y,einsteinR,ellipseratio,orientation,sigma,sigma2,t
 "sies26s",sies26s.png,"s","SIE",0.1,0,60,0.4,250,30,30,0
 "sies27s",sies27s.png,"s","SIE",0.1,0,60,0.4,260,30,30,0
 "sies28s",sies28s.png,"s","SIE",0.1,0,60,0.4,270,30,30,0
+"sie21",sie21.png,"s","SIE",50,0,48,0.5,0,30,30,0
+"sie22",sie22.png,"s","SIE",0,50,48,0.5,90,30,30,0
+"sie23",sie23.png,"s","SIE",0,50,48,0.5,270,30,30,0

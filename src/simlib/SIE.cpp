@@ -72,16 +72,17 @@ double SIE::psiXfunction( double x, double y ) {
    double ct = cos(theta) ;
    double st = sin(theta) ;
    double xp = ct*x + st*y ;
+   xp /= R ;
+   xp *= sq ;
+   xp /= ellipseratio ;
    double yp = - st*x + ct*y ;
+   yp /= R ;
+   yp *= sq ;
 
    // std::cout << "SIE psiXfunction " << cv::Point2d( x,y ) << " - "
     // << cv::Point2d( xp,yp ) << " \n" ;
 
-   return einsteinR*sqf*(
-      ct * asinh(xp/R * sq/ellipseratio)
-      -
-      st * asin(yp/R * sq) 
-      ) ;
+   return einsteinR*sqf*( ct * asinh(xp) - st * asin(yp)) ;
 }
 double SIE::psiYfunction( double x, double y ) {
    double sq = sqrt( 1 - ellipseratio*ellipseratio ) ; /* $f'$ */
@@ -90,15 +91,16 @@ double SIE::psiYfunction( double x, double y ) {
    double R = sqrt( x*x + y*y ) ;
    double theta = orientation*PI/180 ;
    double ct = cos(theta) ;
-   double st = ellipseratio*sin(theta) ;
+   double st = sin(theta) ;
    double xp = ct*x + st*y ;
+   xp /= R ;
+   xp *= sq ;
+   xp /= ellipseratio ;
    double yp = - st*x + ct*y ;
+   yp /= R ;
+   yp *= sq ;
 
-   return einsteinR*sqf*(
-      st * asinh(xp/R * sq/ellipseratio)
-      +
-      ct * asin(yp/R * sq) 
-      );
+   return einsteinR*sqf*( st * asinh( xp ) + ct * asin( yp ));
 }
 
 double SIE::criticalXi( double phi ) {
