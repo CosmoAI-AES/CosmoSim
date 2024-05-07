@@ -68,6 +68,8 @@ class ImagePane(ttk.Frame):
         self.distorted.grid(column=1,row=0)
         self.height = 540
 
+        self.criticalVar = BooleanVar()
+        self.criticalVar.set( False )
         self.reflinesVar = BooleanVar()
         self.reflinesVar.set( True )
         self.maskVar = BooleanVar()
@@ -78,6 +80,8 @@ class ImagePane(ttk.Frame):
         self.updateEvent = sim.getUpdateEvent()
         self.updateThread = th.Thread(target=self.updateThread)
         self.updateThread.start()
+        self.criticalVar.trace_add( "write", 
+                lambda *a : self.updateEvent.set() )
         self.reflinesVar.trace_add( "write", 
                 lambda *a : self.updateEvent.set() )
         self.maskVar.trace_add( "write",
@@ -93,6 +97,8 @@ class ImagePane(ttk.Frame):
            size = self.height - 25
            self.actual.config(width=size, height=size)
            self.distorted.config(width=size, height=size)
+    def getCriticalVar(self):
+        return self.criticalVar
     def getReflinesVar(self):
         return self.reflinesVar
     def getMaskVar(self):
@@ -123,6 +129,7 @@ class ImagePane(ttk.Frame):
         print( "setDistortedImage" )
         im = self.sim.getDistortedImage( 
                 reflines=False,
+                critical=self.criticalVar.get(),
                     mask=self.maskVar.get(),
                     showmask=self.showmaskVar.get(),
                  )

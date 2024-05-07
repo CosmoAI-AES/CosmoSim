@@ -51,7 +51,12 @@ class Window(Tk):
                 onvalue=True, offvalue=False,
                 variable=self.imgPane.getReflinesVar(),
                 text="Show Reference Lines" )
+        self.criticalButton = ttk.Checkbutton(self.frm,
+                onvalue=True, offvalue=False,
+                variable=self.imgPane.getCriticalVar(),
+                text="Show Critical Curve" )
         self.reflineButton.grid(column=1, row=0, sticky=W)
+        self.criticalButton.grid(column=3, row=0, sticky=W)
         self.maskButton = ttk.Checkbutton(self.frm,
                 onvalue=True, offvalue=False,
                 variable=self.imgPane.getMaskVar(),
