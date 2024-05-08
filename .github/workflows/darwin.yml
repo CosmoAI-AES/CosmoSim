@@ -16,8 +16,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-12, macos-14]
-        compiler-version: [ '10.0', 14 ]
+        os: [macos-14]
+        compiler-version: [ '15.0' ]
         python-version: ['3.11', '3.10']
     steps:
       - uses: actions/checkout@v3
@@ -27,25 +27,6 @@ jobs:
            python-version: ${{ matrix.python-version }}
            compiler-version: ${{ matrix.compiler-version }}
 
-  test:
-
-    runs-on: ${{ matrix.os }}
-    env:
-      CC: gcc-${{ matrix.compiler_version }}
-      CXX: g++-${{ matrix.compiler_version }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-12, macos-14]
-        compiler-version: [ 10, 14 ]
-        python-version: ['3.11', '3.10']
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build Project
-        uses: ./.github/actions/build-darwin
-        with:
-           compiler-version: ${{ matrix.compiler-version }}
-           python-version: ${{ matrix.python-version }}
 
   app:
 
@@ -53,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-12, macos-14]
+        os: [macos-14]
         python-version: ['3.11']
     steps:
       - uses: actions/checkout@v3
@@ -68,7 +49,7 @@ jobs:
         run: |
           pip3 install conan==1.60
           conan profile new default --detect
-          conan profile update settings.compiler.version=14 default
+          conan profile update settings.compiler.version=15.0 default
           pip3 install pyinstaller
       - name: Run conan
         run: |
