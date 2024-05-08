@@ -1,5 +1,5 @@
 
-name: Trial Build
+name: Stable Trial Build
 
 on: 
    push:
@@ -19,15 +19,15 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         compiler_version: [10]
-        python_version: ['3.10','3.11','3.12']
+        python-version: ['3.10','3.11','3.12']
 
     steps:
       - uses: actions/checkout@v3
       - name: Build Project
         uses: ./.github/actions/build-linux
         with:
-           compiler_version: ${{ matrix.compiler_version }}
-           python_version: ${{ matrix.python_version }}
+           compiler-version: ${{ matrix.compiler-version }}
+           python-version: ${{ matrix.python-version }}
 
   windows:
 
@@ -36,7 +36,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest]
-        python_version: ['3.10','3.11']
+        python-version: ['3.10','3.11']
     steps:
       - uses: actions/checkout@v3
       - name: Build Project
