@@ -40,10 +40,11 @@ runs:
         run: |
           pyinstaller --windowed --osx-bundle-identifier no.ntnu.iir.CosmoGUI CosmoSimPy/CosmoGUI.py
       - name: Remove non-app data
+        shell: bash
         run: |
           rm -rf dist/CosmoGUI
       - name: Archive Python link library
         uses: actions/upload-artifact@v3
         with:
-          name: CosmoGUI-application-${{matrix.os}}
+          name: CosmoGUI-application-${{inputs.os}}
           path: dist
