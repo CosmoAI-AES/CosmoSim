@@ -76,7 +76,7 @@ jobs:
           zip -r CosmoGUI-application-macos-12.zip CosmoGUI-application-macos-12
           zip -r CosmoGUI-application-macos-14.zip CosmoGUI-application-macos-14
       - name: Upload Release Asset
-        id: upload-release-asset 
+        id: upload-lib
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -86,7 +86,7 @@ jobs:
           asset_name: CosmoSimPy.zip
           asset_content_type: application/zip
       - name: Upload Release Asset
-        id: upload-release-asset 
+        id: upload-app-12
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -96,7 +96,7 @@ jobs:
           asset_name: CosmoSimPy.zip
           asset_content_type: application/zip
       - name: Upload Release Asset
-        id: upload-release-asset 
+        id: upload-app-14
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
