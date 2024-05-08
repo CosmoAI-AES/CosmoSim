@@ -3,9 +3,9 @@ name: 'Macos Build'
 description: Build the project on Macos
 
 inputs:
-  compiler_version:
-    default: 10
-  python_version:
+  compiler-version:
+    default: 14
+  python-version:
     required: false
     default: '3.10'
 
@@ -21,7 +21,11 @@ runs:
 
       - name: Install prerequisites
         shell: bash
-        run: sudo pip3 install conan==1.60
+        run: |
+          sudo pip3 install conan==1.64
+          conan profile new default --detect
+          conan profile update settings.compiler.version=${{ inputs.compiler-version }} default
+
           ###       - name: Config Conan
           ###         shell: bash
           ###         run: |

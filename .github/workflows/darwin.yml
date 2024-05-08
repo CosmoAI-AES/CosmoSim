@@ -2,47 +2,40 @@
 
 name: Debugging MacOS
 
-on: 
-   release:
-   workflow_dispatch:
-   push:
-     branches: [develop]
+on:
+  release:
+  workflow_dispatch:
+  push:
+     branches: [main, master, develop, workflow-debug]
 
 jobs:
 
   build:
 
     runs-on: ${{ matrix.os }}
-    env:
-      CC: gcc-${{ matrix.compiler_version }}
-      CXX: g++-${{ matrix.compiler_version }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-14]
-        compiler_version: [10,14]
-        python_version: ['3.11', '3.10']
+        os: [macos-14]
+        compiler-version: [ '15.0' ]
+        python-version: ['3.11', '3.10']
     steps:
       - uses: actions/checkout@v3
       - name: Build Project
         uses: ./.github/actions/build-darwin
         with:
-           compiler_version: ${{ matrix.compiler_version }}
-           python_version: ${{ matrix.python_version }}
+           python-version: ${{ matrix.python-version }}
+           compiler-version: ${{ matrix.compiler-version }}
 
 
   app:
 
     runs-on: ${{ matrix.os }}
-    env:
-      CC: gcc-${{ matrix.compiler_version }}
-      CXX: g++-${{ matrix.compiler_version }}
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-12, macos-14]
-        compiler_version: [10,14]
-        python_version: ['3.11']
+        os: [macos-14]
+        python-version: ['3.11']
     steps:
       - uses: actions/checkout@v3
 
@@ -54,7 +47,9 @@ jobs:
   
       - name: Install prerequisites
         run: |
-          pip3 install conan==1.60
+          pip3 install conan==1.64
+          conan profile new default --detect
+          conan profile update settings.compiler.version=15.0 default
           pip3 install pyinstaller
       - name: Run conan
         run: |

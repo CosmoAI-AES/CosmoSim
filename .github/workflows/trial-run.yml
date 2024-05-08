@@ -3,7 +3,7 @@ name: Trial Build
 
 on: 
    push:
-     branches: [main, master, develop]
+     branches: [main, master, develop, workflow-debug]
    workflow_dispatch:
    workflow_call:
 
@@ -42,24 +42,26 @@ jobs:
       - name: Build Project
         uses: ./.github/actions/build-windows
         with:
-           compiler_version: ${{ matrix.compiler_version }}
-           python_version: ${{ matrix.python_version }}
+           compiler-version: ${{ matrix.compiler-version }}
+           python-version: ${{ matrix.python-version }}
 
-  darwin:
+
+  macos:
 
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-12]
-        python_version: ['3.11', '3.10']
+        os: [macos-12 ]
+        compiler-version: [ 14 ]
+        python-version: ['3.11', '3.10']
     steps:
       - uses: actions/checkout@v3
       - name: Build Project
         uses: ./.github/actions/build-darwin
         with:
-           compiler_version: ${{ matrix.compiler_version }}
-           python_version: ${{ matrix.python_version }}
+           python-version: ${{ matrix.python-version }}
+           compiler-version: ${{ matrix.compiler-version }}
 
 
   app:
@@ -69,19 +71,21 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-12]
-        python_version: ['3.11']
+        python-version: ['3.11']
     steps:
       - uses: actions/checkout@v3
 
       - name: Setup Python 3.x
         uses: actions/setup-python@v4
         with:
-          python_version: ${{ matrix.python_version }}
+          python-version: ${{ matrix.python-version }}
           architecture: 'x64'
   
       - name: Install prerequisites
         run: |
           pip3 install conan==1.60
+          conan profile new default --detect
+          conan profile update settings.compiler.version=14 default
           pip3 install pyinstaller
       - name: Run conan
         run: |
