@@ -6,7 +6,6 @@ on:
    push:
      branches: [ workflow-debug2 ]
    workflow_dispatch:
-   workflow_call:
 
 jobs:
 
