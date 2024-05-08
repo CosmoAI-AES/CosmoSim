@@ -3,6 +3,11 @@
 
 ## Unreleased
 
+### Added
+
++ Draw Critical Curves
++ New workflows for new OS versions, including MacOS 12 and 14.
+
 ## [2.4.0] - 2024-05-18 
 
 ### Added
