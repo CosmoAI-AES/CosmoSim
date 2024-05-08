@@ -17,6 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-12, macos-14]
+        compiler-version: [ '10.0', 14 ]
         python-version: ['3.11', '3.10']
     steps:
       - uses: actions/checkout@v3
@@ -24,6 +25,7 @@ jobs:
         uses: ./.github/actions/build-darwin
         with:
            python-version: ${{ matrix.python-version }}
+           compiler-version: ${{ matrix.compiler-version }}
 
   test:
 
