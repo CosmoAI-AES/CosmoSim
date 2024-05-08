@@ -37,6 +37,7 @@ runs:
           cmake . -B build -DCMAKE_BUILD_TYPE=Release
           cmake --build build
       - name: Make application bundle
+        shell: bash
         run: |
           pyinstaller --windowed --osx-bundle-identifier no.ntnu.iir.CosmoGUI CosmoSimPy/CosmoGUI.py
       - name: Remove non-app data
