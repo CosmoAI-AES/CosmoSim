@@ -3,9 +3,9 @@ name: 'Macos Build'
 description: Build the project on Macos
 
 inputs:
-  compiler-version:
+  compiler_version:
     default: 10
-  python-version:
+  python_version:
     required: false
     default: '3.10'
 
@@ -16,7 +16,7 @@ runs:
       - name: Setup Python 3.x
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ inputs.python-version }}
+          python_version: ${{ inputs.python_version }}
           architecture: 'x64'
 
       - name: Install prerequisites
