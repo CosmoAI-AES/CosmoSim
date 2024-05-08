@@ -23,6 +23,7 @@ runs:
         shell: bash
         run: |
           sudo pip3 install conan==1.60
+          conan profile new default --detect
           conan profile update settings.compiler.version=${{ inputs.compiler-version }} default
 
           ###       - name: Config Conan
