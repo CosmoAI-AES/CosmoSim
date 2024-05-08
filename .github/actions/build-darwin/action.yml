@@ -1,6 +1,6 @@
-name: 'Linux Build'
+name: 'Macos Build'
 
-description: Build the project on Linux
+description: Build the project on Macos
 
 inputs:
   compiler-version:

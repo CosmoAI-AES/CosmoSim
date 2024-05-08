@@ -9,10 +9,14 @@ jobs:
   conan-on-darwin:
 
     runs-on: ${{ matrix.os }}
+    env:
+      CC: gcc-${{ matrix.compiler_version }}
+      CXX: g++-${{ matrix.compiler_version }}
     strategy:
       fail-fast: false
       matrix:
         os: [macos-12, macos-14]
+        compiler_version: [10,14]
         python-version: ['3.12', '3.11', '3.10']
     steps:
       - uses: actions/checkout@v3
@@ -26,10 +30,14 @@ jobs:
   macos-app:
 
     runs-on: ${{ matrix.os }}
+    env:
+      CC: gcc-${{ matrix.compiler_version }}
+      CXX: g++-${{ matrix.compiler_version }}
     strategy:
       fail-fast: false
       matrix:
         os: [macos-12, maxos-14]
+        compiler_version: [10,14]
         python-version: ['3.12', '3.11']
     steps:
       - uses: actions/checkout@v3
