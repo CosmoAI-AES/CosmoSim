@@ -1,5 +1,5 @@
 
-name: Stable Trial Build
+name: Trial Build
 
 on: 
    push:
@@ -48,14 +48,10 @@ jobs:
   conan-on-darwin:
 
     runs-on: ${{ matrix.os }}
-    env:
-      CC: gcc-${{ matrix.compiler_version }}
-      CXX: g++-${{ matrix.compiler_version }}
     strategy:
       fail-fast: false
       matrix:
         os: [macos-12]
-        compiler_version: [10]
         python_version: ['3.11', '3.10']
     steps:
       - uses: actions/checkout@v3
@@ -69,14 +65,10 @@ jobs:
   macos-app:
 
     runs-on: ${{ matrix.os }}
-    env:
-      CC: gcc-${{ matrix.compiler_version }}
-      CXX: g++-${{ matrix.compiler_version }}
     strategy:
       fail-fast: false
       matrix:
         os: [macos-12]
-        compiler_version: [10]
         python_version: ['3.11']
     steps:
       - uses: actions/checkout@v3
