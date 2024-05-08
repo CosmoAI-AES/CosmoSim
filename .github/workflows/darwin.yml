@@ -6,7 +6,7 @@ on: [release, workflow_dispatch]
 
 jobs:
 
-  conan-on-darwin:
+  build:
 
     runs-on: ${{ matrix.os }}
     env:
@@ -27,7 +27,7 @@ jobs:
            python-version: ${{ matrix.python-version }}
 
 
-  macos-app:
+  app:
 
     runs-on: ${{ matrix.os }}
     env:
