@@ -1,0 +1,32 @@
+# (C) 2023: Hans Georg Schaathun <georg@schaathun.net> 
+
+name: Test dist
+
+on:
+   push:
+     branches: [ workflow-debug2 ]
+   workflow_dispatch:
+
+jobs:
+
+  build:
+    uses: ./.github/workflows/trial-run.yml
+
+  python-dist:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Make Python Distribution
+        run: |
+           mkdir -p dist/CosmoSimPy
+           rsync -av CosmoSimPy/ dist/CosmoSimPy/
+      - name: Archive Python Application
+        uses: actions/upload-artifact@v3
+        with:
+          name: CosmoSimPy
+          path: dist
+
