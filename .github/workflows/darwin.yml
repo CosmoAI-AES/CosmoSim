@@ -1,12 +1,16 @@
 # (C) 2023: Hans Georg Schaathun <georg@schaathun.net> 
 
-name: MacOS
+name: Debugging MacOS
 
-on: [release, workflow_dispatch]
+on:
+  release:
+  workflow_dispatch:
+  push:
+     branches: [main, master, develop, workflow-debug]
 
 jobs:
 
-  conan-on-darwin:
+  build:
 
     runs-on: ${{ matrix.os }}
     env:
@@ -27,7 +31,7 @@ jobs:
            python-version: ${{ matrix.python-version }}
 
 
-  macos-app:
+  app:
 
     runs-on: ${{ matrix.os }}
     env:

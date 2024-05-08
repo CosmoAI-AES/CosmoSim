@@ -3,7 +3,7 @@ name: Stable Trial Build
 
 on: 
    push:
-     branches: [main, master, develop]
+     branches: [main, master, develop, workflow-debug]
    workflow_dispatch:
    workflow_call:
 
