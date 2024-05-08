@@ -36,81 +36,12 @@ jobs:
       matrix:
         os: [macos-14]
         python-version: ['3.11']
-        arch: [ 'x64', 'arm64' ]
+        compiler-version: [ '15.0' ]
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Setup Python 3.x
-        uses: actions/setup-python@v4
+      - name: Build Project
+        uses: ./.github/actions/macos-app
         with:
-          python-version: ${{ matrix.python-version }}
-          architecture: ${{ matrix.arch }}
-  
-      - name: Install prerequisites
-        run: |
-          pip3 install conan==1.64
-          conan profile new default --detect
-          conan profile update settings.compiler.version=15.0 default
-          pip3 install pyinstaller
-      - name: Run conan
-        run: |
-          conan install . -s build_type=Release -if build -b missing
-      - name: Configure and build
-        run: |
-          cmake . -B build -DCMAKE_BUILD_TYPE=Release
-          cmake --build build
-      - name: Make application bundle
-        run: |
-          pyinstaller --windowed --osx-bundle-identifier no.ntnu.iir.CosmoGUI CosmoSimPy/CosmoGUI.py
-      - name: Remove non-app data
-        run: |
-          rm -rf dist/CosmoGUI
-      - name: Archive Python link library
-        uses: actions/upload-artifact@v3
-        with:
-          name: CosmoGUI-application-${{matrix.os}}
-          path: dist
-
-
-  test:
-
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-12,macos-14]
-        python-version: ['3.11']
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Python 3.x
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-  
-      - name: Install prerequisites
-        run: |
-          pip3 install conan==1.64
-          conan profile new default --detect
-          conan profile update settings.compiler.version=15.0 default
-          pip3 install pyinstaller
-      - name: Run conan
-        run: |
-          conan install . -s build_type=Release -if build -b missing
-      - name: Configure and build
-        run: |
-          cmake . -B build -DCMAKE_BUILD_TYPE=Release
-          cmake --build build
-      - name: Make application bundle
-        run: |
-          pyinstaller --windowed --osx-bundle-identifier no.ntnu.iir.CosmoGUI CosmoSimPy/CosmoGUI.py
-      - name: Remove non-app data
-        run: |
-          rm -rf dist/CosmoGUI
-      - name: Archive Python link library
-        uses: actions/upload-artifact@v3
-        with:
-          name: CosmoGUI-application-${{matrix.os}}
-          path: dist
+           python-version: ${{ matrix.python-version }}
+           compiler-version: ${{ matrix.compiler-version }}
