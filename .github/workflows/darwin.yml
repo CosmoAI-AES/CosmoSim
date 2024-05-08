@@ -1,6 +1,6 @@
 # (C) 2023: Hans Georg Schaathun <georg@schaathun.net> 
 
-name: MacOS
+name: Debugging MacOS
 
 on: 
    release:
