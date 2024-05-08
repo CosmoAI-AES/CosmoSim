@@ -10,7 +10,7 @@ on:
 jobs:
 
   build:
-    uses: ./.github/workflows/trial-run.yml@develop
+    uses: ./.github/workflows/trial-run.yml
 
   python-dist:
 
