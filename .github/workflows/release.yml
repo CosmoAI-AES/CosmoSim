@@ -1,4 +1,4 @@
-# (C) 2023: Hans Georg Schaathun <georg@schaathun.net> 
+# (C) 2024: Hans Georg Schaathun <georg@schaathun.net> 
 
 name: Make Release
 
@@ -38,9 +38,7 @@ jobs:
        fail-fast: false
 
     needs:
-      - build-on-linux
-      - build-on-windows
-      - python-dist
+      - build
 
     steps:
       - uses: actions/checkout@v3
