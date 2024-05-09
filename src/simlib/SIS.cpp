@@ -18,3 +18,10 @@ double SIS::psiYfunction( double x, double y ) {
    return einsteinR*y/s ;
 }
 
+double SIE::criticalXi( double phi ) {
+   double c = cos(phi-orientation*PI/180) ;
+   double s = sin(phi-orientation*PI/180) ;
+   double xicrit = sqrt(f)*einsteinR ;
+   xicrit /= 2 ;
+   return xicrit ;
+}

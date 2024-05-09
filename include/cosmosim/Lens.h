@@ -123,6 +123,7 @@ public:
     virtual double psiXfunction( double, double ) ;
     virtual double psiYfunction( double, double ) ;
 
+    virtual double criticalXi( double ) ;
 };
 
 class SIE : public PsiFunctionLens { 
