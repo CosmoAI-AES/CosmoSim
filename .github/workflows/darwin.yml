@@ -19,7 +19,7 @@ jobs:
         compiler-version: [ '15.0' ]
         python-version: ['3.10']
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build Project
         uses: ./.github/actions/build-darwin
         with:
@@ -38,7 +38,7 @@ jobs:
         compiler-version: [ '15.0' ]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build Project
         uses: ./.github/actions/macos-app
         with:

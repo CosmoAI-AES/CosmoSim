@@ -36,7 +36,7 @@ jobs:
         os: [windows-latest]
         python-version: ['3.10','3.11']
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build Project
         uses: ./.github/actions/build-windows
         with:
@@ -54,7 +54,7 @@ jobs:
         compiler-version: [ '15.0' ]
         python-version: [ '3.11' ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build Project
         uses: ./.github/actions/build-darwin
         with:
@@ -71,7 +71,7 @@ jobs:
         python-version: ['3.11']
         compiler-version: [ '14' ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build Project
         uses: ./.github/actions/macos-app
         with:
@@ -90,7 +90,7 @@ jobs:
         compiler-version: [ '15.0' ]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build Project
         uses: ./.github/actions/macos-app
         with:
