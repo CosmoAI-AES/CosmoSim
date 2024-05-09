@@ -4,7 +4,7 @@ name: Test Release
 
 on:
    push:
-     branches: [ upgrade-uploader ]
+     # branches: [ upgrade-uploader ]
      tag: 
        - 'test-release*'
    workflow_dispatch:
