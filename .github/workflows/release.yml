@@ -33,7 +33,7 @@ jobs:
 
   release:
     permissions: write-all
-    name: Upload Release Asset
+    name: Release and Upload Assets
     runs-on: ubuntu-latest
     strategy:
        fail-fast: false
