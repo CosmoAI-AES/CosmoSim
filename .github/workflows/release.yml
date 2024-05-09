@@ -11,25 +11,8 @@ on:
 jobs:
 
   build:
-    uses: ./.github/workflows/build-production.yml
+    uses: ./.github/workflows/dist.yml
 
-  python-dist:
-
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Make Python Distribution
-        run: |
-           mkdir -p dist/CosmoSimPy
-           rsync -av CosmoSimPy/ dist/CosmoSimPy/
-      - name: Archive Python Application
-        uses: actions/upload-artifact@v3
-        with:
-          name: CosmoSimPy
-          path: dist
 
   release:
     permissions: write-all
@@ -40,12 +23,11 @@ jobs:
 
     needs:
       - build
-      - python-dist
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Download a all artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: dist
       - name: Display artifacts
@@ -57,43 +39,13 @@ jobs:
           zip -r CosmoGUI-application-macos-12.zip CosmoGUI-app*-12
           zip -r CosmoGUI-application-macos-14.zip CosmoGUI-app*-14
         working-directory: dist
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
           draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        id: upload-lib
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: ./dist/CosmoSimPy.zip
-          asset_name: CosmoSimPy.zip
-          asset_content_type: application/zip
-      - name: Upload Release Asset
-        id: upload-app-12
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: ./dist/CosmoGUI-application-macos-12.zip
-          asset_name: CosmoGUI-application-macos-12.zip
-          asset_content_type: application/zip
-      - name: Upload Release Asset
-        id: upload-app-14
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: ./dist/CosmoGUI-application-macos-14.zip
-          asset_name: CosmoGUI-application-macos-14.zip
-          asset_content_type: application/zip
+          files: |
+             dist/CosmoSimPy.zip
+             dist/CosmoGUI-application-macos-12.zip
+             dist/CosmoGUI-application-macos-14.zip

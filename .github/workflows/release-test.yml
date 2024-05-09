@@ -36,6 +36,8 @@ jobs:
       - name: PKZip the asset
         run: |
           zip -r CosmoSimPy.zip CosmoSimPy
+          zip -r CosmoGUI-application-macos-12.zip CosmoGUI-app*-12
+          zip -r CosmoGUI-application-macos-14.zip CosmoGUI-app*-14
         working-directory: dist
 
       - name: Release
@@ -45,3 +47,5 @@ jobs:
           draft: true
           files: |
              dist/CosmoSimPy.zip
+             dist/CosmoGUI-application-macos-12.zip
+             dist/CosmoGUI-application-macos-14.zip
