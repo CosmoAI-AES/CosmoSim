@@ -7,7 +7,7 @@ inputs:
     default: 14
   python-version:
     required: false
-    default: '3.10'
+    default: '3.11'
 
 runs:
     using: "composite"
@@ -43,6 +43,8 @@ runs:
         shell: bash
         run: |
           rm -rf dist/CosmoGUI
+      - uses: kenchan0130/actions-system-info@master
+        id: system-info
       - name: Archive Python link library
         uses: actions/upload-artifact@v3
         with:
