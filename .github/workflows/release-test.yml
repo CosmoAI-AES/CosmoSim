@@ -5,7 +5,8 @@ name: Test Release
 on:
    push:
      branches: [ upgrade-uploader ]
-     tag: 'test-release*'
+     tag: 
+       - 'test-release*'
    workflow_dispatch:
 
 jobs:
