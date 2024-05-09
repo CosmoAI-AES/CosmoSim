@@ -49,5 +49,4 @@ runs:
         uses: actions/upload-artifact@v4
         with:
           name: CosmoGUI-application-${{runner.os}}-${{ steps.system-info.outputs.release }}
-
           path: dist
