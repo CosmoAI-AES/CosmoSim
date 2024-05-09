@@ -21,7 +21,6 @@ jobs:
 
     needs:
       - build
-      - python-dist
 
     steps:
       - uses: actions/checkout@v4
