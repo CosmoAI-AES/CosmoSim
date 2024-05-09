@@ -44,6 +44,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Download a all artifact
+        uses: actions/download-artifact@v3
+        with:
+          path: dist
+      - name: Display artifacts
+        run: ls -lR
+        working-diretory: dist
+      - name: PKZip the asset
+        run: |
+          zip -r CosmoSimPy.zip CosmoSimPy
+          zip -r CosmoGUI-application-macos-12.zip CosmoGUI-application-macos-12
+          zip -r CosmoGUI-application-macos-14.zip CosmoGUI-application-macos-14
+        working-diretory: dist
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -54,27 +67,6 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-      - name: Download a single artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: CosmoSimPy
-          path: dist
-      - name: Download a single artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: CosmoGUI-application-macos-12
-          path: dist
-      - name: Download a single artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: CosmoGUI-application-macos-14
-          path: dist
-      - name: PKZip the asset
-        run: |
-          cd dist
-          zip -r CosmoSimPy.zip CosmoSimPy
-          zip -r CosmoGUI-application-macos-12.zip CosmoGUI-application-macos-12
-          zip -r CosmoGUI-application-macos-14.zip CosmoGUI-application-macos-14
       - name: Upload Release Asset
         id: upload-lib
         uses: actions/upload-release-asset@v1
