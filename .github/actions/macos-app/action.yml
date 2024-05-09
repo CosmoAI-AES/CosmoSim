@@ -18,7 +18,6 @@ runs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ inputs.python-version }}
-          architecture: 'x64'
 
       - name: Install prerequisites
         shell: bash
@@ -47,5 +46,6 @@ runs:
       - name: Archive Python link library
         uses: actions/upload-artifact@v3
         with:
-          name: CosmoGUI-application-${{inputs.os}}
+          name: CosmoGUI-application-${{runner.os}}-${{ steps.system-info.outputs.release }}
+
           path: dist
