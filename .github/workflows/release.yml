@@ -50,13 +50,13 @@ jobs:
           path: dist
       - name: Display artifacts
         run: ls -lR
-        working-diretory: dist
+        working-directory: dist
       - name: PKZip the asset
         run: |
           zip -r CosmoSimPy.zip CosmoSimPy
           zip -r CosmoGUI-application-macos-12.zip CosmoGUI-application-macos-12
           zip -r CosmoGUI-application-macos-14.zip CosmoGUI-application-macos-14
-        working-diretory: dist
+        working-directory: dist
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
