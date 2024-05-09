@@ -3,12 +3,19 @@
 
 ## Unreleased
 
+## [2.4.1] - 2024-05-09 
+
 ### Added
 
 + Draw Critical Curves for SIE and SIS lenses
 + New workflows for new OS versions, including MacOS 12 and 14.
 
-## [2.4.0] - 2024-05-18 
+### Changed
+
++ Updated workflows to use Node 20 actions.
++ Added workflows to build on MacOS, including arm64.
+
+## [2.4.0] - 2024-04-18 
 
 ### Added
 
