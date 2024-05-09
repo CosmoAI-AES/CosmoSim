@@ -3,7 +3,6 @@
 name: Debugging MacOS
 
 on:
-  release:
   workflow_dispatch:
   push:
      branches: [workflow-debug]
