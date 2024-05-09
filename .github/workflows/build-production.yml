@@ -51,23 +51,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-12 ]
-        compiler-version: [ 14 ]
-        python-version: ['3.11', '3.10']
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build Project
-        uses: ./.github/actions/build-darwin
-        with:
-           python-version: ${{ matrix.python-version }}
-           compiler-version: ${{ matrix.compiler-version }}
-
-  macos-14:
-
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
         os: [macos-14]
         compiler-version: [ '15.0' ]
         python-version: [ '3.11' ]
