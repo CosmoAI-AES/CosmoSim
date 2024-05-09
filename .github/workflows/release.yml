@@ -11,7 +11,7 @@ on:
 jobs:
 
   build:
-    uses: ./.github/workflows/trial-run.yml
+    uses: ./.github/workflows/build-production.yml
 
   python-dist:
 

@@ -1,0 +1,46 @@
+
+name: Build for Release
+
+on: 
+   workflow_dispatch:
+   workflow_call:
+
+jobs:
+  linux:
+
+    runs-on: ${{ matrix.os }}
+    env:
+      CC: gcc-${{ matrix.compiler_version }}
+      CXX: g++-${{ matrix.compiler_version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        compiler_version: [10]
+        python-version: ['3.12']
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build Project
+        uses: ./.github/actions/build-linux
+        with:
+           compiler-version: ${{ matrix.compiler-version }}
+           python-version: ${{ matrix.python-version }}
+
+  windows:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest]
+        python-version: ['3.11']
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build Project
+        uses: ./.github/actions/build-windows
+        with:
+           compiler-version: ${{ matrix.compiler-version }}
+           python-version: ${{ matrix.python-version }}
+
+
