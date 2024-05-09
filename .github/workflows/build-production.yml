@@ -27,20 +27,3 @@ jobs:
            compiler-version: ${{ matrix.compiler-version }}
            python-version: ${{ matrix.python-version }}
 
-  windows:
-
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-latest]
-        python-version: ['3.11']
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build Project
-        uses: ./.github/actions/build-windows
-        with:
-           compiler-version: ${{ matrix.compiler-version }}
-           python-version: ${{ matrix.python-version }}
-
-
