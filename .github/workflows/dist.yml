@@ -4,7 +4,7 @@ name: Test dist
 
 on:
    push:
-     branches: [ upgrade-uploader ]
+     branches: [ ]
    workflow_dispatch:
 
 jobs:

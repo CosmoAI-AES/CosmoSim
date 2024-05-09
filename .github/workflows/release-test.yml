@@ -1,0 +1,57 @@
+# (C) 2024: Hans Georg Schaathun <georg@schaathun.net> 
+
+name: Test Release
+
+on:
+   push:
+     branches: [ upgrade-uploader ]
+   workflow_dispatch:
+
+jobs:
+
+  build:
+    uses: ./.github/workflows/dist.yml
+
+  release:
+    permissions: write-all
+    name: Release and Upload Assets
+    runs-on: ubuntu-latest
+    strategy:
+       fail-fast: false
+
+    needs:
+      - build
+      - python-dist
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download a all artifact
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+      - name: Display artifacts
+        run: ls -lR
+        working-directory: dist
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: true
+          prerelease: false
+      - name: PKZip the asset
+        run: |
+          zip -r CosmoSimPy.zip CosmoSimPy
+        working-directory: dist
+      - name: Upload Release Asset
+        id: upload-lib
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: ./dist/CosmoSimPy.zip
+          asset_name: CosmoSimPy.zip
