@@ -13,7 +13,7 @@ runs:
     using: "composite"
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup Python 3.x
         uses: actions/setup-python@v4
         with:
@@ -46,7 +46,7 @@ runs:
       - uses: kenchan0130/actions-system-info@master
         id: system-info
       - name: Archive Python link library
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: CosmoGUI-application-${{runner.os}}-${{ steps.system-info.outputs.release }}
 
