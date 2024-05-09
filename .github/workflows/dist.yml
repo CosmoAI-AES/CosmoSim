@@ -4,13 +4,13 @@ name: Test dist
 
 on:
    push:
-     branches: [ workflow-debug2 ]
+     branches: [ upgrade-uploader ]
    workflow_dispatch:
 
 jobs:
 
   build:
-    uses: ./.github/workflows/trial-run.yml
+    uses: ./.github/workflows/build-production.yml
 
   python-dist:
 
@@ -19,13 +19,18 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - name: Download a all artifact
+        uses: actions/download-artifact@v3
+        with:
+          path: dist-tmp
       - name: Make Python Distribution
         run: |
-           mkdir -p dist/CosmoSimPy
+           mkdir -p dist/CosmoSimPy/CosmoSim
            rsync -av CosmoSimPy/ dist/CosmoSimPy/
+           mv dist-tmp/*.so dist-tmp/*.pyd dist/CosmoSimPy/CosmoSim
       - name: Archive Python Application
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: CosmoSimPy
           path: dist
