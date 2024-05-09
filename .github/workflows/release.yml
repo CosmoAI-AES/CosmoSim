@@ -85,7 +85,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
           asset_path: ./dist/CosmoGUI-application-macos-12.zip
-          asset_name: CosmoSimPy.zip
+          asset_name: CosmoGUI-application-macos-12.zip
           asset_content_type: application/zip
       - name: Upload Release Asset
         id: upload-app-14
@@ -95,5 +95,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
           asset_path: ./dist/CosmoGUI-application-macos-14.zip
-          asset_name: CosmoSimPy.zip
+          asset_name: CosmoGUI-application-macos-14.zip
           asset_content_type: application/zip
