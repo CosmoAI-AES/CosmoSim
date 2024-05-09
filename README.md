@@ -24,23 +24,27 @@ but it still incomplete and fragmented.
 
 The libraries are built using Github Workflows and packed
 as complete Python modules with lirbraries or scripts.
-Currently, we build for Python 3.9, 3,10, and 3.11 on Linux,
-and for Python 3.10 and 11 on Windows.
-MacOS binaries have to be built manually, and may therefore
-be less up to date.
-The GUI has not been tested on Windows.
+Currently, we build for Python 3,9, 3.10, 3.11, and 3.12 on Linux,
+Python 3.10 and 11 on Windows, and Python 3.11 on MacOS for arm64.
+We only test it on linux, and it may or may not work on other platforms.
 
 1.  Make sure you have one of the supported Python versions
 2.  Download and unpack `CosmoSimPy.zip` from 
     [the latest release](https://github.com/CosmoAI-AES/CosmoSim/releases/latest).
-    If a MacOS version exists, it is named as such; there is one for 
-    [v2.2.2](https://github.com/CosmoAI-AES/CosmoSim/releases/tag/v2.2.2).
 3.  Run `CosmoSimPy/CosmoGUI.py` in python.  This is the GUI tool.
 4.  The `CosmoSimPy/datagen.py` is the CLI tool and should be run
     on the command line; see below.
 
 The binaries are not signed, and on MacOS you will have to confirm
 that you trust the binary before it will run.
+
+## MacOS Desktop Application
+
+The GUI is also available as desktop applications for MacOS 12 on 
+Intel and MacOS 14 on arm64.  The desktop application integrates its
+own Python interpreter, so that you do not have to install Python
+separately.  However, you will have to manually assure the Mac that
+you can trust the software.
 
 ## Building from Source
 
