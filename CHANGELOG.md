@@ -5,7 +5,7 @@
 
 ### Added
 
-+ Draw Critical Curves
++ Draw Critical Curves for SIE and SIS lenses
 + New workflows for new OS versions, including MacOS 12 and 14.
 
 ## [2.4.0] - 2024-05-18 
