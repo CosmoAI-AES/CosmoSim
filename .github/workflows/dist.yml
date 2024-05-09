@@ -4,8 +4,9 @@ name: Test dist
 
 on:
    push:
-     branches: [ ]
+     branches: [ test-dist ]
    workflow_dispatch:
+   workflow_call:
 
 jobs:
 
