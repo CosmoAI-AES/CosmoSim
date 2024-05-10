@@ -25,7 +25,8 @@ but it still incomplete and fragmented.
 The libraries are built using Github Workflows and packed
 as complete Python modules with lirbraries or scripts.
 Currently, we build for Python 3,9, 3.10, 3.11, and 3.12 on Linux,
-Python 3.10 and 11 on Windows, and Python 3.11 on MacOS for arm64.
+Python 3.10, 3.11, and 3.12 on Windows, Python 3.11 and 3.12 on
+MacOS for arm64, and Python 3.10 for MacOS for Intel.
 We only test it on linux, and it may or may not work on other platforms.
 
 1.  Make sure you have one of the supported Python versions
@@ -35,9 +36,6 @@ We only test it on linux, and it may or may not work on other platforms.
 4.  The `CosmoSimPy/datagen.py` is the CLI tool and should be run
     on the command line; see below.
 
-The binaries are not signed, and on MacOS you will have to confirm
-that you trust the binary before it will run.
-
 ## MacOS Desktop Application
 
 The GUI is also available as desktop applications for MacOS 12 on 
@@ -46,11 +44,15 @@ own Python interpreter, so that you do not have to install Python
 separately.  However, you will have to manually assure the Mac that
 you can trust the software.
 
+The binaries are not signed, and you will have to confirm
+that you trust the binary before it will run.
+
 ## Building from Source
 
 The build procedure is primarily developed on Debian Bullseye, but it now 
-also works reliable on github runners running Windows-2019, Ubuntu-20.04,
-or Ubuntu 22.04.  We also have it working on MacOS, but we also have problems with other macs, depending on their setup.  We do not have capacity to develop generic and robust build procedures, but we shall be happy to incorporate contributions.
+also works reliable on github runners running Windows, Ubuntu, and MacOS.
+We have limited capacity to develop generic and robust build procedures,
+but we shall be happy to incorporate contributions.
 
 The following instructions are Linux specific.
 
