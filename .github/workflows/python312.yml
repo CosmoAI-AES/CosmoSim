@@ -1,5 +1,5 @@
 
-name: Build for Release
+name: Debugging for Python 3.12
 
 on: 
    push:

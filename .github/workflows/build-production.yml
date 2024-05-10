@@ -34,7 +34,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest]
-        python-version: ['3.10','3.11']
+        python-version: ['3.10','3.11','3.12']
     steps:
       - uses: actions/checkout@v4
       - name: Build Project
@@ -69,7 +69,7 @@ jobs:
       matrix:
         os: [macos-14]
         compiler-version: [ '15.0' ]
-        python-version: [ '3.11' ]
+        python-version: [ '3.11','3.12' ]
     steps:
       - uses: actions/checkout@v4
       - name: Build Project
