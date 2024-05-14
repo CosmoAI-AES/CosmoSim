@@ -75,13 +75,14 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: .
-      - name: move artifacts in place
-        run: |
-          mv CosmoSimPy,*.{pyd,so}  CosmoSimPy/CosmoSim
       - name: diagnostic
         run: |
             git status
             python3 --version
+            ls -l
+      - name: move artifacts in place
+        run: |
+          mv CosmoSimPy.*.{pyd,so}  CosmoSimPy/CosmoSim
       - name: makeimages
         run: |
           cd RegressionTest/${{ matrix.test-dir }}
