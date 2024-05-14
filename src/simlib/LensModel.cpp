@@ -187,6 +187,45 @@ void LensModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) {
         }
     }
 }
+void LensModel::undistort(const cv::Mat& src, cv::Mat& dst) {
+    throw NotImplemented() ;
+    // Iterate over the pixels in the apparent image src and create
+    // a corresponding source image dst.
+    // This is intended for use to draw the caustics.
+    cv::Point2d xi = getXi() ;
+    for (int row = 0; row < dst.rows; row++) {
+        for (int col = 0; col < dst.cols; col++) {
+
+            cv::Point2d pos, ij ;
+
+            // Set coordinate system with origin at the centre of mass
+            // in the distorted image in the lens plane.
+            double x = (col - dst.cols / 2.0 ) * CHI - xi.x;
+            double y = (dst.rows / 2.0 - row ) * CHI - xi.y;
+            // (x,y) are coordinates in the lens plane, and hence the
+            // multiplication by CHI
+
+            
+            double r = sqrt(x * x + y * y);
+            double theta = x == 0 ? signf(y)*PI/2 : atan2(y, x);
+
+            pos = this->getDistortedPos(r, theta);
+
+            // Translate to array index in the source plane
+            ij = imageCoordinate( pos, src ) ;
+  
+            // If the pixel is within range, copy value from src to dst
+            if (ij.x < src.rows-1 && ij.y < src.cols-1 && ij.x >= 0 && ij.y >= 0) {
+               if ( 3 == src.channels() ) {
+                  dst.at<cv::Vec3b>(ij.x, ij.y) = src.at<cv::Vec3b>( row, col ) ;
+                  
+               } else {
+                  dst.at<uchar>(ij.x, ij.y ) = src.at<uchar>(  row, col ) ;
+               }
+            }
+        }
+    }
+}
 
 /* Initialiser.  The default implementation does nothing.
  * This is correct for any subclass that does not need the alpha/beta tables. */

@@ -49,3 +49,27 @@ void RaytraceModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst
 cv::Point2d RaytraceModel::getDistortedPos(double r, double theta) const {
    throw NotImplemented() ;
 };
+
+void RaytraceModel::undistort(const cv::Mat& src, cv::Mat& dst) {
+
+    // std::cout << "[RaytraceModel] distort().\n" ;
+    for (int row = 0; row < dst.rows; row++) {
+        for (int col = 0; col < dst.cols; col++) {
+
+            cv::Point2d eta, xi, ij, targetPos ;
+
+            targetPos = pointCoordinate( cv::Point2d( row, col ), dst ) ;
+            xi = CHI*targetPos ;
+            eta = calculateEta( xi ) ;
+            ij = imageCoordinate( eta, src ) ;
+  
+            if (ij.x <= src.rows-1 && ij.y <= src.cols-1 && ij.x >= 0 && ij.y >= 0) {
+                 if ( 3 == src.channels() ) {
+                    dst.at<cv::Vec3b>(ij.x, ij.y ) = src.at<cv::Vec3b>( ij.x, ij.y ) ;
+                 } else {
+                    dst.at<uchar>(ij.x, ij.y ) = src.at<uchar>(row, col) ;
+                 }
+            }
+        }
+    }
+}

@@ -23,6 +23,7 @@ protected:
 
     void parallelDistort(const cv::Mat &src, cv::Mat &dst);
     virtual void distort(int row, int col, const cv::Mat &src, cv::Mat &dst);
+    virtual void undistort(const cv::Mat &src, cv::Mat &dst);
 
     cv::Point2d xi = cv::Point2d(0,0) ;   // Local origin in the lens plane
     cv::Point2d etaOffset = cv::Point2d(0,0) ;
@@ -120,6 +121,7 @@ public:
 protected:
     virtual cv::Point2d calculateEta( cv::Point2d ) ;
     virtual void distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) ;
+    virtual void undistort(const cv::Mat &src, cv::Mat &dst);
     virtual cv::Point2d getDistortedPos(double r, double theta) const ;
 private:
 };
