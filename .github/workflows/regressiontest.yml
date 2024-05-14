@@ -82,6 +82,7 @@ jobs:
             python3 --version
             ls -l
       - name: move artifacts in place
+        shell: bash
         run: |
           mv CosmoSimPy-*-python*/CosmoSimPy.*.{pyd,so}  CosmoSimPy/CosmoSim
       - name: makeimages
