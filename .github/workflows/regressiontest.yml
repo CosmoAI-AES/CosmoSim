@@ -62,6 +62,7 @@ jobs:
         test-dir: [ 'exactpm', 'raytrace', 'roulette', 'roulettepm', 'roulettelens' ]
         python-version: ['3.11']
     steps:
+      - uses: actions/checkout@v4
       - name: Setup Python 3.x
         uses: actions/setup-python@v4
         with:
@@ -70,14 +71,13 @@ jobs:
           cache: "pip"
       - name: pip-installations
         run: pip install -r requirements.txt
-      - name: Download a single artifact
+      - name: artifact
         uses: actions/download-artifact@v4
         with:
-          name: CosmoSimPy.zip
           path: .
-      - name: unzip
+      - name: move artifacts in place
         run: |
-            unzip CosmoSimPy.zip
+          mv CosmoSimPy,*.{pyd,so}  CosmoSimPy/CosmoSim
       - name: diagnostic
         run: |
             git status
