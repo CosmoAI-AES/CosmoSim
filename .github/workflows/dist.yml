@@ -1,6 +1,6 @@
 # (C) 2024: Hans Georg Schaathun <georg@schaathun.net> 
 
-name: Test dist
+name: Make Python Distribution
 
 on:
    push:
