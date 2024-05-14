@@ -102,7 +102,7 @@ jobs:
       - name: image-upload
         uses: actions/upload-artifact@v4
         with:
-          name: montage
+          name: montage-${{ matrix.os }}
           path: dist
 
 
