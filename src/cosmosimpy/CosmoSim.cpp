@@ -342,7 +342,7 @@ cv::Mat CosmoSim::getSource(bool refLinesMode) {
    }
    return im ;
 }
-cv::Mat CosmoSim::getActual(bool refLinesMode) {
+cv::Mat CosmoSim::getActual(bool refLinesMode, bool causticMode) {
    if ( NULL == sim )
       throw std::bad_function_call() ;
    std::cout << "[CosmoSim.cpp] getActual()\n" ;
@@ -358,6 +358,12 @@ cv::Mat CosmoSim::getActual(bool refLinesMode) {
    }
    if (refLinesMode) {
       refLines(im) ;
+   }
+   if (causticMode) {
+      cv::Mat caus = sim->getCaustic( ) ;
+      cv::Mat im2 ;
+      cv::addWeighted(im,1,caus,1,0,im2) ;
+      im = im2 ;
    }
    return im ;
 }

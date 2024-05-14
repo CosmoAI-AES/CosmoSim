@@ -120,7 +120,7 @@ class ImagePane(ttk.Frame):
         "Helper for `update()`."
         print( "setActualImage" )
         sys.stdout.flush()
-        im = self.sim.getActualImage(reflines=False,) 
+        im = self.sim.getActualImage(reflines=False,caustics=self.criticalVar.get()) 
         if self.reflinesVar.get(): drawAxes(im)
         im0 = Image.fromarray(im)
         self.actual.setImage(im0)

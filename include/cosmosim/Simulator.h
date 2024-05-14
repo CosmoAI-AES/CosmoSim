@@ -57,7 +57,6 @@ public:
     void setBGColour( int ) ;
 
     cv::Mat getCaustic() ;
-    cv::Mat getCaustic( cv::Mat ) ;
     cv::Mat getCritical() ;
     void drawCritical() ;
     void drawCritical( cv::Mat ) ;

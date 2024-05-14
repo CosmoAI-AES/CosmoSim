@@ -55,9 +55,7 @@ void LensModel::update( cv::Point2d xi ) {
    return updateInner() ;
 }
 cv::Mat LensModel::getCaustic() {
-   return getCaustic( getCritical() ) ;
-}
-cv::Mat LensModel::getCaustic( cv::Mat src ) {
+   cv::Mat src = getCritical() ;
    cv::Mat img = cv::Mat::zeros(src.size(), src.type());
    undistort( src, img ) ;
    return img ;

@@ -205,12 +205,12 @@ class CosmoSim(cs.CosmoSim):
         im = np.array(self.getApparent(reflines),copy=False)
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
-    def getActualImage(self,reflines=True):
+    def getActualImage(self,reflines=True,caustics=False):
         """
         Return the Actual Image from the simulator as a numpy array.
         """
         print( "[getActualImage] starting" )
-        im = np.array(self.getActual(reflines),copy=False)
+        im = np.array(self.getActual(reflines,caustics),copy=True)
         print( "[getActualImage]" )
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
@@ -308,12 +308,12 @@ class RouletteSim(cs.RouletteSim):
         im = np.array(self.getApparent(reflines),copy=False)
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
-    def getActualImage(self,reflines=True):
+    def getActualImage(self,reflines=True,caustics=False):
         """
         Return the Actual Image from the simulator as a numpy array.
         """
         print( "[RouletteSim] getActualImage()" )
-        im = np.array(self.getActual(reflines),copy=False)
+        im = np.array(self.getActual(reflines,caustics),copy=False)
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
     def getDistortedImage(self,reflines=True,mask=False,showmask=False):
