@@ -4,7 +4,7 @@ name: "Regression Test (Modular)"
 
 on: 
    push:
-       branches: [ feature/regressiontests ]
+       branches: [ feature/regressiontests, feature/caustic ]
    release:
    workflow_dispatch:
    workflow_call:
@@ -82,7 +82,7 @@ jobs:
             ls -l
       - name: move artifacts in place
         run: |
-          mv CosmoSimPy.*.{pyd,so}  CosmoSimPy/CosmoSim
+          mv CosmoSimPy-*-python*/CosmoSimPy.*.{pyd,so}  CosmoSimPy/CosmoSim
       - name: makeimages
         run: |
           cd RegressionTest/${{ matrix.test-dir }}
