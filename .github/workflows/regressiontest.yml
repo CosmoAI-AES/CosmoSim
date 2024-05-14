@@ -76,6 +76,7 @@ jobs:
         with:
           path: .
       - name: diagnostic
+        shell: bash
         run: |
             git status
             python3 --version
@@ -102,7 +103,7 @@ jobs:
       - name: image-upload
         uses: actions/upload-artifact@v4
         with:
-          name: montage-${{ matrix.os }}
+          name: montage-${{ matrix.os }}-${{ matrix.test-dir }}
           path: dist
 
 
