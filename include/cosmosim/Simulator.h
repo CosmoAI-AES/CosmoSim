@@ -55,7 +55,9 @@ public:
     void setMaskMode( bool ) ;
     void setBGColour( int ) ;
 
+    cv::Mat getCritical() ;
     void drawCritical() ;
+    void drawCritical( cv::Mat ) ;
 
     double getNuAbs() const ;
     cv::Point2d getNu() const ;

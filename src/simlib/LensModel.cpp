@@ -54,7 +54,16 @@ void LensModel::update( cv::Point2d xi ) {
    setXi( xi ) ;
    return updateInner() ;
 }
-void LensModel::drawCritical( ) {
+cv::Mat LensModel::getCritical() {
+   cv::Mat src = getSource() ;
+   cv::Mat img = cv::Mat::zeros(src.size(), src.type());
+   drawCritical( img ) ;
+   return img ;
+}
+void LensModel::drawCritical() {
+   drawCritical( imgDistorted ) ;
+}
+void LensModel::drawCritical( cv::Mat img ) {
    std::cout << "[drawCritical] \n" ;
    for ( int i=0 ; i < 360 ; ++i ) {
       double phi = i*PI/180 ;
@@ -62,13 +71,13 @@ void LensModel::drawCritical( ) {
       double x = cos(phi)*xi ;
       double y = sin(phi)*xi ;
       cv::Point2d xy = cv::Point( x, y ) ;
-      cv::Point2d ij = imageCoordinate( xy, imgDistorted ) ;
+      cv::Point2d ij = imageCoordinate( xy, img ) ;
       std::cout << "[drawCritical] " << ij << "\n" ;
       cv::Vec3b red = (0,0,255) ;
-      if ( 3 == imgDistorted.channels() ) {
-         imgDistorted.at<cv::Vec3b>( ij.x, ij.y ) = red ;
+      if ( 3 == img.channels() ) {
+         img.at<cv::Vec3b>( ij.x, ij.y ) = red ;
       } else {
-         imgDistorted.at<uchar>( ij.x, ij.y ) = 255 ;
+         img.at<uchar>( ij.x, ij.y ) = 255 ;
       }
    }
 }
