@@ -311,9 +311,7 @@ bool CosmoSim::runSim() {
    }
    std::cout << "[runSim] set parameters, ready to run\n" ;
    Py_BEGIN_ALLOW_THREADS
-   std::cout << "[runSim] thread section\n" ;
-   if ( sim == NULL )
-      throw std::logic_error("Simulator not initialised") ;
+   std::cout << "[runSim] thread section\n" ; if ( sim == NULL ) throw std::logic_error("Simulator not initialised") ;
    sim->update() ;
    std::cout << "[CosmoSim.cpp] end of thread section\n" ;
    Py_END_ALLOW_THREADS
