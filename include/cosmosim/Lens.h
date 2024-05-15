@@ -65,7 +65,7 @@ public:
     virtual double psiYvalue( double, double ) ;
 
     virtual double criticalXi( double ) ;
-    virtual double caustic( double ) ;
+    virtual cv::Point2d caustic( double ) ;
 };
 
 class SampledLens : public Lens {
@@ -139,7 +139,7 @@ public:
     virtual double psiYfunction( double, double ) ;
 
     virtual double criticalXi( double ) ;
-    virtual double caustic( double ) ;
+    virtual cv::Point2d caustic( double ) ;
 
 };
 
