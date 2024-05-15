@@ -73,7 +73,7 @@ void LensModel::drawCaustics( cv::Mat img ) {
       cv::Point2d xy = lens->caustic( phi )/CHI ;
       cv::Point2d ij = imageCoordinate( xy, img ) ;
       cv::Vec3b red = (0,0,255) ;
-      std::cout << "[drawaustics] " << xy << " -> " << ij << "\n" ;
+      std::cout << "[drawaustics] " << phi << " -> " << xy << " -> " << ij << "\n" ;
       if ( 3 == img.channels() ) {
          img.at<cv::Vec3b>( ij.x, ij.y ) = red ;
       } else {
