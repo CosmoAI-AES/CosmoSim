@@ -23,3 +23,10 @@ double SIS::criticalXi( double phi ) {
    double s = sin(phi-orientation*PI/180) ;
    return einsteinR/2 ;
 }
+cv::Point2d SIS::caustic( double phi ) {
+
+   double c = cos(phi) ;
+   double s = sin(phi) ;
+
+   return einsteinR*cv::Point2d(  c, s ) ;
+}

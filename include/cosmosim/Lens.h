@@ -126,6 +126,7 @@ public:
     virtual double psiYfunction( double, double ) ;
 
     virtual double criticalXi( double ) ;
+    virtual cv::Point2d caustic( double ) ;
 };
 
 class SIE : public PsiFunctionLens { 

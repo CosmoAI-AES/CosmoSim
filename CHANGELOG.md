@@ -7,7 +7,7 @@
 
 ### Added
 
-+ Draw Caustics for SIE lenses when critical curves are drawn in GUI
++ Draw Caustics for SIE/SIS lenses when critical curves are drawn in GUI
 + Exception handling to avoid unimplemented critical curves crashing
   the simulator in the GUI.
 + Workflows build for python 3.12 on Windows and MacOS
