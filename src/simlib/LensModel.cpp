@@ -67,38 +67,45 @@ cv::Mat LensModel::getCritical() {
    return img ;
 }
 void LensModel::drawCaustics( cv::Mat img ) {
-   std::cout << "[drawaustics] \n" ;
-   for ( int i=0 ; i < 360*5 ; ++i ) {
-      double phi = i*PI/(180*5) ;
-      cv::Point2d xy = lens->caustic( phi )/CHI ;
-      cv::Point2d ij = imageCoordinate( xy, img ) ;
-      cv::Vec3b red = (0,0,255) ;
-      std::cout << "[drawaustics] " << phi << " -> " << xy << " -> " << ij << "\n" ;
-      if ( 3 == img.channels() ) {
-         img.at<cv::Vec3b>( ij.x, ij.y ) = red ;
-      } else {
-         img.at<uchar>( ij.x, ij.y ) = 255 ;
+   try {
+      for ( int i=0 ; i < 360*5 ; ++i ) {
+         double phi = i*PI/(180*5) ;
+         cv::Point2d xy = lens->caustic( phi )/CHI ;
+         cv::Point2d ij = imageCoordinate( xy, img ) ;
+         cv::Vec3b red = (0,0,255) ;
+         if ( 3 == img.channels() ) {
+            img.at<cv::Vec3b>( ij.x, ij.y ) = red ;
+         } else {
+            img.at<uchar>( ij.x, ij.y ) = 255 ;
+         }
       }
+   } catch ( NotImplemented e ) {
+      std::cout << e.what() << std::endl ;
+      std::cout << "Caustics not drawn" << std::endl ;
    }
 }
 void LensModel::drawCritical() {
    drawCritical( imgDistorted ) ;
 }
 void LensModel::drawCritical( cv::Mat img ) {
-   std::cout << "[drawCritical] \n" ;
-   for ( int i=0 ; i < 360*5 ; ++i ) {
-      double phi = i*PI/(180*5) ;
-      double xi = lens->criticalXi( phi )/CHI ;
-      double x = cos(phi)*xi ;
-      double y = sin(phi)*xi ;
-      cv::Point2d xy = cv::Point( x, y ) ;
-      cv::Point2d ij = imageCoordinate( xy, img ) ;
-      cv::Vec3b red = (0,0,255) ;
-      if ( 3 == img.channels() ) {
-         img.at<cv::Vec3b>( ij.x, ij.y ) = red ;
-      } else {
-         img.at<uchar>( ij.x, ij.y ) = 255 ;
+   try {
+      for ( int i=0 ; i < 360*5 ; ++i ) {
+         double phi = i*PI/(180*5) ;
+         double xi = lens->criticalXi( phi )/CHI ;
+         double x = cos(phi)*xi ;
+         double y = sin(phi)*xi ;
+         cv::Point2d xy = cv::Point( x, y ) ;
+         cv::Point2d ij = imageCoordinate( xy, img ) ;
+         cv::Vec3b red = (0,0,255) ;
+         if ( 3 == img.channels() ) {
+            img.at<cv::Vec3b>( ij.x, ij.y ) = red ;
+         } else {
+            img.at<uchar>( ij.x, ij.y ) = 255 ;
+         }
       }
+   } catch ( NotImplemented e ) {
+      std::cout << e.what() << std::endl ;
+      std::cout << "Critical Curves not drawn" << std::endl ;
    }
 }
 void LensModel::updateInner( ) {
@@ -317,8 +324,7 @@ void LensModel::markMask( ) {
 }
 void LensModel::maskImage( cv::InputOutputArray imgD, double scale ) {
    std::cout << "[LensModel.maskImage()] image type\n" ;
-   // throw NotImplemented() ;
-      // std::cout << "RouletteModel::maskImage\n" ;
+
       cv::Mat imgDistorted = getDistorted() ;
       cv::Point2d origo = imageCoordinate( getCentre(), imgDistorted ) ;
       origo = cv::Point2d( origo.y, origo.x ) ;

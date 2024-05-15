@@ -102,6 +102,7 @@ class SampledPsiFunctionLens : public SampledLens {
       virtual void setOrientation( double ) ;
       virtual void setRatio( double ) ;
       virtual double criticalXi( double ) ;
+      virtual cv::Point2d caustic( double phi ) ;
 } ;
 
 class PointMass : public PsiFunctionLens { 

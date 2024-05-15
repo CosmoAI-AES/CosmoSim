@@ -131,15 +131,15 @@ private:
 /* simaux */
 void refLines(cv::Mat&) ;
 
-class NotImplemented : public std::logic_error
+class NotImplemented : public std::exception
 {
 public:
-    NotImplemented() : std::logic_error("Function not yet implemented") { };
+    virtual const char * what () ;
 };
-class NotSupported : public std::logic_error
+class NotSupported : public std::exception
 {
 public:
-    NotSupported() : std::logic_error("Operation not supported in this context.") { };
+    virtual const char * what () ;
 };
 
 #endif // COSMOSIM_H

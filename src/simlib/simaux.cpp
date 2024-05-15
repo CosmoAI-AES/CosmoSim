@@ -70,3 +70,10 @@ cv::Point2d pointCoordinate( cv::Point2d pt, cv::Mat im ) {
    double ncols=im.cols, nrows=im.rows ;
    return cv::Point2d( pt.y - ncols/2, nrows/2 - pt.x ) ;
 }
+
+const char * NotImplemented::what () {
+       return "Function not implemented" ;
+};
+const char * NotSupported::what () {
+       return "Function not supported in this context" ;
+};
