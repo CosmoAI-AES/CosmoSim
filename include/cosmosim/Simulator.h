@@ -60,6 +60,7 @@ public:
     cv::Mat getCritical() ;
     void drawCritical() ;
     void drawCritical( cv::Mat ) ;
+    void drawCaustics( cv::Mat ) ;
 
     double getNuAbs() const ;
     cv::Point2d getNu() const ;

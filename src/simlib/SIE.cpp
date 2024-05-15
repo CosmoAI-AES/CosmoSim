@@ -120,8 +120,8 @@ cv::Point2d SIE::caustic( double phi ) {
    double c = cos(phi-orientation*PI/180) ;
    double s = sin(phi-orientation*PI/180) ;
 
-   cv::Point2d p1 = cv::Point(  c, s ) ;
-   cv::Point2d p2 = cv::Point( asinh( (sq/f)*c ), asin( sq*s ) ) ;
+   cv::Point2d p1 = cv::Point2d(  c, s ) ;
+   cv::Point2d p2 = cv::Point2d( asinh( (sq/f)*c ), asin( sq*s ) ) ;
    p2 *= sqf ;
    p1 *= sqrt(f/(c*c + f*f*s*s) ) ;
 

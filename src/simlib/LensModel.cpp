@@ -66,6 +66,21 @@ cv::Mat LensModel::getCritical() {
    drawCritical( img ) ;
    return img ;
 }
+void LensModel::drawCaustics( cv::Mat img ) {
+   std::cout << "[drawaustics] \n" ;
+   for ( int i=0 ; i < 360*5 ; ++i ) {
+      double phi = i*PI/(180*5) ;
+      cv::Point2d xy = lens->caustic( phi )/CHI ;
+      cv::Point2d ij = imageCoordinate( xy, img ) ;
+      cv::Vec3b red = (0,0,255) ;
+      std::cout << "[drawaustics] " << xy << " -> " << ij << "\n" ;
+      if ( 3 == img.channels() ) {
+         img.at<cv::Vec3b>( ij.x, ij.y ) = red ;
+      } else {
+         img.at<uchar>( ij.x, ij.y ) = 255 ;
+      }
+   }
+}
 void LensModel::drawCritical() {
    drawCritical( imgDistorted ) ;
 }

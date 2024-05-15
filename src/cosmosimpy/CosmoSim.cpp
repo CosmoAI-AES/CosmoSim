@@ -360,10 +360,13 @@ cv::Mat CosmoSim::getActual(bool refLinesMode, bool causticMode) {
       refLines(im) ;
    }
    if (causticMode) {
+      sim->drawCaustics( im ) ;
+      /*
       cv::Mat caus = sim->getCaustic( ) ;
       cv::Mat im2 ;
       cv::addWeighted(im,1,caus,1,0,im2) ;
       im = im2 ;
+      */
    }
    return im ;
 }
