@@ -112,3 +112,18 @@ double SIE::criticalXi( double phi ) {
    xicrit /= sqrt( c*c + f*f*s*s) ;
    return xicrit ;
 }
+cv::Point2d SIE::caustic( double phi ) {
+   double sq = sqrt( 1 - ellipseratio*ellipseratio ) ; /* $f'$ */
+   double sqf = sqrt( ellipseratio )/sq ;  /* $\sqrt(f)/f'$ */
+   double f = ellipseratio ;
+
+   double c = cos(phi-orientation*PI/180) ;
+   double s = sin(phi-orientation*PI/180) ;
+
+   cv::Point2d p1 = cv::Point(  c, s ) ;
+   cv::Point2d p2 = cv::Point( asinh( (sq/f)*c ), asin( sq*s ) ) ;
+   p2 *= sqf ;
+   p1 *= sqrt(f/(c*c + f*f*s*s) ) ;
+
+   return ( p1 - p2 )*einsteinR ;
+}

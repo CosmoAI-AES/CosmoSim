@@ -10,7 +10,7 @@ class CosmoSimConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators = "cmake"
     requires = (
-        "symengine/0.9.0",
+        "symengine/0.11.2",
         "opencv/4.5.5",
         "xz_utils/5.4.0",
         "zlib/1.2.13"

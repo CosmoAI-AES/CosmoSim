@@ -156,3 +156,6 @@ double Lens::psiYvalue( double x, double y ) {
 double Lens::criticalXi( double phi ) {
    throw NotImplemented() ;
 }
+cv::Point2d Lens::caustic( double phi ) {
+   throw NotImplemented() ;
+}
