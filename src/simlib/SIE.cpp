@@ -116,18 +116,22 @@ cv::Point2d SIE::caustic( double phi ) {
    double f = ellipseratio ;
    double sq = sqrt( 1 - f*f ) ; /* $f'$ */
    double sqf = sqrt( f )/sq ;  /* $\sqrt(f)/f'$ */
+   double th = orientation*PI/180 ;
 
-   double c = cos(phi-orientation*PI/180) ;
-   double s = sin(phi-orientation*PI/180) ;
-
-   cv::Mat rot2d = cv::getRotationMatrix2D(cv::Point2d(0,0), orientation, 1);
+   double c = cos(phi-th) ;
+   double s = sin(phi-th) ;
 
 
    cv::Point2d p1 = cv::Point2d(  c, s ) ;
    cv::Point2d p2 = cv::Point2d( asinh( (sq/f)*c ), asin( sq*s ) ) ;
    p2 /= sq ;
    p1 /= sqrt( c*c + f*f*s*s ) ;
-   cv::Point2d pt = p1 - p2 ;
+   p1 -= p2 ;
 
-   return rot2d*pt*einsteinR*sqrt(f) ;
+   double c2 = cos(th) ;
+   double s2 = sin(th) ;
+
+   cv::Point2d pt = cv::Point2d( p1.x*c2 - p1.y*s2,
+                                p1.x*s2 + p1.y*c2 ) ;
+   return pt*einsteinR*sqrt(f) ;
 }
