@@ -3,6 +3,15 @@
 
 ## Unreleased
 
+## [2.4.2] - 2024-05-?? 
+
+### Added
+
++ Draw Caustics for SIE lenses when critical curves are drawn in GUI
++ Exception handling to avoid unimplemented critical curves crashing
+  the simulator in the GUI.
++ Workflows build for python 3.12 on Windows and MacOS
+
 ## [2.4.1] - 2024-05-09 
 
 ### Added
