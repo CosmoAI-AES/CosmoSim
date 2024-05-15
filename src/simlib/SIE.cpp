@@ -120,11 +120,14 @@ cv::Point2d SIE::caustic( double phi ) {
    double c = cos(phi-orientation*PI/180) ;
    double s = sin(phi-orientation*PI/180) ;
 
+   cv::Mat rot2d = cv::getRotationMatrix2D(cv::Point2d(0,0), orientation, 1);
+
+
    cv::Point2d p1 = cv::Point2d(  c, s ) ;
    cv::Point2d p2 = cv::Point2d( asinh( (sq/f)*c ), asin( sq*s ) ) ;
    p2 /= sq ;
    p1 /= sqrt( c*c + f*f*s*s ) ;
    cv::Point2d pt = p1 - p2 ;
 
-   return pt*einsteinR*sqrt(f) ;
+   return rot2d*pt*einsteinR*sqrt(f) ;
 }
