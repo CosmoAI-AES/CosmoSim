@@ -3,6 +3,10 @@
 #include "cosmosim/Roulette.h"
 #include "simaux.h"
 
+#ifndef DEBUG
+#define DEBUG 0
+#endif
+
 #define alpha_(m,s)  ( NULL == this->lens ? alphas_val[m][s] : this->lens->getAlphaXi( m, s ) )
 #define beta_(m,s)  ( NULL == this->lens ? betas_val[m][s] : this->lens->getBetaXi( m, s ) )
 
@@ -13,7 +17,6 @@ RouletteModel::RouletteModel() :
 }
 
 void RouletteModel::setLens( Lens *l ) {
-   std::cout << "[RouletteModel.setLens()]\n" ;
    lens = l ;
    lens->initAlphasBetas() ;
 } 
@@ -47,10 +50,6 @@ cv::Point2d RouletteModel::getDistortedPos(double r, double theta) const {
     // return cv::Point2d( nu1/CHI, nu2/CHI ) ;
     cv::Point2d rpt = cv::Point2d( nu1/CHI, nu2/CHI ) ;
 
-    /*
-    std::cout << "[getDistortedPos] (" << r << "," << theta << ") "
-       << rpt << "\n" ;
-    */
     return rpt ;
 }
 double RouletteModel::getMaskRadius() const { 
@@ -62,12 +61,13 @@ double RouletteModel::getMaskRadius() const {
 void RouletteModel::calculateAlphaBeta() {
     cv::Point2d xi = getXi() ;
 
-    std::cout << "RouletteModel calculateAlphaBeta ["
+    if (DEBUG) {
+       std::cout << "RouletteModel calculateAlphaBeta ["
        << xi << "] ... \n" ;
+    }
     if ( lens == NULL ) throw NotSupported() ;
 
     lens->calculateAlphaBeta( xi ) ;
-    std::cout << "RouletteModel calculateAlphaBeta done\n" ;
 }
 
 void RouletteModel::setXi( cv::Point2d xi1 ) {

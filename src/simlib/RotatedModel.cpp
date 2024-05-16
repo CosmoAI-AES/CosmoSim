@@ -10,6 +10,10 @@
 #include "cosmosim/Simulator.h"
 #include "simaux.h"
 
+#ifndef DEBUG
+#define DEBUG 0
+#endif
+
 cv::Mat RotatedModel::getApparent() const {
    cv::Mat src, dst ;
    src = source->getImage() ;
@@ -18,20 +22,20 @@ cv::Mat RotatedModel::getApparent() const {
    cv::Mat rot = cv::getRotationMatrix2D(cv::Point(nrows/2, ncols/2),
              360-phi*180/PI, 1) ;
    cv::warpAffine(src, dst, rot, src.size() ) ;
-   std::cout << "[RotatedModel] getApparent()\n" ;
    return dst ;
 }
 
 void RotatedModel::updateInner( ) {
     cv::Mat imgApparent = getApparent() ;
 
-    std::cout << "[RotatedModel::updateInner()] R=" << getEtaAbs() << "; theta=" << phi
+    if (DEBUG) {
+      std::cout << "[RotatedModel::updateInner()] R=" << getEtaAbs() << "; theta=" << phi
               << "; CHI=" << CHI << "\n" ;
-    std::cout << "[RotatedModel::updateInner()] xi=" << getXi()   
+      std::cout << "[RotatedModel::updateInner()] xi=" << getXi()   
               << "; eta=" << getEta() << "; etaOffset=" << etaOffset << "\n" ;
-    std::cout << "[RotatedModel::updateInner()] nu=" << getNu()   
+      std::cout << "[RotatedModel::updateInner()] nu=" << getNu()   
               << "; centre=" << getCentre() << "\n" << std::flush ;
-
+    }
     auto startTime = std::chrono::system_clock::now();
 
     int nrows = imgApparent.rows ;
@@ -50,20 +54,18 @@ void RotatedModel::updateInner( ) {
 
     // Calculate run time for this function and print diagnostic output
     auto endTime = std::chrono::system_clock::now();
-    std::cout << "Time to update(): " 
+    if (DEBUG) {
+       std::cout << "Time to update(): " 
               << std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count() 
               << " milliseconds" << std::endl << std::flush ;
+    }
 
 }
 
 void RotatedModel::updateApparentAbs( ) {
-    std::cout << "[RotatedModel] updateApparentAbs() updates psi.\n" ;
     cv::Mat im = getActual() ;
     lens->updatePsi(im.size()) ;
-    std::cout << "[RotatedModel] updatePsi() has returned.\n" ;
     cv::Point2d chieta = cv::Point2d( CHI*getEtaAbs(), 0 ) ;
-    std::cout << "[RotatedModel] updateEtaAbs() has returned.\n" ;
     cv::Point2d xi1 = lens->getXi( chieta ) ;
-    std::cout << "[RotatedModel] updateXi() has returned.\n" ;
     setNu( xi1/CHI ) ;
 }

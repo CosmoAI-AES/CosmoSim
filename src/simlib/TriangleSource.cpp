@@ -29,13 +29,11 @@ void TriangleSource::drawSource(int begin, int end, cv::Mat& dst) {
 /* drawParallel() draws the source image.
  * It is not really parallel in this subclass. */
 void TriangleSource::drawParallel(cv::Mat& dst){
-    std::cout << "TriangleSource::drawParallel() \n" ;
+
     int r0 = dst.rows/2, c0 = dst.cols/2;
     cv::Point pt1 = cv::Point( r0+sigma, c0 ) ;
     cv::Point pt2 = cv::Point( r0+cos(2*PI/3)*sigma, c0+sin(2*PI/3)*sigma ) ;
     cv::Point pt3 = cv::Point( r0+cos(2*PI/3)*sigma, c0-sin(2*PI/3)*sigma ) ;
-
-    std::cout << dst.type() << pt1 << pt2 << pt3 << "\n" ;
 
     cv::line( dst, pt1, pt2, {192, 0, 0}, 3 ) ;
     cv::line( dst, pt2, pt3, {0, 192, 0}, 3 ) ;

@@ -15,8 +15,8 @@ double SIE::psifunctionPolar( double R, double phi ) {
    /* ellipseratio = f */
 
    if ( ellipseratio >= 1 || ellipseratio <= 0 ) {
-      std::cout << "psiFunctionPolar - einsteinR = " << einsteinR << "\n" ;
-      std::cout << "psiFunctionPolar - ellipseratio = " << ellipseratio << 
+      std::cerr << "psiFunctionPolar - einsteinR = " << einsteinR << "\n" ;
+      std::cerr << "psiFunctionPolar - ellipseratio = " << ellipseratio << 
          "\nException!\n" ;
       throw std::logic_error("ellipseration has to be in the (0,1) interval") ;
    }
@@ -78,9 +78,6 @@ double SIE::psiXfunction( double x, double y ) {
    double yp = - st*x + ct*y ;
    yp /= R ;
    yp *= sq ;
-
-   // std::cout << "SIE psiXfunction " << cv::Point2d( x,y ) << " - "
-    // << cv::Point2d( xp,yp ) << " \n" ;
 
    return einsteinR*sqf*( ct * asinh(xp) - st * asin(yp)) ;
 }

@@ -19,7 +19,6 @@ LensModel::LensModel() :
 { }
 
 LensModel::~LensModel() {
-   std::cout << "Destruct lens model\n" ;
    delete source ;
 }
 
@@ -40,9 +39,6 @@ cv::Mat LensModel::getApparent() const {
    return source->getImage() ;
 }
 cv::Mat LensModel::getDistorted() const {
-   std::cout << "[LensModel.getDistorted()] image type "
-      << imgDistorted.type() << " - " 
-      << imgDistorted.size() << "\n" ;
    return imgDistorted ;
 }
 
@@ -80,8 +76,8 @@ void LensModel::drawCaustics( cv::Mat img ) {
          }
       }
    } catch ( NotImplemented e ) {
-      std::cout << e.what() << std::endl ;
-      std::cout << "Caustics not drawn" << std::endl ;
+      std::cerr << e.what() << std::endl ;
+      std::cerr << "Caustics not drawn" << std::endl ;
    }
 }
 void LensModel::drawCritical() {
@@ -104,19 +100,21 @@ void LensModel::drawCritical( cv::Mat img ) {
          }
       }
    } catch ( NotImplemented e ) {
-      std::cout << e.what() << std::endl ;
-      std::cout << "Critical Curves not drawn" << std::endl ;
+      std::cerr << e.what() << std::endl ;
+      std::cerr << "Critical Curves not drawn" << std::endl ;
    }
 }
 void LensModel::updateInner( ) {
     cv::Mat imgApparent = getApparent() ;
 
-    std::cout << "[LensModel::updateInner()] R=" << getEtaAbs() << "; theta=" << phi
+    if ( DEBUG ) {
+      std::cout << "[LensModel::updateInner()] R=" << getEtaAbs() << "; theta=" << phi
               << "; CHI=" << CHI << "\n" ;
-    std::cout << "[LensModel::updateInner()] xi=" << getXi()   
+      std::cout << "[LensModel::updateInner()] xi=" << getXi()   
               << "; eta=" << getEta() << "; etaOffset=" << etaOffset << "\n" ;
-    std::cout << "[LensModel::updateInner()] nu=" << getNu()   
+      std::cout << "[LensModel::updateInner()] nu=" << getNu()   
               << "; centre=" << getCentre() << "\n" << std::flush ;
+    }
 
     auto startTime = std::chrono::system_clock::now();
 
@@ -137,8 +135,10 @@ void LensModel::updateInner( ) {
 /* This just splits the image space in chunks and runs distort() in parallel */
 void LensModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
     int n_threads = std::thread::hardware_concurrency();
-    std::cout << "[parallelDistort] Running with " << n_threads << " threads (maskMode="
-       << maskMode << ")\n" ;
+    if (DEBUG) {
+       std::cout << "[parallelDistort] Running with " << n_threads << " threads (maskMode="
+                 << maskMode << ")\n" ;
+    }
 
     std::vector<std::thread> threads_vec;
     double maskRadius = getMaskRadius() ;
@@ -154,7 +154,7 @@ void LensModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
         rng = ceil( 2.0*maskRadius ) + 1 ;
         if ( rng > mrng ) rng = mrng ;
         if (DEBUG) std::cout << maskRadius << " - " << lower << "/" << rng << "\n" ;
-    } else {
+    } else if (DEBUG) {
         std::cout << "[LensModel] No mask \n" ;
     } 
     rng1 = ceil( (double) rng / (double) n_threads ) ;
@@ -323,7 +323,6 @@ void LensModel::markMask( ) {
     markMask( imgDistorted ) ;
 }
 void LensModel::maskImage( cv::InputOutputArray imgD, double scale ) {
-   std::cout << "[LensModel.maskImage()] image type\n" ;
 
       cv::Mat imgDistorted = getDistorted() ;
       cv::Point2d origo = imageCoordinate( getCentre(), imgDistorted ) ;
@@ -334,7 +333,6 @@ void LensModel::maskImage( cv::InputOutputArray imgD, double scale ) {
       black.copyTo( imgD, mask ) ;
 }
 void LensModel::markMask( cv::InputOutputArray imgD ) {
-   std::cout << "[LensModel.markMask()] image type\n" ;
       cv::Mat imgDistorted = getDistorted() ;
       cv::Point2d origo = imageCoordinate( getCentre(), imgDistorted ) ;
       origo = cv::Point2d( origo.y, origo.x ) ;
@@ -381,7 +379,6 @@ void LensModel::setNu( cv::Point2d n ) {
    if (DEBUG) std::cout << "[setNu] etaOffset set to zero.\n" ;
 }
 void LensModel::setXi( cv::Point2d x ) {
-      std::cout << "[LensModel.setXi()] image type\n" ;
       throw NotImplemented() ;
 }
 void LensModel::setLens( Lens *l ) {
@@ -392,7 +389,6 @@ cv::Point2d LensModel::getRelativeEta( cv::Point2d xi1 ) {
    // returns $\vec\eta''$
    cv::Point2d releta ;
    releta = eta - xi1/CHI ;
-   std::cout << "[getRelativeEta] releta=" << releta << std::endl ;
    return releta ;
 }
 
@@ -404,9 +400,11 @@ cv::Point2d LensModel::getOffset( cv::Point2d xi1 ) {
    eta = getEta() ;
    r = releta/CHI - eta ;
 
-   std::cout << "[getOffset] eta=" << eta << "; xi1=" << xi1
+   if (DEBUG) {
+     std::cout << "[getOffset] eta=" << eta << "; xi1=" << xi1
              << "; releta=" << releta 
              << "; return " << r << std::endl ;
+   }
 
    // return is the difference between source point corresponding to the
    // reference point in the lens plane and the actual source centre
@@ -414,7 +412,6 @@ cv::Point2d LensModel::getOffset( cv::Point2d xi1 ) {
 }
 
 void LensModel::updateApparentAbs( ) {
-    std::cout << "[LensModel] updateApparentAbs() updates psi.\n" ;
     cv::Mat im = getActual() ;
     lens->updatePsi(im.size()) ;
     cv::Point2d chieta = CHI*getEta() ;

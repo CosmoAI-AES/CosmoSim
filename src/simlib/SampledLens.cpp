@@ -5,6 +5,10 @@
 #include "cosmosim/Lens.h"
 #include "simaux.h"
 
+#ifndef DEBUG
+#define DEBUG 0
+#endif
+
 cv::Point2d SampledLens::getXi( cv::Point2d chieta ) {
 
    cv::Point2d xi0, xi1 = chieta ;
@@ -20,9 +24,11 @@ cv::Point2d SampledLens::getXi( cv::Point2d chieta ) {
    psiY = getPsiY() ;
    int ncols=psi.cols, nrows=psi.rows ;
 
-   std::cout << "[SampledLens] getXi()"
+   if (DEBUG) {
+      std::cout << "[SampledLens] getXi()"
              << " chi*eta = " << chieta 
              << "; size: " << psi.size() << "\n" ;
+   }
 
    /* Diagnostic output */
    double minVal, maxVal;

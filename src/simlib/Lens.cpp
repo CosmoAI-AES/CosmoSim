@@ -6,6 +6,10 @@
 #include <symengine/parser.h>
 #include <fstream>
 
+#ifndef DEBUG
+#define DEBUG 0
+#endif
+
 void Lens::updatePsi( ) { 
    return updatePsi( cv::Size(400,400) ) ;
 }
@@ -15,7 +19,6 @@ void Lens::updatePsi( cv::Size size ) {
 void Lens::setEinsteinR( double r ) { einsteinR = r ; }
 void Lens::setRatio( double r ) { 
    ellipseratio = r ; 
-   std::cout << "[SampledPsiFunctionLens] setRatio(" << ellipseratio << ")\n" ;
    if ( r >= 1 ) ellipseratio = 0.999 ;
    if ( r <= 0 ) ellipseratio = 0.001 ;
 }
@@ -66,13 +69,11 @@ cv::Mat Lens::getMassImage() const {
    return im ;
 }
 cv::Mat Lens::getEinsteinMap() const {
-   std::cout << "[Lens.getEinsteinMap() not implemented\n" ;
+   std::cerr << "[Lens.getEinsteinMap() not implemented\n" ;
    throw NotImplemented() ;
-   // return einsteinMap ;
 }
 
 void Lens::setFile( std::string fn ) {
-   std::cout << "[Lens.setFile()] " << fn << "\n" ;
    filename = fn ;
 } 
 void Lens::initAlphasBetas() {
@@ -89,7 +90,6 @@ void Lens::initAlphasBetas() {
     if (!input.is_open()) {
         throw std::runtime_error("Could not open file: " + filename);
     }
-    std::cout << "[Lens.initAlphasBetas()] " << filename << "\n" ;
 
     while (input) {
         std::string m, s;
@@ -116,7 +116,8 @@ double Lens::getBeta( cv::Point2d xi, int m, int s ) {
 }
 
 void Lens::calculateAlphaBeta( cv::Point2d xi ) {
-    std::cout << "[Lens.calculateAlphaBeta()] " << nterms << "; " 
+   if (DEBUG) std::cout 
+              << "[Lens.calculateAlphaBeta()] " << nterms << "; " 
               << einsteinR << " - " << xi << "\n"  ;
 
     // calculate all amplitudes for given xi, einsteinR
@@ -134,7 +135,7 @@ double Lens::getBetaXi( int m, int s ) {
    return betas_val[m][s] ;
 }
 cv::Point2d Lens::getXi( cv::Point2d e ) {
-   std::cout << "[Lens.getXi() not implemented\n" ;
+   std::cerr << "[Lens.getXi() not implemented\n" ;
    throw NotImplemented() ;
 }
 void Lens::setNterms( int n ) {

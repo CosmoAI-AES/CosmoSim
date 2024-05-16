@@ -8,7 +8,6 @@ using namespace cv ;
 void refLines(cv::Mat& target) {
     int rsize = target.rows;
     int csize = target.cols;
-    std::cout << "refLines " << rsize << "x" << csize << "\n" ;
     cv::line( target, cv::Point( 0, csize /2 ),
                       cv::Point( rsize, csize /2 ),
                       {60, 60, 60},
