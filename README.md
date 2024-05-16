@@ -59,13 +59,13 @@ The following instructions are Linux specific.
 ### Using conan
 
 To install using conan, you can use the build script included,
-We require version 1.60.  The setup is not compatible with conan 2.x.
+We require version 1.64.  The setup is not compatible with conan 2.x.
 On some architectures version 1.59 works.
 You may also have to create a default profile.
 (See [Conan Tutorial](https://docs.conan.io/en/latest/getting_started.html)
 for further information.)
 ```sh
-pip3 install conan==1.60
+pip3 install conan==1.64
 conan profile new default --detect
 sh build.sh
 ```
