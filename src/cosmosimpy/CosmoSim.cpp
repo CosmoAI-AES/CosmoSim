@@ -377,8 +377,6 @@ cv::Mat CosmoSim::getDistorted(bool refLinesMode, bool criticalCurvesMode ) {
 PYBIND11_MODULE(CosmoSimPy, m) {
     m.doc() = "Wrapper for the CosmoSim simulator" ;
 
-    m.def("helloworld", &helloworld, "A test function");
-
     py::class_<CosmoSim>(m, "CosmoSim")
         .def(py::init<>())
         .def("setLensMode", &CosmoSim::setLensMode)
