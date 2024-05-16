@@ -19,9 +19,7 @@ double SIS::psiYfunction( double x, double y ) {
 }
 
 double SIS::criticalXi( double phi ) {
-   double c = cos(phi-orientation*PI/180) ;
-   double s = sin(phi-orientation*PI/180) ;
-   return einsteinR/2 ;
+   return einsteinR ;
 }
 cv::Point2d SIS::caustic( double phi ) {
 
