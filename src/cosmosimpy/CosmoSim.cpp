@@ -5,29 +5,29 @@
 #include <pybind11/pybind11.h>
 #include <opencv2/opencv.hpp>
 
+#ifndef DEBUG
+#define DEBUG 0
+#endif
+
 namespace py = pybind11;
 
 CosmoSim::CosmoSim() {
-   std::cout << "CosmoSim Constructor\n" ;
+   if (DEBUG) std::cout << "CosmoSim Constructor\n" ;
    rPos = -1 ;
 }
 
-void helloworld() {
-   std::cout << "Hello World!\n" ;
-   std::cout << "This is the CosmoSim Python Library!\n" ;
-}
 
 double CosmoSim::getChi( ) { return chi ; } ;
 cv::Point2d CosmoSim::getRelativeEta( double x, double y ) {
    // Input (x,y) is the centre point $\nu$
    cv::Point2d pt = sim->getRelativeEta( cv::Point2d( x,y )*chi ) ; 
-   std::cout << "[CosmoSim::getRelativeEta] " << pt << "\n" ;
+   if (DEBUG) std::cout << "[CosmoSim::getRelativeEta] " << pt << "\n" ;
    return pt ;
 } ;
 cv::Point2d CosmoSim::getOffset( double x, double y ) {
    // Input (x,y) is the centre point $\nu$ 
    cv::Point2d pt = sim->getOffset( cv::Point2d( x,y )*chi ) ; 
-   std::cout << "[CosmoSim::getOffset] " << pt << "\n" ;
+   if (DEBUG) std::cout << "[CosmoSim::getOffset] " << pt << "\n" ;
    return pt ;
 } ;
 cv::Point2d CosmoSim::getNu( ) {
@@ -38,7 +38,7 @@ double CosmoSim::getAlphaXi( int m, int s ) {
 
    // cv::Point2d xi = lens->getXi( sim->getEta() ) ;
    cv::Point2d xi = sim->getXi() ;
-   std::cout << "[getAlphaXi] xi = " << xi << std::endl ;
+   if (DEBUG) std::cout << "[getAlphaXi] xi = " << xi << std::endl ;
    xi /= chi ;
    return getAlpha( xi.x, xi.y, m, s ) ;
 
@@ -51,7 +51,7 @@ double CosmoSim::getAlphaXi( int m, int s ) {
 double CosmoSim::getBetaXi( int m, int s ) {
    // cv::Point2d xi = lens->getXi( sim->getEta() ) ;
    cv::Point2d xi = sim->getXi( ) ;
-   std::cout << "[getBetaXi] xi = " << xi << std::endl ;
+   if (DEBUG) std::cout << "[getBetaXi] xi = " << xi << std::endl ;
    xi /= chi ;
    return getBeta( xi.x, xi.y, m, s ) ;
       if ( NULL != psilens )
@@ -64,41 +64,36 @@ double CosmoSim::getAlpha(
       double x, double y, int m, int s 
  ) {
       double r ;
-      std::cout << "[CosmoSim] getAlpha()\n" ;
       cv::Point2d xi = cv::Point2d( x, y )*chi ;
       if ( NULL != psilens )
           r = psilens->getAlpha( xi, m, s ) ;
       else if ( NULL != lens )
           r = lens->getAlpha( xi, m, s ) ;
       else throw NotSupported();
-      // std::cout << "getAlpha(" << xi << ") " << r << "\n" ;
       return r ;
 }
 double CosmoSim::getBeta( 
       double x, double y, int m, int s 
 ) {
       double r ;
-      std::cout << "[CosmoSim] getBeta()\n" ;
       cv::Point2d xi = cv::Point2d( x, y )*chi ;
       if ( NULL != psilens )
           r = psilens->getBeta( xi, m, s ) ;
       else if ( NULL != lens )
           r = lens->getBeta( xi, m, s ) ;
       else throw NotSupported();
-      // std::cout << "getBeta(" << xi << ") " << r << "\n" ;
       return r ;
 }
 
 void CosmoSim::diagnostics() {
-   std::cout << "[CosmoSim] diagnostisc()\n" ;
    if ( src ) {
       cv::Mat im = src->getImage() ;
-      std::cout << "Source Image " << im.rows << "x" << im.cols 
+      if (DEBUG) std::cout << "Source Image " << im.rows << "x" << im.cols 
          << "x" << im.channels() << "\n" ;
    }
    if ( sim ) {
       cv::Mat im = sim->getDistorted() ;
-      std::cout << "Distorted Image " << im.rows << "x" << im.cols 
+      if (DEBUG) std::cout << "Distorted Image " << im.rows << "x" << im.cols 
          << "x" << im.channels() << "\n" ;
    }
    return ;
@@ -113,12 +108,10 @@ void CosmoSim::setSourceFile( std::string fn ) {
 
 cv::Mat CosmoSim::getPsiMap( ) {
    cv::Mat im = lens->getPsi() ;
-   std::cout << "[getPsiMap] " << im.type() << "\n" ;
    return im ;
 } 
 cv::Mat CosmoSim::getMassMap( ) {
    cv::Mat im = lens->getMassMap() ;
-   std::cout << "[getMassMap] " << im.type() << "\n" ;
    return im ;
 } 
 
@@ -128,7 +121,7 @@ void CosmoSim::setXY( double x, double y) { xPos = x ; yPos = y ; rPos = -1 ; }
 void CosmoSim::setPolar(int r, int theta) { rPos = r ; thetaPos = theta ; }
 void CosmoSim::setModelMode(int m) { 
    if ( modelmode != m ) {
-      std::cout << "[CosmoSim.cpp] setModelMode(" << modelmode 
+      if (DEBUG) std::cout << "[CosmoSim.cpp] setModelMode(" << modelmode 
          << " -> " << m << ")\n" ;
       modelmode = m ; 
       modelchanged = 1 ;
@@ -136,17 +129,17 @@ void CosmoSim::setModelMode(int m) {
 }
 void CosmoSim::setLensMode(int m) { 
    if ( lensmode != m ) {
-      std::cout << "[CosmoSim.cpp] setLensMode(" << lensmode 
+      if (DEBUG) std::cout << "[CosmoSim.cpp] setLensMode(" << lensmode 
          << " -> " << m << ")\n" ;
       lensmode = m ; 
       modelchanged = 1 ;
    } else {
-      std::cout << "[CosmoSim.cpp] setLensMode(" << lensmode << ") unchanged\n" ;
+      if (DEBUG) std::cout << "[CosmoSim.cpp] setLensMode(" << lensmode << ") unchanged\n" ;
    }
 }
 void CosmoSim::setSampled(int m) { 
    if ( sampledlens != m ) {
-      std::cout << "[CosmoSim.cpp] setSampled(" << m 
+      if (DEBUG) std::cout << "[CosmoSim.cpp] setSampled(" << m 
          << " -> " << m << ")\n" ;
       sampledlens = m ; 
       modelchanged = 1 ;
@@ -156,8 +149,7 @@ void CosmoSim::setSourceMode(int m) { srcmode = m ; }
 void CosmoSim::setMaskMode(bool b) { maskmode = b ; }
 void CosmoSim::setBGColour(int b) { bgcolour = b ; }
 void CosmoSim::initLens() {
-   std::cout << "[CosmoSim.cpp] initLens\n" ;
-   std::cout << "[initLens] ellipseratio = " << ellipseratio << "\n" ;
+   if (DEBUG) std::cout << "[initLens] ellipseratio = " << ellipseratio << "\n" ;
    if ( ! modelchanged ) return ;
    if ( sim ) delete sim ;
    psilens = NULL ;
@@ -173,14 +165,11 @@ void CosmoSim::initLens() {
           break ;
           */
        case CSIM_PSI_SIE:
-          std::cout << "[initLens] SIE\n" ;
           lens = psilens = new SIE() ;
-          std::cout << "Initialised SIE\n" ;
           lens->setFile(filename) ;
           lens->initAlphasBetas() ;
           break ;
        case CSIM_PSI_SIS:
-          std::cout << "[initLens] SIS\n" ;
           lens = psilens = new SIS() ;
           lens->setFile(filename) ;
           lens->initAlphasBetas() ;
@@ -189,12 +178,12 @@ void CosmoSim::initLens() {
           lens = psilens = new PointMass() ;
           break ;
        case CSIM_NOPSI:
-          std::cout << "[initLens] Point Mass or No Lens (" 
+          if (DEBUG) std::cout << "[initLens] Point Mass or No Lens (" 
                 << lensmode << ")\n" ;
           lens = NULL ;
           break ;
        default:
-         std::cout << "No such lens model!\n" ;
+         std::cerr << "No such lens model!\n" ;
          throw NotImplemented();
    }
    if ( sampledlens ) {
@@ -203,47 +192,44 @@ void CosmoSim::initLens() {
    }
    switch ( modelmode ) {
        case CSIM_MODEL_POINTMASS_ROULETTE:
-         std::cout << "Running Roulette Point Mass Lens (mode=" 
+         if (DEBUG) std::cout << "Running Roulette Point Mass Lens (mode=" 
                    << modelmode << ")\n" ;
          sim = new PointMassRoulette() ;
          sim->setLens(lens) ;
          break ;
        case CSIM_MODEL_POINTMASS_EXACT:
-         std::cout << "Running Point Mass Lens (mode=" << modelmode << ")\n" ;
+         if (DEBUG) std::cout << "Running Point Mass Lens (mode=" << modelmode << ")\n" ;
          sim = new PointMassExact() ;
          sim->setLens(lens) ;
          break ;
        case CSIM_MODEL_RAYTRACE:
-         std::cout << "Running Raytrace Lens (mode=" << modelmode << ")\n" ;
+         if (DEBUG) std::cout << "Running Raytrace Lens (mode=" << modelmode << ")\n" ;
          sim = new RaytraceModel() ;
          sim->setLens(lens) ;
          break ;
        case CSIM_MODEL_ROULETTE:
-         std::cout << "Running Roulette Lens (mode=" << modelmode << ")\n" ;
+         if (DEBUG) std::cout << "Running Roulette Lens (mode=" << modelmode << ")\n" ;
          sim = new RouletteModel() ;
          sim->setLens(lens) ;
          break ;
        case CSIM_NOMODEL:
-         std::cout << "Specified No Model.\n" ;
+         std::cerr << "Specified No Model.\n" ;
          throw NotImplemented();
        default:
-         std::cout << "No such lens mode!\n" ;
+         std::cerr << "No such lens mode!\n" ;
          throw NotImplemented();
     }
     modelchanged = 0 ;
-    std::cout << "[initLens] ellipseratio = " << ellipseratio << "\n" ;
     return ;
 }
 void CosmoSim::setEinsteinR(double r) { einsteinR = r ; }
 void CosmoSim::setRatio(double r) { 
-   std::cout << "[setRatio] ellipseratio = " << r << "\n" ;
    ellipseratio = r ; 
 }
 void CosmoSim::setOrientation(double r) { orientation = r ; }
 void CosmoSim::setImageSize(int sz ) { size = sz ; }
 void CosmoSim::setResolution(int sz ) { 
    basesize = sz ; 
-   std::cout << "[setResolution] basesize=" << basesize << "; size=" << size << "\n" ;
 }
 void CosmoSim::setSourceParameters(double s1, double s2, double theta ) {
    sourceSize = s1 ;
@@ -252,7 +238,6 @@ void CosmoSim::setSourceParameters(double s1, double s2, double theta ) {
    // srcmode = mode ;
 }
 void CosmoSim::initSource( ) {
-   std::cout << "[CosmoSim.cpp] initSource()\n" ;
    // Deleting the source object messes up the heap and causes
    // subsequent instantiation to fail.  This is probably because
    // the imgApparent (cv:;Mat) is not freed correctly.
@@ -272,26 +257,21 @@ void CosmoSim::initSource( ) {
          src = new TriangleSource( size, sourceSize, sourceTheta*PI/180 ) ;
          break ;
        default:
-         std::cout << "No such source mode!\n" ;
+         std::cerr << "No such source mode!\n" ;
          throw NotImplemented();
     }
     if (sim) sim->setSource( src ) ;
-    std::cout << "[CosmoSim.cpp] initSource() completes\n" ;
 }
 bool CosmoSim::runSim() { 
    if ( running ) {
-      std::cout << "[CosmoSim.cpp] runSim() - simulator already running.\n" ;
       return false ;
    }
-   std::cout << "[CosmoSim.cpp] runSim() - running similator\n" ;
-   std::cout << "[runSim] ellipseratio = " << ellipseratio << "\n" ;
    initLens() ;
    if ( sim == NULL ) {
       throw std::bad_function_call() ;
    }
    initSource() ;
    sim->setBGColour( bgcolour ) ;
-   std::cout << "[CosmoSim.cpp] sim call succeeded.\n" ;
    sim->setNterms( nterms ) ;
    if ( lens != NULL ) lens->setNterms( nterms ) ;
    sim->setMaskMode( maskmode ) ;
@@ -304,18 +284,16 @@ bool CosmoSim::runSim() {
       }
       if ( lens != NULL ) {
          lens->setEinsteinR( einsteinR ) ;
-	 std::cout << "[CosmoSimPy] Ready to call lens->setRatio(" << ellipseratio << ")\n" ;
          lens->setRatio( ellipseratio ) ;
          lens->setOrientation( orientation ) ;
       }
    }
-   std::cout << "[runSim] set parameters, ready to run\n" ;
    Py_BEGIN_ALLOW_THREADS
-   std::cout << "[runSim] thread section\n" ; if ( sim == NULL ) throw std::logic_error("Simulator not initialised") ;
+   if (DEBUG) std::cout << "[runSim] thread section\n" ;
+   if ( sim == NULL ) throw std::logic_error("Simulator not initialised") ;
    sim->update() ;
-   std::cout << "[CosmoSim.cpp] end of thread section\n" ;
+   if (DEBUG) std::cout << "[CosmoSim.cpp] end of thread section\n" ;
    Py_END_ALLOW_THREADS
-   std::cout << "[CosmoSim.cpp] runSim() - complete\n" ;
    return true ;
 }
 bool CosmoSim::moveSim( double rot, double scale ) { 
@@ -345,9 +323,7 @@ cv::Mat CosmoSim::getSource(bool refLinesMode) {
 cv::Mat CosmoSim::getActual(bool refLinesMode, bool causticMode) {
    if ( NULL == sim )
       throw std::bad_function_call() ;
-   std::cout << "[CosmoSim.cpp] getActual()\n" ;
    cv::Mat im = sim->getActual() ;
-   std::cout << "basesize=" << basesize << "; size=" << size << "\n" ;
    if ( basesize < size ) {
       cv::Mat ret(cv::Size(basesize, basesize), im.type(),
                   cv::Scalar::all(255));
@@ -381,12 +357,9 @@ cv::Mat CosmoSim::getDistorted(bool refLinesMode, bool criticalCurvesMode ) {
    if ( NULL == sim )
       throw std::bad_function_call() ;
    cv::Mat im ;
-   std::cout << "[getDistorted] " << refLinesMode << criticalCurvesMode << "\n" ;
    im = sim->getDistorted() ;
    if (criticalCurvesMode) sim->drawCritical() ;
-   std::cout << "[getDistorted] size=" << im.size << "\n" ;
    if ( basesize < size ) {
-      std::cout << "basesize=" << basesize << "; size=" << size << "\n" ;
       cv::Mat ret(cv::Size(basesize, basesize), sim->getActual().type(),
                   cv::Scalar::all(255));
       cv::resize(im,ret,cv::Size(basesize,basesize) ) ;
@@ -492,7 +465,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def_buffer([](cv::Mat& im) -> pybind11::buffer_info {
               int t = im.type() ;
               if ( (t&CV_64F) == CV_64F ) {
-                std::cout << "[CosmoSimPy] CV_64F\n" ;
+                if (DEBUG) std::cout << "[CosmoSimPy] CV_64F\n" ;
                 return pybind11::buffer_info(
                     // Pointer to buffer
                     im.data,
