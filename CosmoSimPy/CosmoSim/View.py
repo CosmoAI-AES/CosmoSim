@@ -43,8 +43,6 @@ class ImageCanvas(Canvas):
         self.itemconfig(self.imageCanvas, image=self.img)
 
     def on_resize(self,event):
-        print( "Resize image", (self.width,self.height),
-                               (event.height,event.height) )
         self.height = event.height
         self.setImage()
 
@@ -92,7 +90,6 @@ class ImagePane(ttk.Frame):
         self.updateEvent.set() 
     def on_resize(self,event):
         if np.abs(self.height - event.height) > 4:
-           print( "Height", self.height, event.height )
            self.height = event.height
            size = self.height - 25
            self.actual.config(width=size, height=size)
@@ -111,14 +108,11 @@ class ImagePane(ttk.Frame):
         This should be called before terminating the program,
         because stale threads would otherwise block.
         """
-        print ( "CosmoSim View object closing" )
         self._continue = False
         self.updateEvent.set()
         self.updateThread.join()
-        print ( "CosmoSim View object closed" )
     def setActualImage(self):
         "Helper for `update()`."
-        print( "setActualImage" )
         sys.stdout.flush()
         im = self.sim.getActualImage(reflines=False,caustics=self.criticalVar.get()) 
         if self.reflinesVar.get(): drawAxes(im)
@@ -126,7 +120,6 @@ class ImagePane(ttk.Frame):
         self.actual.setImage(im0)
     def setDistortedImage(self):
         "Helper for `update()`."
-        print( "setDistortedImage" )
         im = self.sim.getDistortedImage( 
                 reflines=False,
                 critical=self.criticalVar.get(),
@@ -153,4 +146,3 @@ class ImagePane(ttk.Frame):
             if self._continue:
                self.updateEvent.clear()
                self.update()
-        print( "updateThread() returning" )

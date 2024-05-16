@@ -101,7 +101,6 @@ class CosmoSim(cs.CosmoSim):
     """
     def __init__(self,*a,maxm=50,fn=None,**kw):
         super().__init__(*a,**kw)
-        print( "[CosmoSim] super().__init__ returned" )
         if fn == None:
             super().setFile( getFileName( maxm ) )
         else:
@@ -113,28 +112,27 @@ class CosmoSim(cs.CosmoSim):
         self.simThread = th.Thread(target=self.simThread)
         self.simThread.start()
         self.bgcolour = 0
-        print( "[CosmoSim] python __init__ returns" )
     def getRelativeEta(self,centrepoint):
-        print ( "[getRelativeEta] centrepoint=", centrepoint, "in Planar Co-ordinates"  )
+        # print ( "[getRelativeEta] centrepoint=", centrepoint, "in Planar Co-ordinates"  )
         r = super().getRelativeEta(centrepoint[0],centrepoint[1])
         a = np.array(r)
-        print ( "[getRelativeEta] r=", a )
+        # print ( "[getRelativeEta] r=", a )
         return (a[0],a[1])
     def getXiOffset(self,centrepoint):
         nu = super().getNu()
         a = np.array(nu)
         return ( a[0] - centrepoint[0], a[1] - centrepoint[1] )
     def getOffset(self,centrepoint):
-        print ( "[getOffset] centrepoint=", centrepoint, "in Planar Co-ordinates"  )
+        # print ( "[getOffset] centrepoint=", centrepoint, "in Planar Co-ordinates"  )
         r = super().getOffset(centrepoint[0],centrepoint[1])
         a = np.array(r)
-        print ( "[getOffset] r=", a )
+        # print ( "[getOffset] r=", a )
         return (a[0],a[1])
     def getAlphaBetas(self,maxm=2,pt=None):
         """
         Get the roulette amplitudes for a given point in the source plane.
         """
-        print ( "[getAlphaBetas] pt=", pt, "in Planar Co-ordinates"  )
+        # print ( "[getAlphaBetas] pt=", pt, "in Planar Co-ordinates"  )
         if pt == None:
            r = [ (self.getAlphaXi(m,s),self.getBetaXi(m,s)) for (m,s) in getMS(maxm) ]
         else:
@@ -150,11 +148,9 @@ class CosmoSim(cs.CosmoSim):
         This should be called before terminating the program,
         because stale threads would otherwise block.
         """
-        print ( "CosmoSim object closing" )
         self._continue = False
         self.simEvent.set()
         self.simThread.join()
-        print ( "CosmoSim object closed" )
     def getUpdateEvent(self):
         return self.updateEvent
     def setSourceMode(self,s):
@@ -189,7 +185,6 @@ class CosmoSim(cs.CosmoSim):
                self.simEvent.clear()
                self.runSim()
                self.updateEvent.set()
-        print( "simThread() returning" )
     def runSimulator(self):
         """
         Run the simulator; that is, tell it that the parameters
@@ -209,9 +204,7 @@ class CosmoSim(cs.CosmoSim):
         """
         Return the Actual Image from the simulator as a numpy array.
         """
-        print( "[getActualImage] starting" )
         im = np.array(self.getActual(reflines,caustics),copy=True)
-        print( "[getActualImage]" )
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
     def getPsiMap(self):
@@ -219,17 +212,13 @@ class CosmoSim(cs.CosmoSim):
         Return a matrix representation of the sampled lensing potential.
         """
         im = np.array(super().getPsiMap(),copy=False)
-        print(im.shape,im.dtype)
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return im
     def getMassMap(self):
         """
         Return a matrix representation of the sampled mass density.
         """
-        # im = super().getMassMap()
-        # print(type(im))
         im = np.array(super().getMassMap(),copy=False)
-        print(im.shape,im.dtype)
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return im[2:-2,2:-2]
     def getDistortedImage(self,reflines=True,critical=False,mask=False,showmask=False):
@@ -267,11 +256,9 @@ class RouletteSim(cs.RouletteSim):
         This should be called before terminating the program,
         because stale threads would otherwise block.
         """
-        print ( "CosmoSim object closing" )
         self._continue = False
         self.simEvent.set()
         self.simThread.join()
-        print ( "CosmoSim object closed" )
     def getUpdateEvent(self):
         return self.updateEvent
     def setSourceMode(self,s):
@@ -292,7 +279,6 @@ class RouletteSim(cs.RouletteSim):
                self.simEvent.clear()
                self.runSim()
                self.updateEvent.set()
-        print( "simThread() returning" )
     def runSimulator(self):
         """
         Run the simulator; that is, tell it that the parameters
@@ -312,7 +298,6 @@ class RouletteSim(cs.RouletteSim):
         """
         Return the Actual Image from the simulator as a numpy array.
         """
-        print( "[RouletteSim] getActualImage()" )
         im = np.array(self.getActual(reflines,caustics),copy=False)
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
