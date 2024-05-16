@@ -8,6 +8,7 @@
 ### Fixed
 
 + removed erroneous factor of one half in the critical curve for SIS
++ fixed caustic for SIS so that it matches SIE when it tends towards SIS.
 
 ## [2.4.2] - 2024-05-15 
 
