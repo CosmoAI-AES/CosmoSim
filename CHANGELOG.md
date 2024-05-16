@@ -3,6 +3,12 @@
 
 ## Unreleased
 
+## [2.4.3] - 2024-05-16
+
+### Fixed
+
++ removed erroneous factor of one half in the critical curve for SIS
+
 ## [2.4.2] - 2024-05-15 
 
 ### Added
