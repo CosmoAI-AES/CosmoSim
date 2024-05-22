@@ -67,9 +67,10 @@ def psiSIE():
     g = symbols("g", positive=True, real=True)
     f = symbols("f", positive=True, real=True)
     p = symbols("p", positive=True, real=True)
-    psi = - g * sqrt(x ** 2 + y ** 2) * sqrt( f/(1-f*f) )  * (
-            sin( p + atan2(y,x) ) * asin( sqrt( 1-f*f )* sin( p + atan2(y,x) ) )
-            + cos( p + atan2(y,x) ) * asinh( sqrt( 1-f*f )/f* cos( p + atan2(y,x) ) )
+    psi = - g * sqrt( f/(1-f*f) )  * (
+            y * asin( sqrt( 1-f*f )* y/(sqrt(x ** 2 + y ** 2)) )
+            +
+            x * asinh( sqrt( 1-f*f )/f * x/(sqrt(x ** 2 + y ** 2)) )
             )
     return (psi,x,y)
 def main(psi=None,n=50,nproc=None,fn=None):
@@ -132,7 +133,7 @@ def main(psi=None,n=50,nproc=None,fn=None):
 
     # Now we are done, kill the listener
     q.put('kill')
-    print( "Issued kill signal" )
+    print( "[amplitudes.py]  Completed.  Issued kill order to terminate." )
     pool.close()
     print( "Pool closed" )
     pool.join()
