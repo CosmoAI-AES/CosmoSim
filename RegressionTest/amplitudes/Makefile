@@ -2,6 +2,9 @@
 
 all: 50.status
 
+50.new:
+50.baseline:
+
 %.baseline: ../../CosmoSimPy/CosmoSim/%.txt
 	sort $< > $@
 %.new: %.txt
