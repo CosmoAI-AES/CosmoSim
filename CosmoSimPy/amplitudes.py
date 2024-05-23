@@ -46,8 +46,8 @@ def func(n, m, s, alpha, beta, x, y, q):
         s -= 1
         c = ((m + 1.0) / (m + 1.0 - s) * (1.0 + (s != 0.0)) / 2.0)
         # start calculate
-        alpha_ = factor(c * (diff(alpha, x) + diff(beta, y)))
-        beta_ = factor(c * (diff(beta, x) - diff(alpha, y)))
+        alpha_ = (c * (diff(alpha, x) + diff(beta, y)))
+        beta_ = (c * (diff(beta, x) - diff(alpha, y)))
         alpha, beta = alpha_, beta_
         print(f'm: {m} s: {s}') # alpha: {alpha} beta: {beta} c: {c}')
 
@@ -67,8 +67,8 @@ def psiSIS():
     x, y = symbols('x, y', real=True)
     g = symbols("g", positive=True, real=True)
     psi = - g * sqrt(x ** 2 + y ** 2)
-    alpha = factor(diff(psi, x))
-    beta = factor(diff(psi, y))
+    alpha = (diff(psi, x))
+    beta = (diff(psi, y))
     return (alpha,beta,x,y)
 def psiSIE():
     # g is the Einstein radius and (x,y) coordinates in the lens plane
@@ -79,6 +79,7 @@ def psiSIE():
     r = sqrt(x ** 2 + y ** 2)
     sp = sin(p)
     cp = cos(p)
+    # sp, cp = 0, 1
     alpha = - g * sqrt( f/(1-f*f) )  * (
             cp * asinh( ( sqrt( 1-f*f )/f) * (x*cp+y*sp)/(sqrt(x ** 2 + y ** 2)) )
             -
@@ -126,8 +127,8 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
                 c = (m + 1.0) / (m + s + 1.0) 
                 # Should there not be an extra factor 2 for s==1 above?
                 # - maybe it does not matter because s=m+1 and m>1.
-                alpha_ = factor(c * (diff(alpha, x) - diff(beta, y)))
-                beta_ = factor(c * (diff(beta, x) + diff(alpha, y)))
+                alpha_ = (c * (diff(alpha, x) - diff(beta, y)))
+                beta_ = (c * (diff(beta, x) + diff(alpha, y)))
                 alpha, beta = alpha_, beta_
 
 
