@@ -60,19 +60,22 @@ def psiSIS():
     x, y = symbols('x, y', real=True)
     g = symbols("g", positive=True, real=True)
     psi = - g * sqrt(x ** 2 + y ** 2)
-    return (psi,x,y)
+    alpha = factor(diff(psi, x))
+    beta = factor(diff(psi, y))
+    return (alpha,beta,x,y)
 def psiSIE():
     # g is the Einstein radius and (x,y) coordinates in the lens plane
     x, y = symbols('x, y', real=True)
     g = symbols("g", positive=True, real=True)
     f = symbols("f", positive=True, real=True)
-    p = symbols("p", positive=True, real=True)
     psi = - g * sqrt( f/(1-f*f) )  * (
             y * asin( sqrt( 1-f*f )* y/(sqrt(x ** 2 + y ** 2)) )
             +
             x * asinh( sqrt( 1-f*f )/f * x/(sqrt(x ** 2 + y ** 2)) )
             )
-    return (psi,x,y)
+    alpha = factor(diff(psi, x))
+    beta = factor(diff(psi, y))
+    return (alpha,beta,x,y)
 def main(psi=None,n=50,nproc=None,fn=None):
 
     global num_processes
@@ -86,11 +89,6 @@ def main(psi=None,n=50,nproc=None,fn=None):
     start = time.time()
 
 
-    # psi is the lens potential
-    if psi is None:
-       psi, x, y = psiSIS()
-    else:
-       psi, x, y = psi
 
     # Must use Manager queue here, or will not work
     manager = mp.Manager()
@@ -108,8 +106,10 @@ def main(psi=None,n=50,nproc=None,fn=None):
 
             if m == 0:
                 # This is the base case (m,s)=(0,1) of the outer recursion
-                alpha = factor(diff(psi, x))
-                beta = factor(diff(psi, y))
+                if psi is None:
+                   alpha, beta, x, y = psiSIS()
+                else:
+                   alpha, beta, x, y = psi
             else:
                 # This is the base case (m+1,s+1) of the inner recursion
                 c = (m + 1.0) / (m + s + 1.0) 
@@ -159,7 +159,7 @@ if __name__ == "__main__":
     elif args.lens == "SIE":
         model = psiSIE()
     else:
-        model = None
+        model = psiSIS()
     if args.diff:
         psi,x,y = model
         dx = factor(diff(psi, x))
