@@ -55,6 +55,13 @@ def func(n, m, s, alpha, beta, x, y, q):
         # print ( "Inner", res )
         q.put(res)
 
+def zeroth(lens="SIS"):
+    if lens == "SIS":
+        return psiSIS()
+    if lens == "SIE":
+        return psiSIE()
+    raise "Unknown lens model"
+
 def psiSIS():
     # g is the Einstein radius and (x,y) coordinates in the lens plane
     x, y = symbols('x, y', real=True)
@@ -73,17 +80,17 @@ def psiSIE():
     sp = sin(p)
     cp = cos(p)
     alpha = - g * sqrt( f/(1-f*f) )  * (
-            cp * asinh( ( sqrt( 1-f*f )/f) ) * (x*cp+y*sp)/(sqrt(x ** 2 + y ** 2)) )
+            cp * asinh( ( sqrt( 1-f*f )/f) * (x*cp+y*sp)/(sqrt(x ** 2 + y ** 2)) )
             -
             sp * asin( sqrt( 1-f*f )* (-x*sp+y*cp)/r )
             )
     beta = - g * sqrt( f/(1-f*f) )  * (
-            sp * asinh( ( sqrt( 1-f*f )/f) ) * (x*cp+y*sp)/(sqrt(x ** 2 + y ** 2)) )
+            sp * asinh( ( sqrt( 1-f*f )/f) * (x*cp+y*sp)/(sqrt(x ** 2 + y ** 2)) )
             +
             cp * asin( sqrt( 1-f*f )* (-x*sp+y*cp)/r )
             )
     return (alpha,beta,x,y)
-def main(psi=None,n=50,nproc=None,fn=None):
+def main(lens="SIS",n=50,nproc=None,fn=None):
 
     global num_processes
 
@@ -113,10 +120,7 @@ def main(psi=None,n=50,nproc=None,fn=None):
 
             if m == 0:
                 # This is the base case (m,s)=(0,1) of the outer recursion
-                if psi is None:
-                   alpha, beta, x, y = psiSIS()
-                else:
-                   alpha, beta, x, y = psi
+                alpha, beta, x, y = zeroth(lens)
             else:
                 # This is the base case (m+1,s+1) of the inner recursion
                 c = (m + 1.0) / (m + s + 1.0) 
@@ -161,17 +165,9 @@ if __name__ == "__main__":
                     help='Simply differentiate psi')
 
     args = parser.parse_args()
-    if args.lens == "SIS":
-        model = psiSIS()
-    elif args.lens == "SIE":
-        model = psiSIE()
-    else:
-        model = psiSIS()
     if args.diff:
-        psi,x,y = model
-        dx = factor(diff(psi, x))
-        dy = factor(diff(psi, y))
+        dx,dy,x,y = zeroth(args.lens)
         print( "dx", dx )
         print( "dy", dy )
     else:
-        main(psi=model,n=args.n,nproc=args.nproc,fn=args.output)
+        main(lens=args.lens,n=args.n,nproc=args.nproc,fn=args.output)
