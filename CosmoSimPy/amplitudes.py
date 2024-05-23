@@ -68,13 +68,20 @@ def psiSIE():
     x, y = symbols('x, y', real=True)
     g = symbols("g", positive=True, real=True)
     f = symbols("f", positive=True, real=True)
-    psi = - g * sqrt( f/(1-f*f) )  * (
-            y * asin( sqrt( 1-f*f )* y/(sqrt(x ** 2 + y ** 2)) )
-            +
-            x * asinh( sqrt( 1-f*f )/f * x/(sqrt(x ** 2 + y ** 2)) )
+    p = symbols("p", positive=True, real=True)
+    r = sqrt(x ** 2 + y ** 2)
+    sp = sin(p)
+    cp = cos(p)
+    alpha = - g * sqrt( f/(1-f*f) )  * (
+            cp * asinh( ( sqrt( 1-f*f )/f) ) * (x*cp+y*sp)/(sqrt(x ** 2 + y ** 2)) )
+            -
+            sp * asin( sqrt( 1-f*f )* (-x*sp+y*cp)/r )
             )
-    alpha = factor(diff(psi, x))
-    beta = factor(diff(psi, y))
+    beta = - g * sqrt( f/(1-f*f) )  * (
+            sp * asinh( ( sqrt( 1-f*f )/f) ) * (x*cp+y*sp)/(sqrt(x ** 2 + y ** 2)) )
+            +
+            cp * asin( sqrt( 1-f*f )* (-x*sp+y*cp)/r )
+            )
     return (alpha,beta,x,y)
 def main(psi=None,n=50,nproc=None,fn=None):
 
