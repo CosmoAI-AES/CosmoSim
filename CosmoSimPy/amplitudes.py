@@ -16,7 +16,8 @@ import sys
 import time
 import argparse
 
-from sympy import simplify, symbols, sqrt, diff, factor, sin, cos, asin, atan2, asinh
+import sympy
+from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh
 
 def identity(f): return f
 
@@ -37,7 +38,7 @@ def listener(fn,q):
         print( "File writer terminated", fn ) 
     if hit_except: print( "Failed to open file ", fn )
 
-def func(n, m, s, alpha, beta, x, y, q, simplify=factor):
+def func(n, m, s, alpha, beta, x, y, q, simplify=sympy.factor):
     """
     Generate the amplitudes for one fixed sum $m+s$.
     This is done by recursion on s and m.
@@ -48,8 +49,8 @@ def func(n, m, s, alpha, beta, x, y, q, simplify=factor):
         s -= 1
         c = ((m + 1.0) / (m + 1.0 - s) * (1.0 + (s != 0.0)) / 2.0)
         # start calculate
-        alpha_ = factor(c * (diff(alpha, x) + diff(beta, y)))
-        beta_ = factor(c * (diff(beta, x) - diff(alpha, y)))
+        alpha_ = simplify(c * (diff(alpha, x) + diff(beta, y)))
+        beta_ = simplify(c * (diff(beta, x) - diff(alpha, y)))
         alpha, beta = alpha_, beta_
         print(f'm: {m} s: {s}') # alpha: {alpha} beta: {beta} c: {c}')
 
@@ -69,8 +70,8 @@ def psiSIS():
     x, y = symbols('x, y', real=True)
     g = symbols("g", positive=True, real=True)
     psi = - g * sqrt(x ** 2 + y ** 2)
-    alpha = factor(diff(psi, x))
-    beta = factor(diff(psi, y))
+    alpha = sympy.factor(diff(psi, x))
+    beta = sympy.factor(diff(psi, y))
     return (alpha,beta,x,y)
 def psiSIE():
     # g is the Einstein radius and (x,y) coordinates in the lens plane
@@ -92,7 +93,7 @@ def psiSIE():
             cp * asin( sqrt( 1-f*f )* (-x*sp+y*cp)/r )
             )
     return (alpha,beta,x,y)
-def main(lens="SIS",n=50,nproc=None,fn=None,simplify=factor):
+def main(lens="SIS",n=50,nproc=None,fn=None,simplify=sympy.factor):
 
     global num_processes
 
@@ -171,8 +172,12 @@ if __name__ == "__main__":
 
     if args.simplify == "id":
         sim = identity
+    if args.simplify == "simplify":
+        sim = sympy.simplify
+    if args.simplify == "collect":
+        sim = sympy.collect
     else: 
-        sim = factor
+        sim = sympy.factor
 
     if args.diff:
         dx,dy,x,y = zeroth(args.lens)

@@ -8,6 +8,8 @@ all: 50.status
 	sort $< > $@
 %.txt:
 	python3 ../../CosmoSimPy/amplitudes.py --lens SIS $* 16
+%.raw:
+	python3 ../../CosmoSimPy/amplitudes.py --lens SIS --simplify id $* 16
 %.status: %.new %.baseline
 	diff $^ && echo Regression test passes > $@
 
