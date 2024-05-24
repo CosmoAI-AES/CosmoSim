@@ -27,12 +27,12 @@ source ./pythonenv.config
 
 case "$SLURM_ARRAY_TASK_ID" in
    0)
-      python3 ../../CosmoSimPy/amplitudes.py --lens SIS --output factor.txt 50 16
+      time python3 ../../CosmoSimPy/amplitudes.py --lens SIS --output factor.txt 50 16
       ;;
    1)
-      python3 ../../CosmoSimPy/amplitudes.py --lens SIS --output id.txt --simplify id 50 16
+      time python3 ../../CosmoSimPy/amplitudes.py --lens SIS --output id.txt --simplify id 50 16
       ;;
    2)
-      python3 ../../CosmoSimPy/amplitudes.py --lens SIS --output simp.txt --simplify simplify 50 16
+      time python3 ../../CosmoSimPy/amplitudes.py --lens SIS --output simp.txt --simplify simplify 50 16
       ;;
 esac

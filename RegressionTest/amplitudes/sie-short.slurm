@@ -27,12 +27,12 @@ source ./pythonenv.config
 
 case "$SLURM_ARRAY_TASK_ID" in
    0)
-      python3 ../../CosmoSimPy/amplitudes.py --lens SIE --output short-factor.txt 7 
+      time python3 ../../CosmoSimPy/amplitudes.py --lens SIE --output short-factor.txt 7 
       ;;
    1)
-      python3 ../../CosmoSimPy/amplitudes.py --lens SIE --output short-id.txt --simplify id 7 
+      time python3 ../../CosmoSimPy/amplitudes.py --lens SIE --output short-id.txt --simplify id 7 
       ;;
    2)
-      python3 ../../CosmoSimPy/amplitudes.py --lens SIE --output short-simp.txt --simplify simplify 7 
+      time python3 ../../CosmoSimPy/amplitudes.py --lens SIE --output short-simp.txt --simplify simplify 7 
       ;;
 esac
