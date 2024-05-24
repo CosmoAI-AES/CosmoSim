@@ -17,5 +17,6 @@ all: 50.status
 	diff $^ && echo Regression test passes > $@
 
 clean:
+	rm 50.*
 
 alltests: all
