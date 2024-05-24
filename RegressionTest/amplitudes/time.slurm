@@ -23,6 +23,8 @@ echo "Cores (per node):  $SLURM_CPUS_ON_NODE"
 echo "Total cores:       $SLURM_NTASKS"
 echo "Array Task ID:     $SLURM_ARRAY_TASK_ID"
 
+cat /proc/cpuinfo
+
 source ./pythonenv.config
 
 case "$SLURM_ARRAY_TASK_ID" in
