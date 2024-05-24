@@ -174,8 +174,6 @@ if __name__ == "__main__":
         sim = identity
     if args.simplify == "simplify":
         sim = sympy.simplify
-    if args.simplify == "collect":
-        sim = sympy.collect
     else: 
         sim = sympy.factor
 
