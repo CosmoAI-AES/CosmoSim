@@ -4,10 +4,10 @@
 #SBATCH --time=48:00:00            # Max wall time
 #SBATCH --mem=128G
 #SBATCH --nodes=1
-#SBATCH -c10
+#SBATCH -c7
 #SBATCH --array=0-2
-#SBATCH --job-name="sie-time"
-#SBATCH --output=sie-time.out
+#SBATCH --job-name="short-time"
+#SBATCH --output=short-time.out
 #SBATCH --mail-user=hasc@ntnu.no
 #SBATCH --mail-type=ALL
 
@@ -27,12 +27,12 @@ source ./pythonenv.config
 
 case "$SLURM_ARRAY_TASK_ID" in
    0)
-      python3 ../../CosmoSimPy/amplitudes.py --lens SIE --output sie-factor.txt 10 
+      python3 ../../CosmoSimPy/amplitudes.py --lens SIE --output short-factor.txt 7 
       ;;
    1)
-      python3 ../../CosmoSimPy/amplitudes.py --lens SIE --output sie-id.txt --simplify id 10 
+      python3 ../../CosmoSimPy/amplitudes.py --lens SIE --output short-id.txt --simplify id 7 
       ;;
    2)
-      python3 ../../CosmoSimPy/amplitudes.py --lens SIE --output sie-simp.txt --simplify simplify 10 
+      python3 ../../CosmoSimPy/amplitudes.py --lens SIE --output short-simp.txt --simplify simplify 7 
       ;;
 esac
