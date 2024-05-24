@@ -16,7 +16,10 @@ import sys
 import time
 import argparse
 
-from sympy import simplify, symbols, sqrt, diff, factor, sin, cos, asin, atan2, asinh
+import sympy
+from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh
+
+def identity(f): return f
 
 def listener(fn,q):
     '''Listens for messages on the Queue q and writes to file `fn`. '''
@@ -35,7 +38,7 @@ def listener(fn,q):
         print( "File writer terminated", fn ) 
     if hit_except: print( "Failed to open file ", fn )
 
-def func(n, m, s, alpha, beta, x, y, q):
+def func(n, m, s, alpha, beta, x, y, q, simplify=sympy.factor):
     """
     Generate the amplitudes for one fixed sum $m+s$.
     This is done by recursion on s and m.
@@ -46,8 +49,8 @@ def func(n, m, s, alpha, beta, x, y, q):
         s -= 1
         c = ((m + 1.0) / (m + 1.0 - s) * (1.0 + (s != 0.0)) / 2.0)
         # start calculate
-        alpha_ = (c * (diff(alpha, x) + diff(beta, y)))
-        beta_ = (c * (diff(beta, x) - diff(alpha, y)))
+        alpha_ = simplify(c * (diff(alpha, x) + diff(beta, y)))
+        beta_ = simplify(c * (diff(beta, x) - diff(alpha, y)))
         alpha, beta = alpha_, beta_
         print(f'm: {m} s: {s}') # alpha: {alpha} beta: {beta} c: {c}')
 
@@ -67,8 +70,8 @@ def psiSIS():
     x, y = symbols('x, y', real=True)
     g = symbols("g", positive=True, real=True)
     psi = - g * sqrt(x ** 2 + y ** 2)
-    alpha = (diff(psi, x))
-    beta = (diff(psi, y))
+    alpha = sympy.factor(diff(psi, x))
+    beta = sympy.factor(diff(psi, y))
     return (alpha,beta,x,y)
 def psiSIE():
     # g is the Einstein radius and (x,y) coordinates in the lens plane
@@ -79,7 +82,6 @@ def psiSIE():
     r = sqrt(x ** 2 + y ** 2)
     sp = sin(p)
     cp = cos(p)
-    # sp, cp = 0, 1
     alpha = - g * sqrt( f/(1-f*f) )  * (
             cp * asinh( ( sqrt( 1-f*f )/f) * (x*cp+y*sp)/(sqrt(x ** 2 + y ** 2)) )
             -
@@ -91,7 +93,7 @@ def psiSIE():
             cp * asin( sqrt( 1-f*f )* (-x*sp+y*cp)/r )
             )
     return (alpha,beta,x,y)
-def main(lens="SIS",n=50,nproc=None,fn=None):
+def main(lens="SIS",n=50,nproc=None,fn=None,simplify=sympy.factor):
 
     global num_processes
 
@@ -127,8 +129,8 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
                 c = (m + 1.0) / (m + s + 1.0) 
                 # Should there not be an extra factor 2 for s==1 above?
                 # - maybe it does not matter because s=m+1 and m>1.
-                alpha_ = (c * (diff(alpha, x) - diff(beta, y)))
-                beta_ = (c * (diff(beta, x) + diff(alpha, y)))
+                alpha_ = simplify(c * (diff(alpha, x) - diff(beta, y)))
+                beta_ = simplify(c * (diff(beta, x) + diff(alpha, y)))
                 alpha, beta = alpha_, beta_
 
 
@@ -136,7 +138,7 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
             # print ( "Outer", res )
             q.put(res)
 
-            job = pool.apply_async(func, (n, m, s, alpha, beta, x, y, q))
+            job = pool.apply_async(func, (n, m, s, alpha, beta, x, y, q,simplify))
             jobs.append(job)
 
         # collect results from the workers through the pool result queue
@@ -161,14 +163,25 @@ if __name__ == "__main__":
                     help='Number of processes.')
     parser.add_argument('--lens', default="SIS",
                     help='Lens model')
+    parser.add_argument('--simplify', default=None,
+                    help='Simplification')
     parser.add_argument('--output', help='Output filename')
     parser.add_argument('--diff', default=False,action="store_true",
                     help='Simply differentiate psi')
-
     args = parser.parse_args()
+
+    if args.simplify == "id":
+        sim = identity
+    if args.simplify == "simplify":
+        sim = sympy.simplify
+    if args.simplify == "collect":
+        sim = sympy.collect
+    else: 
+        sim = sympy.factor
+
     if args.diff:
         dx,dy,x,y = zeroth(args.lens)
         print( "dx", dx )
         print( "dy", dy )
     else:
-        main(lens=args.lens,n=args.n,nproc=args.nproc,fn=args.output)
+        main(lens=args.lens,n=args.n,nproc=args.nproc,fn=args.output,simplify=sim)
