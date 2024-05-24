@@ -18,6 +18,8 @@ import argparse
 
 from sympy import simplify, symbols, sqrt, diff, factor, sin, cos, asin, atan2, asinh
 
+def identity(f): return f
+
 def listener(fn,q):
     '''Listens for messages on the Queue q and writes to file `fn`. '''
     print( "Listener starts with file ", fn ) 
@@ -35,7 +37,7 @@ def listener(fn,q):
         print( "File writer terminated", fn ) 
     if hit_except: print( "Failed to open file ", fn )
 
-def func(n, m, s, alpha, beta, x, y, q):
+def func(n, m, s, alpha, beta, x, y, q, simplify=factor):
     """
     Generate the amplitudes for one fixed sum $m+s$.
     This is done by recursion on s and m.
@@ -90,7 +92,7 @@ def psiSIE():
             cp * asin( sqrt( 1-f*f )* (-x*sp+y*cp)/r )
             )
     return (alpha,beta,x,y)
-def main(lens="SIS",n=50,nproc=None,fn=None):
+def main(lens="SIS",n=50,nproc=None,fn=None,simplify=factor):
 
     global num_processes
 
@@ -126,8 +128,8 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
                 c = (m + 1.0) / (m + s + 1.0) 
                 # Should there not be an extra factor 2 for s==1 above?
                 # - maybe it does not matter because s=m+1 and m>1.
-                alpha_ = factor(c * (diff(alpha, x) - diff(beta, y)))
-                beta_ = factor(c * (diff(beta, x) + diff(alpha, y)))
+                alpha_ = simplify(c * (diff(alpha, x) - diff(beta, y)))
+                beta_ = simplify(c * (diff(beta, x) + diff(alpha, y)))
                 alpha, beta = alpha_, beta_
 
 
@@ -135,7 +137,7 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
             # print ( "Outer", res )
             q.put(res)
 
-            job = pool.apply_async(func, (n, m, s, alpha, beta, x, y, q))
+            job = pool.apply_async(func, (n, m, s, alpha, beta, x, y, q,simplify))
             jobs.append(job)
 
         # collect results from the workers through the pool result queue
@@ -160,14 +162,21 @@ if __name__ == "__main__":
                     help='Number of processes.')
     parser.add_argument('--lens', default="SIS",
                     help='Lens model')
+    parser.add_argument('--simplify', default=None,
+                    help='Simplification')
     parser.add_argument('--output', help='Output filename')
     parser.add_argument('--diff', default=False,action="store_true",
                     help='Simply differentiate psi')
-
     args = parser.parse_args()
+
+    if args.simplify == "id":
+        sim = identity
+    else: 
+        sim = factor
+
     if args.diff:
         dx,dy,x,y = zeroth(args.lens)
         print( "dx", dx )
         print( "dy", dy )
     else:
-        main(lens=args.lens,n=args.n,nproc=args.nproc,fn=args.output)
+        main(lens=args.lens,n=args.n,nproc=args.nproc,fn=args.output,simplify=sim)
