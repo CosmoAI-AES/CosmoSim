@@ -171,10 +171,13 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.simplify == "id":
+        print("No simplification") 
         sim = identity
     if args.simplify == "simplify":
+        print("Use sympy.simplify for simplification") 
         sim = sympy.simplify
     else: 
+        print("Use sympy.factor for simplification") 
         sim = sympy.factor
 
     if args.diff:
