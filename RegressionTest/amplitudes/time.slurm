@@ -5,8 +5,9 @@
 #SBATCH --mem=128G
 #SBATCH --nodes=1
 #SBATCH -c16
-#SBATCH --job-name="ampreg50"
-#SBATCH --output=ampreg50.out
+#SBATCH --array=0-2
+#SBATCH --job-name="sis-time"
+#SBATCH --output=sis-time.out
 #SBATCH --mail-user=hasc@ntnu.no
 #SBATCH --mail-type=ALL
 
@@ -24,5 +25,14 @@ echo "Array Task ID:     $SLURM_ARRAY_TASK_ID"
 
 source ./pythonenv.config
 
-time make 50.status
-
+case "$SLURM_ARRAY_TASK_ID" in
+   0)
+      python3 ../../CosmoSimPy/amplitudes.py --lens SIS --output factor.txt 50 16
+      ;;
+   1)
+      python3 ../../CosmoSimPy/amplitudes.py --lens SIS --output id.txt --simplify id 50 16
+      ;;
+   2)
+      python3 ../../CosmoSimPy/amplitudes.py --lens SIS --output simp.txt --simplify simplify 50 16
+      ;;
+esac

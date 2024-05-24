@@ -4,9 +4,10 @@
 #SBATCH --time=48:00:00            # Max wall time
 #SBATCH --mem=128G
 #SBATCH --nodes=1
-#SBATCH -c16
-#SBATCH --job-name="ampreg50"
-#SBATCH --output=ampreg50.out
+#SBATCH -c10
+#SBATCH --array=0-2
+#SBATCH --job-name="sie-time"
+#SBATCH --output=sie-time.out
 #SBATCH --mail-user=hasc@ntnu.no
 #SBATCH --mail-type=ALL
 
@@ -24,5 +25,14 @@ echo "Array Task ID:     $SLURM_ARRAY_TASK_ID"
 
 source ./pythonenv.config
 
-time make 50.status
-
+case "$SLURM_ARRAY_TASK_ID" in
+   0)
+      python3 ../../CosmoSimPy/amplitudes.py --lens SIE --output sie-factor.txt 10 16
+      ;;
+   1)
+      python3 ../../CosmoSimPy/amplitudes.py --lens SIE --output sie-id.txt --simplify id 10 16
+      ;;
+   2)
+      python3 ../../CosmoSimPy/amplitudes.py --lens SIE --output sie-simp.txt --simplify simplify 10 16
+      ;;
+esac
