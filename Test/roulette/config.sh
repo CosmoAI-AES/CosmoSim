@@ -1,0 +1,1 @@
+../../ValidationTest/roulettelens/config.sh
