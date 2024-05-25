@@ -31,8 +31,8 @@ def func(n, m, s, alpha, beta, x, y, q):
         s -= 1
         c = ((m + 1.0) / (m + 1.0 - s) * (1.0 + (s != 0.0)) / 2.0)
         # start calculate
-        alpha_ = sympy.factor(c * (diff(alpha, x) + diff(beta, y)))
-        beta_ = sympy.factor(c * (diff(beta, x) - diff(alpha, y)))
+        alpha_ = (c * (diff(alpha, x) + diff(beta, y)))
+        beta_ = (c * (diff(beta, x) - diff(alpha, y)))
         alpha, beta = alpha_, beta_
         print(f'm: {m} s: {s}') # alpha: {alpha} beta: {beta} c: {c}')
 
@@ -82,8 +82,8 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
                 c = (m + 1.0) / (m + s + 1.0) 
                 # Should there not be an extra factor 2 for s==1 above?
                 # - maybe it does not matter because s=m+1 and m>1.
-                alpha_ = sympy.factor(c * (diff(alpha, x) - diff(beta, y)))
-                beta_ = sympy.factor(c * (diff(beta, x) + diff(alpha, y)))
+                alpha_ = (c * (diff(alpha, x) - diff(beta, y)))
+                beta_ = (c * (diff(beta, x) + diff(alpha, y)))
                 alpha, beta = alpha_, beta_
 
 

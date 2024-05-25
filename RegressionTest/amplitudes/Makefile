@@ -12,7 +12,7 @@ all: 50.status
 %.txt:
 	python3 ../../CosmoSimPy/amplitudes.py --lens SIS $* 16
 %.raw:
-	python3 ../../CosmoSimPy/amplitudes.py --lens SIS --simplify id $* 16
+	python3 ../../CosmoSimPy/amplitudes2.py --lens SIS  $* 16
 %.status: %.new %.baseline
 	diff $^ && echo Regression test passes > $@
 

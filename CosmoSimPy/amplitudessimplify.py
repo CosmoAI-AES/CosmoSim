@@ -20,7 +20,7 @@ import sympy
 from libamplitudes import *
 from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh
 
-def func(n, m, s, alpha, beta, x, y, q):
+def func(n, m, s, alpha, beta, x, y, q, simplify=sympy.factor):
     """
     Generate the amplitudes for one fixed sum $m+s$.
     This is done by recursion on s and m.
@@ -31,8 +31,8 @@ def func(n, m, s, alpha, beta, x, y, q):
         s -= 1
         c = ((m + 1.0) / (m + 1.0 - s) * (1.0 + (s != 0.0)) / 2.0)
         # start calculate
-        alpha_ = sympy.factor(c * (diff(alpha, x) + diff(beta, y)))
-        beta_ = sympy.factor(c * (diff(beta, x) - diff(alpha, y)))
+        alpha_ = simplify(c * (diff(alpha, x) + diff(beta, y)))
+        beta_ = simplify(c * (diff(beta, x) - diff(alpha, y)))
         alpha, beta = alpha_, beta_
         print(f'm: {m} s: {s}') # alpha: {alpha} beta: {beta} c: {c}')
 
@@ -47,7 +47,7 @@ def zeroth(lens="SIS"):
         return psiSIE()
     raise "Unknown lens model"
 
-def main(lens="SIS",n=50,nproc=None,fn=None):
+def main(lens="SIS",n=50,nproc=None,fn=None,simplify=sympy.factor):
 
     global num_processes
 
@@ -82,8 +82,8 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
                 c = (m + 1.0) / (m + s + 1.0) 
                 # Should there not be an extra factor 2 for s==1 above?
                 # - maybe it does not matter because s=m+1 and m>1.
-                alpha_ = sympy.factor(c * (diff(alpha, x) - diff(beta, y)))
-                beta_ = sympy.factor(c * (diff(beta, x) + diff(alpha, y)))
+                alpha_ = simplify(c * (diff(alpha, x) - diff(beta, y)))
+                beta_ = simplify(c * (diff(beta, x) + diff(alpha, y)))
                 alpha, beta = alpha_, beta_
 
 
@@ -91,7 +91,7 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
             # print ( "Outer", res )
             q.put(res)
 
-            job = pool.apply_async(func, (n, m, s, alpha, beta, x, y, q))
+            job = pool.apply_async(func, (n, m, s, alpha, beta, x, y, q,simplify))
             jobs.append(job)
 
         # collect results from the workers through the pool result queue
@@ -116,14 +116,26 @@ if __name__ == "__main__":
                     help='Number of processes.')
     parser.add_argument('--lens', default="SIS",
                     help='Lens model')
+    parser.add_argument('--simplify', default=None,
+                    help='Simplification')
     parser.add_argument('--output', help='Output filename')
     parser.add_argument('--diff', default=False,action="store_true",
                     help='Simply differentiate psi')
     args = parser.parse_args()
+
+    if args.simplify == "id":
+        print("No simplification") 
+        sim = identity
+    if args.simplify == "simplify":
+        print("Use sympy.simplify for simplification") 
+        sim = sympy.simplify
+    else: 
+        print("Use sympy.factor for simplification") 
+        sim = sympy.factor
 
     if args.diff:
         dx,dy,x,y = zeroth(args.lens)
         print( "dx", dx )
         print( "dy", dy )
     else:
-        main(lens=args.lens,n=args.n,nproc=args.nproc,fn=args.output)
+        main(lens=args.lens,n=args.n,nproc=args.nproc,fn=args.output,simplify=sim)
