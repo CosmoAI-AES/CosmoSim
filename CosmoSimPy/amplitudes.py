@@ -98,6 +98,7 @@ def main(lens="SIS",n=50,nproc=None,fn=None,simplify=sympy.factor):
     global num_processes
 
     if nproc is None: nproc = n
+    print( f"Using {nproc} CPUs" )
 
     
     # The filename is generated from the number of amplitudes
