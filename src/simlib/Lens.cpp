@@ -82,7 +82,7 @@ void Lens::initAlphasBetas() {
     auto y = SymEngine::symbol("y");
     auto g = SymEngine::symbol("g"); /* Einstein Radius */
     auto f = SymEngine::symbol("f"); /* Ellipse Ratio */
-    auto p = SymEngine::symbol("p"); /* Orientation (phi) */
+    auto p = SymEngine::symbol("p"); /* Orientation */
 
     std::ifstream input;
     input.open(filename);

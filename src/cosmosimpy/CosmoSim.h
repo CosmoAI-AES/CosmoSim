@@ -23,8 +23,6 @@ enum ModelSpec { CSIM_MODEL_RAYTRACE,
                   CSIM_NOMODEL } ;
 enum PsiSpec    { CSIM_PSI_SIS,
                   CSIM_PSI_SIE,
-                  CSIM_PSI_KormannSIE,
-                  CSIM_PSI_OurSIE,
                   CSIM_NOPSI_ROULETTE,
                   CSIM_NOPSI_PM,
                   CSIM_NOPSI } ;
@@ -50,7 +48,7 @@ private:
 
     void initSource() ;
     void initLens() ;
-    std::string filename = "50.txt", sourcefile = "einstein.png" ;
+    std::string filename[10], sourcefile = "einstein.png" ;
 
     Lens *lens = NULL ;
     PsiFunctionLens *psilens = NULL ;
@@ -58,7 +56,7 @@ private:
 public:
     CosmoSim();
 
-    void setFile(std::string) ;
+    void setFile(int,std::string) ;
     void setSourceFile(std::string) ;
     void setXY(double, double) ;
     void setPolar(int, int) ;
