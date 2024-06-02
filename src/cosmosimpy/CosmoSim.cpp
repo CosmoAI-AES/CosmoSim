@@ -99,8 +99,8 @@ void CosmoSim::diagnostics() {
    return ;
 }
 
-void CosmoSim::setFile( std::string fn ) {
-    filename = fn ;
+void CosmoSim::setFile( int key, std::string fn ) {
+    filename[key] = fn ;
 } 
 void CosmoSim::setSourceFile( std::string fn ) {
     sourcefile = fn ;
@@ -166,12 +166,12 @@ void CosmoSim::initLens() {
           */
        case CSIM_PSI_SIE:
           lens = psilens = new SIE() ;
-          lens->setFile(filename) ;
+          lens->setFile(filename[CSIM_PSI_SIE]) ;
           lens->initAlphasBetas() ;
           break ;
        case CSIM_PSI_SIS:
           lens = psilens = new SIS() ;
-          lens->setFile(filename) ;
+          lens->setFile(filename[CSIM_PSI_SIS]) ;
           lens->initAlphasBetas() ;
           break ;
        case CSIM_NOPSI_PM:
@@ -188,7 +188,7 @@ void CosmoSim::initLens() {
    }
    if ( sampledlens ) {
      lens = new SampledPsiFunctionLens( psilens ) ;
-     lens->setFile(filename) ;
+     lens->setFile(filename[lensmode]) ;
    }
    switch ( modelmode ) {
        case CSIM_MODEL_POINTMASS_ROULETTE:
@@ -439,8 +439,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
 
     pybind11::enum_<PsiSpec>(m, "PsiSpec") 
        .value( "SIE", CSIM_PSI_SIE )
-       .value( "OurSIE", CSIM_PSI_OurSIE )
-       .value( "KormannSIE", CSIM_PSI_KormannSIE )
        .value( "SIS", CSIM_PSI_SIS )
        .value( "PM", CSIM_NOPSI_PM ) 
        .value( "Roulette", CSIM_NOPSI_ROULETTE ) 

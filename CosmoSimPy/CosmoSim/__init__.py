@@ -102,9 +102,11 @@ class CosmoSim(cs.CosmoSim):
     def __init__(self,*a,maxm=50,fn=None,**kw):
         super().__init__(*a,**kw)
         if fn == None:
-            super().setFile( getFileName( maxm ) )
+            super().setFile( PsiSpec.SIS, getFileName( maxm ) )
         else:
             super().setFile( fn )
+        dir = os.path.dirname(os.path.abspath(__file__))
+        super().setFile( PsiSpec.SIE, os.path.join( dir, "sie5.txt" ) )
         super().setSourceFile( getSourceFileName( ) )
         self._continue = True
         self.updateEvent = th.Event()
