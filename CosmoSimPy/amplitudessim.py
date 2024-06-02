@@ -51,7 +51,7 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
 
     global num_processes
 
-    if nproc is None: nproc = n
+    if nproc is None: nproc = n+1
     print( f"Using {nproc} CPUs" )
 
     
@@ -67,7 +67,7 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
     with mp.Pool(processes=nproc) as pool:
 
         # use a single, separate process to write to file 
-        pool.apply_async(listener, (fn,q,))
+        iojob = pool.apply_async(listener, (fn,q,))
 
         jobs = []
         for m in range(0, n+1):
@@ -97,14 +97,14 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
         # collect results from the workers through the pool result queue
         for job in jobs:
             job.get()
+        q.put('kill')
+        print( "[amplitudes.py]  Completed.  Issued kill order to terminate." )
 
-    # Now we are done, kill the listener
-    q.put('kill')
-    print( "[amplitudes.py]  Completed.  Issued kill order to terminate." )
-    pool.close()
-    print( "Pool closed" )
-    pool.join()
-    print( "Pool joined" )
+        # Now we are done, kill the listener
+        pool.close()
+        print( "Pool closed" )
+        pool.join()
+        print( "Pool joined" )
 
     print( "Time spent:", time.time() - start)
 

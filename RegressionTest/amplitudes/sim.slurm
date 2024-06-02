@@ -1,13 +1,12 @@
 #!/bin/sh
 #SBATCH --partition=CPUQ           # Use a CPU
 #SBATCH --account=share-ie-idi
-#SBATCH --time=48:00:00            # Max wall time
-#SBATCH --mem=128G
+#SBATCH --time=240:00:00            # Max wall time
+#SBATCH --mem=196G
 #SBATCH --nodes=1
-#SBATCH -c5
-#SBATCH --array=0-2
-#SBATCH --job-name="short"
-#SBATCH --output=short.out
+#SBATCH -c7
+#SBATCH --job-name="sim5"
+#SBATCH --output=sim5.out
 #SBATCH --mail-user=hasc@ntnu.no
 #SBATCH --mail-type=ALL
 
@@ -27,13 +26,4 @@ cat /proc/cpuinfo
 
 source ./pythonenv.config
 
-case "$SLURM_ARRAY_TASK_ID" in
-   0)
-      time python3 ../../CosmoSimPy/amplitudes.py --lens SIE --output short-factor.txt 5 
-      ;;
-   1)
-      time python3 ../../CosmoSimPy/amplitudes2.py --lens SIE --output short-id.txt 5
-      ;;
-   2)
-      time python3 ../../CosmoSimPy/amplitudessim.py --lens SIE --output short-sim.txt 5
-esac
+time python3 ../../CosmoSimPy/amplitudessim.py --lens SIE --output sim.txt 5

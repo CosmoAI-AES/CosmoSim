@@ -26,16 +26,19 @@ def listener(fn,q):
     print( "Listener starts with file ", fn ) 
     with open(fn, 'w') as f:
         print( "Opened file", fn ) 
-        while 1:
+        cont = True
+        while cont:
             # print(f'Jobs running: {}')
             m = q.get()
             # print("got write job:", m)
             if m == 'kill':
                 print("Done")
-                break
-            f.write(str(m) + '\n')
-            f.flush()
+                cont = False
+            else:
+                f.write(str(m) + '\n')
+                f.flush()
         print( "File writer terminated", fn ) 
+        f.close()
     if hit_except: print( "Failed to open file ", fn )
 
 def psiSIS():
