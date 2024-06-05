@@ -98,13 +98,13 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
         for job in jobs:
             job.get()
 
-    # Now we are done, kill the listener
-    q.put('kill')
-    print( "[amplitudes.py]  Completed.  Issued kill order to terminate." )
-    pool.close()
-    print( "Pool closed" )
-    pool.join()
-    print( "Pool joined" )
+        # Now we are done, kill the listener
+        q.put('kill')
+        print( "[amplitudes.py]  Completed.  Issued kill order to terminate." )
+        pool.close()
+        print( "Pool closed" )
+        pool.join()
+        print( "Pool joined" )
 
     print( "Time spent:", time.time() - start)
 
