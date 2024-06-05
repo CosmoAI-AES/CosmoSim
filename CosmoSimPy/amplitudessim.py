@@ -45,6 +45,8 @@ def zeroth(lens="SIS"):
         return psiSIS()
     if lens == "SIE":
         return psiSIE()
+    if lens == "SIE0":
+        return psiSIE0()
     raise "Unknown lens model"
 
 def main(lens="SIS",n=50,nproc=None,fn=None):
