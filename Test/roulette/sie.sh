@@ -3,7 +3,7 @@
 pdir=../../CosmoSimPy
 dir1=RaytraceSIE
 dir2=RouletteSIE
-diffdir=diff
+diffdir=diffSIE
 mdir=montageSIE
 
 mkdir -p $dir1 $dir2 $diffdir $mdir
