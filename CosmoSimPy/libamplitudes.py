@@ -26,16 +26,19 @@ def listener(fn,q):
     print( "Listener starts with file ", fn ) 
     with open(fn, 'w') as f:
         print( "Opened file", fn ) 
-        while 1:
+        cont = True
+        while cont:
             # print(f'Jobs running: {}')
             m = q.get()
             # print("got write job:", m)
             if m == 'kill':
                 print("Done")
-                break
-            f.write(str(m) + '\n')
-            f.flush()
+                cont = False
+            else:
+                f.write(str(m) + '\n')
+                f.flush()
         print( "File writer terminated", fn ) 
+        f.close()
     if hit_except: print( "Failed to open file ", fn )
 
 def psiSIS():
@@ -65,4 +68,13 @@ def psiSIE():
             +
             cp * asin( sqrt( 1-f*f )* (-x*sp+y*cp)/r )
             )
+    return (alpha,beta,x,y)
+def psiSIE0():
+    # g is the Einstein radius and (x,y) coordinates in the lens plane
+    x, y = symbols('x, y', real=True)
+    g = symbols("g", positive=True, real=True)
+    f = symbols("f", positive=True, real=True)
+    r = sqrt(x ** 2 + y ** 2)
+    alpha = - g * sqrt( f/(1-f*f) )  * asinh( ( sqrt( 1-f*f )/f) * x/r )
+    beta = - g * sqrt( f/(1-f*f) )  * asin( sqrt( 1-f*f )* y/r )
     return (alpha,beta,x,y)

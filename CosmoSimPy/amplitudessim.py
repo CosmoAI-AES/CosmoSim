@@ -31,8 +31,8 @@ def func(n, m, s, alpha, beta, x, y, q):
         s -= 1
         c = ((m + 1.0) / (m + 1.0 - s) * (1.0 + (s != 0.0)) / 2.0)
         # start calculate
-        alpha_ = (c * (diff(alpha, x) + diff(beta, y)))
-        beta_ = (c * (diff(beta, x) - diff(alpha, y)))
+        alpha_ = sympy.simplify(c * (diff(alpha, x) + diff(beta, y)))
+        beta_ = sympy.simplify(c * (diff(beta, x) - diff(alpha, y)))
         alpha, beta = alpha_, beta_
         print(f'm: {m} s: {s}') # alpha: {alpha} beta: {beta} c: {c}')
 
@@ -45,13 +45,15 @@ def zeroth(lens="SIS"):
         return psiSIS()
     if lens == "SIE":
         return psiSIE()
+    if lens == "SIE0":
+        return psiSIE0()
     raise "Unknown lens model"
 
 def main(lens="SIS",n=50,nproc=None,fn=None):
 
     global num_processes
 
-    if nproc is None: nproc = n
+    if nproc is None: nproc = n+1
     print( f"Using {nproc} CPUs" )
 
     
@@ -67,7 +69,7 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
     with mp.Pool(processes=nproc) as pool:
 
         # use a single, separate process to write to file 
-        pool.apply_async(listener, (fn,q,))
+        iojob = pool.apply_async(listener, (fn,q,))
 
         jobs = []
         for m in range(0, n+1):
@@ -82,8 +84,8 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
                 c = (m + 1.0) / (m + s + 1.0) 
                 # Should there not be an extra factor 2 for s==1 above?
                 # - maybe it does not matter because s=m+1 and m>1.
-                alpha_ = (c * (diff(alpha, x) - diff(beta, y)))
-                beta_ = (c * (diff(beta, x) + diff(alpha, y)))
+                alpha_ = sympy.simplify(c * (diff(alpha, x) - diff(beta, y)))
+                beta_ = sympy.simplify(c * (diff(beta, x) + diff(alpha, y)))
                 alpha, beta = alpha_, beta_
 
 
@@ -97,10 +99,10 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
         # collect results from the workers through the pool result queue
         for job in jobs:
             job.get()
-
-        # Now we are done, kill the listener
         q.put('kill')
         print( "[amplitudes.py]  Completed.  Issued kill order to terminate." )
+
+        # Now we are done, kill the listener
         pool.close()
         print( "Pool closed" )
         pool.join()
