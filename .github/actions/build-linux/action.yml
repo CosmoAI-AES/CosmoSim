@@ -53,8 +53,15 @@ runs:
           libxcb-xinerama0-dev \
           libxcb-dri3-dev \
           libxcb-util-dev \
-          libxcb-util0-dev
-          sudo pip3 install conan==1.64
+          libxcb-util0-dev \
+          libxcb-glx0-dev \
+          libxcb-cursor-dev \
+          libxcb-dri2-0-dev \
+          libxcb-present-dev \
+          libxcb-composite0-dev \
+          libxcb-ewmh-dev \
+          libxcb-res0-dev
+          sudo pip3 install conan==1.64.1
       - name: Config Conan
         shell: bash
         run: |
