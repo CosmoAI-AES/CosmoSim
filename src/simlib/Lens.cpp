@@ -82,7 +82,6 @@ void Lens::initAlphasBetas() {
     auto y = SymEngine::symbol("y");
     auto g = SymEngine::symbol("g"); /* Einstein Radius */
     auto f = SymEngine::symbol("f"); /* Ellipse Ratio */
-    auto p = SymEngine::symbol("p"); /* Orientation (phi) */
 
     std::ifstream input;
     input.open(filename);
@@ -102,17 +101,31 @@ void Lens::initAlphasBetas() {
         if (input) {
             auto alpha_sym = SymEngine::parse(alpha);
             auto beta_sym = SymEngine::parse(beta);
-            alphas_l[std::stoi(m)][std::stoi(s)].init({x, y, g, f, p}, *alpha_sym);
-            betas_l[std::stoi(m)][std::stoi(s)].init({x, y, g, f, p}, *beta_sym);
+            alphas_l[std::stoi(m)][std::stoi(s)].init({x, y, g, f}, *alpha_sym);
+            betas_l[std::stoi(m)][std::stoi(s)].init({x, y, g, f}, *beta_sym);
         }
     }
 }
 
 double Lens::getAlpha( cv::Point2d xi, int m, int s ) {
-   return alphas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio, orientation});
+   if ( 0 == orientation ) {
+      return alphas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio});
+   } else {
+      double a = alphas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio});
+      double b = betas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio});
+      double th = orientation*PI/180 ;
+      return cos(th)*a - sin(th)*b ;
+   }
 }
 double Lens::getBeta( cv::Point2d xi, int m, int s ) {
-   return betas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio, orientation});
+   if ( 0 == orientation ) {
+      return betas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio});
+   } else {
+      double a = alphas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio});
+      double b = betas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio});
+      double th = orientation*PI/180 ;
+      return sin(th)*a + cos(th)*b ;
+   }
 }
 
 void Lens::calculateAlphaBeta( cv::Point2d xi ) {
@@ -123,8 +136,10 @@ void Lens::calculateAlphaBeta( cv::Point2d xi ) {
     // calculate all amplitudes for given xi, einsteinR
     for (int m = 1; m <= nterms; m++){
         for (int s = (m+1)%2; s <= (m+1); s+=2){
-            alphas_val[m][s] = alphas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio, orientation});
-            betas_val[m][s] = betas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio, orientation});
+            alphas_val[m][s] = getAlpha( xi, m, s ) ;
+               // alphas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio});
+            betas_val[m][s] = getBeta( xi, m, s ) ;
+            // betas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio});
         }
     }
 }
