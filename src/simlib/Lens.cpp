@@ -27,12 +27,6 @@ void Lens::setOrientation( double r ) { orientation = r ; }
 cv::Mat Lens::getPsi() const {
    return psi ;
 }
-cv::Mat Lens::getPsiX() const {
-   return psiX ;
-}
-cv::Mat Lens::getPsiY() const {
-   return psiY ;
-}
 double Lens::getEinsteinR() const {
    return einsteinR ;
 }
@@ -47,6 +41,7 @@ cv::Mat Lens::getPsiImage() const {
    ps.convertTo( im, CV_8S ) ;
    return im ;
 }
+/*
 cv::Mat Lens::getMassMap() const {
    cv::Mat psiX2, psiY2 ;
    Sobel(psi,psiX,CV_64FC1, 2, 0, 3, 1.0/8) ;
@@ -68,10 +63,7 @@ cv::Mat Lens::getMassImage() const {
    k.convertTo( im, CV_8S ) ;
    return im ;
 }
-cv::Mat Lens::getEinsteinMap() const {
-   std::cerr << "[Lens.getEinsteinMap() not implemented\n" ;
-   throw NotImplemented() ;
-}
+*/
 
 void Lens::setFile( std::string fn ) {
    filename = fn ;
@@ -161,18 +153,6 @@ void Lens::setNterms( int n ) {
    nterms = n ;
 }
 
-double Lens::psiValue( double x, double y ) { 
-   cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
-   return psi.at<double>( ij ) ;
-}
-double Lens::psiXvalue( double x, double y ) { 
-   cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
-   return -psiY.at<double>( ij ) ;
-}
-double Lens::psiYvalue( double x, double y ) { 
-   cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
-   return -psiX.at<double>( ij ) ;
-}
 double Lens::criticalXi( double phi ) {
    throw NotImplemented() ;
 }

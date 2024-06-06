@@ -110,10 +110,12 @@ cv::Mat CosmoSim::getPsiMap( ) {
    cv::Mat im = lens->getPsi() ;
    return im ;
 } 
+/*
 cv::Mat CosmoSim::getMassMap( ) {
    cv::Mat im = lens->getMassMap() ;
    return im ;
 } 
+*/
 
 void CosmoSim::setCHI(double c) { chi = c/100.0 ; }
 void CosmoSim::setNterms(int c) { nterms = c ; }
@@ -406,7 +408,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setFile", &CosmoSim::setFile)
         .def("setSourceFile", &CosmoSim::setSourceFile)
         .def("getPsiMap", &CosmoSim::getPsiMap)
-        .def("getMassMap", &CosmoSim::getMassMap)
+        // .def("getMassMap", &CosmoSim::getMassMap)
         .def("getAlpha", &CosmoSim::getAlpha)
         .def("getBeta", &CosmoSim::getBeta)
         .def("getAlphaXi", &CosmoSim::getAlphaXi)

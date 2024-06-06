@@ -20,15 +20,15 @@ private:
 
 
 protected:
-   double einsteinR /* R_E or \xi_0 */,
-          ellipseratio=1 /* f */,
-	  orientation=0 /* \phi */ ;
-   std::string filename = "50.txt" ;
-   cv::Mat psi, psiX, psiY, einsteinMap ;
+    double einsteinR /* R_E or \xi_0 */,
+           ellipseratio=1 /* f */,
+	   orientation=0 /* \phi */ ;
+    std::string filename = "50.txt" ;
 
     std::array<std::array<double, 202>, 201> alphas_val;
     std::array<std::array<double, 202>, 201> betas_val;
     int nterms=20;
+    cv::Mat psi ;
 
 public:
     virtual void updatePsi( cv::Size ) ;
@@ -38,12 +38,9 @@ public:
     virtual void setRatio( double ) ;
 
     cv::Mat getPsi( ) const ;
-    cv::Mat getPsiX( ) const ;
-    cv::Mat getPsiY( ) const ;
-    cv::Mat getMassMap( ) const ;
-    cv::Mat getEinsteinMap( ) const ; // Not implemented
+    // cv::Mat getMassMap( ) const ;
     cv::Mat getPsiImage( ) const ;  // Discouraged
-    cv::Mat getMassImage() const ;  // Discouraged
+    // cv::Mat getMassImage() const ;  // Discouraged
 
     virtual void initAlphasBetas();
     virtual void calculateAlphaBeta( cv::Point2d xi );
@@ -60,29 +57,34 @@ public:
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
 
-    virtual double psiValue( double, double ) ;
-    virtual double psiXvalue( double, double ) ;
-    virtual double psiYvalue( double, double ) ;
+    virtual double psiValue( double, double ) = 0;
+    virtual double psiXvalue( double, double ) = 0;
+    virtual double psiYvalue( double, double ) = 0;
 
     virtual double criticalXi( double ) ;
     virtual cv::Point2d caustic( double ) ;
 };
 
 class SampledLens : public Lens {
+protected:
+    cv::Mat psiX, psiY ;
 public:
+    virtual double psiValue( double, double ) ;
+    virtual double psiXvalue( double, double ) ;
+    virtual double psiYvalue( double, double ) ;
+
     virtual void calculateAlphaBeta( cv::Point2d xi );
     virtual cv::Point2d getXi( cv::Point2d ) ;
 } ;
 
 class PsiFunctionLens : public Lens {
 public:
-    virtual double psifunction( double, double ) = 0 ;
-    virtual double psiXfunction( double, double ) = 0 ;
-    virtual double psiYfunction( double, double ) = 0 ;
+    virtual void updatePsi( cv::Size ) ;
+
     virtual double psiValue( double, double ) ;
     virtual double psiXvalue( double, double ) ;
     virtual double psiYvalue( double, double ) ;
-    virtual void updatePsi( cv::Size ) ;
+    // virtual void updatePsi( cv::Size ) ;
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
 } ;
@@ -121,9 +123,9 @@ class SIS : public PsiFunctionLens {
 private:
 
 public:
-    virtual double psifunction( double, double ) ;
-    virtual double psiXfunction( double, double ) ;
-    virtual double psiYfunction( double, double ) ;
+    virtual double psiValue( double, double ) ;
+    virtual double psiXvalue( double, double ) ;
+    virtual double psiYvalue( double, double ) ;
 
     virtual double criticalXi( double ) ;
     virtual cv::Point2d caustic( double ) ;
@@ -136,35 +138,13 @@ private:
     double psifunctionAligned( double, double ) ;
 
 public:
-    virtual double psifunction( double, double ) ;
-    virtual double psiXfunction( double, double ) ;
-    virtual double psiYfunction( double, double ) ;
+    virtual double psiValue( double, double ) ;
+    virtual double psiXvalue( double, double ) ;
+    virtual double psiYvalue( double, double ) ;
 
     virtual double criticalXi( double ) ;
     virtual cv::Point2d caustic( double ) ;
 
 };
-
-/*
-class OurSIE : public SIE { 
-
-private:
-
-public:
-    virtual double psiXfunction( double, double ) ;
-    virtual double psiYfunction( double, double ) ;
-
-};
-
-class KormannSIE : public SIE { 
-
-private:
-
-public:
-    virtual double psiXfunction( double, double ) ;
-    virtual double psiYfunction( double, double ) ;
-
-};
-*/
 
 #endif // LENS_H
