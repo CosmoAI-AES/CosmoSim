@@ -111,20 +111,24 @@ double Lens::getAlpha( cv::Point2d xi, int m, int s ) {
    if ( 0 == orientation ) {
       return alphas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio});
    } else {
-      double a = alphas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio});
-      double b = betas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio});
       double th = orientation*PI/180 ;
-      return cos(th)*a - sin(th)*b ;
+      double sth = sin(th), cth = cos(th) ;
+      double x = cth*xi.x + sth*xi.y,  y = - sth*xi.x + cth*xi.y;
+      double a = alphas_l[m][s].call({x, y, einsteinR, ellipseratio});
+      double b = betas_l[m][s].call({x, y, einsteinR, ellipseratio});
+      return cth*a - sth*b ;
    }
 }
 double Lens::getBeta( cv::Point2d xi, int m, int s ) {
    if ( 0 == orientation ) {
       return betas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio});
    } else {
-      double a = alphas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio});
-      double b = betas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio});
       double th = orientation*PI/180 ;
-      return sin(th)*a + cos(th)*b ;
+      double sth = sin(th), cth = cos(th) ;
+      double x = cth*xi.x + sth*xi.y,  y = - sth*xi.x + cth*xi.y;
+      double a = alphas_l[m][s].call({x, y, einsteinR, ellipseratio});
+      double b = betas_l[m][s].call({x, y, einsteinR, ellipseratio});
+      return sth*a + cth*b ;
    }
 }
 
