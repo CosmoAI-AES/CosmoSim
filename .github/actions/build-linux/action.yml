@@ -54,7 +54,7 @@ runs:
           libxcb-dri3-dev \
           libxcb-util-dev \
           libxcb-util0-dev
-          sudo pip3 install conan==1.64
+          sudo pip3 install conan==1.64.1
       - name: Config Conan
         shell: bash
         run: |
