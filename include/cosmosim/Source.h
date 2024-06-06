@@ -59,20 +59,20 @@ private:
 public:
     TriangleSource(int,double) ;
     TriangleSource(int,double,double) ;
+    virtual cv::Mat getImage() ;
 
 protected:
-    virtual cv::Mat getImage() ;
     virtual void drawSource(int, int, cv::Mat &) ;
     virtual void drawParallel(cv::Mat &img) ;
 
 };
 
 class ImageSource : public Source {
-   protected:
-      std::string filename ;
    public:
       ImageSource( int, std::string ) ;
       virtual cv::Mat getImage() ;
+   protected:
+      std::string filename ;
       virtual void drawSource(int, int, cv::Mat &) ;
 };
 
