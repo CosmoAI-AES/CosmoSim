@@ -20,11 +20,11 @@ private:
 
 
 protected:
-   double einsteinR /* R_E or \xi_0 */,
-          ellipseratio=1 /* f */,
-	  orientation=0 /* \phi */ ;
-   std::string filename = "50.txt" ;
-   cv::Mat psi, psiX, psiY, einsteinMap ;
+    double einsteinR /* R_E or \xi_0 */,
+           ellipseratio=1 /* f */,
+	   orientation=0 /* \phi */ ;
+    std::string filename = "50.txt" ;
+    cv::Mat psi, psiX, psiY, einsteinMap ;
 
     std::array<std::array<double, 202>, 201> alphas_val;
     std::array<std::array<double, 202>, 201> betas_val;
@@ -85,11 +85,6 @@ public:
     virtual void updatePsi( cv::Size ) ;
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
-} ;
-class PixMapLens : public SampledLens {
-public:
-    void setPsi( cv::Mat ) ;
-    void loadPsi( std::string ) ;
 } ;
 
 class SampledPsiFunctionLens : public SampledLens {

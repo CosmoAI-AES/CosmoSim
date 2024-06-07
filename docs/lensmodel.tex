@@ -11,8 +11,8 @@
 \begin{tikzpicture}
        \tikzstyle{every node}=[font=\footnotesize]
 
-% Simulator.h:class LensModel {
-   \begin{abstractclass}[text width = 52mm]{LensModel}{1 , 0}
+% Simulator.h:class SimulatorModel {
+   \begin{abstractclass}[text width = 52mm]{SimulatorModel}{1 , 0}
       \operation[0]{getDistortedPos() : Point2d}
       \operation[0]{calculateAlphaBeta() : void}
       \operation[0]{updateApparentAbs()  : void}
@@ -25,11 +25,11 @@
       \operation{getPsi() : Mat}
       \operation{getMassMap() : Mat}
    \end{abstractclass}
-   \unidirectionalAssociation{LensModel}{}{1}{Lens}
+   \unidirectionalAssociation{SimulatorModel}{}{1}{Lens}
 
-% Roulette.h:class RouletteModel : public LensModel { 
+% Roulette.h:class RouletteModel : public SimulatorModel { 
    \begin{class}[text width = 58mm]{RouletteModel}{5 , -3.7}
-      \inherit{LensModel}
+      \inherit{SimulatorModel}
       \operation[0]{getDistortedPos(r, theta) : Point2d}
       % \operation[0]{markMask( InputOutputArray )}
       % \operation[0]{maskImage( InputOutputArray )}
@@ -37,16 +37,16 @@
    \end{class}
 
 
-% Simulator.h:class RaytraceModel : public LensModel { 
+% Simulator.h:class RaytraceModel : public SimulatorModel { 
    \begin{class}[text width = 40mm]{RaytraceModel}{-2 , -3}
-      \inherit{LensModel}
+      \inherit{SimulatorModel}
       \operation[0]{getApparent() : cv::Mat}
       \operation[0]{updateInner() : void}
    \end{class}
 
-% Simulator.h:class RotatedModel : public LensModel { 
+% Simulator.h:class RotatedModel : public SimulatorModel { 
    \begin{class}[text width = 58mm]{RotatedModel}{-1 , -5.5}
-      \inherit{LensModel}
+      \inherit{SimulatorModel}
    \end{class}
 
 % Simulator.h:class PointMassExact : public RotatedModel { 
