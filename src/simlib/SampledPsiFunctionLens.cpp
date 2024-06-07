@@ -24,9 +24,9 @@ void SampledPsiFunctionLens::updatePsi( cv::Size size ) {
 
    return ; 
 }
-double SampledPsiFunctionLens::criticalXi( double phi ) {
+double SampledPsiFunctionLens::criticalXi( double phi ) const {
    return lens->criticalXi( phi ) ;
 }
-cv::Point2d SampledPsiFunctionLens::caustic( double phi ) {
+cv::Point2d SampledPsiFunctionLens::caustic( double phi ) const {
    return lens->caustic( phi ) ;
 }

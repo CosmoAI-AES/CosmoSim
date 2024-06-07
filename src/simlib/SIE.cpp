@@ -52,17 +52,6 @@ double SIE::psiValue( double x, double y ) const {
    return psifunctionPolar( R, phi ) ;
 }
 
-/*
-cv::Point2d SIE::getXi( cv::Point2d chieta ) {
-   std::cerr  << "getXi() NotImplemented\n" ;
-   throw NotImplemented() ;
-   double phi = atan2(chieta.y, chieta.x); 
-   return chieta + einsteinR*cv::Point2d( cos(phi), sin(phi) ) ;
-}
-*/
-
-
-
 double SIE::psiXvalue( double x, double y ) const {
    double sq = sqrt( 1 - ellipseratio*ellipseratio ) ; /* $f'$ */
    double sqf = sqrt( ellipseratio )/sq ;  /* $\sqrt(f)/f'$ */
@@ -100,7 +89,7 @@ double SIE::psiYvalue( double x, double y ) const {
    return einsteinR*sqf*( st * asinh( xp ) + ct * asin( yp ));
 }
 
-double SIE::criticalXi( double phi ) {
+double SIE::criticalXi( double phi ) const {
    double c = cos(phi-orientation*PI/180) ;
    double s = sin(phi-orientation*PI/180) ;
    double f = ellipseratio ;
@@ -109,7 +98,7 @@ double SIE::criticalXi( double phi ) {
    xicrit /= sqrt( c*c + f*f*s*s) ;
    return xicrit ;
 }
-cv::Point2d SIE::caustic( double phi ) {
+cv::Point2d SIE::caustic( double phi ) const {
    double f = ellipseratio ;
    double sq = sqrt( 1 - f*f ) ; /* $f'$ */
    double sqf = sqrt( f )/sq ;  /* $\sqrt(f)/f'$ */

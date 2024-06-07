@@ -18,10 +18,10 @@ double SIS::psiYvalue( double x, double y ) const {
    return einsteinR*y/s ;
 }
 
-double SIS::criticalXi( double phi ) {
+double SIS::criticalXi( double phi ) const {
    return einsteinR ;
 }
-cv::Point2d SIS::caustic( double phi ) {
+cv::Point2d SIS::caustic( double phi ) const {
 
    return cv::Point2d( 0, 0 ) ;
    // return einsteinR*cv::Point2d(  cos(phi), sin(phi) ) ;
