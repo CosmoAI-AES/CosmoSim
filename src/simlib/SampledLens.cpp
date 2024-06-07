@@ -119,17 +119,20 @@ void SampledLens::calculateAlphaBeta( cv::Point2d xi ) {
     }
 }
 
-double SampledLens::psiValue( double x, double y ) { 
+double SampledLens::psiValue( double x, double y ) const { 
    cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
    return psi.at<double>( ij ) ;
 }
-double SampledLens::psiXvalue( double x, double y ) { 
+double SampledLens::psiXvalue( double x, double y ) const {
    cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
    return -psiY.at<double>( ij ) ;
 }
-double SampledLens::psiYvalue( double x, double y ) { 
+double SampledLens::psiYvalue( double x, double y ) const {
    cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
    return -psiX.at<double>( ij ) ;
 }
 
 
+cv::Mat SampledLens::getPsi( ) const {
+   return psi ;
+}

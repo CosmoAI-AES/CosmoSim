@@ -11,7 +11,7 @@
 // NEW \phi
 // TODO \chi_L in terms of \chi
 
-double SIE::psifunctionPolar( double R, double phi ) {
+double SIE::psifunctionPolar( double R, double phi ) const {
    /* ellipseratio = f */
 
    if ( ellipseratio >= 1 || ellipseratio <= 0 ) {
@@ -33,7 +33,7 @@ double SIE::psifunctionPolar( double R, double phi ) {
 	   + x*asinh( x * sq/ellipseratio )
 	 ) ;
 }
-double SIE::psifunctionAligned( double x, double y ) {
+double SIE::psifunctionAligned( double x, double y ) const {
    /* ellipseratio = f */
 
    double sq = sqrt( 1 - ellipseratio*ellipseratio ) ; /* $f'$ */
@@ -46,7 +46,7 @@ double SIE::psifunctionAligned( double x, double y ) {
 	 ) ;
 }
 
-double SIE::psiValue( double x, double y ) {
+double SIE::psiValue( double x, double y ) const {
    double phi = x == 0 ? signf(y)*PI/2 : atan2(y, x);
    double R = sqrt ( x*x + y*y ) ;
    return psifunctionPolar( R, phi ) ;
@@ -63,7 +63,7 @@ cv::Point2d SIE::getXi( cv::Point2d chieta ) {
 
 
 
-double SIE::psiXvalue( double x, double y ) {
+double SIE::psiXvalue( double x, double y ) const {
    double sq = sqrt( 1 - ellipseratio*ellipseratio ) ; /* $f'$ */
    double sqf = sqrt( ellipseratio )/sq ;  /* $\sqrt(f)/f'$ */
 
@@ -81,7 +81,7 @@ double SIE::psiXvalue( double x, double y ) {
 
    return einsteinR*sqf*( ct * asinh(xp) - st * asin(yp)) ;
 }
-double SIE::psiYvalue( double x, double y ) {
+double SIE::psiYvalue( double x, double y ) const {
    double sq = sqrt( 1 - ellipseratio*ellipseratio ) ; /* $f'$ */
    double sqf = sqrt( ellipseratio )/sq ;  /* $\sqrt(f)/f'$ */
 

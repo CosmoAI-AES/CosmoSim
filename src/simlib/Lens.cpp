@@ -24,7 +24,26 @@ void Lens::setRatio( double r ) {
 }
 void Lens::setOrientation( double r ) { orientation = r ; }
 
-cv::Mat Lens::getPsi() const {
+cv::Mat Lens::getPsi( ) const {
+   return getPsi( cv::Size(400,400) ) ;
+}
+cv::Mat Lens::getPsi( cv::Size size ) const {
+   int nrows = size.height ;
+   int ncols = size.width ;
+   cv::Mat psi = cv::Mat::zeros(size, CV_64F );
+
+   std::cout << "[PsiFunctionLens] getPsi\n" ;
+
+
+   for ( int i=0 ; i<nrows ; ++i ) {
+      for ( int j=0 ; j<ncols ; ++j ) {
+         cv::Point2d ij( i, j ) ;
+         cv::Point2d xy = pointCoordinate( ij, psi ) ;
+	 psi.at<double>( ij ) = psiValue( xy.x, xy.y ) ;
+      }
+   }
+
+   std::cout << "[PsiFunctionLens] getPsi() returns\n" ;
    return psi ;
 }
 double Lens::getEinsteinR() const {

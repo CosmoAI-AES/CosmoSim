@@ -6,14 +6,14 @@
 #define norm(x,y) sqrt( x*x + y*y ) 
 
 
-double SIS::psiValue( double x, double y ) {
+double SIS::psiValue( double x, double y ) const {
    return einsteinR*sqrt( x*x + y*y ) ;
 }
-double SIS::psiXvalue( double x, double y ) {
+double SIS::psiXvalue( double x, double y ) const {
    double s = sqrt( x*x + y*y ) ;
    return einsteinR*x/s ;
 }
-double SIS::psiYvalue( double x, double y ) {
+double SIS::psiYvalue( double x, double y ) const {
    double s = sqrt( x*x + y*y ) ;
    return einsteinR*y/s ;
 }

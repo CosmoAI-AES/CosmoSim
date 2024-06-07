@@ -28,7 +28,6 @@ protected:
     std::array<std::array<double, 202>, 201> alphas_val;
     std::array<std::array<double, 202>, 201> betas_val;
     int nterms=20;
-    cv::Mat psi ;
 
 public:
     virtual void updatePsi( cv::Size ) ;
@@ -37,7 +36,8 @@ public:
     virtual void setOrientation( double ) ;
     virtual void setRatio( double ) ;
 
-    cv::Mat getPsi( ) const ;
+    virtual cv::Mat getPsi( ) const ;
+    virtual cv::Mat getPsi( cv::Size ) const ;
     cv::Mat getPsiImage( ) const ;  // Discouraged
     // cv::Mat getMassMap( ) const ;
     // cv::Mat getMassImage() const ;  // Discouraged
@@ -57,9 +57,9 @@ public:
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
 
-    virtual double psiValue( double, double ) = 0;
-    virtual double psiXvalue( double, double ) = 0;
-    virtual double psiYvalue( double, double ) = 0;
+    virtual double psiValue( double, double ) const = 0;
+    virtual double psiXvalue( double, double ) const = 0;
+    virtual double psiYvalue( double, double ) const = 0;
 
     virtual double criticalXi( double ) ;
     virtual cv::Point2d caustic( double ) ;
@@ -67,23 +67,26 @@ public:
 
 class SampledLens : public Lens {
 protected:
+    cv::Mat psi ;
     cv::Mat psiX, psiY ;
 public:
-    virtual double psiValue( double, double ) ;
-    virtual double psiXvalue( double, double ) ;
-    virtual double psiYvalue( double, double ) ;
+    virtual double psiValue( double, double ) const ;
+    virtual double psiXvalue( double, double ) const ;
+    virtual double psiYvalue( double, double ) const ;
 
     virtual void calculateAlphaBeta( cv::Point2d xi );
     virtual cv::Point2d getXi( cv::Point2d ) ;
+
+    virtual cv::Mat getPsi( ) const ;
 } ;
 
 class PsiFunctionLens : public Lens {
 public:
     virtual void updatePsi( cv::Size ) ;
 
-    virtual double psiValue( double, double ) ;
-    virtual double psiXvalue( double, double ) ;
-    virtual double psiYvalue( double, double ) ;
+    virtual double psiValue( double, double ) const ;
+    virtual double psiXvalue( double, double ) const ;
+    virtual double psiYvalue( double, double ) const ;
     // virtual void updatePsi( cv::Size ) ;
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
@@ -118,9 +121,9 @@ class SIS : public PsiFunctionLens {
 private:
 
 public:
-    virtual double psiValue( double, double ) ;
-    virtual double psiXvalue( double, double ) ;
-    virtual double psiYvalue( double, double ) ;
+    virtual double psiValue( double, double ) const ;
+    virtual double psiXvalue( double, double ) const ;
+    virtual double psiYvalue( double, double ) const ;
 
     virtual double criticalXi( double ) ;
     virtual cv::Point2d caustic( double ) ;
@@ -129,13 +132,13 @@ public:
 class SIE : public PsiFunctionLens { 
 
 private:
-    double psifunctionPolar( double, double ) ;
-    double psifunctionAligned( double, double ) ;
+    double psifunctionPolar( double, double ) const ;
+    double psifunctionAligned( double, double ) const ;
 
 public:
-    virtual double psiValue( double, double ) ;
-    virtual double psiXvalue( double, double ) ;
-    virtual double psiYvalue( double, double ) ;
+    virtual double psiValue( double, double ) const ;
+    virtual double psiXvalue( double, double ) const ;
+    virtual double psiYvalue( double, double ) const ;
 
     virtual double criticalXi( double ) ;
     virtual cv::Point2d caustic( double ) ;
