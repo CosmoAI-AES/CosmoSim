@@ -12,7 +12,7 @@
 
 #define PI 3.14159265358979323846
 
-class LensModel {
+class SimulatorModel {
 private:
     cv::Point2d eta ;  // Actual position in the source plane
     cv::Point2d nu ;   // Apparent position in the source plane
@@ -46,8 +46,8 @@ protected:
     virtual cv::Point2d getDistortedPos(double r, double theta) const = 0 ;
 
 public:
-    LensModel();
-    virtual ~LensModel();
+    SimulatorModel();
+    virtual ~SimulatorModel();
     cv::Point2d getOffset( cv::Point2d ) ;
     cv::Point2d getRelativeEta( cv::Point2d ) ;
     void update();
@@ -92,9 +92,9 @@ public:
     virtual void setLens( Lens* ) ;
 };
 
-class RotatedModel : public LensModel { 
+class RotatedModel : public SimulatorModel { 
 public:
-   using LensModel::LensModel ;
+   using SimulatorModel::SimulatorModel ;
 protected:
     virtual void updateApparentAbs() ;
     virtual cv::Mat getApparent() const ;
@@ -117,9 +117,9 @@ protected:
 };
 
 
-class RaytraceModel : public LensModel { 
+class RaytraceModel : public SimulatorModel { 
 public:
-    using LensModel::LensModel ;
+    using SimulatorModel::SimulatorModel ;
 protected:
     virtual cv::Point2d calculateEta( cv::Point2d ) ;
     virtual void distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) ;

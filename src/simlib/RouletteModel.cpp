@@ -11,7 +11,7 @@
 #define beta_(m,s)  ( NULL == this->lens ? betas_val[m][s] : this->lens->getBetaXi( m, s ) )
 
 RouletteModel::RouletteModel() :
-   LensModel::LensModel()
+   SimulatorModel::SimulatorModel()
 { 
     std::cout << "Instantiating RouletteModel ... \n" ;
 }

@@ -11,7 +11,7 @@ set(SimLibFiles
 	simlib/RotatedModel.cpp
         simlib/EllipsoidSource.cpp
         simlib/ImageSource.cpp
-        simlib/LensModel.cpp
+        simlib/SimulatorModel.cpp
         simlib/PointMass.cpp
 	simlib/PointMassExact.cpp
 	simlib/PointMassRoulette.cpp
