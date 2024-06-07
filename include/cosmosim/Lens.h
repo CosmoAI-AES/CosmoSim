@@ -76,12 +76,6 @@ public:
 
 class PsiFunctionLens : public Lens {
 public:
-    virtual double psifunction( double, double ) const = 0 ;
-    virtual double psiXfunction( double, double ) const = 0 ;
-    virtual double psiYfunction( double, double ) const = 0 ;
-    virtual double psiValue( double, double ) const ;
-    virtual double psiXvalue( double, double ) const ;
-    virtual double psiYvalue( double, double ) const ;
     virtual void updatePsi( cv::Size ) ;
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
@@ -105,9 +99,9 @@ class PointMass : public PsiFunctionLens {
 private:
 
 public:
-    virtual double psifunction( double, double ) const ;
-    virtual double psiXfunction( double, double ) const ;
-    virtual double psiYfunction( double, double ) const ;
+    virtual double psiValue( double, double ) const ;
+    virtual double psiXvalue( double, double ) const ;
+    virtual double psiYvalue( double, double ) const ;
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
 };
@@ -116,9 +110,9 @@ class SIS : public PsiFunctionLens {
 private:
 
 public:
-    virtual double psifunction( double, double ) const ;
-    virtual double psiXfunction( double, double ) const ;
-    virtual double psiYfunction( double, double ) const ;
+    virtual double psiValue( double, double ) const ;
+    virtual double psiXvalue( double, double ) const ;
+    virtual double psiYvalue( double, double ) const ;
 
     virtual double criticalXi( double ) const ;
     virtual cv::Point2d caustic( double ) const ;
@@ -131,9 +125,9 @@ private:
     double psifunctionAligned( double, double ) const ;
 
 public:
-    virtual double psifunction( double, double ) const ;
-    virtual double psiXfunction( double, double ) const ;
-    virtual double psiYfunction( double, double ) const ;
+    virtual double psiValue( double, double ) const ;
+    virtual double psiXvalue( double, double ) const ;
+    virtual double psiYvalue( double, double ) const ;
 
     virtual double criticalXi( double ) const ;
     virtual cv::Point2d caustic( double ) const ;

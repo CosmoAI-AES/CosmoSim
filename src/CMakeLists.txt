@@ -7,15 +7,15 @@ set(SimLibFiles
         simlib/SIS.cpp
         simlib/SIE.cpp
         simlib/RaytraceModel.cpp
-	simlib/RouletteModel.cpp
-	simlib/RotatedModel.cpp
+        simlib/RouletteModel.cpp
+        simlib/RotatedModel.cpp
         simlib/EllipsoidSource.cpp
         simlib/ImageSource.cpp
-	simlib/SimulatorModel.cpp
+        simlib/SimulatorModel.cpp
         simlib/PointMass.cpp
-	simlib/PointMassExact.cpp
-	simlib/PointMassRoulette.cpp
-	simlib/RouletteRegenerator.cpp
+        simlib/PointMassExact.cpp
+        simlib/PointMassRoulette.cpp
+        simlib/RouletteRegenerator.cpp
         simlib/simaux.cpp
         simlib/Source.cpp
         simlib/SphericalSource.cpp

@@ -18,9 +18,9 @@ void PsiFunctionLens::updatePsi( cv::Size size ) {
       for ( int j=0 ; j<ncols ; ++j ) {
          cv::Point2d ij( i, j ) ;
          cv::Point2d xy = pointCoordinate( ij, psi ) ;
-	 psi.at<double>( ij ) = psifunction( xy.x, xy.y ) ;
-	 psiX.at<double>( ij ) = psiXfunction( xy.x, xy.y ) ;
-	 psiY.at<double>( ij ) = psiYfunction( xy.x, xy.y ) ;
+	 psi.at<double>( ij ) = psiValue( xy.x, xy.y ) ;
+	 psiX.at<double>( ij ) = psiXvalue( xy.x, xy.y ) ;
+	 psiY.at<double>( ij ) = psiYvalue( xy.x, xy.y ) ;
       }
    }
 
@@ -28,29 +28,12 @@ void PsiFunctionLens::updatePsi( cv::Size size ) {
    return ; 
 }
 
-double PsiFunctionLens::psiValue( double x, double y ) const {
-   return psifunction( x, y ) ;
-}
-double PsiFunctionLens::psiXvalue( double x, double y ) const { 
-   return psiXfunction( x, y ) ;
-}
-double PsiFunctionLens::psiYvalue( double x, double y ) const {
-   return psiYfunction( x, y ) ;
-}
 
 cv::Point2d PsiFunctionLens::getXi( cv::Point2d chieta ) {
 
-   /*
-   double s = norm(chieta.x, chieta.y) ;
-   return chieta + einsteinR*cv::Point2d( chieta.x/s, chieta.y/s ) ;
-   /**/
 
    return chieta + cv::Point2d( 
-         psiXfunction(chieta.x, chieta.y ),
-         psiYfunction(chieta.x, chieta.y ) ) ;
+         psiXvalue(chieta.x, chieta.y ),
+         psiYvalue(chieta.x, chieta.y ) ) ;
 
-   /*
-   double phi = atan2(chieta.y, chieta.x); 
-   return chieta + einsteinR*cv::Point2d( cos(phi), sin(phi) ) ;
-   */
 }
