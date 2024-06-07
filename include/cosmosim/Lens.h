@@ -38,8 +38,8 @@ public:
     virtual void setRatio( double ) ;
 
     cv::Mat getPsi( ) const ;
-    // cv::Mat getMassMap( ) const ;
     cv::Mat getPsiImage( ) const ;  // Discouraged
+    // cv::Mat getMassMap( ) const ;
     // cv::Mat getMassImage() const ;  // Discouraged
 
     virtual void initAlphasBetas();
@@ -87,11 +87,6 @@ public:
     // virtual void updatePsi( cv::Size ) ;
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
-} ;
-class PixMapLens : public SampledLens {
-public:
-    void setPsi( cv::Mat ) ;
-    void loadPsi( std::string ) ;
 } ;
 
 class SampledPsiFunctionLens : public SampledLens {
