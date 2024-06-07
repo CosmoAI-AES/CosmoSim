@@ -111,8 +111,9 @@ cv::Mat CosmoSim::getPsiMap( ) {
    return im ;
 } 
 cv::Mat CosmoSim::getMassMap( ) {
-   cv::Mat im = lens->getMassMap() ;
-   return im ;
+   throw NotImplemented();
+   // cv::Mat im = lens->getMassMap() ;
+   // return im ;
 } 
 
 void CosmoSim::setCHI(double c) { chi = c/100.0 ; }

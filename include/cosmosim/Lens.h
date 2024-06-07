@@ -24,7 +24,7 @@ protected:
            ellipseratio=1 /* f */,
 	   orientation=0 /* \phi */ ;
     std::string filename = "50.txt" ;
-    cv::Mat psi, psiX, psiY, einsteinMap ;
+    cv::Mat psi ;
 
     std::array<std::array<double, 202>, 201> alphas_val;
     std::array<std::array<double, 202>, 201> betas_val;
@@ -38,12 +38,11 @@ public:
     virtual void setRatio( double ) ;
 
     cv::Mat getPsi( ) const ;
-    cv::Mat getPsiX( ) const ;
-    cv::Mat getPsiY( ) const ;
-    cv::Mat getMassMap( ) const ;
-    cv::Mat getEinsteinMap( ) const ; // Not implemented
-    cv::Mat getPsiImage( ) const ;  // Discouraged
-    cv::Mat getMassImage() const ;  // Discouraged
+    // cv::Mat getPsiX( ) const ;
+    // cv::Mat getPsiY( ) const ;
+    // cv::Mat getMassMap( ) const ;
+    // cv::Mat getPsiImage( ) const ;  // Discouraged
+    // cv::Mat getMassImage() const ;  // Discouraged
 
     virtual void initAlphasBetas();
     virtual void calculateAlphaBeta( cv::Point2d xi );
@@ -60,18 +59,24 @@ public:
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
 
-    virtual double psiValue( double, double ) const ;
-    virtual double psiXvalue( double, double ) const ;
-    virtual double psiYvalue( double, double ) const ;
+    virtual double psiValue( double, double ) const = 0 ;
+    virtual double psiXvalue( double, double ) const = 0 ;
+    virtual double psiYvalue( double, double ) const = 0 ;
 
     virtual double criticalXi( double ) const ;
     virtual cv::Point2d caustic( double ) const ;
 };
 
 class SampledLens : public Lens {
+protected:
+    cv::Mat psiX, psiY ;
 public:
     virtual void calculateAlphaBeta( cv::Point2d xi );
     virtual cv::Point2d getXi( cv::Point2d ) ;
+
+    virtual double psiValue( double, double ) const ;
+    virtual double psiXvalue( double, double ) const ;
+    virtual double psiYvalue( double, double ) const ;
 } ;
 
 class PsiFunctionLens : public Lens {

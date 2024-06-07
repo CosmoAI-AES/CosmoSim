@@ -12,6 +12,13 @@ clean alltests:
 	cd roulettelens ; $(MAKE) $@
 	cd amplitudes ; $(MAKE) $@
 
+cpptests:
+	cd exactpm ; $(MAKE) alltests
+	cd raytrace ; $(MAKE) alltests
+	cd roulette ; $(MAKE) alltests
+	cd roulettepm ; $(MAKE) alltests
+	cd roulettelens ; $(MAKE) alltests
+
 baselines:
 	cd exactpm ; $(MAKE) baseline`date "+%Y%m%d"`
 	cd raytrace ; $(MAKE) baseline`date "+%Y%m%d"` 
