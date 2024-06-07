@@ -28,13 +28,13 @@ void PsiFunctionLens::updatePsi( cv::Size size ) {
    return ; 
 }
 
-double PsiFunctionLens::psiValue( double x, double y ) { 
+double PsiFunctionLens::psiValue( double x, double y ) const {
    return psifunction( x, y ) ;
 }
-double PsiFunctionLens::psiXvalue( double x, double y ) { 
+double PsiFunctionLens::psiXvalue( double x, double y ) const { 
    return psiXfunction( x, y ) ;
 }
-double PsiFunctionLens::psiYvalue( double x, double y ) { 
+double PsiFunctionLens::psiYvalue( double x, double y ) const {
    return psiYfunction( x, y ) ;
 }
 

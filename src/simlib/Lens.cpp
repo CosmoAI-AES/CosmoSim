@@ -161,21 +161,21 @@ void Lens::setNterms( int n ) {
    nterms = n ;
 }
 
-double Lens::psiValue( double x, double y ) { 
+double Lens::psiValue( double x, double y ) const { 
    cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
    return psi.at<double>( ij ) ;
 }
-double Lens::psiXvalue( double x, double y ) { 
+double Lens::psiXvalue( double x, double y ) const {
    cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
    return -psiY.at<double>( ij ) ;
 }
-double Lens::psiYvalue( double x, double y ) { 
+double Lens::psiYvalue( double x, double y ) const { 
    cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
    return -psiX.at<double>( ij ) ;
 }
-double Lens::criticalXi( double phi ) {
+double Lens::criticalXi( double phi ) const {
    throw NotImplemented() ;
 }
-cv::Point2d Lens::caustic( double phi ) {
+cv::Point2d Lens::caustic( double phi ) const {
    throw NotImplemented() ;
 }

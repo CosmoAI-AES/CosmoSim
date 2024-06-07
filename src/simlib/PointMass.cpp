@@ -6,15 +6,15 @@
 #include "cosmosim/Lens.h"
 #include "simaux.h"
 
-double PointMass::psifunction( double x, double y ) {
+double PointMass::psifunction( double x, double y ) const {
    double r = sqrt( x*x + y*y ) ;
    return (einsteinR*einsteinR)*log(r/einsteinR) ;
 }
-double PointMass::psiXfunction( double x, double y ) {
+double PointMass::psiXfunction( double x, double y ) const {
    double r = sqrt( x*x + y*y ) ;
    return (einsteinR*einsteinR)*(einsteinR/r)*(x/r) ;
 }
-double PointMass::psiYfunction( double x, double y ) {
+double PointMass::psiYfunction( double x, double y ) const {
    double r = sqrt( x*x + y*y ) ;
    return (einsteinR*einsteinR)*(einsteinR/r)*(y/r) ;
 }

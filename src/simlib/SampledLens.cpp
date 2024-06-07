@@ -13,15 +13,12 @@ cv::Point2d SampledLens::getXi( cv::Point2d chieta ) {
 
    cv::Point2d xi0, xi1 = chieta ;
 
-   cv::Mat psi, psiX, psiY ;
+   // cv::Mat psi, psiX, psiY ;
    int cont = 1, count = 0, maxcount = 200 ;
    double dist, dist0=pow(10,12), threshold = 0.02 ;
 
    /* Get the lens potential */
    updatePsi() ;
-   psi = getPsi() ;
-   psiX = getPsiX() ;
-   psiY = getPsiY() ;
    int ncols=psi.cols, nrows=psi.rows ;
 
    if (DEBUG) {
