@@ -12,18 +12,18 @@
 
 double factorial_(unsigned int n);
 
-LensModel::LensModel() :
+SimulatorModel::SimulatorModel() :
         CHI(0.5),
         nterms(10),
         source(NULL)
 { }
 
-LensModel::~LensModel() {
+SimulatorModel::~SimulatorModel() {
    delete source ;
 }
 
 /* Getters for the images */
-cv::Mat LensModel::getActual() const {
+cv::Mat SimulatorModel::getActual() const {
    cv::Mat imgApparent = getSource() ;
    cv::Mat imgActual 
         = cv::Mat::zeros(imgApparent.size(), imgApparent.type());
@@ -32,37 +32,37 @@ cv::Mat LensModel::getActual() const {
    return imgActual ; 
 
 }
-cv::Mat LensModel::getSource() const {
+cv::Mat SimulatorModel::getSource() const {
    return source->getImage() ;
 }
-cv::Mat LensModel::getApparent() const {
+cv::Mat SimulatorModel::getApparent() const {
    return source->getImage() ;
 }
-cv::Mat LensModel::getDistorted() const {
+cv::Mat SimulatorModel::getDistorted() const {
    return imgDistorted ;
 }
 
-void LensModel::update( ) {
+void SimulatorModel::update( ) {
    updateApparentAbs() ;
    return updateInner() ;
 }
-void LensModel::update( cv::Point2d xi ) {
+void SimulatorModel::update( cv::Point2d xi ) {
    setXi( xi ) ;
    return updateInner() ;
 }
-cv::Mat LensModel::getCaustic() {
+cv::Mat SimulatorModel::getCaustic() {
    cv::Mat src = getCritical() ;
    cv::Mat img = cv::Mat::zeros(src.size(), src.type());
    undistort( src, img ) ;
    return img ;
 }
-cv::Mat LensModel::getCritical() {
+cv::Mat SimulatorModel::getCritical() {
    cv::Mat src = getSource() ;
    cv::Mat img = cv::Mat::zeros(src.size(), src.type());
    drawCritical( img ) ;
    return img ;
 }
-void LensModel::drawCaustics( cv::Mat img ) {
+void SimulatorModel::drawCaustics( cv::Mat img ) {
    try {
       for ( int i=0 ; i < 360*5 ; ++i ) {
          double phi = i*PI/(180*5) ;
@@ -80,10 +80,10 @@ void LensModel::drawCaustics( cv::Mat img ) {
       std::cerr << "Caustics not drawn" << std::endl ;
    }
 }
-void LensModel::drawCritical() {
+void SimulatorModel::drawCritical() {
    drawCritical( imgDistorted ) ;
 }
-void LensModel::drawCritical( cv::Mat img ) {
+void SimulatorModel::drawCritical( cv::Mat img ) {
    try {
       for ( int i=0 ; i < 360*5 ; ++i ) {
          double phi = i*PI/(180*5) ;
@@ -104,15 +104,15 @@ void LensModel::drawCritical( cv::Mat img ) {
       std::cerr << "Critical Curves not drawn" << std::endl ;
    }
 }
-void LensModel::updateInner( ) {
+void SimulatorModel::updateInner( ) {
     cv::Mat imgApparent = getApparent() ;
 
     if ( DEBUG ) {
-      std::cout << "[LensModel::updateInner()] R=" << getEtaAbs() << "; theta=" << phi
+      std::cout << "[SimulatorModel::updateInner()] R=" << getEtaAbs() << "; theta=" << phi
               << "; CHI=" << CHI << "\n" ;
-      std::cout << "[LensModel::updateInner()] xi=" << getXi()   
+      std::cout << "[SimulatorModel::updateInner()] xi=" << getXi()   
               << "; eta=" << getEta() << "; etaOffset=" << etaOffset << "\n" ;
-      std::cout << "[LensModel::updateInner()] nu=" << getNu()   
+      std::cout << "[SimulatorModel::updateInner()] nu=" << getNu()   
               << "; centre=" << getCentre() << "\n" << std::flush ;
     }
 
@@ -133,7 +133,7 @@ void LensModel::updateInner( ) {
 
 
 /* This just splits the image space in chunks and runs distort() in parallel */
-void LensModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
+void SimulatorModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
     int n_threads = std::thread::hardware_concurrency();
     if (DEBUG) {
        std::cout << "[parallelDistort] Running with " << n_threads << " threads (maskMode="
@@ -155,7 +155,7 @@ void LensModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
         if ( rng > mrng ) rng = mrng ;
         if (DEBUG) std::cout << maskRadius << " - " << lower << "/" << rng << "\n" ;
     } else if (DEBUG) {
-        std::cout << "[LensModel] No mask \n" ;
+        std::cout << "[SimulatorModel] No mask \n" ;
     } 
     rng1 = ceil( (double) rng / (double) n_threads ) ;
     if (DEBUG) std::cout << "[parallelDistort] lower=" << lower << "; rng=" << rng
@@ -172,7 +172,7 @@ void LensModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
     }
 }
 
-void LensModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) {
+void SimulatorModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) {
     // Iterate over the pixels in the image distorted image.
     // (row,col) are pixel co-ordinates
     double maskRadius = getMaskRadius()*CHI ;
@@ -214,7 +214,7 @@ void LensModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) {
         }
     }
 }
-void LensModel::undistort(const cv::Mat& src, cv::Mat& dst) {
+void SimulatorModel::undistort(const cv::Mat& src, cv::Mat& dst) {
     throw NotImplemented() ;
     // Iterate over the pixels in the apparent image src and create
     // a corresponding source image dst.
@@ -256,28 +256,28 @@ void LensModel::undistort(const cv::Mat& src, cv::Mat& dst) {
 
 /* Initialiser.  The default implementation does nothing.
  * This is correct for any subclass that does not need the alpha/beta tables. */
-void LensModel::calculateAlphaBeta() { }
+void SimulatorModel::calculateAlphaBeta() { }
 
 
 /** *** Setters *** */
 
 /* A.  Mode setters */
-void LensModel::setMaskMode(bool b) {
+void SimulatorModel::setMaskMode(bool b) {
    maskMode = b ; 
 }
-void LensModel::setBGColour(int b) { bgcolour = b ; }
+void SimulatorModel::setBGColour(int b) { bgcolour = b ; }
 
 /* B. Source model setter */
-void LensModel::setSource(Source *src) {
+void SimulatorModel::setSource(Source *src) {
     if ( source != NULL ) delete source ;
     source = src ;
 }
 
 /* C. Lens Model setter */
-void LensModel::setNterms(int n) {
+void SimulatorModel::setNterms(int n) {
    nterms = n ;
 }
-void LensModel::setCHI(double chi) {
+void SimulatorModel::setCHI(double chi) {
    CHI = chi ;
 }
 
@@ -285,7 +285,7 @@ void LensModel::setCHI(double chi) {
 
 /* Re-calculate co-ordinates using updated parameter settings from the GUI.
  * This is called from the update() method.                                  */
-void LensModel::setXY( double X, double Y ) {
+void SimulatorModel::setXY( double X, double Y ) {
 
     // Actual position in source plane
     eta = cv::Point2d( X, Y ) ;
@@ -299,7 +299,7 @@ void LensModel::setXY( double X, double Y ) {
 
 /* Re-calculate co-ordinates using updated parameter settings from the GUI.
  * This is called from the update() method.                                  */
-void LensModel::setPolar( double R, double theta ) {
+void SimulatorModel::setPolar( double R, double theta ) {
 
     phi = PI*theta/180 ;
 
@@ -313,16 +313,16 @@ void LensModel::setPolar( double R, double theta ) {
 
 
 /* Masking */
-void LensModel::maskImage( ) {
+void SimulatorModel::maskImage( ) {
     maskImage( imgDistorted, 1 ) ;
 }
-void LensModel::maskImage( double scale ) {
+void SimulatorModel::maskImage( double scale ) {
     maskImage( imgDistorted, scale ) ;
 }
-void LensModel::markMask( ) {
+void SimulatorModel::markMask( ) {
     markMask( imgDistorted ) ;
 }
-void LensModel::maskImage( cv::InputOutputArray imgD, double scale ) {
+void SimulatorModel::maskImage( cv::InputOutputArray imgD, double scale ) {
 
       cv::Mat imgDistorted = getDistorted() ;
       cv::Point2d origo = imageCoordinate( getCentre(), imgDistorted ) ;
@@ -332,7 +332,7 @@ void LensModel::maskImage( cv::InputOutputArray imgD, double scale ) {
       cv::circle( mask, origo, scale*getMaskRadius(), cv::Scalar(0), cv::FILLED ) ;
       black.copyTo( imgD, mask ) ;
 }
-void LensModel::markMask( cv::InputOutputArray imgD ) {
+void SimulatorModel::markMask( cv::InputOutputArray imgD ) {
       cv::Mat imgDistorted = getDistorted() ;
       cv::Point2d origo = imageCoordinate( getCentre(), imgDistorted ) ;
       origo = cv::Point2d( origo.y, origo.x ) ;
@@ -342,57 +342,57 @@ void LensModel::markMask( cv::InputOutputArray imgD ) {
 }
 
 /* Getters */
-cv::Point2d LensModel::getCentre( ) const {
+cv::Point2d SimulatorModel::getCentre( ) const {
    cv::Point2d xichi =  getXi()/CHI ;
    return xichi ;
 }
-cv::Point2d LensModel::getXi() const { 
+cv::Point2d SimulatorModel::getXi() const { 
    return xi ;
 }
-double LensModel::getXiAbs() const { 
+double SimulatorModel::getXiAbs() const { 
    cv::Point2d xi = getXi() ;
    return sqrt( xi.x*xi.x + xi.y*xi.y ) ;
 }
-cv::Point2d LensModel::getTrueXi() const { 
+cv::Point2d SimulatorModel::getTrueXi() const { 
    return CHI*nu ;
 }
-cv::Point2d LensModel::getNu() const { 
+cv::Point2d SimulatorModel::getNu() const { 
    return nu ;
 }
-double LensModel::getNuAbs() const { 
+double SimulatorModel::getNuAbs() const { 
    return sqrt( nu.x*nu.x + nu.y*nu.y ) ;
 }
-cv::Point2d LensModel::getEta() const {
+cv::Point2d SimulatorModel::getEta() const {
    return eta ;
 }
-double LensModel::getEtaSquare() const {
+double SimulatorModel::getEtaSquare() const {
    return eta.x*eta.x + eta.y*eta.y ;
 }
-double LensModel::getEtaAbs() const {
+double SimulatorModel::getEtaAbs() const {
    return sqrt( eta.x*eta.x + eta.y*eta.y ) ;
 }
-double LensModel::getMaskRadius() const { return 1024*1024 ; }
-void LensModel::setNu( cv::Point2d n ) {
+double SimulatorModel::getMaskRadius() const { return 1024*1024 ; }
+void SimulatorModel::setNu( cv::Point2d n ) {
    nu = n ;
    xi = nu*CHI ;
    etaOffset = cv::Point2d( 0, 0 ) ;
    if (DEBUG) std::cout << "[setNu] etaOffset set to zero.\n" ;
 }
-void LensModel::setXi( cv::Point2d x ) {
+void SimulatorModel::setXi( cv::Point2d x ) {
       throw NotImplemented() ;
 }
-void LensModel::setLens( Lens *l ) {
+void SimulatorModel::setLens( Lens *l ) {
    lens = l ;
 }
 
-cv::Point2d LensModel::getRelativeEta( cv::Point2d xi1 ) {
+cv::Point2d SimulatorModel::getRelativeEta( cv::Point2d xi1 ) {
    // returns $\vec\eta''$
    cv::Point2d releta ;
    releta = eta - xi1/CHI ;
    return releta ;
 }
 
-cv::Point2d LensModel::getOffset( cv::Point2d xi1 ) {
+cv::Point2d SimulatorModel::getOffset( cv::Point2d xi1 ) {
    cv::Point2d releta, eta, r ; 
 
    releta = xi1 - cv::Point2d( lens->psiXvalue( xi1.x, xi1.y ),
@@ -411,7 +411,7 @@ cv::Point2d LensModel::getOffset( cv::Point2d xi1 ) {
    return r ;
 }
 
-void LensModel::updateApparentAbs( ) {
+void SimulatorModel::updateApparentAbs( ) {
     cv::Mat im = getActual() ;
     lens->updatePsi(im.size()) ;
     cv::Point2d chieta = CHI*getEta() ;

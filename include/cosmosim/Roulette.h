@@ -12,11 +12,11 @@ using namespace SymEngine;
 #define PI 3.14159265358979323846
 
 
-class RouletteModel : public LensModel { 
+class RouletteModel : public SimulatorModel { 
 public:
     RouletteModel();
 
-    using LensModel::LensModel ;
+    using SimulatorModel::SimulatorModel ;
     virtual void setLens( Lens* ) ;
     // void setCentre( cv::Point2d ) ;
 protected:

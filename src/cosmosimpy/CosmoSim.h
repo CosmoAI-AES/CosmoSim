@@ -41,7 +41,7 @@ private:
     cv::Point2d centrepoint ;
     int nterms=16 ;
     int bgcolour=0 ;
-    LensModel *sim = NULL ;
+    SimulatorModel *sim = NULL ;
     Source *src = NULL ;
     bool running = false ;
     bool maskmode ;
