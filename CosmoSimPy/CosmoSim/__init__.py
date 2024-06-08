@@ -33,9 +33,11 @@ modelValues = {
         "Point Mass (exact)" : (ModelSpec.PointMassExact,PsiSpec.PM,False),
         "Point Mass (roulettes)" : (ModelSpec.PointMassRoulettes,PsiSpec.PM,False),
         "Sampled Roulette SIS" : (ModelSpec.Roulette,PsiSpec.SIS,True),
+        "Sampled Roulette SIE" : (ModelSpec.Roulette,PsiSpec.SIE,True),
         "Sampled Raytrace SIS" : (ModelSpec.Raytrace,PsiSpec.SIS,True),
         "Sampled Raytrace SIE" : (ModelSpec.Raytrace,PsiSpec.SIE,True),
         "Roulette SIS" : (ModelSpec.Roulette,PsiSpec.SIS,False),
+        "Roulette SIE" : (ModelSpec.Roulette,PsiSpec.SIE,False),
         "Raytrace SIS" : (ModelSpec.Raytrace,PsiSpec.SIS,False),
         "Raytrace SIE" : (ModelSpec.Raytrace,PsiSpec.SIE,False),
         }
@@ -46,6 +48,10 @@ configDict["ss"] = configDict["Sampled Roulette SIS"]
 configDict["pss"] = configDict["Sampled Raytrace SIS"]
 configDict["fs"] = configDict["Roulette SIS"]
 configDict["rs"] = configDict["Raytrace SIS"]
+configDict["srousie"] = configDict["Sampled Roulette SIE"]
+configDict["sraysie"] = configDict["Sampled Raytrace SIE"]
+configDict["rousie"] = configDict["Roulette SIE"]
+configDict["raysie"] = configDict["Raytrace SIE"]
 
 sourceDict = {
         "Spherical" : SourceSpec.Sphere,

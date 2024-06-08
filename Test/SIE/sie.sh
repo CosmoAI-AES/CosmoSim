@@ -4,29 +4,19 @@
 
 opt=$*
 
-pdir=../../CosmoSimPy
-dir1=SampledSIE
-dir2=SIE
-diffdir=diff
+pdir=../../CosmoSimPy/
+fn=debug.csv
 
-mkdir -p $dir1 $dir2 $diffdir
+configlist="srousie sraysie rousie raysie"
+# configlist='"Sampled Roulette SIS" "Sampled Raytrace SIS" "Roulette SIS" "Raytrace SIS"'
 
-fn=sie.csv
 
-python3 $pdir/datagen.py $opt --config "Sampled Raytrace SIE" --directory="$dir1" --csvfile $fn  --actual
-python3 $pdir/datagen.py $opt --config "Raytrace SIE" --directory="$dir2" --csvfile $fn 
-
-rm -rf Actual
-mkdir -p Actual
-mv */actual*png Actual
-
-python3 $pdir/compare.py --diff $diffdir $dir1 $dir2
-
-CONVERT=convert
-mkdir -p montage
-
-for f in diff/*
+for dir in $configlist
 do
-  ff=`basename $f`
-  $CONVERT \( Actual/actual-$ff SIE/$ff +append \) \( SampledSIE/$ff diff/$ff +append \) -append montage/$ff
+   echo "Testing" $dir
+   mkdir -p $dir actual-$dir
+   python3 $pdir/datagen.py $opt --config "$dir" --directory="$dir" --csvfile $fn  --actual
+   mv $dir/actual*png actual-$dir
 done
+
+
