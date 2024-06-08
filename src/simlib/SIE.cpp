@@ -52,17 +52,6 @@ double SIE::psiValue( double x, double y ) const {
    return psifunctionPolar( R, phi ) ;
 }
 
-/*
-cv::Point2d SIE::getXi( cv::Point2d chieta ) {
-   std::cerr  << "getXi() NotImplemented\n" ;
-   throw NotImplemented() ;
-   double phi = atan2(chieta.y, chieta.x); 
-   return chieta + einsteinR*cv::Point2d( cos(phi), sin(phi) ) ;
-}
-*/
-
-
-
 double SIE::psiXvalue( double x, double y ) const {
    double sq = sqrt( 1 - ellipseratio*ellipseratio ) ; /* $f'$ */
    double sqf = sqrt( ellipseratio )/sq ;  /* $\sqrt(f)/f'$ */

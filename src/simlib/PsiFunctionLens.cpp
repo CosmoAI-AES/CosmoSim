@@ -23,13 +23,3 @@ void PsiFunctionLens::updatePsi( cv::Size size ) {
    std::cout << "[PsiFunctionLens] updatePsi() returns\n" ;
    return ; 
 }
-
-
-cv::Point2d PsiFunctionLens::getXi( cv::Point2d chieta ) {
-
-
-   return chieta + cv::Point2d( 
-         psiXvalue(chieta.x, chieta.y ),
-         psiYvalue(chieta.x, chieta.y ) ) ;
-
-}

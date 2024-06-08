@@ -83,7 +83,6 @@ class PsiFunctionLens : public Lens {
 public:
     virtual void updatePsi( cv::Size ) ;
 
-    virtual cv::Point2d getXi( cv::Point2d ) ;
 } ;
 
 class SampledPsiFunctionLens : public SampledLens {

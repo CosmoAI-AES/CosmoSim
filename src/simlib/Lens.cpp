@@ -157,9 +157,12 @@ double Lens::getAlphaXi( int m, int s ) {
 double Lens::getBetaXi( int m, int s ) {
    return betas_val[m][s] ;
 }
-cv::Point2d Lens::getXi( cv::Point2d e ) {
-   std::cerr << "[Lens.getXi() not implemented\n" ;
-   throw NotImplemented() ;
+cv::Point2d Lens::getXi( cv::Point2d chieta ) {
+
+   return chieta + cv::Point2d( 
+         psiXvalue(chieta.x, chieta.y ),
+         psiYvalue(chieta.x, chieta.y ) ) ;
+
 }
 void Lens::setNterms( int n ) {
    nterms = n ;
