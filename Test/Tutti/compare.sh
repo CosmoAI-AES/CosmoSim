@@ -8,8 +8,16 @@ pdir=../../CosmoSimPy
 configlist="ss pss fs rs"
 CONVERT=convert
 
+shopt -s extglob
 
-mkdir -p {diff,montage}-{roulette,raytrace,compare}
+for a in diff montage
+do
+  for b in roulette raytrace compare
+  do
+     mkdir $a-$b
+  done
+done
+
 python3 $pdir/compare.py --diff diff-roulette fs ss
 python3 $pdir/compare.py --diff diff-raytrace rs pss
 python3 $pdir/compare.py --diff diff-compare fs rs
@@ -25,10 +33,10 @@ done
 for f in diff-raytrace/*
 do
   ff=`basename $f`
-  $CONVERT \( actual-pss/actual-$ff rs/$ff +append \) \( pss/$ff diff-roulette/$ff +append \) -append montage-roulette/$ff
+  $CONVERT \( actual-pss/actual-$ff rs/$ff +append \) \( pss/$ff diff-raytrace/$ff +append \) -append montage-raytrace/$ff
 done
 for f in diff-compare/*
 do
   ff=`basename $f`
-  $CONVERT \( actual-fs/actual-$ff rs/$ff +append \) \( fs/$ff diff-roulette/$ff +append \) -append montage-roulette/$ff
+  $CONVERT \( actual-fs/actual-$ff rs/$ff +append \) \( fs/$ff diff-compare/$ff +append \) -append montage-compare/$ff
 done
