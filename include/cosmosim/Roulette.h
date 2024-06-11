@@ -28,8 +28,6 @@ protected:
     // virtual void maskImage( cv::InputOutputArray, double ) ;
     virtual double getMaskRadius() const ;
 
-    virtual void setXi( cv::Point2d ) ;
-
     virtual void calculateAlphaBeta();
 };
 

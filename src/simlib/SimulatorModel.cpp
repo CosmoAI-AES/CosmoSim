@@ -378,8 +378,13 @@ void SimulatorModel::setNu( cv::Point2d n ) {
    etaOffset = cv::Point2d( 0, 0 ) ;
    if (DEBUG) std::cout << "[setNu] etaOffset set to zero.\n" ;
 }
-void SimulatorModel::setXi( cv::Point2d x ) {
-      throw NotImplemented() ;
+void SimulatorModel::setXi( cv::Point2d xi1 ) {
+   // xi1 is an alternative reference point \xi'
+   xi = xi1 ;   // reset \xi
+
+   // etaOffset is the difference between source point corresponding to the
+   // reference point in the lens plane and the actual source centre
+   etaOffset = getOffset( xi1 ) ;
 }
 void SimulatorModel::setLens( Lens *l ) {
    lens = l ;

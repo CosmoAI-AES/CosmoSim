@@ -17,7 +17,12 @@ private:
     cv::Point2d eta ;  // Actual position in the source plane
     cv::Point2d nu ;   // Apparent position in the source plane
 
+    cv::Point2d xi = cv::Point2d(0,0) ;   // Local origin in the lens plane
+
 protected:
+    cv::Point2d etaOffset = cv::Point2d(0,0) ;
+        // Offset in the source plane resulting from moving xi
+
     virtual void updateInner();
     cv::Mat imgDistorted;
 
@@ -25,9 +30,6 @@ protected:
     virtual void distort(int row, int col, const cv::Mat &src, cv::Mat &dst);
     virtual void undistort(const cv::Mat &src, cv::Mat &dst);
 
-    cv::Point2d xi = cv::Point2d(0,0) ;   // Local origin in the lens plane
-    cv::Point2d etaOffset = cv::Point2d(0,0) ;
-        // Offset in the source plane resulting from moving xi
     double CHI;
     Source *source ;
     Lens *lens = NULL ;
@@ -39,7 +41,7 @@ protected:
     bool maskMode = false ;
     virtual double getMaskRadius() const ;
     void setNu( cv::Point2d ) ;
-    virtual void setXi( cv::Point2d ) ;
+    void setXi( cv::Point2d ) ;
 
     virtual void updateApparentAbs() ;
     virtual void calculateAlphaBeta() ;

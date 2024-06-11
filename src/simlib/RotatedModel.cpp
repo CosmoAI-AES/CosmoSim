@@ -32,7 +32,7 @@ void RotatedModel::updateInner( ) {
       std::cout << "[RotatedModel::updateInner()] R=" << getEtaAbs() << "; theta=" << phi
               << "; CHI=" << CHI << "\n" ;
       std::cout << "[RotatedModel::updateInner()] xi=" << getXi()   
-              << "; eta=" << getEta() << "; etaOffset=" << etaOffset << "\n" ;
+              << "; eta=" << getEta() <<  "\n" ;
       std::cout << "[RotatedModel::updateInner()] nu=" << getNu()   
               << "; centre=" << getCentre() << "\n" << std::flush ;
     }

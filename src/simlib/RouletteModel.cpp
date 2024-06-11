@@ -69,12 +69,3 @@ void RouletteModel::calculateAlphaBeta() {
 
     lens->calculateAlphaBeta( xi ) ;
 }
-
-void RouletteModel::setXi( cv::Point2d xi1 ) {
-   // xi1 is an alternative reference point \xi'
-   xi = xi1 ;   // reset \xi
-
-   // etaOffset is the difference between source point corresponding to the
-   // reference point in the lens plane and the actual source centre
-   etaOffset = getOffset( xi1 ) ;
-}
