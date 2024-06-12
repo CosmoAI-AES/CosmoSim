@@ -20,13 +20,14 @@ cv::Mat RotatedModel::getApparent() const {
    int nrows = src.rows ;
    int ncols = src.cols ;
    cv::Mat rot = cv::getRotationMatrix2D(cv::Point(nrows/2, ncols/2),
-             360-phi*180/PI, 1) ;
+             360-getPhi()*180/PI, 1) ;
    cv::warpAffine(src, dst, rot, src.size() ) ;
    return dst ;
 }
 
 void RotatedModel::updateInner( ) {
     cv::Mat imgApparent = getApparent() ;
+    double phi = getPhi() ;
 
     if (DEBUG) {
       std::cout << "[RotatedModel::updateInner()] R=" << getEtaAbs() << "; theta=" << phi

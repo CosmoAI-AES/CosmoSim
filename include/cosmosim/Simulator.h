@@ -17,7 +17,7 @@ private:
     cv::Point2d eta ;  // Actual position in the source plane
     cv::Point2d nu ;   // Apparent position in the source plane
 
-    cv::Point2d xi = cv::Point2d(0,0) ;   // Local origin in the lens plane
+    cv::Point2d referenceXi = cv::Point2d(0,0) ;   // Local origin in the lens plane
 
 protected:
     cv::Point2d etaOffset = cv::Point2d(0,0) ;
@@ -34,7 +34,8 @@ protected:
     Source *source ;
     Lens *lens = NULL ;
     int nterms;
-    double phi{};
+
+    double getPhi() const ;
 
     int bgcolour = 0;
 
