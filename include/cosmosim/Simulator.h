@@ -35,7 +35,7 @@ protected:
     Lens *lens = NULL ;
     int nterms;
 
-    double getPhi() const ;
+    double getPhi() const ; // polar angle of source position
 
     int bgcolour = 0;
 

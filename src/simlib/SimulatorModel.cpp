@@ -10,8 +10,6 @@
 
 #define DEBUG 0
 
-double factorial_(unsigned int n);
-
 SimulatorModel::SimulatorModel() :
         CHI(0.5),
         nterms(10),
