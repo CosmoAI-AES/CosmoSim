@@ -296,15 +296,8 @@ double SimulatorModel::getPhi( ) const {
 
 /* Set the actual positions in the source plane using Polar Coordinates */
 void SimulatorModel::setPolar( double R, double theta ) {
-
     double phi = PI*theta/180 ;
-
-    // Actual position in source plane
     eta = cv::Point2d( R*cos(phi), R*sin(phi) ) ;
-
-    if (DEBUG) std::cout << "[setPolar] Set position x=" << eta.x << "; y=" << eta.y
-              << "; R=" << getEtaAbs() << "; theta=" << phi << ".\n" ;
-
 }
 
 
