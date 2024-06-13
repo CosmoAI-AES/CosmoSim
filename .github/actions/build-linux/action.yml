@@ -61,7 +61,7 @@ runs:
           libxcb-composite0-dev \
           libxcb-ewmh-dev \
           libxcb-res0-dev
-          sudo pip3 install conan==1.64.1
+          sudo pip3 install conan==1.64.0
       - name: Config Conan
         shell: bash
         run: |
