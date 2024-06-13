@@ -48,32 +48,35 @@ protected:
     virtual void calculateAlphaBeta() ;
     virtual cv::Point2d getDistortedPos(double r, double theta) const = 0 ;
 
+    double getNuAbs() const ;
+    double getXiAbs() const ;
+    double getEtaAbs() const ;
+    double getEtaSquare() const ;
+    cv::Point2d getEta() const ;
+    cv::Point2d getCentre() const ;
+
 public:
     SimulatorModel();
     virtual ~SimulatorModel();
     cv::Point2d getOffset( cv::Point2d ) ;
     cv::Point2d getRelativeEta( cv::Point2d ) ;
+
     void update();
     void update( cv::Point2d );
-    void setCentred( bool ) ;
-    void setMaskMode( bool ) ;
-    void setBGColour( int ) ;
 
-    cv::Mat getCaustic() ;
-    cv::Mat getCritical() ;
-    void drawCritical() ;
-    void drawCritical( cv::Mat ) ;
-    void drawCaustics( cv::Mat ) ;
+    /* Getters (images) */
+    cv::Mat getActual() const ;
+    virtual cv::Mat getApparent() const ;
+    cv::Mat getSource() const ;
+    cv::Mat getDistorted() const ;
 
-    double getNuAbs() const ;
+    /* Getters (Parameters) */
     cv::Point2d getNu() const ;
-    double getXiAbs() const ;
     cv::Point2d getXi() const ;
     cv::Point2d getTrueXi() const ;
-    double getEtaAbs() const ;
-    double getEtaSquare() const ;
-    cv::Point2d getEta() const ;
-    cv::Point2d getCentre() const ;
+
+    /* Setters */
+    virtual void setLens( Lens* ) ;
 
     void setXY(double, double) ;
     void setPolar(double, double) ;
@@ -81,18 +84,24 @@ public:
     void setNterms(int);
     void setSource(Source*) ;
 
+    void setCentred( bool ) ;
+    void setMaskMode( bool ) ;
+    void setBGColour( int ) ;
+
+    /* Masking */
     virtual void maskImage( ) ;
     virtual void maskImage( double ) ;
     virtual void markMask( ) ;
     virtual void markMask( cv::InputOutputArray ) ;
     virtual void maskImage( cv::InputOutputArray, double ) ;
 
-    cv::Mat getActual() const ;
-    virtual cv::Mat getApparent() const ;
-    cv::Mat getSource() const ;
-    cv::Mat getDistorted() const ;
+    /* Critical Curves and Caustics */
+    cv::Mat getCaustic() ;
+    cv::Mat getCritical() ;
+    void drawCritical() ;
+    void drawCritical( cv::Mat ) ;
+    void drawCaustics( cv::Mat ) ;
 
-    virtual void setLens( Lens* ) ;
 };
 
 class RotatedModel : public SimulatorModel { 
