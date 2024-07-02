@@ -1,11 +1,13 @@
+#!/usr/bin/env python3
+# (C) 2024: Hans Georg Schaathun <georg@schaathun.net>
 
 import pandas as pd
+import argparse
+
+from RouletteAmplitudes import RouletteAmplitudes 
 
 
 
-
-dataset[['H2S', 'CO2']].mean()
-dataset[['H2S', 'CO2']].std()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -21,8 +23,8 @@ if __name__ == "__main__":
     cols = dataset.columns
     ramp = RouletteAmplitudes( cols )
 
-    with open(outfile,"w") as out:
-        out.write( "\\begin{tabular}{|rr|rr|rr|}\n"
+    with open(args.outfile,"w") as out:
+        out.write( "\\begin{tabular}{|rr|rr|rr|}\n" )
         out.write( "\\hline\n" )
         out.write( " $m$ & $s$ & $\\bar\\alpha_m^s$ & $\\mathsf{stdev}(\\alpha_m^s)$" )
         out.write( "     & $\\bar\\beta_m^s$ & $\\mathsf{stdev}(\\beta_m^s)$ \\\\\n" )
