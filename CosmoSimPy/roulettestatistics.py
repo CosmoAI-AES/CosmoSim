@@ -32,12 +32,12 @@ if __name__ == "__main__":
         out.write( "\\hline\n" )
         for m in range(ramp.getNterms()+1):
             for s in range((m+1)%2,m+2,2):
-                 avg = dataset[f"alpha[{s}][{m}]"].mean()
-                 sd = dataset[f"alpha[{s}][{m}]"].std()
+                 avg = dataset[f"alpha[{m}][{s}]"].mean()
+                 sd = dataset[f"alpha[{m}][{s}]"].std()
                  out.write( f"  ${m}$ & ${s}$ & ")
                  out.write( f"${avg}$ & ${sd}$ & ")
-                 avg = dataset[f"beta[{s}][{m}]"].mean()
-                 sd = dataset[f"beta[{s}][{m}]"].std()
+                 avg = dataset[f"beta[{m}][{s}]"].mean()
+                 sd = dataset[f"beta[{m}][{s}]"].std()
                  out.write( f"${avg}$ & ${sd}$ \\\\\n ")
  
         out.write( "\\hline\n" )
