@@ -18,4 +18,5 @@ if __name__ == "__main__":
 
     dataset = pd.read_csv( args.fn )
     cols = dataset.columns
+    ramp = RouletteAmplitudes( cols )
 
