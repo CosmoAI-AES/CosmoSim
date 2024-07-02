@@ -7,14 +7,14 @@ opt=$*
 pdir=../../CosmoSimPy/
 fn=sie.csv
 
-mkdir Raytrace actual montage
-python3 $pdir/datagen.py $opt --config "Raytrace SIS" --directory="Raytrace" --csvfile $fn  --actual -R
+mkdir -p Raytrace actual montage
+python3 $pdir/datagen.py $opt --model "Raytrace" --directory="Raytrace" --csvfile $fn  --actual -R
 mv Raytrace/actual*png actual
 
 for m in 3 5 15
 do
-   mkdir Roulette$m  diff$m
-   python3 $pdir/datagen.py $opt --config "Roulette SIS" --directory="Roulette$m" --csvfile $fn  --nterms $m -R
+   mkdir -p Roulette$m  diff$m
+   python3 $pdir/datagen.py $opt --model "Roulette" --directory="Roulette$m" --csvfile $fn  --nterms $m -R
    python3 $pdir/compare.py --diff diff$m Raytrace Roulette$m
 done
 

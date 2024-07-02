@@ -1,2 +1,2 @@
 
-rm -rf rousie srousie raysie sraysie actual-* diff-* montage-*
+rm -rf Raytrace diff* Roulette* montage
