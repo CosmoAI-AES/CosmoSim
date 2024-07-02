@@ -29,29 +29,29 @@ do
 done
 
 texpage ( ) {
-   echo '\includegraphics[\textwidth=0.33\textwidth]{' Raytrace/$1.png }
-   echo '\includegraphics[\textwidth=0.33\textwidth]{' actual/$1.png }
-   echo '\begin{minipage}{0.33\textwidth}\centering'
-   echo '\verb|' $1 '|'
-   echo '\end{minipage}'
+   echo '\includegraphics[width=0.33\\textwidth]{'Raytrace/$1.png}
+   echo '\includegraphics[width=0.33\\textwidth]{'actual/actual-$1.png}
+   echo '\\begin{minipage}[b]{0.33\\textwidth}\centering'
+   echo '\\verb|'$1'|'
+   echo '\\end{minipage}'
 
-   echo '\includegraphics[\textwidth=0.33\textwidth]{' Roulette3/$1.png }
-   echo '\includegraphics[\textwidth=0.33\textwidth]{' diff3/$1.png }
-   echo '\begin{minipage}{0.33\textwidth}'
+   echo '\includegraphics[width=0.33\\textwidth]{'Roulette3/$1.png}
+   echo '\includegraphics[width=0.33\\textwidth]{'diff3/$1.png}
+   echo '\\begin{minipage}[b]{0.33\\textwidth}'
    cat stat3/$1.tex
-   echo '\end{minipage}'
+   echo '\\end{minipage}'
 
-   echo '\includegraphics[\textwidth=0.33\textwidth]{' Roulette5/$1.png }
-   echo '\includegraphics[\textwidth=0.33\textwidth]{' diff4/$1.png }
-   echo '\begin{minipage}{0.33\textwidth}'
+   echo '\includegraphics[width=0.33\\textwidth]{'Roulette5/$1.png}
+   echo '\includegraphics[width=0.33\\textwidth]{'diff5/$1.png}
+   echo '\\begin{minipage}[b]{0.33\\textwidth}'
    cat stat5/$1.tex
-   echo '\end{minipage}'
+   echo '\\end{minipage}'
 
-   echo '\includegraphics[\textwidth=0.33\textwidth]{' Roulette15/$1.png }
-   echo '\includegraphics[\textwidth=0.33\textwidth]{' diff15/$1.png }
-   echo '\begin{minipage}{0.33\textwidth}'
+   echo '\includegraphics[width=0.33\\textwidth]{'Roulette15/$1.png}
+   echo '\includegraphics[width=0.33\\textwidth]{'diff15/$1.png}
+   echo '\\begin{minipage}[b]{0.33\\textwidth}'
    cat stat15/$1.tex
-   echo '\end{minipage}'
+   echo '\\end{minipage}'
 
    echo '\clearpage'
 }
