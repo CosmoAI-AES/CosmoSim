@@ -174,3 +174,6 @@ double Lens::criticalXi( double phi ) const {
 cv::Point2d Lens::caustic( double phi ) const {
    throw NotImplemented() ;
 }
+double Lens::getOrientation() const {
+   return this->orientation ;
+}

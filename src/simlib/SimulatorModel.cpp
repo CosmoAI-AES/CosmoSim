@@ -10,8 +10,6 @@
 
 #define DEBUG 0
 
-double factorial_(unsigned int n);
-
 SimulatorModel::SimulatorModel() :
         CHI(0.5),
         nterms(10),
@@ -108,7 +106,7 @@ void SimulatorModel::updateInner( ) {
     cv::Mat imgApparent = getApparent() ;
 
     if ( DEBUG ) {
-      std::cout << "[SimulatorModel::updateInner()] R=" << getEtaAbs() << "; theta=" << phi
+      std::cout << "[SimulatorModel::updateInner()] R=" << getEtaAbs() 
               << "; CHI=" << CHI << "\n" ;
       std::cout << "[SimulatorModel::updateInner()] xi=" << getXi()   
               << "; eta=" << getEta() << "; etaOffset=" << etaOffset << "\n" ;
@@ -283,32 +281,21 @@ void SimulatorModel::setCHI(double chi) {
 
 /* D. Position (eta) setters */
 
-/* Re-calculate co-ordinates using updated parameter settings from the GUI.
- * This is called from the update() method.                                  */
+/* Set the actual positions in the source plane using Cartesian Coordinates */
 void SimulatorModel::setXY( double X, double Y ) {
 
-    // Actual position in source plane
     eta = cv::Point2d( X, Y ) ;
 
-    // Calculate Polar Co-ordinates
-    phi = atan2(eta.y, eta.x); // Angle relative to x-axis
-
-    if (DEBUG) std::cout << "[setXY] eta=" << eta 
-              << "; R=" << getEtaAbs() << "; theta=" << phi << ".\n" ;
 }
 
-/* Re-calculate co-ordinates using updated parameter settings from the GUI.
- * This is called from the update() method.                                  */
+double SimulatorModel::getPhi( ) const {
+    return atan2(eta.y, eta.x); // Angle relative to x-axis
+}
+
+/* Set the actual positions in the source plane using Polar Coordinates */
 void SimulatorModel::setPolar( double R, double theta ) {
-
-    phi = PI*theta/180 ;
-
-    // Actual position in source plane
+    double phi = PI*theta/180 ;
     eta = cv::Point2d( R*cos(phi), R*sin(phi) ) ;
-
-    if (DEBUG) std::cout << "[setPolar] Set position x=" << eta.x << "; y=" << eta.y
-              << "; R=" << getEtaAbs() << "; theta=" << phi << ".\n" ;
-
 }
 
 
@@ -347,7 +334,7 @@ cv::Point2d SimulatorModel::getCentre( ) const {
    return xichi ;
 }
 cv::Point2d SimulatorModel::getXi() const { 
-   return xi ;
+   return referenceXi ;
 }
 double SimulatorModel::getXiAbs() const { 
    cv::Point2d xi = getXi() ;
@@ -374,12 +361,17 @@ double SimulatorModel::getEtaAbs() const {
 double SimulatorModel::getMaskRadius() const { return 1024*1024 ; }
 void SimulatorModel::setNu( cv::Point2d n ) {
    nu = n ;
-   xi = nu*CHI ;
+   referenceXi = nu*CHI ;
    etaOffset = cv::Point2d( 0, 0 ) ;
    if (DEBUG) std::cout << "[setNu] etaOffset set to zero.\n" ;
 }
-void SimulatorModel::setXi( cv::Point2d x ) {
-      throw NotImplemented() ;
+void SimulatorModel::setXi( cv::Point2d xi1 ) {
+   // xi1 is an alternative reference point \xi'
+   referenceXi = xi1 ;   // reset \xi
+
+   // etaOffset is the difference between source point corresponding to the
+   // reference point in the lens plane and the actual source centre
+   etaOffset = getOffset( xi1 ) ;
 }
 void SimulatorModel::setLens( Lens *l ) {
    lens = l ;

@@ -63,6 +63,8 @@ if __name__ == "__main__":
     parser.add_argument('dir1')
     parser.add_argument('dir2')
     parser.add_argument("-d",'--diff',required=False)
+    parser.add_argument('-O','--report',required=False)
+    parser.add_argument('-o','--stats',required=False)
     args = parser.parse_args()
 
     if args.threshold: 
@@ -100,6 +102,41 @@ if __name__ == "__main__":
       for r in badresults:
           print( f'{r["filename"]}: {r["relnorm"]} ({r["norm"]}) range {(r["maximum"],r["minimum"])}' )
 
+      if args.stats:
+          for r in results:
+             fn = os.path.basename( r["filename"] )
+             statfn = os.path.join( args.stats, f"{fn.split('.')[0]}.tex" )
+             with open(statfn,"w") as texfile:
+               texfile.write( "  \\texttt{relnorm} $=$ " )
+               texfile.write( f"{r['relnorm']:.3f}" )
+               texfile.write( "\\\\\n  \\texttt{norm} $=$ " )
+               texfile.write( f"{r['norm']:.3f}" )
+               texfile.write( "\\\\\n  \\texttt{minimum} $=$ " )
+               texfile.write( f"{r['minimum']:.1f}" )
+               texfile.write( "\\\\\n  \\texttt{maximum} $=$ " )
+               texfile.write( f"{r['maximum']:.1f}" )
+               texfile.close()
+      if args.report:
+          with open(args.report,"w") as pdfile:
+            for r in results:
+               pdfile.write( "\includegraphics[width=0.33\\textwidth]{" )
+               pdfile.write( r["filename"] )
+               pdfile.write( "} & \n" )
+               pdfile.write( "\includegraphics[width=0.33\\textwidth]{" )
+               pdfile.write( r["outfile"] )
+               pdfile.write( "} & \n" )
+               pdfile.write( "\\begin{minipage}{width=0.33\\textwidth}\n" )
+               pdfile.write( "  \\texttt{relnorm} $=$ " )
+               pdfile.write( f"{r['relnorm']}" )
+               pdfile.write( "\\\\\n  \\texttt{norm} $=$ " )
+               pdfile.write( f"{r['norm']}" )
+               pdfile.write( "\\\\\n  \\texttt{minimum} $=$ " )
+               pdfile.write( f"{r['minimum']}" )
+               pdfile.write( "\\\\\n  \\texttt{maximum} $=$ " )
+               pdfile.write( f"{r['maximum']}" )
+               pdfile.write( "\end{minipage}\n" )
+               pdfile.write( "\n" )
+            pdfile.close()
       if len(badresults) > 0:
           sys.exit(1)
       else:

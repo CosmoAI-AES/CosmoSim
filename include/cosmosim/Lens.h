@@ -57,6 +57,8 @@ public:
     double getBetaXi( int m, int s ) ;
     double getEinsteinR( ) const ;
 
+    double getOrientation( ) const ;
+
     virtual cv::Point2d getXi( cv::Point2d ) ;
 
     virtual double psiValue( double, double ) const = 0 ;

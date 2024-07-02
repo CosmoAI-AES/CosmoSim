@@ -60,11 +60,16 @@ runs:
           libxcb-present-dev \
           libxcb-composite0-dev \
           libxcb-ewmh-dev \
-          libxcb-res0-dev
-          sudo pip3 install conan==1.64.1
+          libxcb-res0-dev \
+          python3-opencv \
+          libopencv-dev 
+          sudo pip3 install conan==1.64.0
       - name: Config Conan
         shell: bash
         run: |
+          cp conanfile-github.py  conanfile.py
+          cp CMakeLists-github.txt  CMakeLists.txt
+          ( cd src ; cp CMakeLists-github.txt  CMakeLists.txt )
           conan profile new default --detect
           conan profile update settings.compiler.libcxx=libstdc++11 default
       - name: Run conan
