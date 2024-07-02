@@ -5,7 +5,7 @@ CONVERT=convert
 opt=$*
 
 pdir=../../CosmoSimPy/
-fn=sie.csv
+fn=dataset.csv
 
 mkdir -p Raytrace actual montage
 python3 $pdir/datagen.py $opt --model "Raytrace" --directory="Raytrace" --csvfile $fn  --actual -R
