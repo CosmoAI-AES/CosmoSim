@@ -3,6 +3,12 @@
 
 ## Unreleased
 
+### Added
+
++ New tests to compare and analyse models.
++ Partial support for SIE
+
+
 ## [2.4.3] - 2024-05-16
 
 ### Fixed
