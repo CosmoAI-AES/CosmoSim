@@ -27,10 +27,7 @@ def makeSingle(sim,args,name=None,row=None):
     print( "runSim() returned" )
     sys.stdout.flush()
 
-    im = sim.getDistortedImage( 
-                    reflines=False,
-                    showmask=args.showmask
-                ) 
+    im = sim.getDistortedImage( showmask=args.showmask ) 
     if args.xireference:
           R = np.float32( [ [ 1, 0, row["xiX"] ], [ 0, 1, -row["xiY"] ] ] )
           m,n = im.shape

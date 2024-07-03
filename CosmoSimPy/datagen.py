@@ -80,7 +80,6 @@ def makeSingle(sim,args,name=None,row=None,outstream=None):
            sim.moveSim(rot=2*i*np.pi/nc,scale=1)
            sim.maskImage(float(args.maskscale))
            im = sim.getDistorted(False,args.criticalcurves)
-           # im = sim.getDistortedImage(False)
            joinim = np.maximum(joinim,im)
         fn = os.path.join(args.directory,"join-" + str(name) + ".png" ) 
         if args.reflines:
@@ -147,11 +146,7 @@ def makeSingle(sim,args,name=None,row=None,outstream=None):
 
 
 def makeOutput(sim,args,name=None,rot=0,scale=1,actual=False,apparent=False,original=False,reflines=False,critical=False):
-    im = sim.getDistortedImage( 
-                    reflines=False,
-                    critical=critical,
-                    showmask=args.showmask
-                ) 
+    im = sim.getDistortedImage( critical=critical, showmask=args.showmask ) 
 
     (cx,cy) = 0,0
     if args.centred:

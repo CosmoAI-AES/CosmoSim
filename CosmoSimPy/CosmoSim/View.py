@@ -121,7 +121,6 @@ class ImagePane(ttk.Frame):
     def setDistortedImage(self):
         "Helper for `update()`."
         im = self.sim.getDistortedImage( 
-                reflines=False,
                 critical=self.criticalVar.get(),
                     mask=self.maskVar.get(),
                     showmask=self.showmaskVar.get(),
