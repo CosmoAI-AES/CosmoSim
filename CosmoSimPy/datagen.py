@@ -75,7 +75,6 @@ def makeSingle(sim,args,name=None,row=None,outstream=None):
         print ( "[datagen.py] runSim() completed\n" ) ;
         sim.maskImage(float(args.maskscale))
         joinim = sim.getDistorted(False,args.criticalcurves)
-        # joinim = sim.getDistortedImage(False)
         nc = int(args.components)
         for i in range(1,nc):
            sim.moveSim(rot=2*i*np.pi/nc,scale=1)
