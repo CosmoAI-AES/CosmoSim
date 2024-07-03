@@ -8,13 +8,13 @@ pdir=../../CosmoSimPy/
 fn=dataset.csv
 
 mkdir -p Raytrace actual montage
-python3 $pdir/datagen.py $opt --model "Raytrace" --directory="Raytrace" --csvfile $fn  --actual -R
+python3 $pdir/datagen.py $opt --model "Raytrace" --directory="Raytrace" --csvfile $fn  --actual -R --xireference
 mv Raytrace/actual*png actual
 
 for m in 3 5 15
 do
    mkdir -p Roulette$m  diff$m stat$m
-   python3 $pdir/datagen.py $opt --model "Roulette" --directory="Roulette$m" --csvfile $fn  --outfile roulette$m.csv --nterms $m -R
+   python3 $pdir/datagen.py $opt --model "Roulette" --directory="Roulette$m" --csvfile $fn  --outfile roulette$m.csv --nterms $m -R --xireference
    python3 $pdir/compare.py -o stat$m -O test.tex --diff diff$m Roulette$m Raytrace
 done
 
