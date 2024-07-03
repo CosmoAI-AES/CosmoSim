@@ -32,7 +32,7 @@ class CosmoParser(argparse.ArgumentParser):
     self.add_argument('--config', default=0, help="Configuration (Model and Lens)")
 
     # Other parameters
-    self.add_argument('-n', '--nterms', help="Number of Roulettes terms")
+    self.add_argument('-n', '--nterms', help="Number of Roulettes terms", default=15)
     self.add_argument('-Z', '--imagesize', default=400, help="image size for calculations")
     self.add_argument('-z', '--cropsize', help="Final image size")
 
