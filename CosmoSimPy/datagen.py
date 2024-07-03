@@ -74,12 +74,12 @@ def makeSingle(sim,args,name=None,row=None,outstream=None):
         sim.runSim()
         print ( "[datagen.py] runSim() completed\n" ) ;
         sim.maskImage(float(args.maskscale))
-        joinim = sim.getDistorted(False,args.criticalcurves)
+        joinim = sim.getDistortedImage(critical=args.criticalcurves)
         nc = int(args.components)
         for i in range(1,nc):
            sim.moveSim(rot=2*i*np.pi/nc,scale=1)
            sim.maskImage(float(args.maskscale))
-           im = sim.getDistorted(False,args.criticalcurves)
+           im = sim.getDistortedImage(critical=args.criticalcurves)
            joinim = np.maximum(joinim,im)
         fn = os.path.join(args.directory,"join-" + str(name) + ".png" ) 
         if args.reflines:
