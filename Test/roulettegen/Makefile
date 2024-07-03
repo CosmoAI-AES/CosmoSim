@@ -20,13 +20,13 @@ alltests:  montage.log
 
 roulette.csv: debug.csv
 	mkdir -p Original
-	datagen.py -Z 600 --nterms 10 --csvfile $< --outfile $@ --centred -D Original | tee images.log 
+	datagen.py -Z 600 --nterms 10 --csvfile $< --outfile $@ --xireference -D Original | tee images.log 
 %-gen.log: %.csv
 	mkdir -p $*-images
-	roulettegen.py -n 10 -Z 600 --csvfile $< -D $*-images
+	roulettegen.py --xireferenc -n 10 -Z 600 --csvfile $< -D $*-images
 %-reflines.log: %.csv
 	mkdir -p $*-images
-	roulettegen.py -n 10 -Z 600 --csvfile $< -D $*-images -R
+	roulettegen.py --xireferenc -n 10 -Z 600 --csvfile $< -D $*-images -R
 %-compare.log: %-gen.log
 	mkdir -p diff
 	compare.py --diff diff --masked Original $*-images | tee $@ ; exit 0
