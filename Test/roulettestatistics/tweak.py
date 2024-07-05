@@ -2,19 +2,21 @@
 
 import pandas as pd
 
-df = pd.read_csv( "roulette.csv" )
+src = pd.read_csv( "roulette.csv" )
+
+df = src.head(10)
 df["beta[5][2]"] = df["beta[5][2]"] * 10
 df.to_csv( "roulette-beta.csv" )
 df["beta[5][2]"] = 0
 df.to_csv( "roulette-beta0.csv" )
 
-df = pd.read_csv( "roulette.csv" )
+df = src.head(10)
 df["alpha[5][2]"] = df["alpha[5][2]"] * 10
 df.to_csv( "roulette-alpha.csv" )
 df["alpha[5][2]"] = 0
 df.to_csv( "roulette-alpha0.csv" )
 
-df = pd.read_csv( "roulette.csv" )
+df = src.head(10)
 lab = [ f"alpha[5][{s}]" for s in [ 2, 4, 6 ] ]
 df[lab] = 10*df[lab]
 df.to_csv( "roulette-alphas.csv" )
