@@ -1,5 +1,7 @@
 \documentclass{scrartcl}
-\usepackage{pgffor,graphicx,subfig}
+\usepackage{pgffor,graphicx,subfig,verbatim}
+
+\pagestyle{empty}
 
 
 \usepackage[margin=5mm,footskip=5mm]{geometry}
@@ -12,6 +14,10 @@
 
 \foreach \f in {image-0001,image-0002,image-0003,image-0004,image-0005,image-0006,image-0007,image-0008,image-0009,image-0010} {
    \begin{figure}
+      \begin{minipage}{0.8\textwidth}
+         \verbatiminput{\f .txt}
+      \end{minipage}
+
       \im{Raytrace}{\f}{Raytrace }
       \im{roulette-base}{\f}{Correct amplitudes $m=5$}
       \im{roulette-alphas}{\f}{$\alpha_5^s$ increased by factor 10.}
