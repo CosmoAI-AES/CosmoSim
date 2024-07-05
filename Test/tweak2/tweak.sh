@@ -1,7 +1,5 @@
 #! /bin/sh
 
-./tweak.py
-./txt.py
 
 pyd=../../CosmoSimPy
 
@@ -10,6 +8,9 @@ python3 $pyd/datagen.py -Z 600 --csvfile dataset.csv \
    --model Raytrace --lens SIS --xireference -D Raytrace  -R 
 python3 $pyd/datagen.py -Z 600 --csvfile dataset.csv --outfile roulette.csv \
    --model Roulette --lens SIS --xireference -D Original --actual  -R --nterms 5
+
+./tweak.py
+./txt.py
 
 for i in roulette-*.csv
 do
