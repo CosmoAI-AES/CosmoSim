@@ -20,3 +20,4 @@ do
    python3 $pyd/roulettegen.py -Z 600 --csvfile $i --xireference -D $f -R --nterms 5
 done
 
+pdflatex tweak
