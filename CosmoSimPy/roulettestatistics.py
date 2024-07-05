@@ -35,11 +35,12 @@ if __name__ == "__main__":
                  avg = dataset[f"alpha[{m}][{s}]"].mean()
                  sd = dataset[f"alpha[{m}][{s}]"].std()
                  out.write( f"  ${m}$ & ${s}$ & ")
-                 out.write( f"${avg}$ & ${sd}$ & ")
+                 out.write( f"{avg:.3e} & {sd:.3e} & ")
                  avg = dataset[f"beta[{m}][{s}]"].mean()
                  sd = dataset[f"beta[{m}][{s}]"].std()
-                 out.write( f"${avg}$ & ${sd}$ \\\\\n ")
+                 out.write( f"{avg:.3e} & {sd:.3e} \\\\\n ")
  
         out.write( "\\hline\n" )
+        out.write( "\\end{tabular}\n" )
         out.close()
 

@@ -14,4 +14,4 @@ python3 $pyd/roulettegen.py -n 10 -Z 600 --csvfile roulette.csv --xireference -D
 mkdir -p Actual
 mv Original/actual-* Actual
 
-python3 $pyd/roulettestatistics -o roulette.tex roulette.csv
+python3 $pyd/roulettestatistics.py -o roulette.tex roulette.csv
