@@ -358,7 +358,10 @@ double SimulatorModel::getEtaSquare() const {
 double SimulatorModel::getEtaAbs() const {
    return sqrt( eta.x*eta.x + eta.y*eta.y ) ;
 }
-double SimulatorModel::getMaskRadius() const { return 1024*1024 ; }
+double SimulatorModel::getMaskRadius() const { 
+   return getXiAbs()/CHI ; 
+   // return 1024*1024 ; 
+}
 void SimulatorModel::setNu( cv::Point2d n ) {
    nu = n ;
    referenceXi = nu*CHI ;

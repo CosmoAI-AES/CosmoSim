@@ -40,7 +40,7 @@ protected:
     int bgcolour = 0;
 
     bool maskMode = false ;
-    virtual double getMaskRadius() const ;
+    double getMaskRadius() const ;
     void setNu( cv::Point2d ) ;
     void setXi( cv::Point2d ) ;
 
@@ -89,11 +89,11 @@ public:
     void setBGColour( int ) ;
 
     /* Masking */
-    virtual void maskImage( ) ;
-    virtual void maskImage( double ) ;
-    virtual void markMask( ) ;
-    virtual void markMask( cv::InputOutputArray ) ;
-    virtual void maskImage( cv::InputOutputArray, double ) ;
+    void maskImage( ) ;
+    void maskImage( double ) ;
+    void markMask( ) ;
+    void markMask( cv::InputOutputArray ) ;
+    void maskImage( cv::InputOutputArray, double ) ;
 
     /* Critical Curves and Caustics */
     cv::Mat getCaustic() ;

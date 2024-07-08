@@ -52,11 +52,13 @@ cv::Point2d RouletteModel::getDistortedPos(double r, double theta) const {
 
     return rpt ;
 }
+/*
 double RouletteModel::getMaskRadius() const { 
    // Should this depend on the source position or the local origin?
    // return getNuAbs() ; 
    return getXiAbs()/CHI ; 
 }
+*/
 
 void RouletteModel::calculateAlphaBeta() {
     cv::Point2d xi = getXi() ;
