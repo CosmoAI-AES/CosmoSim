@@ -27,7 +27,7 @@ protected:
     virtual void updateInner();
     cv::Mat imgDistorted;
 
-    void parallelDistort(const cv::Mat &src, cv::Mat &dst);
+    virtual void parallelDistort(const cv::Mat &src, cv::Mat &dst);
     virtual void distort(int row, int col, const cv::Mat &src, cv::Mat &dst);
     virtual void undistort(const cv::Mat &src, cv::Mat &dst);
 
@@ -42,7 +42,7 @@ protected:
     int bgcolour = 0;
 
     bool maskMode = false ;
-    virtual double getMaskRadius() const ;
+    double getMaskRadius() const ;
     void setNu( cv::Point2d ) ;
     void setXi( cv::Point2d ) ;
 
@@ -137,6 +137,7 @@ public:
     using SimulatorModel::SimulatorModel ;
 protected:
     virtual cv::Point2d calculateEta( cv::Point2d ) ;
+    virtual void parallelDistort(const cv::Mat &src, cv::Mat &dst);
     virtual void distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) ;
     virtual void undistort(const cv::Mat &src, cv::Mat &dst);
     virtual cv::Point2d getDistortedPos(double r, double theta) const ;

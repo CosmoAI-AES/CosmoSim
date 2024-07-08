@@ -71,3 +71,24 @@ void RaytraceModel::undistort(const cv::Mat& src, cv::Mat& dst) {
         }
     }
 }
+
+/* This just splits the image space in chunks and runs distort() in parallel */
+void RaytraceModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
+    int n_threads = std::thread::hardware_concurrency();
+
+    std::vector<std::thread> threads_vec;
+    int lower=0, rng=dst.rows, rng1 ; 
+
+    rng1 = ceil( (double) rng / (double) n_threads ) ;
+
+    for (int i = 0; i < n_threads; i++) {
+        int begin = lower+rng1*i, end = begin+rng1 ;
+        if ( end > dst.rows ) end = dst.rows ;
+        std::thread t([begin, end, src, &dst, this]() { distort(begin, end, src, dst); });
+        threads_vec.push_back(std::move(t));
+    }
+
+    for (auto& thread : threads_vec) {
+        thread.join();
+    }
+}
