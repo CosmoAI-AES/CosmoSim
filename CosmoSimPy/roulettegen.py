@@ -98,6 +98,9 @@ if __name__ == "__main__":
         maxcount = 2**30
     else:
         maxcount = int(args.maxcount)
+
+    if not args.maskradius is None:
+        sim.setMaskRadius( float(args.maskradius) )
         
     for index,row in frame.iterrows():
             print( "Processing", index )

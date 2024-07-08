@@ -22,6 +22,7 @@ private:
 protected:
     cv::Point2d etaOffset = cv::Point2d(0,0) ;
         // Offset in the source plane resulting from moving xi
+	//
 
     virtual void updateInner();
     cv::Mat imgDistorted;
@@ -34,13 +35,14 @@ protected:
     Source *source ;
     Lens *lens = NULL ;
     int nterms;
+    double maskRadius=0 ;
 
     double getPhi() const ; // polar angle of source position
 
     int bgcolour = 0;
 
     bool maskMode = false ;
-    double getMaskRadius() const ;
+    virtual double getMaskRadius() const ;
     void setNu( cv::Point2d ) ;
     void setXi( cv::Point2d ) ;
 
@@ -89,6 +91,7 @@ public:
     void setBGColour( int ) ;
 
     /* Masking */
+    void setMaskRadius( double ) ;
     void maskImage( ) ;
     void maskImage( double ) ;
     void markMask( ) ;
