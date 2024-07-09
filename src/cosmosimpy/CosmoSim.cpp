@@ -425,6 +425,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def(py::init<>())
         .def("setSourceMode", &RouletteSim::setSourceMode)
         .def("setNterms", &RouletteSim::setNterms)
+        .def("setMaskRadius", &CosmoSim::setMaskRadius)
         .def("setSourceParameters", &RouletteSim::setSourceParameters)
         .def("getActual", &RouletteSim::getActual)
         .def("getApparent", &RouletteSim::getSource)

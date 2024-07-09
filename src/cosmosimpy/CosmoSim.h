@@ -108,6 +108,7 @@ private:
     int srcmode=CSIM_SOURCE_SPHERE, sourceSize=20, sourceSize2=10,
         sourceTheta=0 ;
     cv::Point2d centrepoint ;
+    double maskRadius=0 ;
     int nterms=16 ;
     int bgcolour=0 ;
     Source *src = NULL ;
@@ -123,6 +124,7 @@ public:
     void initSim( double, double ) ;
 
     void setNterms(int);
+    void setMaskRadius(double);
     void setImageSize(int);
     void setResolution(int);
     void setBGColour(int);
