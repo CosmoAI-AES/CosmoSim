@@ -118,6 +118,7 @@ cv::Mat CosmoSim::getMassMap( ) {
 
 void CosmoSim::setCHI(double c) { chi = c/100.0 ; }
 void CosmoSim::setNterms(int c) { nterms = c ; }
+void CosmoSim::setMaskRadius(double c) { maskRadius = c ; }
 void CosmoSim::setXY( double x, double y) { xPos = x ; yPos = y ; rPos = -1 ; }
 void CosmoSim::setPolar(int r, int theta) { rPos = r ; thetaPos = theta ; }
 void CosmoSim::setModelMode(int m) { 
@@ -274,6 +275,7 @@ bool CosmoSim::runSim() {
    initSource() ;
    sim->setBGColour( bgcolour ) ;
    sim->setNterms( nterms ) ;
+   sim->setMaskRadius( maskRadius ) ;
    if ( lens != NULL ) lens->setNterms( nterms ) ;
    sim->setMaskMode( maskmode ) ;
    if ( CSIM_NOPSI_ROULETTE != lensmode ) {
@@ -388,6 +390,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setRatio", &CosmoSim::setRatio)
         .def("setOrientation", &CosmoSim::setOrientation)
         .def("setNterms", &CosmoSim::setNterms)
+        .def("setMaskRadius", &CosmoSim::setMaskRadius)
         .def("setCHI", &CosmoSim::setCHI)
         .def("setSourceParameters", &CosmoSim::setSourceParameters)
         .def("setXY", &CosmoSim::setXY)
