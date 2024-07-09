@@ -8,11 +8,11 @@ class CosmoParser(argparse.ArgumentParser):
 
     # Model selection
     self.add_argument('-l', '--lensmode',
-            help="lens mode")
+            help="lens model")
     self.add_argument('-L', '--modelmode',
-            help="lens mode")
+            help="simulation model")
     self.add_argument('-S', '--sourcemode',
-            default="Spherical", help="source mode")
+            default="Spherical", help="source model")
     self.add_argument('-G', '--sampled', action='store_true',
             default=False, help="Sample the lens model")
 
@@ -42,7 +42,7 @@ class CosmoParser(argparse.ArgumentParser):
     self.add_argument( '--criticalcurves',action='store_true',
             help="Add critical curves to the distorted image")
     self.add_argument('-C', '--centred',action='store_true', help="centre image")
-    self.add_argument('--maskradius'),
+    self.add_argument('--maskradius',
             help="Set explicit masking radius")
     self.add_argument('-M', '--mask',action='store_true',
             help="Mask out the convergence circle")
