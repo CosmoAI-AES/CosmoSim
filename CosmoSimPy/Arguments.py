@@ -81,7 +81,7 @@ class CosmoParser(argparse.ArgumentParser):
 
     self.add_argument('--maxcount',
             help="Maximum number of images to process")
-    self.add_argument('--xireference',action='store_true',
+    self.add_argument('--xireference',default=True, action=argparse.BooleanOptionalAction,
             help="Use apparent position as reference for roulette amplitudes")
 
 def setParameters(sim,row):
