@@ -18,11 +18,32 @@ from libamplitudes import *
 from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh
 
 def zeroth(lens="SIS"):
-    if lens == "SIS":
-        return psiSIS()
-    if lens == "SIE":
-        return psiSIE()
     raise "Unknown lens model"
+
+class AmplitudesCalculator:
+    def __init__(self,lens="SIE",maxn=7,verbose=False):
+        self.verbose = verbose
+        if lens == "SIS":
+            (a,b,x,y) = psiSIS()
+        if lens == "SIE":
+            (a,b,x,y) = psiSIE()
+        self.dict = { (1,0) : a, (0,1) : b }
+        if self.verbose:
+            self.diagnostic(1,0)
+            self.diagnostic(0,1)
+        self.x = x
+        self.y = y
+        self.maxn = maxn
+        manager = mp.Manager()
+        self.queue = manager.Queue()
+    def diagnostic(self,i,j):
+        print( i, j, self.dict[(i,j)] )
+    def __call__(self,i,j):
+        if i == 0:
+           self.dict[(i,j)] = sympy.simplify( diff( self.dict[(i,j-1)], self.y ) )
+        else:
+           self.dict[(i,j)] = sympy.simplify( diff( self.dict[(i-1,j)], self.x ) )
+        if self.verbose:  self.diagnostic(i,j)
 
 def main(lens="SIS",n=50,nproc=None,fn=None):
 
@@ -37,20 +58,12 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
 
     start = time.time()
 
-    # Must use Manager queue here, or will not work
-    manager = mp.Manager()
-    q = manager.Queue()
-
-
-    alpha, beta, x, y = zeroth(lens)
-
-    d = { (1,0) : alpha, (0,1) : beta }
+    c = AmplitudesCalculator(verbose=True)
 
     for i in range(2,n+1):
         for j in range(i):
-            d[(i-j,j)] = diff( d[i-j-1,j], x )
-        d[(0,i)] = diff( d[0,i-1], y )
-
+            c( i-j, j )
+        c( 0, i )
 
     print( "Time spent:", time.time() - start)
 
@@ -60,7 +73,7 @@ if __name__ == "__main__":
                     help='Max m (number of terms)')
     parser.add_argument('nproc', type=int, nargs="?",
                     help='Number of processes.')
-    parser.add_argument('--lens', default="SIS",
+    parser.add_argument('--lens', default="SIE",
                     help='Lens model')
     parser.add_argument('--output', help='Output filename')
     parser.add_argument('--diff', default=False,action="store_true",
