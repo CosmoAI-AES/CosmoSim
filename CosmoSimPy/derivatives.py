@@ -36,14 +36,24 @@ class AmplitudesCalculator:
         self.maxn = maxn
         manager = mp.Manager()
         self.queue = manager.Queue()
+        self.jobs = []
     def diagnostic(self,i,j):
         print( i, j, self.dict[(i,j)] )
+    def run(self,np=None):
+        if np == None:
+            nproc == self.maxn+1
+        else:
+            npproc = np
+        with mp.Pool(processes=nproc) as pool:
+            pass
     def __call__(self,i,j):
         if i == 0:
-           self.dict[(i,j)] = sympy.simplify( diff( self.dict[(i,j-1)], self.y ) )
+           res = sympy.simplify( diff( self.dict[(i,j-1)], self.y ) )
         else:
-           self.dict[(i,j)] = sympy.simplify( diff( self.dict[(i-1,j)], self.x ) )
+           res = sympy.simplify( diff( self.dict[(i-1,j)], self.x ) )
+        res = self.dict[(i,j)]
         if self.verbose:  self.diagnostic(i,j)
+        return res
 
 def main(lens="SIS",n=50,nproc=None,fn=None):
 
