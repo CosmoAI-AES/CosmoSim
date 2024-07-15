@@ -70,3 +70,4 @@ void RotatedModel::updateApparentAbs( ) {
     cv::Point2d xi1 = lens->getXi( chieta ) ;
     setNu( xi1/CHI ) ;
 }
+

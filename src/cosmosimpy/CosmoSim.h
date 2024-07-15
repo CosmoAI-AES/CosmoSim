@@ -39,6 +39,7 @@ private:
         sourceTheta=0 ;
     double xPos=10, yPos=0, rPos=10, thetaPos=0; ;
     cv::Point2d centrepoint ;
+    double maskRadius=0 ;
     int nterms=16 ;
     int bgcolour=0 ;
     SimulatorModel *sim = NULL ;
@@ -62,6 +63,7 @@ public:
     void setPolar(int, int) ;
     void setCHI(double);
     void setNterms(int);
+    void setMaskRadius(double);
     void setImageSize(int);
     void setResolution(int);
     void setBGColour(int);
@@ -106,6 +108,7 @@ private:
     int srcmode=CSIM_SOURCE_SPHERE, sourceSize=20, sourceSize2=10,
         sourceTheta=0 ;
     cv::Point2d centrepoint ;
+    double maskRadius=0 ;
     int nterms=16 ;
     int bgcolour=0 ;
     Source *src = NULL ;
@@ -121,6 +124,7 @@ public:
     void initSim( double, double ) ;
 
     void setNterms(int);
+    void setMaskRadius(double);
     void setImageSize(int);
     void setResolution(int);
     void setBGColour(int);

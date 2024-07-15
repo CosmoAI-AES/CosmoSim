@@ -359,8 +359,12 @@ double SimulatorModel::getEtaAbs() const {
    return sqrt( eta.x*eta.x + eta.y*eta.y ) ;
 }
 double SimulatorModel::getMaskRadius() const { 
-   return getXiAbs()/CHI ; 
    // return 1024*1024 ; 
+   if ( maskRadius > 0 ) {
+      return maskRadius ;
+   } else {
+      return getXiAbs()/CHI ; 
+   }
 }
 void SimulatorModel::setNu( cv::Point2d n ) {
    nu = n ;
@@ -412,4 +416,8 @@ void SimulatorModel::updateApparentAbs( ) {
     cv::Point2d chieta = CHI*getEta() ;
     cv::Point2d xi1 = lens->getXi( chieta ) ;
     setNu( xi1/CHI ) ;
+}
+
+void SimulatorModel::setMaskRadius( double r ) {
+   maskRadius = r ;
 }

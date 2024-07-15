@@ -37,6 +37,7 @@ void RouletteSim::diagnostics() {
 }
 
 void RouletteSim::setNterms(int c) { nterms = c ; }
+void RouletteSim::setMaskRadius(double c) { maskRadius = c ; }
 
 void RouletteSim::setSourceMode(int m) { srcmode = m ; }
 void RouletteSim::setMaskMode(bool b) { maskmode = b ; }
@@ -98,6 +99,7 @@ bool RouletteSim::runSim() {
 	 throw std::logic_error( "Simulator not initialised" ) ;
    initSource() ;
    sim->setBGColour( bgcolour ) ;
+   sim->setMaskRadius( maskRadius ) ;
    sim->setNterms( nterms ) ;
    sim->setMaskMode( maskmode ) ;
    

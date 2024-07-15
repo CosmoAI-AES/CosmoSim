@@ -22,11 +22,12 @@ private:
 protected:
     cv::Point2d etaOffset = cv::Point2d(0,0) ;
         // Offset in the source plane resulting from moving xi
+	//
 
     virtual void updateInner();
     cv::Mat imgDistorted;
 
-    void parallelDistort(const cv::Mat &src, cv::Mat &dst);
+    virtual void parallelDistort(const cv::Mat &src, cv::Mat &dst);
     virtual void distort(int row, int col, const cv::Mat &src, cv::Mat &dst);
     virtual void undistort(const cv::Mat &src, cv::Mat &dst);
 
@@ -34,6 +35,7 @@ protected:
     Source *source ;
     Lens *lens = NULL ;
     int nterms;
+    double maskRadius=0 ;
 
     double getPhi() const ; // polar angle of source position
 
@@ -89,6 +91,7 @@ public:
     void setBGColour( int ) ;
 
     /* Masking */
+    void setMaskRadius( double ) ;
     void maskImage( ) ;
     void maskImage( double ) ;
     void markMask( ) ;
@@ -134,6 +137,7 @@ public:
     using SimulatorModel::SimulatorModel ;
 protected:
     virtual cv::Point2d calculateEta( cv::Point2d ) ;
+    virtual void parallelDistort(const cv::Mat &src, cv::Mat &dst);
     virtual void distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) ;
     virtual void undistort(const cv::Mat &src, cv::Mat &dst);
     virtual cv::Point2d getDistortedPos(double r, double theta) const ;

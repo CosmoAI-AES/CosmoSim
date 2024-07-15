@@ -7,7 +7,19 @@
 
 + New tests to compare and analyse models.
 + Partial support for SIE
++ Allow masking with explicit radius in `roulettegen.py`
 
+### Fixed
+
++ More consistent application of masking
+    + Raytrace never masks during computation
+    + All models allow postprocessing mask with the same radius
+      (except roulette resimulation which requires explicit radius)
+
+### Changed
+
+- `--xireference` is now default.  It can be turned off with `--no-xireference`,
+  but only the default is tested.
 
 ## [2.4.3] - 2024-05-16
 
