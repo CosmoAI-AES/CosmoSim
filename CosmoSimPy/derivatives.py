@@ -46,8 +46,8 @@ def getDict(n=50,nproc=None):
     outq = mp.Queue()       # Output queue
 
     # Get and store the initial case m+s=1
-    (a,b,x,y) = psiSIE0()
-    resDict = { (1,0) : a, (0,1) : b }
+    (psi,a,b,x,y) = psiSIE0()
+    resDict = { (0,0) : psi, (1,0) : a, (0,1) : b }
 
     # Submit first round of jobs
     q.put( (2,0,a,x,y) )
@@ -98,9 +98,8 @@ def getDiff(n,nproc,diff1):
 
     psidiff = {}
     theta = symbols("p",positive=True,real=True)
-    for i in range(n+1):
-       for j in range(n-i+1):
-           if i+j > 0: q.put((i,j))
+    for k in diff1.keys():
+           q.put( k )
     pool = mp.Pool(nproc, secondworker,(q,outq,diff1,theta))
     q.close()
     pool.close()
@@ -131,17 +130,17 @@ def thirdworker(q,outq,diff2,chi ):
     cont = True
     while cont:
       try:
-        m,n = q.get(False)   # does not block
+        m,s = q.get(False)   # does not block
         a = sympy.simplify( sum( [
                   (-1)**k
                   * binomial( s, 2*k )
                   * diff1[(s-2*k,2*k)]
-                  for k in range(s/2+1) ] ) )
+                  for k in range(int(s/2+1)) ] ) )
         b = sympy.simplify( sum( [
                   (-1)**k
                   * binomial( s, 2*k+1 )
                   * diff1[(s-2*k-1,2*k+1)]
-                  for k in range((s-1)/2+1) ] ) )
+                  for k in range(int((s-1)/2+1)) ] ) )
         c = gamma(m,s,chi)
         a *= c
         b *= c
@@ -159,7 +158,7 @@ def getAmplitudes(n,nproc,diff2):
 
     rdict = {}
 
-    for m in range(n+1):
+    for m in range(n):
        for s in range((m+1)%2,m+2,2):
            q.put((m,s))
     chi = symbols("c",positive=True,real=True)
