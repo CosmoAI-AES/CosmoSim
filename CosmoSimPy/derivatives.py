@@ -31,7 +31,7 @@ def firstworker(q,outq,maxm=6):
             q.put( (i+1, j, res, x, y) ) 
             if i==0:
                q.put( (0, j+1, res, x, y) ) 
-        print( "I", os.getpid(), i, j, res )
+        print( "I", os.getpid(), i, j )
         outq.put( (i,j,res) )
         q.task_done()     # Tell the queue that the job is complete
 
@@ -40,26 +40,6 @@ def firstworker(q,outq,maxm=6):
         # empty if the current job should spawn new ones. 
     print ( os.getpid(),"returning" )
 
-def secondworker(q,outq,diff1,theta ):
-    print ( os.getpid(),"working" )
-    cont = True
-    while cont:
-      try:
-        m,n = q.get(False)   # does not block
-        res = sympy.simplify(sum( [
-                  binomial( m+n, i+j )*
-                  cos(theta)**(m-i+j)*
-                  sin(theta)**(n-j+i)*
-                  (-1)**i
-                  * diff1[(m-i+j,n-j+i)]
-                  for i in range(m+1) for j in range(n+1) ] ) )
-        print( "II", os.getpid(), m, n, res )
-        outq.put(res)
-      except queue.Empty:
-        print ( "II", os.getpid(), "completes" )
-        cont = False
-
-    print ( os.getpid(),"returning" )
 
 def getDict(n=50,nproc=None):
     q = mp.JoinableQueue()  # Input queue.  It is joinable to control completion.
@@ -88,6 +68,27 @@ def getDict(n=50,nproc=None):
     print( "I getDict returns" )
     return resDict
 
+def secondworker(q,outq,diff1,theta ):
+    print ( os.getpid(),"working" )
+    cont = True
+    while cont:
+      try:
+        m,n = q.get(False)   # does not block
+        res = sympy.simplify(sum( [
+                  binomial( m+n, i+j )*
+                  cos(theta)**(m-i+j)*
+                  sin(theta)**(n-j+i)*
+                  (-1)**i
+                  * diff1[(m-i+j,n-j+i)]
+                  for i in range(m+1) for j in range(n+1) ] ) )
+        print( "II", os.getpid(), m, n )
+        outq.put(res)
+      except queue.Empty:
+        print ( "II", os.getpid(), "completes" )
+        cont = False
+
+    print ( os.getpid(),"returning" )
+
 def getDiff(n,nproc,diff1):
     q = mp.Queue()          # Input queue
     outq = mp.Queue()       # Output queue
@@ -109,6 +110,68 @@ def getDiff(n,nproc,diff1):
 
     print( "II getDiff returns" )
     return psidiff
+
+def gamma(m,s,chi):
+    if (m+s)%2 == 0:
+        return 0
+    else:
+        if s == 0:
+            r = -1/2
+        else:
+            r = -1
+        r *= chi**(m+1)
+        r /= 2**m
+        r *= binomial( m+1, (m+1-s)/2 )
+        return r
+def thirdworker(q,outq,diff2,chi ):
+    print ( os.getpid(),"working" )
+    cont = True
+    while cont:
+      try:
+        m,n = q.get(False)   # does not block
+        a = sympy.simplify( sum( [
+                  (-1)**k
+                  * binomial( s, 2*k )
+                  * diff1[(s-2*k,2*k)]
+                  for k in range(s/2+1) ] ) )
+        b = sympy.simplify( sum( [
+                  (-1)**k
+                  * binomial( s, 2*k+1 )
+                  * diff1[(s-2*k-1,2*k+1)]
+                  for k in range((s-1)/2+1) ] ) )
+        c = gamma(m,s,chi)
+        a *= c
+        b *= c
+        print( "II", os.getpid(), m, n )
+        outq.put((m,n,a,b))
+      except queue.Empty:
+        print ( "III", os.getpid(), "completes" )
+        cont = False
+
+    print ( os.getpid(),"returning" )
+
+def getAmplitudes(n,nproc,diff2):
+    q = mp.Queue()          # Input queue
+    outq = mp.Queue()       # Output queue
+
+    rdict = {}
+
+    for m in range(n+1):
+       for s in range((m+1)%2,m+2,2):
+           q.put((m,s))
+    chi = symbols("c",positive=True,real=True)
+    pool = mp.Pool(nproc, thirdworker,(q,outq,diff2,chi))
+    q.close()
+    pool.close()
+    pool.join()
+    print( "III pool closed" )
+
+    while not outq.empty():
+        i,j,a,b = outq.get()
+        rdict[(i,j)] = (a,b)
+
+    print( "III getAmplitudes returns" )
+    return rdict
 
 
 if __name__ == "__main__":
@@ -138,5 +201,6 @@ if __name__ == "__main__":
     start = time.time()
     diff1 = getDict(n,nproc)
     diff2 = getDiff(n,nproc,diff1)
+    alphabeta = getAmplitudes(n,nproc,diff2)
 
     print( "Time spent:", time.time() - start)
