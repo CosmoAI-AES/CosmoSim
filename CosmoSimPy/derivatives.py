@@ -38,7 +38,7 @@ def firstworker(q,outq,maxm=6):
         # Note that new jobs are submitted to the queue before 
         # `q.task_done()` is called.  Hence the queue will not be
         # empty if the current job should spawn new ones. 
-    print ( os.getpid(),"returning" )
+    print ( "I.", os.getpid(),"returning" )
 
 
 def getDict(n=50,nproc=None):
@@ -84,13 +84,13 @@ def secondworker(q,outq,diff1,theta ):
                   (-1)**i
                   * diff1[(m-i+j,n-j+i)]
                   for i in range(m+1) for j in range(n+1) ] ) )
-        print( "II", os.getpid(), m, n )
-        outq.put(res)
+        print( "II.", os.getpid(), m, n )
+        outq.put( (m,n,res) )
       except queue.Empty:
-        print ( "II", os.getpid(), "completes" )
+        print ( "II.", os.getpid(), "completes" )
         cont = False
 
-    print ( os.getpid(),"returning" )
+    print ( "II.", os.getpid(),"returning" )
 
 def getDiff(n,nproc,diff1):
     q = mp.Queue()          # Input queue
@@ -105,13 +105,13 @@ def getDiff(n,nproc,diff1):
     q.close()
     pool.close()
     pool.join()
-    print( "II pool closed" )
+    print( "II. pool closed" )
 
     while not outq.empty():
         i,j,res = outq.get()
         psidiff[(i,j)] = res
 
-    print( "II getDiff returns" )
+    print( "II. getDiff returns" )
     return psidiff
 
 def gamma(m,s,chi):
@@ -145,13 +145,13 @@ def thirdworker(q,outq,diff2,chi ):
         c = gamma(m,s,chi)
         a *= c
         b *= c
-        print( "II", os.getpid(), m, n )
+        print( "III.", os.getpid(), m, n )
         outq.put((m,n,a,b))
       except queue.Empty:
-        print ( "III", os.getpid(), "completes" )
+        print ( "III.", os.getpid(), "completes" )
         cont = False
 
-    print ( os.getpid(),"returning" )
+    print ( "III.", os.getpid(),"returning" )
 
 def getAmplitudes(n,nproc,diff2):
     q = mp.Queue()          # Input queue
