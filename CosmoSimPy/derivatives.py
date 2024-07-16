@@ -63,8 +63,11 @@ def getDict(n=50,nproc=None):
     print( "I pool closed" )
 
     while not outq.empty():
-        i,j,res = outq.get()
+        print( "I. attempt to get from queue, size", outq.qsize() )
+        i,j,res = outq.get(False)
+        print( "I storing",  i, j )
         resDict[(i,j)] = res
+        print( "I stored",  i, j )
     print( "I getDict returns" )
     return resDict
 
