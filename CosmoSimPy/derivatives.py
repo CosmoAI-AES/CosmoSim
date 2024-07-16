@@ -10,6 +10,7 @@ Symbolically differentiate the lens potential of the SIE lens.
 
 import multiprocessing as mp
 import sys
+import os
 import time
 import argparse
 
@@ -17,53 +18,25 @@ import sympy
 from libamplitudes import *
 from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh
 
-def zeroth(lens="SIS"):
-    raise "Unknown lens model"
+time.sleep(10)
 
-class AmplitudesCalculator:
-    def __init__(self,lens="SIE",maxn=7,verbose=False):
-        self.verbose = verbose
-        if lens == "SIS":
-            (a,b,x,y) = psiSIS()
-        if lens == "SIE":
-            (a,b,x,y) = psiSIE()
-        self.dict = { (1,0) : a, (0,1) : b }
-        if self.verbose:
-            self.diagnostic(1,0)
-            self.diagnostic(0,1)
-        self.x = x
-        self.y = y
-        self.maxn = maxn
-        manager = mp.Manager()
-        self.queue = manager.Queue()
-        self.jobs = []
-    def diagnostic(self,i,j):
-        print( i, j, self.dict[(i,j)] )
-    def run(self,np=None):
-        if np == None:
-            nproc == self.maxn+1
-        else:
-            npproc = np
-        with mp.Pool(processes=nproc) as pool:
-            pass
-    def __call__(self,i,j):
-        if i == 0:
-           res = sympy.simplify( diff( self.dict[(i,j-1)], self.y ) )
-        else:
-           res = sympy.simplify( diff( self.dict[(i-1,j)], self.x ) )
-        res = self.dict[(i,j)]
-        if self.verbose:  self.diagnostic(i,j)
-        return res
 
-def makeAmplitude(q):
-        i,j,f,x,y = q.get()
+def mainworker(q,outq,maxm=6):
+    print ( os.getpid(),"working" )
+    while True:
+        i,j,f,x,y = q.get(True)
         if i == 0:
            res = sympy.simplify( diff( f, y ) )
         else:
            res = sympy.simplify( diff( f, x ) )
-        res = self.dict[(i,j)]
-        if self.verbose:  self.diagnostic(i,j)
-        return res
+        if i < maxm:
+            q.put( (i+1, j, res, x, y) ) 
+            if i==0:
+               q.put( (0, j+1, res, x, y) ) 
+        print( os.getpid(), i, j, res )
+        outq.put( (i,j,res) )
+        q.task_done()
+
 
 def main(lens="SIS",n=50,nproc=None,fn=None):
 
@@ -78,12 +51,18 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
 
     start = time.time()
 
-    c = AmplitudesCalculator(verbose=True)
+    q = mp.JoinableQueue()
+    outq = mp.Queue()
 
-    for i in range(2,n+1):
-        for j in range(i):
-            c( i-j, j )
-        c( 0, i )
+    (a,b,x,y) = psiSIE()
+    q.put( (2,0,a,x,y) )
+    q.put( (1,1,a,x,y) )
+    q.put( (0,2,b,x,y) )
+
+    dict = { (1,0) : a, (0,1) : b }
+
+    pool = mp.Pool(3, mainworker,(q,outq,))
+    q.join()
 
     print( "Time spent:", time.time() - start)
 
