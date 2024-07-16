@@ -55,6 +55,16 @@ class AmplitudesCalculator:
         if self.verbose:  self.diagnostic(i,j)
         return res
 
+def makeAmplitude(q):
+        i,j,f,x,y = q.get()
+        if i == 0:
+           res = sympy.simplify( diff( f, y ) )
+        else:
+           res = sympy.simplify( diff( f, x ) )
+        res = self.dict[(i,j)]
+        if self.verbose:  self.diagnostic(i,j)
+        return res
+
 def main(lens="SIS",n=50,nproc=None,fn=None):
 
     global num_processes
