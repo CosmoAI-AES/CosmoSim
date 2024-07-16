@@ -31,7 +31,7 @@ def firstworker(q,outq,maxm=6):
             q.put( (i+1, j, res, x, y) ) 
             if i==0:
                q.put( (0, j+1, res, x, y) ) 
-        print( "I", os.getpid(), i, j )
+        print( "I.", os.getpid(), i, j )
         outq.put( (i,j,res) )
         q.task_done()     # Tell the queue that the job is complete
 
@@ -65,9 +65,9 @@ def getDict(n=50,nproc=None):
     while not outq.empty():
         print( "I. attempt to get from queue, size", outq.qsize() )
         i,j,res = outq.get(False)
-        print( "I storing",  i, j )
+        print( "I. storing",  i, j )
         resDict[(i,j)] = res
-        print( "I stored",  i, j )
+        print( "I. stored",  i, j )
     print( "I getDict returns" )
     return resDict
 
