@@ -111,6 +111,7 @@ def getDiff(n,nproc,diff1):
     for k in diff1.keys():
            q.put( k )
     pool = mp.Pool(nproc, secondworker,(q,outq,diff1,theta))
+    cont = True
     while cont:
         try:
             i,j,res = outq.get(True,10)
@@ -186,6 +187,7 @@ def getAmplitudes(n,nproc,diff2):
     chi = symbols("c",positive=True,real=True)
     pool = mp.Pool(nproc, thirdworker,(q,outq,diff2,chi))
 
+    cont = True
     while cont:
         try:
             i,j,a,b = outq.get(True,10)
