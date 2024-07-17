@@ -61,6 +61,7 @@ def getDict(n=50,nproc=None):
        print( "I getDict() joined queue" )
 
     print( "I pool closed" )
+    sys.stdout.flush()
 
     while not outq.empty():
         print( "I. attempt to get from queue, size", outq.qsize() )
@@ -69,6 +70,7 @@ def getDict(n=50,nproc=None):
         resDict[(i,j)] = res
         print( "I. stored",  i, j )
     print( "I getDict returns" )
+    sys.stdout.flush()
     return resDict
 
 def secondworker(q,outq,diff1,theta ):
@@ -105,12 +107,14 @@ def getDiff(n,nproc,diff1):
     pool.close()
     pool.join()
     print( "II. pool closed" )
+    sys.stdout.flush()
 
     while not outq.empty():
         i,j,res = outq.get()
         psidiff[(i,j)] = res
 
     print( "II. getDiff returns" )
+    sys.stdout.flush()
     return psidiff
 
 def gamma(m,s,chi):
@@ -167,12 +171,14 @@ def getAmplitudes(n,nproc,diff2):
     pool.close()
     pool.join()
     print( "III pool closed" )
+    sys.stdout.flush()
 
     while not outq.empty():
         i,j,a,b = outq.get()
         rdict[(i,j)] = (a,b)
 
     print( "III getAmplitudes returns" )
+    sys.stdout.flush()
     return rdict
 
 
