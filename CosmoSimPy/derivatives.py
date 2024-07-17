@@ -57,15 +57,23 @@ def getDict(n=50,nproc=None):
     # Create a pool of workers to process the input queue.
     with mp.Pool(nproc, firstworker,(q,outq,n,)) as pool: 
 
-       q.join()   # Block until the input jobs are completed
-       print( "I getDict() joined queue" )
+        cont = True
+        while cont:
+            try:
+               i,j,res = outq.get(True,180)
+               resDict[(i,j)] = res
+               print( "I. stored",  i, j )
+            except queue.Empty:
+                print( "I. Timeout" )
+                cont = False
+        q.join()   # Block until the input jobs are completed
+        print( "I getDict() joined queue" )
 
     print( "I pool closed" )
 
     while not outq.empty():
         print( "I. attempt to get from queue, size", outq.qsize() )
         i,j,res = outq.get(False)
-        print( "I. storing",  i, j )
         resDict[(i,j)] = res
         print( "I. stored",  i, j )
     print( "I getDict returns" )
@@ -101,6 +109,16 @@ def getDiff(n,nproc,diff1):
     for k in diff1.keys():
            q.put( k )
     pool = mp.Pool(nproc, secondworker,(q,outq,diff1,theta))
+    while cont:
+        try:
+            i,j,res = outq.get(True,10)
+            resDict[(i,j)] = res
+            print( "II. stored",  i, j )
+        except queue.Empty:
+            print( "II. Timeout" )
+            if q.empty():
+                cont = False
+                print( "II. Timeout.  Continuing" )
     q.close()
     pool.close()
     pool.join()
@@ -163,6 +181,18 @@ def getAmplitudes(n,nproc,diff2):
            q.put((m,s))
     chi = symbols("c",positive=True,real=True)
     pool = mp.Pool(nproc, thirdworker,(q,outq,diff2,chi))
+
+    while cont:
+        try:
+            i,j,a,b = outq.get(True,10)
+            rdict[(i,j)] = (a,b)
+            resDict[(i,j)] = res
+            print( "III. stored",  i, j )
+        except queue.Empty:
+            print( "III. Timeout" )
+            if q.empty():
+                cont = False
+                print( "III. Timeout.  Continuing" )
     q.close()
     pool.close()
     pool.join()
