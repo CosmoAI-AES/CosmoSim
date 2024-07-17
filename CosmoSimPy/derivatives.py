@@ -19,7 +19,7 @@ import sympy
 from libamplitudes import *
 from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh, binomial
 
-def firstworker(q,outq,maxm=6):
+def firstworker(q,resDict,maxm=6):
     print ( os.getpid(),"working" )
     while True:
         i,j,f,x,y = q.get(True)   # Blocks until there is a job on the queue
@@ -32,7 +32,7 @@ def firstworker(q,outq,maxm=6):
             if i==0:
                q.put( (0, j+1, res, x, y) ) 
         print( "I.", os.getpid(), i, j )
-        outq.put( (i,j,res) )
+        resDict[(i,j)] = res
         q.task_done()     # Tell the queue that the job is complete
 
         # Note that new jobs are submitted to the queue before 
@@ -42,12 +42,16 @@ def firstworker(q,outq,maxm=6):
 
 
 def getDict(n=50,nproc=None):
+
     q = mp.JoinableQueue()  # Input queue.  It is joinable to control completion.
-    outq = mp.Queue()       # Output queue
+    mgr = mp.Manager()      
+    resDict = mgr.dict()     # Output data structure
 
     # Get and store the initial case m+s=1
     (psi,a,b,x,y) = psiSIE0()
-    resDict = { (0,0) : psi, (1,0) : a, (0,1) : b }
+    resDict[(0,0)] = psi
+    resDict[(1,0)] = a
+    resDict[(0,1)] = b
 
     # Submit first round of jobs
     q.put( (2,0,a,x,y) )
@@ -55,33 +59,19 @@ def getDict(n=50,nproc=None):
     q.put( (0,2,b,x,y) )
 
     # Create a pool of workers to process the input queue.
-    with mp.Pool(nproc, firstworker,(q,outq,n,)) as pool: 
+    with mp.Pool(nproc, firstworker,(q,resDict,n,)) as pool: 
 
-        cont = True
-        while cont:
-            try:
-               i,j,res = outq.get(True,180)
-               resDict[(i,j)] = res
-               print( "I. stored",  i, j )
-            except queue.Empty:
-                print( "I. Timeout" )
-                cont = False
         q.join()   # Block until the input jobs are completed
         print( "I getDict() joined queue" )
 
     print( "I pool closed" )
     sys.stdout.flush()
 
-    while not outq.empty():
-        print( "I. attempt to get from queue, size", outq.qsize() )
-        i,j,res = outq.get(False)
-        resDict[(i,j)] = res
-        print( "I. stored",  i, j )
     print( "I getDict returns" )
     sys.stdout.flush()
     return resDict
 
-def secondworker(q,outq,diff1,theta ):
+def secondworker(q,psidiff,diff1,theta ):
     print ( os.getpid(),"working" )
     cont = True
     while cont:
@@ -95,7 +85,7 @@ def secondworker(q,outq,diff1,theta ):
                   * diff1[(m-i+j,n-j+i)]
                   for i in range(m+1) for j in range(n+1) ] ) )
         print( "II.", os.getpid(), m, n )
-        outq.put( (m,n,res) )
+        psidiff[(m,n)] = res
       except queue.Empty:
         print ( "II.", os.getpid(), "completes" )
         cont = False
@@ -103,34 +93,20 @@ def secondworker(q,outq,diff1,theta ):
     print ( "II.", os.getpid(),"returning" )
 
 def getDiff(n,nproc,diff1):
+    mgr = mp.Manager()      
     q = mp.Queue()          # Input queue
-    outq = mp.Queue()       # Output queue
+    psidiff = mgr.dict()     # Output data structure
 
-    psidiff = {}
     theta = symbols("p",positive=True,real=True)
     for k in diff1.keys():
            q.put( k )
-    pool = mp.Pool(nproc, secondworker,(q,outq,diff1,theta))
-    cont = True
-    while cont:
-        try:
-            i,j,res = outq.get(True,10)
-            psidiff[(i,j)] = res
-            print( "II. stored",  i, j )
-        except queue.Empty:
-            print( "II. Timeout" )
-            if q.empty():
-                cont = False
-                print( "II. Timeout.  Continuing" )
+    pool = mp.Pool(nproc, secondworker,(q,psidiff,diff1,theta))
+
     q.close()
     pool.close()
     pool.join()
     print( "II. pool closed" )
     sys.stdout.flush()
-
-    while not outq.empty():
-        i,j,res = outq.get()
-        psidiff[(i,j)] = res
 
     print( "II. getDiff returns" )
     sys.stdout.flush()
@@ -148,7 +124,7 @@ def gamma(m,s,chi):
         r /= 2**m
         r *= binomial( m+1, (m+1-s)/2 )
         return r
-def thirdworker(q,outq,diff2,chi ):
+def thirdworker(q,ampdict,diff2,chi ):
     print ( os.getpid(),"working" )
     cont = True
     while cont:
@@ -168,7 +144,7 @@ def thirdworker(q,outq,diff2,chi ):
         a *= c
         b *= c
         print( "III.", os.getpid(), m, n )
-        outq.put((m,n,a,b))
+        ampdict[(m,n)] = (a,b)
       except queue.Empty:
         print ( "III.", os.getpid(), "completes" )
         cont = False
@@ -176,37 +152,21 @@ def thirdworker(q,outq,diff2,chi ):
     print ( "III.", os.getpid(),"returning" )
 
 def getAmplitudes(n,nproc,diff2):
-    q = mp.Queue()          # Input queue
-    outq = mp.Queue()       # Output queue
-
-    rdict = {}
+    q = mp.Queue()         # Input queue
+    mgr = mp.Manager()      
+    rdict = mgr.dict()     # Output data structure
 
     for m in range(n):
        for s in range((m+1)%2,m+2,2):
            q.put((m,s))
     chi = symbols("c",positive=True,real=True)
-    pool = mp.Pool(nproc, thirdworker,(q,outq,diff2,chi))
+    pool = mp.Pool(nproc, thirdworker,(q,rdict,diff2,chi))
 
-    cont = True
-    while cont:
-        try:
-            i,j,a,b = outq.get(True,10)
-            rdict[(i,j)] = (a,b)
-            print( "III. stored",  i, j )
-        except queue.Empty:
-            print( "III. Timeout" )
-            if q.empty():
-                cont = False
-                print( "III. Timeout.  Continuing" )
     q.close()
     pool.close()
     pool.join()
     print( "III pool closed" )
     sys.stdout.flush()
-
-    while not outq.empty():
-        i,j,a,b = outq.get()
-        rdict[(i,j)] = (a,b)
 
     print( "III getAmplitudes returns" )
     sys.stdout.flush()
