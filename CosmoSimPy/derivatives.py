@@ -115,7 +115,7 @@ def getDiff(n,nproc,diff1):
     while cont:
         try:
             i,j,res = outq.get(True,10)
-            resDict[(i,j)] = res
+            psidiff[(i,j)] = res
             print( "II. stored",  i, j )
         except queue.Empty:
             print( "II. Timeout" )
@@ -192,7 +192,6 @@ def getAmplitudes(n,nproc,diff2):
         try:
             i,j,a,b = outq.get(True,10)
             rdict[(i,j)] = (a,b)
-            resDict[(i,j)] = res
             print( "III. stored",  i, j )
         except queue.Empty:
             print( "III. Timeout" )
