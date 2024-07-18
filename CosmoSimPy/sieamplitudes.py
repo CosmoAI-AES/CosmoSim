@@ -147,7 +147,7 @@ def thirdworker(q,ampdict,diff2,chi, var=[] ):
         a *= c
         b *= c
         print( "III.", os.getpid(), m, n )
-        ampdict[(m,n)] = (a,b)
+        ampdict[(m,s)] = (a,b)
       except queue.Empty:
         print ( "III.", os.getpid(), "completes" )
         cont = False
