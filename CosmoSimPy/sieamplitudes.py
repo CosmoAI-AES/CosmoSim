@@ -196,13 +196,26 @@ if __name__ == "__main__":
     
     # The filename is generated from the number of amplitudes
     if args.output is None:
-        fn = str(n) + '.txt'
+        fn = "sie" + str(n) + '.txt'
     else:
         fn = args.fn
 
     start = time.time()
     diff1,x,y = getDict(n,nproc)
+    print( "Time spent:", time.time() - start)
     diff2 = getDiff(n,nproc,diff1)
+    print( "Time spent:", time.time() - start)
     alphabeta = getAmplitudes(n,nproc,diff2,var=[x,y] )
+    print( "Time spent:", time.time() - start)
+
+    with open(fn, 'w') as f:
+        print( "Opened file", fn ) 
+        for (m,s) in alphabeta.keys():
+
+            alpha,beta = alphabeta[(m,s)]
+            res = f'{m}:{s}:{alpha}:{beta}'
+            f.write(str(res) + '\n')
+        f.close()
+    if hit_except: print( "Failed to open file ", fn )
 
     print( "Time spent:", time.time() - start)
