@@ -69,7 +69,7 @@ def getDict(n=50,nproc=None):
 
     print( "I getDict returns" )
     sys.stdout.flush()
-    return resDict
+    return resDict, x, y
 
 def secondworker(q,psidiff,diff1,theta ):
     print ( os.getpid(),"working" )
@@ -77,7 +77,7 @@ def secondworker(q,psidiff,diff1,theta ):
     while cont:
       try:
         m,n = q.get(False)   # does not block
-        res = sympy.simplify(sum( [
+        res = (sum( [
                   binomial( m+n, i+j )*
                   cos(theta)**(m-i+j)*
                   sin(theta)**(n-j+i)*
@@ -91,6 +91,7 @@ def secondworker(q,psidiff,diff1,theta ):
         cont = False
 
     print ( "II.", os.getpid(),"returning" )
+    return psidiff
 
 def getDiff(n,nproc,diff1):
     mgr = mp.Manager()      
@@ -124,22 +125,24 @@ def gamma(m,s,chi):
         r /= 2**m
         r *= binomial( m+1, (m+1-s)/2 )
         return r
-def thirdworker(q,ampdict,diff2,chi ):
+def thirdworker(q,ampdict,diff2,chi, var=[] ):
     print ( os.getpid(),"working" )
     cont = True
     while cont:
       try:
         m,s = q.get(False)   # does not block
-        a = sympy.simplify( sum( [
+        a = sympy.collect( sum( [
                   (-1)**k
                   * binomial( s, 2*k )
                   * diff1[(s-2*k,2*k)]
-                  for k in range(int(s/2+1)) ] ) )
-        b = sympy.simplify( sum( [
+                  for k in range(int(s/2+1)) ] ),
+                  var )
+        b = sympy.collect( sum( [
                   (-1)**k
                   * binomial( s, 2*k+1 )
                   * diff1[(s-2*k-1,2*k+1)]
-                  for k in range(int((s-1)/2+1)) ] ) )
+                  for k in range(int((s-1)/2+1)) ] ),
+                  var )
         c = gamma(m,s,chi)
         a *= c
         b *= c
@@ -151,7 +154,7 @@ def thirdworker(q,ampdict,diff2,chi ):
 
     print ( "III.", os.getpid(),"returning" )
 
-def getAmplitudes(n,nproc,diff2):
+def getAmplitudes(n,nproc,diff2,var=[]):
     q = mp.Queue()         # Input queue
     mgr = mp.Manager()      
     rdict = mgr.dict()     # Output data structure
@@ -160,7 +163,7 @@ def getAmplitudes(n,nproc,diff2):
        for s in range((m+1)%2,m+2,2):
            q.put((m,s))
     chi = symbols("c",positive=True,real=True)
-    pool = mp.Pool(nproc, thirdworker,(q,rdict,diff2,chi))
+    pool = mp.Pool(nproc, thirdworker,(q,rdict,diff2,chi,var))
 
     q.close()
     pool.close()
@@ -198,8 +201,8 @@ if __name__ == "__main__":
         fn = args.fn
 
     start = time.time()
-    diff1 = getDict(n,nproc)
+    diff1,x,y = getDict(n,nproc)
     diff2 = getDiff(n,nproc,diff1)
-    alphabeta = getAmplitudes(n,nproc,diff2)
+    alphabeta = getAmplitudes(n,nproc,diff2,var=[x,y] )
 
     print( "Time spent:", time.time() - start)
