@@ -216,6 +216,5 @@ if __name__ == "__main__":
             res = f'{m}:{s}:{alpha}:{beta}'
             f.write(str(res) + '\n')
         f.close()
-    if hit_except: print( "Failed to open file ", fn )
 
     print( "Time spent:", time.time() - start)
