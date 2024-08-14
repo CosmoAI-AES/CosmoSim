@@ -78,11 +78,12 @@ def secondworker(q,psidiff,diff1,theta ):
       try:
         m,n = q.get(False)   # does not block
         res = (sum( [
-                  binomial( m+n, i+j )*
+                  binomial( m, i )*
+                  binomial( n, j )*
                   cos(theta)**(m-i+j)*
                   sin(theta)**(n-j+i)*
                   (-1)**i
-                  * diff1[(m-i+j,n-j+i)]
+                  * diff1[(m+n-i-j,j+i)]
                   for i in range(m+1) for j in range(n+1) ] ) )
         print( "II.", os.getpid(), m, n )
         psidiff[(m,n)] = res
@@ -109,11 +110,11 @@ def getDiff(n,nproc,diff1):
     print( "II. pool closed" )
     sys.stdout.flush()
 
-    print( "II. getDiff returns" )
+    print( "II. getDiff returns")
     sys.stdout.flush()
     return psidiff
 
-def gamma(m,s,chi):
+def gamma(m,s):
     if (m+s)%2 == 0:
         return 0
     else:
@@ -121,31 +122,34 @@ def gamma(m,s,chi):
             r = -1/2
         else:
             r = -1
-        r *= chi**(m+1)
         r /= 2**m
         r *= binomial( m+1, (m+1-s)/2 )
         return r
-def thirdworker(q,ampdict,diff2,chi, var=[] ):
+def thirdworker(q,ampdict,indict, var=[] ):
     print ( os.getpid(),"working" )
     cont = True
+    sq = indict[2,0]+indict[0,2]
     while cont:
       try:
         m,s = q.get(False)   # does not block
-        a = sympy.collect( sum( [
+        c = gamma(m,s)
+        if c == 0:
+            a = 0
+            b = 0
+        else:
+            c *= sq**((m+1-s)/2)
+            a = c*sympy.collect( sum( [
                   (-1)**k
                   * binomial( s, 2*k )
-                  * diff1[(s-2*k,2*k)]
+                  * indict[(s-2*k,2*k)]
                   for k in range(int(s/2+1)) ] ),
                   var )
-        b = sympy.collect( sum( [
+            b = c*sympy.collect( sum( [
                   (-1)**k
                   * binomial( s, 2*k+1 )
-                  * diff1[(s-2*k-1,2*k+1)]
+                  * indict[(s-2*k-1,2*k+1)]
                   for k in range(int((s-1)/2+1)) ] ),
                   var )
-        c = gamma(m,s,chi)
-        a *= c
-        b *= c
         print( "III.", os.getpid(), m, n )
         ampdict[(m,s)] = (a,b)
       except queue.Empty:
@@ -162,8 +166,7 @@ def getAmplitudes(n,nproc,diff2,var=[]):
     for m in range(n):
        for s in range((m+1)%2,m+2,2):
            q.put((m,s))
-    chi = symbols("c",positive=True,real=True)
-    pool = mp.Pool(nproc, thirdworker,(q,rdict,diff2,chi,var))
+    pool = mp.Pool(nproc, thirdworker,(q,rdict,diff2,var))
 
     q.close()
     pool.close()
@@ -198,7 +201,7 @@ if __name__ == "__main__":
     if args.output is None:
         fn = "sie" + str(n) + '.txt'
     else:
-        fn = args.fn
+        fn = args.output
 
     start = time.time()
     diff1,x,y = getDict(n,nproc)
