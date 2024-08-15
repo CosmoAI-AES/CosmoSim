@@ -93,6 +93,8 @@ void Lens::initAlphasBetas() {
 
     if (!input.is_open()) {
         throw std::runtime_error("Could not open file: " + filename);
+    } else {
+       std::cout << "[initAlphasBetas] opened file " << filename << "\n" ;
     }
 
     while (input) {

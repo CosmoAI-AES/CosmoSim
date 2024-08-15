@@ -45,10 +45,16 @@ cv::Point2d RouletteModel::getDistortedPos(double r, double theta) const {
         nu1 += frac*subTerm1;
         nu2 += frac*subTerm2;
     }
+
     // The return value should be normalised coordinates in the source plane.
     // We have calculated the coordinates in the lens plane.
     // return cv::Point2d( nu1/CHI, nu2/CHI ) ;
     cv::Point2d rpt = cv::Point2d( nu1/CHI, nu2/CHI ) ;
+
+    if ( DEBUG && r < 2 ) {
+       std::cout << "[getDistortedPos] nu=" << rpt << 
+          " theta=" << theta << " r=" << r << "\n" ;
+    }
 
     return rpt ;
 }
