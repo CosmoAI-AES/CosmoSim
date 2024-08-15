@@ -48,7 +48,7 @@ def getDict(n=50,nproc=None):
     resDict = mgr.dict()     # Output data structure
 
     # Get and store the initial case m+s=1
-    (psi,a,b,x,y) = psiSIE0()
+    (psi,a,b,x,y) = psiSIE()
     resDict[(0,0)] = psi
     resDict[(1,0)] = a
     resDict[(0,1)] = b
@@ -92,7 +92,6 @@ def secondworker(q,psidiff,diff1,theta ):
         cont = False
 
     print ( "II.", os.getpid(),"returning" )
-    return psidiff
 
 def getDiff(n,nproc,diff1):
     mgr = mp.Manager()      

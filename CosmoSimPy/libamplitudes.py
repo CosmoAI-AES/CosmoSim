@@ -54,26 +54,6 @@ def psiSIE():
     x, y = symbols('x, y', real=True)
     g = symbols("g", positive=True, real=True)
     f = symbols("f", positive=True, real=True)
-    p = symbols("p", positive=True, real=True)
-    r = sqrt(x ** 2 + y ** 2)
-    sp = sin(p)
-    cp = cos(p)
-    alpha = - g * sqrt( f/(1-f*f) )  * (
-            cp * asinh( ( sqrt( 1-f*f )/f) * (x*cp+y*sp)/(sqrt(x ** 2 + y ** 2)) )
-            -
-            sp * asin( sqrt( 1-f*f )* (-x*sp+y*cp)/r )
-            )
-    beta = - g * sqrt( f/(1-f*f) )  * (
-            sp * asinh( ( sqrt( 1-f*f )/f) * (x*cp+y*sp)/(sqrt(x ** 2 + y ** 2)) )
-            +
-            cp * asin( sqrt( 1-f*f )* (-x*sp+y*cp)/r )
-            )
-    return (alpha,beta,x,y)
-def psiSIE0():
-    # g is the Einstein radius and (x,y) coordinates in the lens plane
-    x, y = symbols('x, y', real=True)
-    g = symbols("g", positive=True, real=True)
-    f = symbols("f", positive=True, real=True)
     r = sqrt(x ** 2 + y ** 2)
     alpha = - g * sqrt( f/(1-f*f) )  * asinh( ( sqrt( 1-f*f )/f) * x/r )
     beta = - g * sqrt( f/(1-f*f) )  * asin( sqrt( 1-f*f )* y/r )
