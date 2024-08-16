@@ -77,14 +77,14 @@ def secondworker(q,psidiff,diff1,theta ):
     while cont:
       try:
         m,n = q.get(False)   # does not block
-        res = (sum( [
+        res = sum( [
                   binomial( m, i )*
                   binomial( n, j )*
                   cos(theta)**(m-i+j)*
                   sin(theta)**(n-j+i)*
                   (-1)**i
                   * diff1[(m+n-i-j,j+i)]
-                  for i in range(m+1) for j in range(n+1) ] ) )
+                  for i in range(m+1) for j in range(n+1) ] ) 
         print( "II.", os.getpid(), m, n )
         psidiff[(m,n)] = res
       except queue.Empty:
@@ -149,7 +149,7 @@ def thirdworker(q,ampdict,indict, var=[] ):
                   * indict[(s-2*k-1,2*k+1)]
                   for k in range(int((s-1)/2+1)) ] ),
                   var )
-        print( "III.", os.getpid(), m, n )
+        print( "III.", os.getpid(), m, s )
         ampdict[(m,s)] = (a,b)
       except queue.Empty:
         print ( "III.", os.getpid(), "completes" )
@@ -178,7 +178,7 @@ def getAmplitudes(n,nproc,diff2,var=[]):
     return rdict
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description='Generate roulette amplitude formulæ for CosmoSim.')
     parser.add_argument('n', metavar='N', type=int, nargs="?", default=50,
                     help='Max m (number of terms)')
@@ -220,3 +220,6 @@ if __name__ == "__main__":
         f.close()
 
     print( "Time spent:", time.time() - start)
+
+if __name__ == "__main__":
+    main()
