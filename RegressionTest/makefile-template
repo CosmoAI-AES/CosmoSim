@@ -22,8 +22,8 @@ images.status:
 		echo makeimages.sh error: $$? ) 
 compare.status:
 	( compareimages.sh && \
-		echo compareimages.sh succeeded > $@ || \
-		echo compareimages.sh error: $$? > $@ ) 
+		echo `pwd`: compareimages.sh succeeded > $@ || \
+		echo `pwd`: compareimages.sh error: $$? > $@ ) 
 false.status:
 	( /bin/false && \
 		echo /bin/false succeeded > $@ || \
