@@ -9,7 +9,7 @@ clean alltests:
 	cd raytrace ; $(MAKE) $@
 	cd roulette ; $(MAKE) $@
 	cd roulettepm ; $(MAKE) $@
-	cd roulettelens ; $(MAKE) $@
+	cd roulettegen ; $(MAKE) $@
 	cd amplitudes ; $(MAKE) $@
 
 cpptests:
@@ -17,7 +17,7 @@ cpptests:
 	cd raytrace ; $(MAKE) alltests
 	cd roulette ; $(MAKE) alltests
 	cd roulettepm ; $(MAKE) alltests
-	cd roulettelens ; $(MAKE) alltests
+	# cd roulettelens ; $(MAKE) alltests
 
 baselines:
 	cd exactpm ; $(MAKE) baseline`date "+%Y%m%d"`

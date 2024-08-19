@@ -28,6 +28,7 @@ def makeSingle(sim,args,name=None,row=None):
     sys.stdout.flush()
 
     im = sim.getDistortedImage( showmask=args.showmask ) 
+    print( "Distorted image", type(im), im.shape )
     if args.xireference:
           R = np.float32( [ [ 1, 0, row["xiX"] ], [ 0, 1, -row["xiY"] ] ] )
           m,n = im.shape
@@ -59,15 +60,7 @@ def setAmplitudes( sim, row, coefs ):
             sim.setBetaXi( m, s, beta )
 
 
-if __name__ == "__main__":
-    print( "[roulettegen.py] Starting ..." )
-    parser = CosmoParser(
-          prog = 'CosmoSim makeimage',
-          description = 'Generaet an image for given lens and source parameters',
-          epilog = '')
-
-    args = parser.parse_args()
-
+def main(args):
     if not args.csvfile:
         raise Exception( "No CSV file given; the --csvfile option is mandatory." )
 
@@ -135,3 +128,13 @@ if __name__ == "__main__":
 
     sim.close()
     print( "[roulettegen.py] Done" )
+
+if __name__ == "__main__":
+    print( "[roulettegen.py] Starting ..." )
+    parser = CosmoParser(
+          prog = 'CosmoSim makeimage',
+          description = 'Generaet an image for given lens and source parameters',
+          epilog = '')
+
+    args = parser.parse_args()
+    main(args)
