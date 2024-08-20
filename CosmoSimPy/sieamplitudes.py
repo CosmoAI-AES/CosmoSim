@@ -163,6 +163,31 @@ def thirdworker(q,ampdict,indict, var=[] ):
     while cont:
       try:
         m,s = q.get(False)   # does not block
+        a = - sympy.collect( sum( [
+                  binomial( m, k ) *
+                  ( cfunc(m,k,s)*diff1[(m-k+1,k)
+                  + cfunc(m,k+1,s)*diff1[(m-k,k+1) )
+                  for k in range(m+1) ] ),
+                  var )
+        b = - sympy.collect( sum( [
+                  binomial( m, k ) *
+                  ( sfunc(m,k,s)*diff1[(m-k+1,k)
+                  + sfunc(m,k+1,s)*diff1[(m-k,k+1) )
+                  for k in range(m+1) ] ),
+                  var )
+        print( "III.", os.getpid(), m, n )
+        ampdict[(m,n)] = (a,b)
+      except queue.Empty:
+        print ( "III.", os.getpid(), "completes" )
+        cont = False
+
+    print ( "III.", os.getpid(),"returning" )
+def thirdworkerorig(q,ampdict,indict, var=[] ):
+    print ( os.getpid(),"working" )
+    cont = True
+    while cont:
+      try:
+        m,s = q.get(False)   # does not block
         c = gamma(m,s)
         if c == 0:
             a = 0
