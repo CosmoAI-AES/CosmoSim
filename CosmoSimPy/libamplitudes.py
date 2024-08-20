@@ -17,7 +17,7 @@ import time
 import argparse
 
 import sympy
-from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh
+from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh, pi
 
 def identity(f): return f
 
@@ -60,3 +60,14 @@ def psiSIE():
     psi = g * sqrt( f/(1-f*f) )  * ( y * asin( sqrt( 1-f*f )* y/r )
                                       + x * asinh( ( sqrt( 1-f*f )/f) * x/r ) )
     return (psi,alpha,beta,x,y)
+
+
+def sfunc(m,k,s):
+    p = symbols("p", real=True)
+    f = sin(p)**k*cos(p)**(m-k+1)*sin(s*p)
+    return sympy.integrate(f,(p,-pi,+pi))/pi
+
+def cfunc(m,k,s):
+    p = symbols("p", real=True)
+    f = sin(p)**k*cos(p)**(m-k+1)*cos(s*p)
+    return sympy.integrate(f,(p,-pi,+pi))/pi
