@@ -23,7 +23,7 @@ protected:
     double einsteinR /* R_E or \xi_0 */,
            ellipseratio=1 /* f */,
 	   orientation=0 /* \phi */ ;
-    std::string filename = "50.txt" ;
+    std::string filename = "nosuchfile" ;
     cv::Mat psi ;
 
     std::array<std::array<double, 202>, 201> alphas_val;

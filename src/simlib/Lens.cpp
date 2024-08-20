@@ -79,6 +79,7 @@ cv::Mat Lens::getEinsteinMap() const {
 
 void Lens::setFile( std::string fn ) {
    filename = fn ;
+   std::cout << "setFile " << filename << "\n" ;
 } 
 void Lens::initAlphasBetas() {
 
@@ -89,6 +90,8 @@ void Lens::initAlphasBetas() {
     auto p = SymEngine::symbol("p"); /* theta  */
 
     std::ifstream input;
+    std::cout << "Amplitudes file " << filename << "\n" ;
+
     input.open(filename);
 
     if (!input.is_open()) {
