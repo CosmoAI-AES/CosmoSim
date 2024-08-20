@@ -33,18 +33,6 @@ double SIE::psifunctionPolar( double R, double phi ) const {
 	   + x*asinh( x * sq/ellipseratio )
 	 ) ;
 }
-double SIE::psifunctionAligned( double x, double y ) const {
-   /* ellipseratio = f */
-
-   double sq = sqrt( 1 - ellipseratio*ellipseratio ) ; /* $f'$ */
-   double sqf = sqrt( ellipseratio )/sq ;  /* $\sqrt(f)/f'$ */
-   double R = sqrt( x*x + y*y ) ;
-
-   return einsteinR*sqf*(
-	   y*asin( sq * y/R )
-	   + x*asinh( (x/R) * (sq/ellipseratio) )
-	 ) ;
-}
 
 double SIE::psiValue( double x, double y ) const {
    double phi = x == 0 ? signf(y)*PI/2 : atan2(y, x);

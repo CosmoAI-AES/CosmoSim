@@ -128,7 +128,7 @@ class SIE : public PsiFunctionLens {
 
 private:
     double psifunctionPolar( double, double ) const ;
-    double psifunctionAligned( double, double ) const ;
+    // double psifunctionAligned( double, double ) const ;
 
 public:
     virtual double psiValue( double, double ) const ;

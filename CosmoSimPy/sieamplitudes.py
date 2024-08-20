@@ -66,31 +66,27 @@ class RouletteManager():
             q.join()   # Block until the input jobs are completed
             print( "I getDict() joined queue" )
 
-        print( "I pool closed" )
-        sys.stdout.flush()
+        self.diff1 = resDict
 
         print( "I getDict returns" )
         sys.stdout.flush()
-        self.diff1 = resDict
         return resDict, x, y
     def getDiff(self,n,nproc):
         q = mp.Queue()          # Input queue
         psidiff = self.mgr.dict()     # Output data structure
 
-        theta = symbols("p",positive=True,real=True)
         for k in self.diff1.keys():
            q.put( k )
-        pool = mp.Pool(nproc, secondworker,(q,psidiff,self.diff1,theta))
+        pool = mp.Pool(nproc, secondworker,(q,psidiff,self.diff1))
 
         q.close()
         pool.close()
         pool.join()
-        print( "II. pool closed" )
-        sys.stdout.flush()
+
+        self.psidiff = psidiff
 
         print( "II. getDiff returns")
         sys.stdout.flush()
-        self.psidiff = psidiff
         return psidiff
     def getAmplitudes(self,n,nproc,var=[]):
         q = mp.Queue()         # Input queue
@@ -104,17 +100,16 @@ class RouletteManager():
         q.close()
         pool.close()
         pool.join()
-        print( "III pool closed" )
-        sys.stdout.flush()
 
         print( "III getAmplitudes returns" )
         sys.stdout.flush()
         self.rdict = rdict
         return rdict
 
-def secondworker(q,psidiff,diff1,theta ):
+def secondworker(q,psidiff,diff1 ):
     print ( os.getpid(),"working" )
     cont = True
+    theta = symbols("p",positive=True,real=True)
     while cont:
       try:
         m,n = q.get(False)   # does not block
