@@ -115,10 +115,12 @@ void Lens::initAlphasBetas() {
 }
 
 double Lens::getAlpha( cv::Point2d xi, int m, int s ) {
-   return - alphas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio, orientation});
+   double theta = orientation*PI/180 ;
+   return - alphas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio, theta});
 }
 double Lens::getBeta( cv::Point2d xi, int m, int s ) {
-   return - betas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio, orientation});
+   double theta = orientation*PI/180 ;
+   return - betas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio, theta});
 }
 
 void Lens::calculateAlphaBeta( cv::Point2d xi ) {

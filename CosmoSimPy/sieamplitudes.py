@@ -40,36 +40,77 @@ def firstworker(q,resDict,maxm=6):
         # empty if the current job should spawn new ones. 
     print ( "I.", os.getpid(),"returning" )
 
+class RouletteManager():
+    def __init__(self):
+        self.mgr = mp.Manager()      
 
-def getDict(n=50,nproc=None):
+    def getDict(self,n=50,nproc=None):
 
-    q = mp.JoinableQueue()  # Input queue.  It is joinable to control completion.
-    mgr = mp.Manager()      
-    resDict = mgr.dict()     # Output data structure
+        q = mp.JoinableQueue()  # Input queue.  It is joinable to control completion.
+        resDict = self.mgr.dict()     # Output data structure
 
-    # Get and store the initial case m+s=1
-    (psi,a,b,x,y) = psiSIE()
-    resDict[(0,0)] = psi
-    resDict[(1,0)] = a
-    resDict[(0,1)] = b
+        # Get and store the initial case m+s=1
+        (psi,a,b,x,y) = psiSIE()
+        resDict[(0,0)] = psi
+        resDict[(1,0)] = a
+        resDict[(0,1)] = b
+    
+        # Submit first round of jobs
+        q.put( (2,0,a,x,y) )
+        q.put( (1,1,a,x,y) )
+        q.put( (0,2,b,x,y) )
 
-    # Submit first round of jobs
-    q.put( (2,0,a,x,y) )
-    q.put( (1,1,a,x,y) )
-    q.put( (0,2,b,x,y) )
+        # Create a pool of workers to process the input queue.
+        with mp.Pool(nproc, firstworker,(q,resDict,n,)) as pool: 
 
-    # Create a pool of workers to process the input queue.
-    with mp.Pool(nproc, firstworker,(q,resDict,n,)) as pool: 
+            q.join()   # Block until the input jobs are completed
+            print( "I getDict() joined queue" )
 
-        q.join()   # Block until the input jobs are completed
-        print( "I getDict() joined queue" )
+        print( "I pool closed" )
+        sys.stdout.flush()
 
-    print( "I pool closed" )
-    sys.stdout.flush()
+        print( "I getDict returns" )
+        sys.stdout.flush()
+        self.diff1 = resDict
+        return resDict, x, y
+    def getDiff(self,n,nproc):
+        q = mp.Queue()          # Input queue
+        psidiff = self.mgr.dict()     # Output data structure
 
-    print( "I getDict returns" )
-    sys.stdout.flush()
-    return resDict, x, y
+        theta = symbols("p",positive=True,real=True)
+        for k in self.diff1.keys():
+           q.put( k )
+        pool = mp.Pool(nproc, secondworker,(q,psidiff,self.diff1,theta))
+
+        q.close()
+        pool.close()
+        pool.join()
+        print( "II. pool closed" )
+        sys.stdout.flush()
+
+        print( "II. getDiff returns")
+        sys.stdout.flush()
+        self.psidiff = psidiff
+        return psidiff
+    def getAmplitudes(self,n,nproc,var=[]):
+        q = mp.Queue()         # Input queue
+        rdict = self.mgr.dict()     # Output data structure
+
+        for m in range(n):
+           for s in range((m+1)%2,m+2,2):
+               q.put((m,s))
+        pool = mp.Pool(nproc, thirdworker,(q,rdict,self.psidiff,var))
+
+        q.close()
+        pool.close()
+        pool.join()
+        print( "III pool closed" )
+        sys.stdout.flush()
+
+        print( "III getAmplitudes returns" )
+        sys.stdout.flush()
+        self.rdict = rdict
+        return rdict
 
 def secondworker(q,psidiff,diff1,theta ):
     print ( os.getpid(),"working" )
@@ -93,25 +134,6 @@ def secondworker(q,psidiff,diff1,theta ):
 
     print ( "II.", os.getpid(),"returning" )
 
-def getDiff(n,nproc,diff1):
-    mgr = mp.Manager()      
-    q = mp.Queue()          # Input queue
-    psidiff = mgr.dict()     # Output data structure
-
-    theta = symbols("p",positive=True,real=True)
-    for k in diff1.keys():
-           q.put( k )
-    pool = mp.Pool(nproc, secondworker,(q,psidiff,diff1,theta))
-
-    q.close()
-    pool.close()
-    pool.join()
-    print( "II. pool closed" )
-    sys.stdout.flush()
-
-    print( "II. getDiff returns")
-    sys.stdout.flush()
-    return psidiff
 
 def gamma(m,s):
     if (m+s)%2 == 0:
@@ -143,7 +165,7 @@ def innersum(diffdict,m,s):
 def thirdworker(q,ampdict,indict, var=[] ):
     print ( os.getpid(),"working" )
     cont = True
-    sq = indict[2,0]+indict[0,2]
+    # sq = indict[2,0]+indict[0,2]
     while cont:
       try:
         m,s = q.get(False)   # does not block
@@ -152,7 +174,7 @@ def thirdworker(q,ampdict,indict, var=[] ):
             a = 0
             b = 0
         else:
-            c *= sq**((m+1-s)/2)
+            # c *= sq**((m+1-s)/2)
             # h1 = indict[(s-2*k,2*k)]
             # h2 = indict[(s-2*k-1,2*k+1)]
             (h1,h2) = innersum(indict,m,s)
@@ -176,25 +198,6 @@ def thirdworker(q,ampdict,indict, var=[] ):
 
     print ( "III.", os.getpid(),"returning" )
 
-def getAmplitudes(n,nproc,diff2,var=[]):
-    q = mp.Queue()         # Input queue
-    mgr = mp.Manager()      
-    rdict = mgr.dict()     # Output data structure
-
-    for m in range(n):
-       for s in range((m+1)%2,m+2,2):
-           q.put((m,s))
-    pool = mp.Pool(nproc, thirdworker,(q,rdict,diff2,var))
-
-    q.close()
-    pool.close()
-    pool.join()
-    print( "III pool closed" )
-    sys.stdout.flush()
-
-    print( "III getAmplitudes returns" )
-    sys.stdout.flush()
-    return rdict
 
 
 def main():
@@ -221,12 +224,13 @@ def main():
     else:
         fn = args.output
 
+    mgr = RouletteManager()
     start = time.time()
-    diff1,x,y = getDict(n,nproc)
+    diff1,x,y = mgr.getDict(n,nproc)
     print( "Time spent:", time.time() - start)
-    diff2 = getDiff(n,nproc,diff1)
+    diff2 = mgr.getDiff(n,nproc)
     print( "Time spent:", time.time() - start)
-    alphabeta = getAmplitudes(n,nproc,diff2,var=[x,y] )
+    alphabeta = mgr.getAmplitudes(n,nproc,var=[x,y] )
     print( "Time spent:", time.time() - start)
 
     with open(fn, 'w') as f:
