@@ -17,16 +17,16 @@ import queue
 
 import sympy
 from libamplitudes import *
-from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh, binomial
+from sympy import symbols, diff, sin, cos, asin, atan2, asinh, binomial
 
 def firstworker(q,resDict,maxm=6):
     print ( os.getpid(),"working" )
     while True:
-        i,j,f,x,y = q.get(True)   # Blocks until there is a job on the queue
+        i,j,psi,x,y = q.get(True)   # Blocks until there is a job on the queue
         if i == 0:
-           res = sympy.simplify( diff( f, y ) )
+           res = sympy.simplify( diff( psi, y ) )
         else:
-           res = sympy.simplify( diff( f, x ) )
+           res = sympy.simplify( diff( psi, x ) )
         if i+j < maxm:     # Submit jobs for next round
             q.put( (i+1, j, res, x, y) ) 
             if i==0:
@@ -110,7 +110,7 @@ class RouletteManager():
 def secondworker(q,psidiff,diff1,vars ):
     print ( os.getpid(),"working" )
     cont = True
-    theta = symbols("p",positive=True,real=True)
+    theta = symbols("p",real=True)
     x,y = vars
     while cont:
       try:
