@@ -461,3 +461,5 @@ t.sh
 tmp
 log
 pythonenv
+
+*.raw

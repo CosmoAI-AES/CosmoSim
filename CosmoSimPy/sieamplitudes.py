@@ -57,7 +57,7 @@ class RouletteManager():
     
         # Submit first round of jobs
         q.put( (2,0,a,x,y) )
-        q.put( (1,1,a,x,y) )
+        q.put( (1,1,b,x,y) )
         q.put( (0,2,b,x,y) )
 
         # Create a pool of workers to process the input queue.

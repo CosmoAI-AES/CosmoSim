@@ -86,7 +86,7 @@ def getFileName(maxm):
     for m in maxmlist:
         m0 = m
         if maxm <= m:
-            return( os.path.join( dir, f"{m}.txt" ) )
+            return( os.path.join( dir, f"sis{m}.txt" ) )
     raise Exception( f"Cannot support m > {m0}." )
 def getSourceFileName():
     """
