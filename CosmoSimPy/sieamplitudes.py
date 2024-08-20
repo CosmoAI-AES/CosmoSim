@@ -27,7 +27,7 @@ def firstworker(q,resDict,maxm=6):
            res = sympy.simplify( diff( f, y ) )
         else:
            res = sympy.simplify( diff( f, x ) )
-        if i+j < maxm:     # Submit jobs for next round
+        if i+j <= maxm:     # Submit jobs for next round
             q.put( (i+1, j, res, x, y) ) 
             if i==0:
                q.put( (0, j+1, res, x, y) ) 
@@ -92,7 +92,7 @@ class RouletteManager():
         q = mp.Queue()         # Input queue
         rdict = self.mgr.dict()     # Output data structure
 
-        for m in range(n):
+        for m in range(n+1):
            for s in range((m+1)%2,m+2,2):
                q.put((m,s))
         pool = mp.Pool(nproc, thirdworker,(q,rdict,self.psidiff,var))
@@ -175,6 +175,8 @@ def thirdworker(q,ampdict,indict, var=[] ):
                   + sfunc(m,k+1,s)*indict[(m-k,k+1)] )
                   for k in range(m+1) ] ),
                   var )
+        if s == 0:
+               a /= 2
         print( "III.", os.getpid(), m, s )
         ampdict[(m,s)] = (a,b)
       except queue.Empty:
