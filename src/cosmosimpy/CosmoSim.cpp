@@ -156,16 +156,6 @@ void CosmoSim::initLens() {
    if ( sim ) delete sim ;
    psilens = NULL ;
    switch ( lensmode ) {
-          /*
-       case CSIM_PSI_OurSIE:
-          std::cout << "[initLens] OurSIE\n" ;
-          lens = psilens = new OurSIE() ;
-          break ;
-       case CSIM_PSI_KormannSIE:
-          std::cout << "[initLens] KormannSIE\n" ;
-          lens = psilens = new KormannSIE() ;
-          break ;
-          */
        case CSIM_PSI_SIE:
           lens = psilens = new SIE() ;
           lens->setFile(filename[CSIM_PSI_SIE]) ;
