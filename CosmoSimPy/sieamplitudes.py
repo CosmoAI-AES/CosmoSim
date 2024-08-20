@@ -160,7 +160,6 @@ def innersum(diffdict,m,s):
 def thirdworker(q,ampdict,indict, var=[] ):
     print ( os.getpid(),"working" )
     cont = True
-    # sq = indict[2,0]+indict[0,2]
     while cont:
       try:
         m,s = q.get(False)   # does not block
@@ -169,9 +168,6 @@ def thirdworker(q,ampdict,indict, var=[] ):
             a = 0
             b = 0
         else:
-            # c *= sq**((m+1-s)/2)
-            # h1 = indict[(s-2*k,2*k)]
-            # h2 = indict[(s-2*k-1,2*k+1)]
             (h1,h2) = innersum(indict,m,s)
             a = c*sympy.collect( sum( [
                   (-1)**k
