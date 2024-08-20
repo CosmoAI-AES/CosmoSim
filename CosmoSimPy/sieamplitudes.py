@@ -124,6 +124,20 @@ def gamma(m,s):
         r /= 2**m
         r *= binomial( m+1, (m+1-s)/2 )
         return r
+def innersum(diffdict,m,s):
+    c =  m+1-s
+    if c%2 == 1:
+        raise RuntimeError( "m-s is even" )
+    H = int(c/2)
+    a = lambda k : sum( [
+          diffdict[m+1-2*k-2*i,2*k+2*i]
+          for i in range(H+1)
+        ] )
+    b = lambda k : sum( [
+          diffdict[m-2*k-2*i,2*k+2*i+1]
+          for i in range(H+1)
+        ] )
+    return (a,b)
 def thirdworker(q,ampdict,indict, var=[] ):
     print ( os.getpid(),"working" )
     cont = True
@@ -137,16 +151,19 @@ def thirdworker(q,ampdict,indict, var=[] ):
             b = 0
         else:
             c *= sq**((m+1-s)/2)
+            # h1 = indict[(s-2*k,2*k)]
+            # h2 = indict[(s-2*k-1,2*k+1)]
+            (h1,h2) = innersum(indict,m,s)
             a = c*sympy.collect( sum( [
                   (-1)**k
                   * binomial( s, 2*k )
-                  * indict[(s-2*k,2*k)]
+                  * h1(k)
                   for k in range(int(s/2+1)) ] ),
                   var )
             b = c*sympy.collect( sum( [
                   (-1)**k
                   * binomial( s, 2*k+1 )
-                  * indict[(s-2*k-1,2*k+1)]
+                  * h2(k)
                   for k in range(int((s-1)/2+1)) ] ),
                   var )
         print( "III.", os.getpid(), m, s )
