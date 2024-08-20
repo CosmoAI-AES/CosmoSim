@@ -92,6 +92,8 @@ void Lens::initAlphasBetas() {
     std::ifstream input;
     std::cout << "Amplitudes file " << filename << "\n" ;
 
+    if ( filename.compare("nosuchfile") == 0 )  return ;
+
     input.open(filename);
 
     if (!input.is_open()) {
