@@ -1,4 +1,4 @@
-all: 100.txt 200.txt 50.txt sie05.txt
+all: sis100.txt sis200.txt sis50.txt sie05.txt
 
 
 %.txt: %.raw
