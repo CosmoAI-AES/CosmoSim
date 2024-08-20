@@ -130,10 +130,12 @@ def innersum(diffdict,m,s):
         raise RuntimeError( "m-s is even" )
     H = int(c/2)
     a = lambda k : sum( [
+          binomial(H,i) *
           diffdict[m+1-2*k-2*i,2*k+2*i]
           for i in range(H+1)
         ] )
     b = lambda k : sum( [
+          binomial(H,i) *
           diffdict[m-2*k-2*i,2*k+2*i+1]
           for i in range(H+1)
         ] )
