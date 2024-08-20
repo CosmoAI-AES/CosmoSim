@@ -51,6 +51,7 @@ class RouletteManager():
 
         # Get and store the initial case m+s=1
         (psi,a,b,x,y) = psiSIE()
+        self.vars = x,y
         resDict[(0,0)] = psi
         resDict[(1,0)] = a
         resDict[(0,1)] = b
@@ -77,7 +78,7 @@ class RouletteManager():
 
         for k in self.diff1.keys():
            q.put( k )
-        pool = mp.Pool(nproc, secondworker,(q,psidiff,self.diff1))
+        pool = mp.Pool(nproc, secondworker,(q,psidiff,self.diff1,self.vars))
 
         q.close()
         pool.close()
@@ -106,10 +107,11 @@ class RouletteManager():
         self.rdict = rdict
         return rdict
 
-def secondworker(q,psidiff,diff1 ):
+def secondworker(q,psidiff,diff1,vars ):
     print ( os.getpid(),"working" )
     cont = True
     theta = symbols("p",positive=True,real=True)
+    x,y = vars
     while cont:
       try:
         m,n = q.get(False)   # does not block
@@ -121,6 +123,8 @@ def secondworker(q,psidiff,diff1 ):
                   (-1)**i
                   * diff1[(m+n-i-j,j+i)]
                   for i in range(m+1) for j in range(n+1) ] ) 
+        res = res.subs([ ( x, cos(theta)*x+sin(theta)*y ),
+                   ( y, -sin(theta)*x+cos(theta)*y ) ] )
         print( "II.", os.getpid(), m, n )
         psidiff[(m,n)] = res
       except queue.Empty:
