@@ -165,18 +165,18 @@ def thirdworker(q,ampdict,indict, var=[] ):
         m,s = q.get(False)   # does not block
         a = - sympy.collect( sum( [
                   binomial( m, k ) *
-                  ( cfunc(m,k,s)*diff1[(m-k+1,k)
-                  + cfunc(m,k+1,s)*diff1[(m-k,k+1) )
+                  ( cfunc(m,k,s)*indict[(m-k+1,k)]
+                  + cfunc(m,k+1,s)*indict[(m-k,k+1)] )
                   for k in range(m+1) ] ),
                   var )
         b = - sympy.collect( sum( [
                   binomial( m, k ) *
-                  ( sfunc(m,k,s)*diff1[(m-k+1,k)
-                  + sfunc(m,k+1,s)*diff1[(m-k,k+1) )
+                  ( sfunc(m,k,s)*indict[(m-k+1,k)]
+                  + sfunc(m,k+1,s)*indict[(m-k,k+1)] )
                   for k in range(m+1) ] ),
                   var )
-        print( "III.", os.getpid(), m, n )
-        ampdict[(m,n)] = (a,b)
+        print( "III.", os.getpid(), m, s )
+        ampdict[(m,s)] = (a,b)
       except queue.Empty:
         print ( "III.", os.getpid(), "completes" )
         cont = False
