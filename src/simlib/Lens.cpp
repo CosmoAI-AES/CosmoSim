@@ -133,6 +133,8 @@ void Lens::calculateAlphaBeta( cv::Point2d xi ) {
               << "[Lens.calculateAlphaBeta()] " << nterms << "; " 
               << einsteinR << " - " << xi << "\n"  ;
 
+    std::cout << "[Lens.calculateAlphasBeta] f=" << ellipseratio << "; orientation=" << orientation << "\n" ;
+
     // calculate all amplitudes for given xi, einsteinR
     for (int m = 1; m <= nterms; m++){
         for (int s = (m+1)%2; s <= (m+1); s+=2){
