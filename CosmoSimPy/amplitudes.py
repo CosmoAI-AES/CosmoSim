@@ -76,7 +76,7 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
 
             if m == 0:
                 # This is the base case (m,s)=(0,1) of the outer recursion
-                alpha, beta, x, y = zeroth(lens)
+                psi, alpha, beta, x, y = zeroth(lens)
             else:
                 # This is the base case (m+1,s+1) of the inner recursion
                 c = (m + 1.0) / (m + s + 1.0) 
@@ -122,7 +122,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.diff:
-        dx,dy,x,y = zeroth(args.lens)
+        psi, dx,dy,x,y = zeroth(args.lens)
         print( "dx", dx )
         print( "dy", dy )
     else:

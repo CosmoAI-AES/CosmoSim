@@ -1,8 +1,10 @@
 all: sis100.txt sis50.txt sie05.txt
 
+sis100.txt sis50.txt sie05.txt:
 
 %.txt: %.raw
 	sort $< > $@
+
 sis%.raw:  ../amplitudes.py
 	time python3 $< --output $@ $* 8
 

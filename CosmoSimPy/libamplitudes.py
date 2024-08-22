@@ -48,7 +48,7 @@ def psiSIS():
     psi = g * sqrt(x ** 2 + y ** 2)
     alpha = sympy.factor(diff(psi, x))
     beta = sympy.factor(diff(psi, y))
-    return (alpha,beta,x,y)
+    return (psi,alpha,beta,x,y)
 def psiSIE():
     # g is the Einstein radius and (x,y) coordinates in the lens plane
     x, y = symbols('x, y', real=True)
@@ -62,12 +62,12 @@ def psiSIE():
     return (psi,alpha,beta,x,y)
 
 
+def cfunc(m,k,s):
+    p = symbols("phi", real=True)
+    f = sin(p)**k*cos(p)**(m-k+1)*cos(s*p)
+    return sympy.integrate(f,(p,-pi,+pi))/pi
 def sfunc(m,k,s):
     p = symbols("phi", real=True)
     f = sin(p)**k*cos(p)**(m-k+1)*sin(s*p)
     return sympy.integrate(f,(p,-pi,+pi))/pi
 
-def cfunc(m,k,s):
-    p = symbols("phi", real=True)
-    f = sin(p)**k*cos(p)**(m-k+1)*cos(s*p)
-    return sympy.integrate(f,(p,-pi,+pi))/pi
