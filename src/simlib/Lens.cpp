@@ -140,6 +140,10 @@ void Lens::calculateAlphaBeta( cv::Point2d xi ) {
         for (int s = (m+1)%2; s <= (m+1); s+=2){
             alphas_val[m][s] = getAlpha( xi, m, s ) ;
             betas_val[m][s] = getBeta( xi, m, s ) ;
+            if (DEBUG) std::cout 
+              << "Lens (" << m << ", " << s << ") " 
+              << alphas_val[m][s]  << "/"
+              << betas_val[m][s] << "\n"  ;
         }
     }
 }

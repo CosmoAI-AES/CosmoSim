@@ -42,6 +42,7 @@ def listener(fn,q):
     if hit_except: print( "Failed to open file ", fn )
 
 def psiSIS():
+    print( "psiSIS()" )
     # g is the Einstein radius and (x,y) coordinates in the lens plane
     x, y = symbols('x, y', real=True)
     g = symbols("g", positive=True, real=True)
@@ -50,6 +51,7 @@ def psiSIS():
     beta = sympy.factor(diff(psi, y))
     return (psi,alpha,beta,x,y)
 def psiSIE():
+    print( "psiSIE()" )
     # g is the Einstein radius and (x,y) coordinates in the lens plane
     x, y = symbols('x, y', real=True)
     g = symbols("g", positive=True, real=True)

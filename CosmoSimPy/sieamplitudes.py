@@ -194,7 +194,7 @@ def main():
     parser.add_argument('--output', help='Output filename')
     parser.add_argument('--diff', default=False,action="store_true",
                     help='Simply differentiate psi')
-    parser.add_argument('--lens', default="SIS",
+    parser.add_argument('--lens', default="SIE",
                     help='Lens model')
     args = parser.parse_args()
 
@@ -223,6 +223,8 @@ def main():
             alpha,beta = alphabeta[(m,s)]
             res = f'{m}:{s}:{alpha}:{beta}'
             print ( f'{m}:{s}' )
+            print ( f"$${sympy.latex( alpha )}$$" )
+            print ( f"$${sympy.latex( beta )}$$" )
             f.write(str(res) + '\n')
         f.close()
 
