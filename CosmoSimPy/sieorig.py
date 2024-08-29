@@ -41,12 +41,8 @@ def firstworker(q,resDict,maxm=6):
     print ( "I.", os.getpid(),"returning" )
 
 class RouletteManager():
-    def __init__(self,psivec=None):
-       self.mgr = mp.Manager()      
-       if psivec === None:
-           self.psivec = psiSIE()
-       else:
-           self.psivec = psivec
+    def __init__(self):
+        self.mgr = mp.Manager()      
 
     def getDict(self,n=50,nproc=None):
 
@@ -54,7 +50,7 @@ class RouletteManager():
         resDict = self.mgr.dict()     # Output data structure
 
         # Get and store the initial case m+s=1
-        (psi,a,b,x,y) = self.psivec
+        (psi,a,b,x,y) = psiSIE()
         self.vars = x,y
         resDict[(0,0)] = psi
         resDict[(1,0)] = a
@@ -142,27 +138,57 @@ def secondworker(q,psidiff,diff1,vars ):
     print ( "II.", os.getpid(),"returning" )
 
 
-
+def gamma(m,s):
+    if (m+s)%2 == 0:
+        return 0
+    else:
+        if s == 0:
+            r = -1/2
+        else:
+            r = -1
+        r /= 2**m
+        r *= binomial( m+1, (m+1-s)/2 )
+        return r
+def innersum(diffdict,m,s):
+    c =  m+1-s
+    if c%2 == 1:
+        raise RuntimeError( "m-s is even" )
+    H = int(c/2)
+    a = lambda k : sum( [
+          binomial(H,i) *
+          diffdict[m+1-2*k-2*i,2*k+2*i]
+          for i in range(H+1)
+        ] )
+    b = lambda k : sum( [
+          binomial(H,i) *
+          diffdict[m-2*k-2*i,2*k+2*i+1]
+          for i in range(H+1)
+        ] )
+    return (a,b)
 def thirdworker(q,ampdict,indict, var=[] ):
     print ( os.getpid(),"working" )
     cont = True
     while cont:
       try:
         m,s = q.get(False)   # does not block
-        a = - sympy.collect( sum( [
-                  binomial( m, k ) *
-                  ( cfunc(m,k,s)*indict[(m-k+1,k)]
-                  + cfunc(m,k+1,s)*indict[(m-k,k+1)] )
-                  for k in range(m+1) ] ),
+        c = gamma(m,s)
+        if c == 0:
+            a = 0
+            b = 0
+        else:
+            (h1,h2) = innersum(indict,m,s)
+            a = c*sympy.collect( sum( [
+                  (-1)**k
+                  * binomial( s, 2*k )
+                  * h1(k)
+                  for k in range(int(s/2+1)) ] ),
                   var )
-        b = - sympy.collect( sum( [
-                  binomial( m, k ) *
-                  ( sfunc(m,k,s)*indict[(m-k+1,k)]
-                  + sfunc(m,k+1,s)*indict[(m-k,k+1)] )
-                  for k in range(m+1) ] ),
+            b = c*sympy.collect( sum( [
+                  (-1)**k
+                  * binomial( s, 2*k+1 )
+                  * h2(k)
+                  for k in range(int((s-1)/2+1)) ] ),
                   var )
-        if s == 0:
-               a /= 2
         print( "III.", os.getpid(), m, s )
         ampdict[(m,s)] = (a,b)
       except queue.Empty:
@@ -182,8 +208,6 @@ def main():
     parser.add_argument('--output', help='Output filename')
     parser.add_argument('--diff', default=False,action="store_true",
                     help='Simply differentiate psi')
-    parser.add_argument('--lens', default="SIS",
-                    help='Lens model')
     args = parser.parse_args()
 
     n = args.n
@@ -192,8 +216,6 @@ def main():
     else:
         nproc = args.nproc
     print( f"Using {nproc} CPUs" )
-
-    psivec = zeroth( args.lens )
     
     # The filename is generated from the number of amplitudes
     if args.output is None:
@@ -201,7 +223,7 @@ def main():
     else:
         fn = args.output
 
-    mgr = RouletteManager( psivec=psivec )
+    mgr = RouletteManager()
     start = time.time()
     diff1,x,y = mgr.getDict(n,nproc)
     print( "Time spent:", time.time() - start)

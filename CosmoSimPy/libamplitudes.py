@@ -71,3 +71,9 @@ def sfunc(m,k,s):
     f = sin(p)**k*cos(p)**(m-k+1)*sin(s*p)
     return sympy.integrate(f,(p,-pi,+pi))/pi
 
+def zeroth(lens="SIS"):
+    if lens == "SIS":
+        return psiSIS()
+    if lens == "SIE":
+        return psiSIE()
+    raise "Unknown lens model"

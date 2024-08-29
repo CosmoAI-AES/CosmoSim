@@ -40,12 +40,6 @@ def func(n, m, s, alpha, beta, x, y, q):
         # print ( "Inner", res )
         q.put(res)
 
-def zeroth(lens="SIS"):
-    if lens == "SIS":
-        return psiSIS()
-    if lens == "SIE":
-        return psiSIE()
-    raise "Unknown lens model"
 
 def main(lens="SIS",n=50,nproc=None,fn=None):
 
