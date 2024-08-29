@@ -43,7 +43,7 @@ def firstworker(q,resDict,maxm=6):
 class RouletteManager():
     def __init__(self,psivec=None):
        self.mgr = mp.Manager()      
-       if psivec === None:
+       if psivec == None:
            self.psivec = psiSIE()
        else:
            self.psivec = psivec
@@ -94,6 +94,15 @@ class RouletteManager():
         sys.stdout.flush()
         return psidiff
     def getAmplitudes(self,n,nproc):
+
+
+        start = time.time()
+        self.getDict(n,nproc)
+        print( "Time spent:", time.time() - start)
+
+        self.getDiff(n,nproc)
+        print( "Time spent:", time.time() - start)
+
         q = mp.Queue()         # Input queue
         rdict = self.mgr.dict()     # Output data structure
         rdict[(0,1)] = (-self.psidiff[1,0],
@@ -111,6 +120,7 @@ class RouletteManager():
         print( "III getAmplitudes returns" )
         sys.stdout.flush()
         self.rdict = rdict
+        print( "Time spent:", time.time() - start)
         return rdict
 
 def secondworker(q,psidiff,diff1,vars ):
@@ -131,7 +141,7 @@ def secondworker(q,psidiff,diff1,vars ):
                   for i in range(m+1) for j in range(n+1) ] ) 
         res = res.subs([ ( x, cos(theta)*x+sin(theta)*y ),
                    ( y, -sin(theta)*x+cos(theta)*y ) ] )
-        res = sympy.expand( res )  # This is too slow
+        # res = sympy.expand( res )  # This is too slow
         # res = sympy.simplify( res )  # This is too slow
         print( "II.", os.getpid(), m, n )
         psidiff[(m,n)] = res
@@ -202,13 +212,7 @@ def main():
         fn = args.output
 
     mgr = RouletteManager( psivec=psivec )
-    start = time.time()
-    diff1,x,y = mgr.getDict(n,nproc)
-    print( "Time spent:", time.time() - start)
-    diff2 = mgr.getDiff(n,nproc)
-    print( "Time spent:", time.time() - start)
-    alphabeta = mgr.getAmplitudes(n,nproc,var=[x,y] )
-    print( "Time spent:", time.time() - start)
+    alphabeta = mgr.getAmplitudes(n,nproc )
 
     with open(fn, 'w') as f:
         print( "Opened file", fn ) 
@@ -216,10 +220,9 @@ def main():
 
             alpha,beta = alphabeta[(m,s)]
             res = f'{m}:{s}:{alpha}:{beta}'
+            print ( f'{m}:{s}' )
             f.write(str(res) + '\n')
         f.close()
-
-    print( "Time spent:", time.time() - start)
 
 if __name__ == "__main__":
     main()
