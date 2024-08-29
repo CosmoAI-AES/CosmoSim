@@ -27,12 +27,12 @@ def firstworker(q,resDict,maxm=6):
            res = sympy.simplify( diff( psi, y ) )
         else:
            res = sympy.simplify( diff( psi, x ) )
+        resDict[(i,j)] = res
         if i+j <= maxm:     # Submit jobs for next round
             q.put( (i+1, j, res, x, y) ) 
             if i==0:
                q.put( (0, j+1, res, x, y) ) 
         print( "I.", os.getpid(), i, j )
-        resDict[(i,j)] = res
         q.task_done()     # Tell the queue that the job is complete
 
         # Note that new jobs are submitted to the queue before 
@@ -61,9 +61,11 @@ class RouletteManager():
         resDict[(0,1)] = b
     
         # Submit first round of jobs
-        q.put( (2,0,a,x,y) )
-        q.put( (1,1,b,x,y) )
-        q.put( (0,2,b,x,y) )
+        q.put( (1,0,psi,x,y) )
+        q.put( (0,1,psi,x,y) )
+        # q.put( (2,0,resDict[(1,0)],x,y) )
+        # q.put( (1,1,resDict[(0,1)],x,y) )
+        # q.put( (0,2,resDict[(0,1)],x,y) )
 
         # Create a pool of workers to process the input queue.
         with mp.Pool(nproc, firstworker,(q,resDict,n,)) as pool: 
@@ -128,6 +130,7 @@ def secondworker(q,psidiff,diff1,vars ):
     cont = True
     theta = symbols("p",real=True)
     x,y = vars
+    x1,y1 = symbols("x1 y1",real=True)
     while cont:
       try:
         m,n = q.get(False)   # does not block
@@ -139,8 +142,9 @@ def secondworker(q,psidiff,diff1,vars ):
                   (-1)**i
                   * diff1[(m+n-i-j,j+i)]
                   for i in range(m+1) for j in range(n+1) ] ) 
-        res = res.subs([ ( x, cos(theta)*x+sin(theta)*y ),
-                   ( y, -sin(theta)*x+cos(theta)*y ) ] )
+        res = res.subs([ ( x, x1 ), ( y, y1 ) ])
+        res = res.subs([ ( x1, cos(theta)*x+sin(theta)*y ),
+                   ( y1, -sin(theta)*x+cos(theta)*y ) ] )
         # res = sympy.expand( res )  # This is too slow
         # res = sympy.simplify( res )  # This is too slow
         print( "II.", os.getpid(), m, n )
@@ -180,8 +184,6 @@ def thirdworker(q,ampdict,indict, var=[] ):
         cont = False
 
     print ( "III.", os.getpid(),"returning" )
-
-
 
 def main():
     parser = argparse.ArgumentParser(description='Generate roulette amplitude formulæ for CosmoSim.')

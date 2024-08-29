@@ -57,8 +57,9 @@ def psiSIE():
     r = sqrt(x ** 2 + y ** 2)
     alpha = g * sqrt( f/(1-f*f) ) * asinh( ( sqrt( 1-f*f ) / f ) * x/r )
     beta = g * sqrt( f/(1-f*f) ) * asin( sqrt( 1-f*f )* y/r )
-    psi = g * sqrt( f/(1-f*f) ) * ( y * asin( sqrt( 1-f*f )* y/r )
-                                  + x * asinh( ( sqrt( 1-f*f )/f) * x/r ) )
+    psi = g * sqrt( f/(1-f*f) ) * (
+                y * asin( sqrt( 1-f*f )* y/r )
+                + x * asinh( ( sqrt( 1-f*f )/f) * x/r ) )
     return (psi,alpha,beta,x,y)
 
 
