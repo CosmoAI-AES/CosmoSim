@@ -107,10 +107,12 @@ class CosmoSim(cs.CosmoSim):
         super().__init__(*a,**kw)
         if fn == None:
             super().setFile( PsiSpec.SIS, getFileName( maxm ) )
+            super().setFile( PsiSpec.SIE, os.path.join( dir, "sie05.txt" ) )
         else:
-            super().setFile( fn )
+            print( "Amplitudes file:", fn )
+            super().setFile( PsiSpec.SIS, fn )
+            super().setFile( PsiSpec.SIE, fn )
         dir = os.path.dirname(os.path.abspath(__file__))
-        super().setFile( PsiSpec.SIE, os.path.join( dir, "sie05.txt" ) )
         super().setSourceFile( getSourceFileName( ) )
         self._continue = True
         self.updateEvent = th.Event()

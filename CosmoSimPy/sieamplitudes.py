@@ -117,8 +117,6 @@ class RouletteManager():
         (psi,a,b,x,y) = self.psivec
         self.vars = x,y
         resDict[(0,0)] = psi
-        resDict[(1,0)] = a
-        resDict[(0,1)] = b
     
         # Submit first round of jobs
         q.put( (1,0,psi,x,y) )
