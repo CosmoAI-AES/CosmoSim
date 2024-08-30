@@ -15,3 +15,7 @@ siesis%.raw: ../sieamplitudes.py
 	time python3 $< --lens SIS --output $@ $* 8
 sieorig%.raw: ../sieorig.py 
 	time python3 $< --lens SIS --output $@ $* 8
+
+
+sierecursive%.raw:  ../amplitudes.py
+	time python3 $< --lens SIE --output $@ $* 8

@@ -121,9 +121,6 @@ class RouletteManager():
         # Submit first round of jobs
         q.put( (1,0,psi,x,y) )
         q.put( (0,1,psi,x,y) )
-        # q.put( (2,0,resDict[(1,0)],x,y) )
-        # q.put( (1,1,resDict[(0,1)],x,y) )
-        # q.put( (0,2,resDict[(0,1)],x,y) )
 
         # Create a pool of workers to process the input queue.
         with mp.Pool(nproc, firstworker,(q,resDict,n,)) as pool: 
