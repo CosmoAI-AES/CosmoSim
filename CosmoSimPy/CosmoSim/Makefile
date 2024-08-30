@@ -21,3 +21,6 @@ sieorig%.raw: ../sieorig.py
 
 sierecursive%.raw:  ../amplitudes.py
 	time python3 $< --lens SIE --output $@ $* 8
+
+%.pdf: %.tex
+	pdflatex $<
