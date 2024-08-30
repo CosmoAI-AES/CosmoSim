@@ -10,3 +10,6 @@ sis%.raw:  ../amplitudes.py
 
 sie05.raw: ../sieamplitudes.py 
 	time python3 $< --output $@ 5 7
+
+siesis%.raw: ../sieamplitudes.py 
+	time python3 $< --lens SIS --output $@ $* 8

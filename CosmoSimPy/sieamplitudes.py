@@ -97,7 +97,6 @@ class RouletteManager():
         return psidiff
     def getAmplitudes(self,n,nproc):
 
-
         start = time.time()
         self.getDict(n,nproc)
         print( "Time spent:", time.time() - start)
