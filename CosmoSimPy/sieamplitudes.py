@@ -39,14 +39,74 @@ def firstworker(q,resDict,maxm=6):
         # `q.task_done()` is called.  Hence the queue will not be
         # empty if the current job should spawn new ones. 
     print ( "I.", os.getpid(),"returning" )
+def secondworker(q,psidiff,diff1,vars ):
+    print ( os.getpid(),"working" )
+    cont = True
+    theta = symbols("p",real=True)
+    x,y = vars
+    x1,y1 = symbols("x1 y1",real=True)
+    while cont:
+      try:
+        m,n = q.get(False)   # does not block
+        res = sum( [
+                  binomial( m, i )*
+                  binomial( n, j )*
+                  cos(theta)**(m-i+j)*
+                  sin(theta)**(n-j+i)*
+                  (-1)**i
+                  * diff1[(m+n-i-j,j+i)]
+                  for i in range(m+1) for j in range(n+1) ] ) 
+        res = res.subs([ ( x, x1 ), ( y, y1 ) ])
+        res = res.subs([ ( x1, cos(theta)*x+sin(theta)*y ),
+                   ( y1, -sin(theta)*x+cos(theta)*y ) ] )
+        # res = sympy.expand( res )  # This is too slow
+        # res = sympy.simplify( res )  # This is too slow
+        print( "II.", os.getpid(), m, n )
+        psidiff[(m,n)] = res
+      except queue.Empty:
+        print ( "II.", os.getpid(), "completes" )
+        cont = False
+
+    print ( "II.", os.getpid(),"returning" )
+
+
+
+def thirdworker(q,ampdict,indict, var=[] ):
+    print ( os.getpid(),"working" )
+    cont = True
+    while cont:
+      try:
+        m,s = q.get(False)   # does not block
+        a = - sympy.collect( sum( [
+                  binomial( m, k ) *
+                  ( cfunc(m,k,s)*indict[(m-k+1,k)]
+                  + cfunc(m,k+1,s)*indict[(m-k,k+1)] )
+                  for k in range(m+1) ] ),
+                  var )
+        b = - sympy.collect( sum( [
+                  binomial( m, k ) *
+                  ( sfunc(m,k,s)*indict[(m-k+1,k)]
+                  + sfunc(m,k+1,s)*indict[(m-k,k+1)] )
+                  for k in range(m+1) ] ),
+                  var )
+        if s == 0:
+               a /= 2
+        print( "III.", os.getpid(), m, s )
+        ampdict[(m,s)] = (a,b)
+      except queue.Empty:
+        print ( "III.", os.getpid(), "completes" )
+        cont = False
+
+    print ( "III.", os.getpid(),"returning" )
 
 class RouletteManager():
-    def __init__(self,psivec=None):
+    def __init__(self,psivec=None,thirdworker=thirdworker):
        self.mgr = mp.Manager()      
        if psivec == None:
            self.psivec = psiSIE()
        else:
            self.psivec = psivec
+       self.thirdworker = thirdworker
 
     def getDict(self,n=50,nproc=None):
 
@@ -112,7 +172,7 @@ class RouletteManager():
         for m in range(1,n+1):
            for s in range((m+1)%2,m+2,2):
                q.put((m,s))
-        pool = mp.Pool(nproc, thirdworker,(q,rdict,self.psidiff,self.vars))
+        pool = mp.Pool(nproc, self.thirdworker,(q,rdict,self.psidiff,self.vars))
 
         q.close()
         pool.close()
@@ -124,67 +184,8 @@ class RouletteManager():
         print( "Time spent:", time.time() - start)
         return rdict
 
-def secondworker(q,psidiff,diff1,vars ):
-    print ( os.getpid(),"working" )
-    cont = True
-    theta = symbols("p",real=True)
-    x,y = vars
-    x1,y1 = symbols("x1 y1",real=True)
-    while cont:
-      try:
-        m,n = q.get(False)   # does not block
-        res = sum( [
-                  binomial( m, i )*
-                  binomial( n, j )*
-                  cos(theta)**(m-i+j)*
-                  sin(theta)**(n-j+i)*
-                  (-1)**i
-                  * diff1[(m+n-i-j,j+i)]
-                  for i in range(m+1) for j in range(n+1) ] ) 
-        res = res.subs([ ( x, x1 ), ( y, y1 ) ])
-        res = res.subs([ ( x1, cos(theta)*x+sin(theta)*y ),
-                   ( y1, -sin(theta)*x+cos(theta)*y ) ] )
-        # res = sympy.expand( res )  # This is too slow
-        # res = sympy.simplify( res )  # This is too slow
-        print( "II.", os.getpid(), m, n )
-        psidiff[(m,n)] = res
-      except queue.Empty:
-        print ( "II.", os.getpid(), "completes" )
-        cont = False
 
-    print ( "II.", os.getpid(),"returning" )
-
-
-
-def thirdworker(q,ampdict,indict, var=[] ):
-    print ( os.getpid(),"working" )
-    cont = True
-    while cont:
-      try:
-        m,s = q.get(False)   # does not block
-        a = - sympy.collect( sum( [
-                  binomial( m, k ) *
-                  ( cfunc(m,k,s)*indict[(m-k+1,k)]
-                  + cfunc(m,k+1,s)*indict[(m-k,k+1)] )
-                  for k in range(m+1) ] ),
-                  var )
-        b = - sympy.collect( sum( [
-                  binomial( m, k ) *
-                  ( sfunc(m,k,s)*indict[(m-k+1,k)]
-                  + sfunc(m,k+1,s)*indict[(m-k,k+1)] )
-                  for k in range(m+1) ] ),
-                  var )
-        if s == 0:
-               a /= 2
-        print( "III.", os.getpid(), m, s )
-        ampdict[(m,s)] = (a,b)
-      except queue.Empty:
-        print ( "III.", os.getpid(), "completes" )
-        cont = False
-
-    print ( "III.", os.getpid(),"returning" )
-
-def main():
+def main(f=thirdworker):
     parser = argparse.ArgumentParser(description='Generate roulette amplitude formulæ for CosmoSim.')
     parser.add_argument('n', metavar='N', type=int, nargs="?", default=50,
                     help='Max m (number of terms)')
@@ -212,7 +213,7 @@ def main():
     else:
         fn = args.output
 
-    mgr = RouletteManager( psivec=psivec )
+    mgr = RouletteManager( psivec=psivec,thirdworker=f )
     alphabeta = mgr.getAmplitudes(n,nproc )
 
     with open(fn, 'w') as f:
