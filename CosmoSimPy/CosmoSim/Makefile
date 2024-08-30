@@ -8,8 +8,10 @@ sis100.txt sis50.txt sie05.txt:
 sis%.raw:  ../amplitudes.py
 	time python3 $< --output $@ $* 8
 
-sie05.raw: ../sieamplitudes.py 
-	time python3 $< --output $@ 5 7
+sie%.raw: ../sieamplitudes.py 
+	time python3 $< --output $@ $* 7
+sie%.tex: ../sieamplitudes.py 
+	time python3 $< --tex $@ $* 7
 
 siesis%.raw: ../sieamplitudes.py 
 	time python3 $< --lens SIS --output $@ $* 8

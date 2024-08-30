@@ -179,6 +179,25 @@ class RouletteManager():
         print( "Time spent:", time.time() - start)
         return rdict
 
+def ampPrint(alphabeta,fn):
+    with open(fn, 'w') as f:
+        print( "Opened file", fn ) 
+        for (m,s) in alphabeta.keys():
+
+            alpha,beta = alphabeta[(m,s)]
+            res = f'{m}:{s}:{alpha}:{beta}'
+            print ( f'{m}:{s}' )
+            f.write(str(res) + '\n')
+        f.close()
+def texPrint(alphabeta,fn):
+    with open(fn, 'w') as f:
+        print( "Opened TeX file", fn ) 
+        for (m,s) in alphabeta.keys():
+
+            alpha,beta = alphabeta[(m,s)]
+            f.write( f"$$\\alpha_{{s}}^{{m}} = {sympy.latex(alpha)}$$\n" )
+            f.write( f"$$\\beta_{{s}}^{{m}} = {sympy.latex(beta)}$$\n" )
+        f.close()
 
 def main(f=thirdworker):
     parser = argparse.ArgumentParser(description='Generate roulette amplitude formulæ for CosmoSim.')
@@ -191,6 +210,8 @@ def main(f=thirdworker):
                     help='Simply differentiate psi')
     parser.add_argument('--lens', default="SIE",
                     help='Lens model')
+    parser.add_argument('--tex', 
+                    help='TeX output file')
     args = parser.parse_args()
 
     n = args.n
@@ -202,26 +223,13 @@ def main(f=thirdworker):
 
     psivec = zeroth( args.lens )
     
-    # The filename is generated from the number of amplitudes
-    if args.output is None:
-        fn = "sie" + str(n) + '.txt'
-    else:
-        fn = args.output
-
     mgr = RouletteManager( psivec=psivec,thirdworker=f )
     alphabeta = mgr.getAmplitudes(n,nproc )
 
-    with open(fn, 'w') as f:
-        print( "Opened file", fn ) 
-        for (m,s) in alphabeta.keys():
-
-            alpha,beta = alphabeta[(m,s)]
-            res = f'{m}:{s}:{alpha}:{beta}'
-            print ( f'{m}:{s}' )
-            print ( f"$${sympy.latex( alpha )}$$" )
-            print ( f"$${sympy.latex( beta )}$$" )
-            f.write(str(res) + '\n')
-        f.close()
+    if args.output:
+       ampPrint(alphabeta,args.output)
+    if args.tex:
+       texPrint(alphabeta,args.tex)
 
 if __name__ == "__main__":
     main()
