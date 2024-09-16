@@ -8,6 +8,7 @@
 
 #include <thread>
 
+#undef DEBUG
 #define DEBUG 0
 
 SimulatorModel::SimulatorModel() :

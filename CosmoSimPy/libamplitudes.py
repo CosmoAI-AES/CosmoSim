@@ -17,7 +17,7 @@ import time
 import argparse
 
 import sympy
-from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh
+from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh, pi
 
 def identity(f): return f
 
@@ -42,21 +42,66 @@ def listener(fn,q):
     if hit_except: print( "Failed to open file ", fn )
 
 def psiSIS():
+    print( "psiSIS()" )
     # g is the Einstein radius and (x,y) coordinates in the lens plane
     x, y = symbols('x, y', real=True)
     g = symbols("g", positive=True, real=True)
     psi = g * sqrt(x ** 2 + y ** 2)
     alpha = sympy.factor(diff(psi, x))
     beta = sympy.factor(diff(psi, y))
-    return (alpha,beta,x,y)
+    return (psi,alpha,beta,x,y)
 def psiSIE():
+    print( "psiSIE()" )
     # g is the Einstein radius and (x,y) coordinates in the lens plane
     x, y = symbols('x, y', real=True)
     g = symbols("g", positive=True, real=True)
     f = symbols("f", positive=True, real=True)
     r = sqrt(x ** 2 + y ** 2)
-    alpha = g * sqrt( f/(1-f*f) )  * asinh( ( sqrt( 1-f*f )/f) * x/r )
-    beta = g * sqrt( f/(1-f*f) )  * asin( sqrt( 1-f*f )* y/r )
-    psi = g * sqrt( f/(1-f*f) )  * ( y * asin( sqrt( 1-f*f )* y/r )
-                                      + x * asinh( ( sqrt( 1-f*f )/f) * x/r ) )
+    alpha = g * sqrt( f/(1-f*f) ) * asinh( ( sqrt( 1-f*f ) / f ) * x/r )
+    beta = g * sqrt( f/(1-f*f) ) * asin( sqrt( 1-f*f )* y/r )
+    psi = g * sqrt( f/(1-f*f) ) * (
+                y * asin( sqrt( 1-f*f )* y/r )
+                + x * asinh( ( sqrt( 1-f*f )/f) * x/r ) )
     return (psi,alpha,beta,x,y)
+
+
+def cfunc(m,k,s):
+    p = symbols("phi", real=True)
+    f = sin(p)**k*cos(p)**(m-k+1)*cos(s*p)
+    return sympy.integrate(f,(p,-pi,+pi))/pi
+def sfunc(m,k,s):
+    p = symbols("phi", real=True)
+    f = sin(p)**k*cos(p)**(m-k+1)*sin(s*p)
+    return sympy.integrate(f,(p,-pi,+pi))/pi
+
+def zeroth(lens="SIS"):
+    if lens == "SIS":
+        return psiSIS()
+    if lens == "SIE":
+        return psiSIE()
+    raise "Unknown lens model"
+
+def ampPrint(alphabeta,fn):
+    with open(fn, 'w') as f:
+        print( "Opened file", fn ) 
+        for (m,s) in alphabeta.keys():
+
+            alpha,beta = alphabeta[(m,s)]
+            res = f'{m}:{s}:{alpha}:{beta}'
+            print ( f'{m}:{s}' )
+            f.write(str(res) + '\n')
+        f.close()
+
+def texPrint(alphabeta,fn):
+    with open(fn, 'w') as f:
+        print( "Opened TeX file", fn ) 
+        f.write( "\\documentclass[10pt,paper=a0,landscape]{scrartcl}\n" )
+        f.write( "\\usepackage{geometry,amsmath}\n" )
+        f.write( "\\begin{document}\n" )
+        for (m,s) in alphabeta.keys():
+
+            alpha,beta = alphabeta[(m,s)]
+            f.write( f"$$\\alpha_{{{s}}}^{{{m}}} = {sympy.latex(alpha)}$$\n" )
+            f.write( f"$$\\beta_{{{s}}}^{{{m}}} = {sympy.latex(beta)}$$\n" )
+        f.write( "\\end{document}\n" )
+        f.close()

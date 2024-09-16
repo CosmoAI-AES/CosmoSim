@@ -156,25 +156,13 @@ void CosmoSim::initLens() {
    if ( sim ) delete sim ;
    psilens = NULL ;
    switch ( lensmode ) {
-          /*
-       case CSIM_PSI_OurSIE:
-          std::cout << "[initLens] OurSIE\n" ;
-          lens = psilens = new OurSIE() ;
-          break ;
-       case CSIM_PSI_KormannSIE:
-          std::cout << "[initLens] KormannSIE\n" ;
-          lens = psilens = new KormannSIE() ;
-          break ;
-          */
        case CSIM_PSI_SIE:
           lens = psilens = new SIE() ;
           lens->setFile(filename[CSIM_PSI_SIE]) ;
-          lens->initAlphasBetas() ;
           break ;
        case CSIM_PSI_SIS:
           lens = psilens = new SIS() ;
           lens->setFile(filename[CSIM_PSI_SIS]) ;
-          lens->initAlphasBetas() ;
           break ;
        case CSIM_NOPSI_PM:
           lens = psilens = new PointMass() ;
@@ -289,6 +277,7 @@ bool CosmoSim::runSim() {
          lens->setEinsteinR( einsteinR ) ;
          lens->setRatio( ellipseratio ) ;
          lens->setOrientation( orientation ) ;
+         lens->initAlphasBetas() ;
       }
    }
    Py_BEGIN_ALLOW_THREADS

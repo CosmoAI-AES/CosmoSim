@@ -86,7 +86,7 @@ def getFileName(maxm):
     for m in maxmlist:
         m0 = m
         if maxm <= m:
-            return( os.path.join( dir, f"{m}.txt" ) )
+            return( os.path.join( dir, f"sis{m}.txt" ) )
     raise Exception( f"Cannot support m > {m0}." )
 def getSourceFileName():
     """
@@ -105,12 +105,14 @@ class CosmoSim(cs.CosmoSim):
     """
     def __init__(self,*a,maxm=50,fn=None,**kw):
         super().__init__(*a,**kw)
+        dir = os.path.dirname(os.path.abspath(__file__))
         if fn == None:
             super().setFile( PsiSpec.SIS, getFileName( maxm ) )
+            super().setFile( PsiSpec.SIE, os.path.join( dir, "sie05.txt" ) )
         else:
-            super().setFile( fn )
-        dir = os.path.dirname(os.path.abspath(__file__))
-        super().setFile( PsiSpec.SIE, os.path.join( dir, "sie05.txt" ) )
+            print( "Amplitudes file:", fn )
+            super().setFile( PsiSpec.SIS, fn )
+            super().setFile( PsiSpec.SIE, fn )
         super().setSourceFile( getSourceFileName( ) )
         self._continue = True
         self.updateEvent = th.Event()
