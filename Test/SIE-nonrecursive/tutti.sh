@@ -10,5 +10,5 @@ echo Options: "$*"
 make all
 
 ( sh clean.sh &&
-  sh sis.sh $opt 
+  sh sie.sh $opt 
   ) | tee tutti.log
