@@ -82,6 +82,7 @@ def zeroth(lens="SIS"):
     raise "Unknown lens model"
 
 def ampPrint(alphabeta,fn):
+    print( "ampPrint" )
     with open(fn, 'w') as f:
         print( "Opened file", fn ) 
         for (m,s) in alphabeta.keys():
@@ -93,6 +94,7 @@ def ampPrint(alphabeta,fn):
         f.close()
 
 def texPrint(alphabeta,fn):
+    print( "texPrint" )
     with open(fn, 'w') as f:
         print( "Opened TeX file", fn ) 
         f.write( "\\documentclass[10pt,paper=a0,landscape]{scrartcl}\n" )

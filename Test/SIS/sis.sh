@@ -5,7 +5,7 @@
 opt=$*
 
 pdir=../../CosmoSimPy/
-fn=sis.csv
+fn=../sis.csv
 
 configlist="ss pss fs rs"
 # configlist='"Sampled Roulette SIS" "Sampled Raytrace SIS" "Roulette SIS" "Raytrace SIS"'

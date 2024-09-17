@@ -211,6 +211,7 @@ def main(f=thirdworker):
        ampPrint(alphabeta,args.output)
     if args.tex:
        texPrint(alphabeta,args.tex)
+    print( "sieamplitudes.py: completing" )
 
 if __name__ == "__main__":
     main()
