@@ -93,17 +93,19 @@ def ampPrint(alphabeta,fn):
             f.write(str(res) + '\n')
         f.close()
 
+def latex(x): return sympy.latex(sympy.simplify(x))
 def texPrint(alphabeta,fn):
     print( "texPrint" )
     with open(fn, 'w') as f:
         print( "Opened TeX file", fn ) 
         f.write( "\\documentclass[10pt,paper=a0,landscape]{scrartcl}\n" )
-        f.write( "\\usepackage{geometry,amsmath}\n" )
+        f.write( "\\usepackage{amsmath}\n" )
+        f.write( "\\usepackage[margin=5mm]{geometry}\n" )
         f.write( "\\begin{document}\n" )
         for (m,s) in alphabeta.keys():
 
             alpha,beta = alphabeta[(m,s)]
-            f.write( f"$$\\alpha_{{{s}}}^{{{m}}} = {sympy.latex(alpha)}$$\n" )
-            f.write( f"$$\\beta_{{{s}}}^{{{m}}} = {sympy.latex(beta)}$$\n" )
+            f.write( f"$$\\alpha_{{{s}}}^{{{m}}} = {latex(alpha)}$$\n" )
+            f.write( f"$$\\beta_{{{s}}}^{{{m}}} = {latex(beta)}$$\n" )
         f.write( "\\end{document}\n" )
         f.close()
