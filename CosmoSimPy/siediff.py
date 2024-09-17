@@ -49,7 +49,7 @@ def main():
     mgr1 = s1.RouletteManager( psivec=psivec,thirdworker=s1.thirdworker )
     ab1 = mgr1.getAmplitudes(n,nproc )
     mgr2 = s1.RouletteManager( psivec=psivec,thirdworker=s2.thirdworker )
-    ab2 = mgr1.getAmplitudes(n,nproc )
+    ab2 = mgr2.getAmplitudes(n,nproc )
 
     for (m,s) in ab1.keys():
         a1,b1 = ab1[(m,s)] 
