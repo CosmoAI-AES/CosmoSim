@@ -1,8 +1,8 @@
-all: chris5.txt bd5.txt
+all: chris7.txt bd7.txt
 
 PD=../../CosmoSimPy/
 
-sis5.txt chris5.txt bd5.txt:
+sis7.txt chris7.txt bd7.txt:
 
 %.txt: %.raw
 	sort $< > $@

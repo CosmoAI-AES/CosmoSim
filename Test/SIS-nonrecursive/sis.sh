@@ -6,13 +6,17 @@ opt=$*
 
 pdir=../../CosmoSimPy/
 fn=../sis.csv
+CONVERT=convert
 
-configlist="ss pss fs rs"
-# configlist='"Sampled Roulette SIS" "Sampled Raytrace SIS" "Roulette SIS" "Raytrace SIS"'
+
+mkdir -p actual-rs rs chris bd montage-chris montage-bd diff-chris diff-bd
 
 python3 $pdir/datagen.py $opt --config rs --directory="rs" --csvfile $fn  --actual -R 
-python3 $pdir/datagen.py $opt --config fs --directory="chris" --csvfile $fn  --actual -R -F chris10.txt --nterms 5
-python3 $pdir/datagen.py $opt --config fs --directory="bd" --csvfile $fn  --actual -R -F bd10.txt --nterms 5
+
+mv rs/actual-* actual-rs/
+
+python3 $pdir/datagen.py $opt --config fs --directory="chris" --csvfile $fn   -R -F chris7.txt --nterms 5
+python3 $pdir/datagen.py $opt --config fs --directory="bd" --csvfile $fn   -R -F bd7.txt --nterms 5
 
 python3 $pdir/compare.py --diff diff-bd    bd rs
 python3 $pdir/compare.py --diff diff-chris chris rs
