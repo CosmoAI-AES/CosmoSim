@@ -1,23 +1,25 @@
-all: sis10.txt chris10.txt bd10.txt
+all: chris5.txt bd5.txt
 
-sis10.txt chris10.txt bd10.txt:
+PD=../../CosmoSimPy/
+
+sis5.txt chris5.txt bd5.txt:
 
 %.txt: %.raw
 	sort $< > $@
 
-sis%.raw:  ../amplitudes.py
+sis%.raw:  $(PD)amplitudes.py
 	time python3 $< --output $@ $* 8
 
-chris%.raw: ../sieamplitudes.py 
+chris%.raw: $(PD)sieamplitudes.py 
 	time python3 $< --lens SIS --output $@ $* 8
 
-chris%.tex: ../sieamplitudes.py 
+chris%.tex: $(PD)sieamplitudes.py 
 	time python3 $< --lens SIS --tex $@ $* 8
 
-bd%.raw: ../sieorig.py 
+bd%.raw: $(PD)sieorig.py 
 	time python3 $< --lens SIS --output $@ $* 8
 
-bd%.tex: ../sieorig.py 
+bd%.tex: $(PD)sieorig.py 
 	time python3 $< --lens SIS --tex $@ $* 8
 
 

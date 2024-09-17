@@ -10,7 +10,7 @@ fn=../sis.csv
 configlist="ss pss fs rs"
 # configlist='"Sampled Roulette SIS" "Sampled Raytrace SIS" "Roulette SIS" "Raytrace SIS"'
 
-python3 $pdir/datagen.py $opt --config rs --directory="rs" --csvfile $fn  --actual -R
+python3 $pdir/datagen.py $opt --config rs --directory="rs" --csvfile $fn  --actual -R 
 python3 $pdir/datagen.py $opt --config fs --directory="chris" --csvfile $fn  --actual -R -F chris10.txt --nterms 5
 python3 $pdir/datagen.py $opt --config fs --directory="bd" --csvfile $fn  --actual -R -F bd10.txt --nterms 5
 
