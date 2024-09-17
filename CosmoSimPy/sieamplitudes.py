@@ -91,7 +91,7 @@ def thirdworker(q,ampdict,indict, var=[] ):
                   var )
         if s == 0:
                a /= 2
-        print( "III.", os.getpid(), m, s )
+        print( "III (Chris).", os.getpid(), m, s )
         ampdict[(m,s)] = (a,b)
       except queue.Empty:
         print ( "III.", os.getpid(), "completes" )

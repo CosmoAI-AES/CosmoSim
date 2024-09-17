@@ -72,7 +72,7 @@ def thirdworker(q,ampdict,indict, var=[] ):
                   * h2(k)
                   for k in range(int((s-1)/2+1)) ] ),
                   var )
-        print( "III.", os.getpid(), m, s )
+        print( "III (Ben David).", os.getpid(), m, s )
         ampdict[(m,s)] = (a,b)
       except queue.Empty:
         print ( "III.", os.getpid(), "completes" )
