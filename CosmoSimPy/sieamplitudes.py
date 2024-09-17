@@ -210,7 +210,7 @@ def main(f=thirdworker):
     if args.output:
        ampPrint(alphabeta,args.output)
     if args.tex:
-       texPrint(alphabeta,args.tex)
+       texPrint(alphabeta,args.tex,latex=sympy.latex,opt="10pt,paper=a0,landscape")
     print( "sieamplitudes.py: completing" )
 
 if __name__ == "__main__":

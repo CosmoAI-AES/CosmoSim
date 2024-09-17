@@ -94,11 +94,11 @@ def ampPrint(alphabeta,fn):
         f.close()
 
 def latex(x): return sympy.latex(sympy.simplify(x))
-def texPrint(alphabeta,fn):
+def texPrint(alphabeta,fn,latex=latex,opt="12pt,paper=a4"):
     print( "texPrint" )
     with open(fn, 'w') as f:
         print( "Opened TeX file", fn ) 
-        f.write( "\\documentclass[12pt,paper=a4]{scrartcl}\n" )
+        f.write( "\\documentclass["+opt+"]{scrartcl}\n" )
         f.write( "\\usepackage{amsmath}\n" )
         f.write( "\\usepackage[margin=5mm]{geometry}\n" )
         f.write( "\\begin{document}\n" )

@@ -1,6 +1,6 @@
 all: chris3.pdf bd3.pdf
 
-PD=../../CosmoSimPy/
+PD=../../../CosmoSimPy/
 
 chris3.tex bd3.tex:
 
