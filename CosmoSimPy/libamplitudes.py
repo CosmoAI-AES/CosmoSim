@@ -98,7 +98,7 @@ def texPrint(alphabeta,fn):
     print( "texPrint" )
     with open(fn, 'w') as f:
         print( "Opened TeX file", fn ) 
-        f.write( "\\documentclass[12pt,paper=a4,landscape]{scrartcl}\n" )
+        f.write( "\\documentclass[12pt,paper=a4]{scrartcl}\n" )
         f.write( "\\usepackage{amsmath}\n" )
         f.write( "\\usepackage[margin=5mm]{geometry}\n" )
         f.write( "\\begin{document}\n" )
