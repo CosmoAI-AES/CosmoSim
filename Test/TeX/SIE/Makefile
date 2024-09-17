@@ -24,5 +24,5 @@ bd%.tex: $(PD)sieorig.py
 	pdflatex $<
 
 clean:
-	rm -f *.tex *.pdf
+	rm -f *.tex *.pdf *.aux *.log
 		
