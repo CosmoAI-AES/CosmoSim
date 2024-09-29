@@ -3,7 +3,7 @@
 #include "cosmosim/Lens.h"
 #include "simaux.h"
 
-void ClusterLens::addLens( Lens *l ) {
+void ClusterLens::addLens( PsiFunctionLens *l ) {
    this->lens[this->nlens++] = l ;
 }
 
