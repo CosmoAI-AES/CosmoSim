@@ -85,7 +85,7 @@ public:
 
 class ClusterLens : public Lens {
    private:
-      PsiFunctionLens lens[MAXCLUSTER] ;
+      Lens *lens[MAXCLUSTER] ;
       int nlens = 0 ;
 public:
     virtual void addLens( Lens* );

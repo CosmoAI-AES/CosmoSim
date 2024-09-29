@@ -4,36 +4,36 @@
 #include "simaux.h"
 
 void ClusterLens::addLens( Lens *l ) {
-   lens[nlens++] = l ;
+   this->lens[this->nlens++] = l ;
 }
 
-double SampledLens::psiValue( double x, double y ) const { 
+double ClusterLens::psiValue( double x, double y ) const { 
    int i ;
    double r = 0 ;
-   for ( i=0 ; i<nlens ; ++i ) {
-      r += lens[i].psiValue( x, y ) ;
+   for ( i=0 ; i<this->nlens ; ++i ) {
+      r += this->lens[i]->psiValue( x, y ) ;
    }
    return r ;
 }
-double SampledLens::psiXvalue( double x, double y ) const {
+double ClusterLens::psiXvalue( double x, double y ) const {
    int i ;
    double r = 0 ;
-   for ( i=0 ; i<nlens ; ++i ) {
-      r += lens[i].psiXvalue( x, y ) ;
+   for ( i=0 ; i<this->nlens ; ++i ) {
+      r += this->lens[i]->psiXvalue( x, y ) ;
    }
    return r ;
 }
-double SampledLens::psiYvalue( double x, double y ) const { 
+double ClusterLens::psiYvalue( double x, double y ) const { 
    int i ;
    double r = 0 ;
-   for ( i=0 ; i<nlens ; ++i ) {
-      r += lens[i].psiYvalue( x, y ) ;
+   for ( i=0 ; i<this->nlens ; ++i ) {
+      r += this->lens[i]->psiYvalue( x, y ) ;
    }
    return r ;
 }
 void ClusterLens::calculateAlphaBeta( cv::Point2d xi ) {
    if (DEBUG) std::cout 
-              << "[ClusterLens.calculateAlphaBeta()] " << nterms << "; " 
+              << "[ClusterLens->calculateAlphaBeta()] " << nterms << "; " 
               << xi << "\n"  ;
 
    for (int m = 1; m <= nterms; m++){
@@ -42,12 +42,12 @@ void ClusterLens::calculateAlphaBeta( cv::Point2d xi ) {
             betas_val[m][s] = 0 ;
          }
    }
-   for ( i=0 ; i<nlens ; ++i ) {
-       lens[i].calculateAlphaBeta( xi ) ;
+   for ( int i=0 ; i<this->nlens ; ++i ) {
+       this->lens[i]->calculateAlphaBeta( xi ) ;
        for (int m = 1; m <= nterms; m++){
          for (int s = 0; s <= (m+1); s++){
-            alphas_val[m][s] += lens[i].getAlphaXi(m,s) ;
-            betas_val[m][s] += lens[i].getBetaXi(m,s) ;
+            alphas_val[m][s] += this->lens[i]->getAlphaXi(m,s) ;
+            betas_val[m][s] += this->lens[i]->getBetaXi(m,s) ;
          }
        }
    }
