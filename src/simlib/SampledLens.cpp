@@ -100,6 +100,10 @@ void SampledLens::calculateAlphaBeta( cv::Point2d xi ) {
 
         alphas_val[m][s] = matA.at<double>( ij ) ;
         betas_val[m][s] =  matB.at<double>( ij ) ;
+        if (DEBUG) std::cout 
+              << "SampledLens (" << m << ", " << s << ") " 
+              << alphas_val[m][s]  << "/"
+              << betas_val[m][s] << "\n"  ;
 
         while( s > 0 && m < nterms ) {
             ++m ; --s ;
@@ -114,6 +118,10 @@ void SampledLens::calculateAlphaBeta( cv::Point2d xi ) {
 
             alphas_val[m][s] = matA.at<double>( ij ) ;
             betas_val[m][s] =  matB.at<double>( ij ) ;
+            if (DEBUG) std::cout 
+              << "SampledLens (" << m << ", " << s << ") " 
+              << alphas_val[m][s]  << "/"
+              << betas_val[m][s] << "\n"  ;
         }
     }
 }

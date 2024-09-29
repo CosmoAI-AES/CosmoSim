@@ -20,7 +20,7 @@ import sympy
 from libamplitudes import *
 from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh
 
-def func(n, m, s, alpha, beta, x, y, q):
+def func(n, m, s, alpha, beta, x, y, rdict):
     """
     Generate the amplitudes for one fixed sum $m+s$.
     This is done by recursion on s and m.
@@ -36,16 +36,11 @@ def func(n, m, s, alpha, beta, x, y, q):
         alpha, beta = alpha_, beta_
         print(f'm: {m} s: {s}') # alpha: {alpha} beta: {beta} c: {c}')
 
-        res = f'{m}:{s}:{alpha}:{beta}'
+        # res = f'{m}:{s}:{alpha}:{beta}'
         # print ( "Inner", res )
-        q.put(res)
+        # q.put(res)
+        rdict[(m,s)] = (alpha,beta) 
 
-def zeroth(lens="SIS"):
-    if lens == "SIS":
-        return psiSIS()
-    if lens == "SIE":
-        return psiSIE()
-    raise "Unknown lens model"
 
 def main(lens="SIS",n=50,nproc=None,fn=None):
 
@@ -62,12 +57,13 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
 
     # Must use Manager queue here, or will not work
     manager = mp.Manager()
-    q = manager.Queue()
+    # q = manager.Queue()
+    rdict = manager.dict()
 
     with mp.Pool(processes=nproc) as pool:
 
         # use a single, separate process to write to file 
-        pool.apply_async(listener, (fn,q,))
+        # pool.apply_async(listener, (fn,q,))
 
         jobs = []
         for m in range(0, n+1):
@@ -76,7 +72,7 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
 
             if m == 0:
                 # This is the base case (m,s)=(0,1) of the outer recursion
-                alpha, beta, x, y = zeroth(lens)
+                psi, alpha, beta, x, y = zeroth(lens)
             else:
                 # This is the base case (m+1,s+1) of the inner recursion
                 c = (m + 1.0) / (m + s + 1.0) 
@@ -89,9 +85,9 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
 
             res = f'{m}:{s}:{alpha}:{beta}'
             # print ( "Outer", res )
-            q.put(res)
+            rdict[(m,s)] = (alpha,beta) 
 
-            job = pool.apply_async(func, (n, m, s, alpha, beta, x, y, q))
+            job = pool.apply_async(func, (n, m, s, alpha, beta, x, y, rdict))
             jobs.append(job)
 
         # collect results from the workers through the pool result queue
@@ -99,7 +95,7 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
             job.get()
 
     # Now we are done, kill the listener
-    q.put('kill')
+    # q.put('kill')
     print( "[amplitudes.py]  Completed.  Issued kill order to terminate." )
     pool.close()
     print( "Pool closed" )
@@ -107,6 +103,7 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
     print( "Pool joined" )
 
     print( "Time spent:", time.time() - start)
+    return rdict
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate roulette amplitude formulæ for CosmoSim.')
@@ -119,11 +116,17 @@ if __name__ == "__main__":
     parser.add_argument('--output', help='Output filename')
     parser.add_argument('--diff', default=False,action="store_true",
                     help='Simply differentiate psi')
+    parser.add_argument('--tex', 
+                    help='TeX output file')
     args = parser.parse_args()
 
     if args.diff:
-        dx,dy,x,y = zeroth(args.lens)
+        psi, dx,dy,x,y = zeroth(args.lens)
         print( "dx", dx )
         print( "dy", dy )
     else:
-        main(lens=args.lens,n=args.n,nproc=args.nproc,fn=args.output)
+        alphabeta = main(lens=args.lens,n=args.n,nproc=args.nproc,fn=args.output)
+        if args.output:
+           ampPrint(alphabeta,args.output)
+        if args.tex:
+           texPrint(alphabeta,args.tex)
