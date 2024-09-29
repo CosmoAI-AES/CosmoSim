@@ -9,6 +9,7 @@ class CosmoParser(argparse.ArgumentParser):
     # Model selection
     self.add_argument('-l', '--lensmode',
             help="lens model")
+    self.add_argument('--cluster', help="cluster lens")
     self.add_argument('-L', '--modelmode',
             help="simulation model")
     self.add_argument('-S', '--sourcemode',

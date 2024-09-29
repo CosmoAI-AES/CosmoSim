@@ -32,14 +32,16 @@ def setParameters(sim,row):
     if row.get("sigma",None) != None:
         sim.setSourceParameters( row["sigma"],
             row.get("sigma2",-1), row.get("theta",-1) )
-    if row.get("lens",None) != None:
+    if row.get("config",None) != None:
+        sim.setConfigMode( row["config"] )
+    elif row.get("cluster",None) != None:
+        sim.setLensMode( row["lens"] )
+    elif row.get("lens",None) != None:
         sim.setLensMode( row["lens"] )
     if row.get("model",None) != None:
         sim.setModelMode( row["model"] )
-    if row.get("config",None) != None:
-        sim.setConfigMode( row["config"] )
     if row.get("sampled",None) != None:
-        sim.setSample( row["sampled"] )
+        sim.setSampled( row["sampled"] )
     if row.get("chi",None) != None:
         sim.setCHI( row["chi"] )
     if row.get("einsteinR",None) != None:
@@ -213,10 +215,14 @@ if __name__ == "__main__":
         sim.setSampled( 1 )
     else:
         sim.setSampled( 0 )
-    if args.lensmode:
-        sim.setLensMode( args.lensmode )
+
     if args.config:
         sim.setConfigMode( args.config )
+    elif args.cluster:
+        sim.setCluster( args.cluster )
+    elif args.lensmode:
+        sim.setLensMode( args.lensmode )
+
     if args.modelmode:
         sim.setModelMode( args.modelmode )
     if args.chi:

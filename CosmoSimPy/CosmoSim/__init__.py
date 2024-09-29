@@ -167,6 +167,12 @@ class CosmoSim(cs.CosmoSim):
         return super().moveSim( float(rot), float(scale) )
     def maskImage(self,scale=1):
         return super().maskImage( float(scale) )
+    def setCluster(self,s):
+        print( f"setCluster({s})")
+        ll = [ x.split("/") for x in s.split(";") ]
+        for lens in ll:
+            print( lens[0], ":", lens[1:] )
+        raise Exception("Cluster Lensing not implemented"=
     def setLensMode(self,s):
         print( f"setLensMode({s})")
         return super().setLensMode( int( lensDict[s] ) ) 
