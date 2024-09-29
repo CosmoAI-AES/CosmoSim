@@ -31,9 +31,9 @@ cv::Point2d SampledLens::getXi( cv::Point2d chieta ) {
    double minVal, maxVal;
    cv::Point minLoc, maxLoc;
    minMaxLoc( psiX, &minVal, &maxVal, &minLoc, &maxLoc ) ;
-   if (DEBUG) std::cout << "[SampledRouletteLens] psiX min=" << minVal << "; max=" << maxVal << "\n" ;
+   if (DEBUG) std::cout << "[SampledLens] psiX min=" << minVal << "; max=" << maxVal << "\n" ;
    minMaxLoc( psiY, &minVal, &maxVal, &minLoc, &maxLoc ) ;
-   if (DEBUG) std::cout << "[SampledRouletteLens] psiY min=" << minVal << "; max=" << maxVal << "\n" ;
+   if (DEBUG) std::cout << "[SampledLens] psiY min=" << minVal << "; max=" << maxVal << "\n" ;
    
    /** This block makes a fix-point iteration to find \xi. */
    while ( cont ) {
@@ -41,7 +41,7 @@ cv::Point2d SampledLens::getXi( cv::Point2d chieta ) {
       cv::Point2d ij = imageCoordinate( xi0, psi ) ;
       double x = -psiY.at<double>( ij ), y = -psiX.at<double>( ij ) ;
       if (DEBUG) std::cout
-	   << "[SampledRouletteLens] Fix pt it'n " << count
+	   << "[SampledLens] Fix pt it'n " << count
            << "; xi0=" << xi0 << "; Delta eta = " << x << ", " << y << "\n" ;
       xi1 = chieta + cv::Point2d( x, y ) ;
       dist = cv::norm( cv::Mat(xi1-xi0), cv::NORM_L2 ) ;
@@ -53,7 +53,7 @@ cv::Point2d SampledLens::getXi( cv::Point2d chieta ) {
          std::cout << "Bad approximation of xi: xi0=" << xi0 
             << "; xi1=" << xi1 << "; dist=" << dist << "\n" ;
       } else {
-         std::cout << "[SampledRouletteLens] Good approximation: xi0=" << xi0 
+         std::cout << "[SampledLens] Good approximation: xi0=" << xi0 
             << "; xi1=" << xi1 << "\n" ;
       }
    }
@@ -74,7 +74,7 @@ void SampledLens::calculateAlphaBeta( cv::Point2d xi ) {
     ij = imageCoordinate( xi, psi ) ;
 
     if (DEBUG) std::cout
-              << "[SampledRouletteLens::calculateAlpaBeta] xi in image space is "
+              << "[SampledLens::calculateAlpaBeta] xi in image space is "
               << ij << "; nterms=" << nterms << "\n" ;
 
     for ( mp = 0; mp <= nterms; mp++){
