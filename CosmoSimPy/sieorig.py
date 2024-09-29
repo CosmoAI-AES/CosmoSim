@@ -25,12 +25,10 @@ def gamma(m,s):
     if (m+s)%2 == 0:
         return 0
     else:
+        r = - binomial( m+1, (m+1-s)/2 )
         if s == 0:
-            r = -1/2
-        else:
-            r = -1
+            r /= 2
         r /= 2**m
-        r *= binomial( m+1, (m+1-s)/2 )
         return r
 def innersum(diffdict,m,s):
     c =  m+1-s
@@ -72,7 +70,7 @@ def thirdworker(q,ampdict,indict, var=[] ):
                   * h2(k)
                   for k in range(int((s-1)/2+1)) ] ),
                   var )
-        print( "III.", os.getpid(), m, s )
+        print( "III (Ben David).", os.getpid(), m, s )
         ampdict[(m,s)] = (a,b)
       except queue.Empty:
         print ( "III.", os.getpid(), "completes" )

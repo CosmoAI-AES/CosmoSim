@@ -1,5 +1,6 @@
 all: sis100.txt sis50.txt sie05.txt
 
+sis: sis100.txt sis50.txt sis200.txt
 sis100.txt sis50.txt sie05.txt:
 
 %.txt: %.raw
@@ -24,3 +25,8 @@ sierecursive%.raw:  ../amplitudes.py
 
 %.pdf: %.tex
 	pdflatex $<
+
+clean:
+	rm -f *.log *.raw
+cleanall: clean
+	rm -f *.txt

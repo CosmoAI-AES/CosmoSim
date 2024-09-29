@@ -29,7 +29,9 @@ def func(n, m, s, alpha, beta, x, y, rdict):
     while s > 0 and m < n:
         m += 1
         s -= 1
-        c = ((m + 1.0) / (m + 1.0 - s) * (1.0 + (s != 0.0)) / 2.0)
+        c = (m + 1) / (m + 1 - s) 
+        if s == 0:
+            c /= 2
         # start calculate
         alpha_ = sympy.factor(c * (diff(alpha, x) + diff(beta, y)))
         beta_ = sympy.factor(c * (diff(beta, x) - diff(alpha, y)))
@@ -73,6 +75,8 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
             if m == 0:
                 # This is the base case (m,s)=(0,1) of the outer recursion
                 psi, alpha, beta, x, y = zeroth(lens)
+                alpha = - alpha
+                beta = - beta
             else:
                 # This is the base case (m+1,s+1) of the inner recursion
                 c = (m + 1.0) / (m + s + 1.0) 

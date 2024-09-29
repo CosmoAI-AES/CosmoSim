@@ -91,7 +91,7 @@ def thirdworker(q,ampdict,indict, var=[] ):
                   var )
         if s == 0:
                a /= 2
-        print( "III.", os.getpid(), m, s )
+        print( "III (Chris).", os.getpid(), m, s )
         ampdict[(m,s)] = (a,b)
       except queue.Empty:
         print ( "III.", os.getpid(), "completes" )
@@ -210,7 +210,7 @@ def main(f=thirdworker):
     if args.output:
        ampPrint(alphabeta,args.output)
     if args.tex:
-       texPrint(alphabeta,args.tex)
+       texPrint(alphabeta,args.tex,latex=sympy.latex,opt="10pt,paper=a0,landscape")
     print( "sieamplitudes.py: completing" )
 
 if __name__ == "__main__":

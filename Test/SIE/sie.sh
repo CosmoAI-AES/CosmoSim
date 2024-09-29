@@ -5,7 +5,7 @@
 opt=$*
 
 pdir=../../CosmoSimPy/
-fn=sie.csv
+fn=../sie.csv
 # Note, origin.csv specifies scenarioes with the almost source at the origin.
 
 configlist="srousie sraysie rousie raysie"
