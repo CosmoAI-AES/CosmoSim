@@ -410,6 +410,32 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("getRelativeEta", &CosmoSim::getRelativeEta)
         ;
 
+    py::class_<SIS>(m, "SIS")
+        .def(py::init<>())
+        .def("setEinsteinR", &SIS::setEinsteinR)
+        .def("setRatio", &SIS::setRatio)
+        .def("setOrientation", &SIS::setOrientation)
+        .def("setFile", &SIS::setFile)
+        ;
+    py::class_<SIE>(m, "SIE")
+        .def(py::init<>())
+        .def("setEinsteinR", &SIE::setEinsteinR)
+        .def("setRatio", &SIE::setRatio)
+        .def("setOrientation", &SIE::setOrientation)
+        .def("setFile", &SIE::setFile)
+        ;
+    py::class_<PointMass>(m, "PointMass")
+        .def(py::init<>())
+        .def("setEinsteinR", &PointMass::setEinsteinR)
+        .def("setRatio", &PointMass::setRatio)
+        .def("setOrientation", &PointMass::setOrientation)
+        .def("setFile", &PointMass::setFile)
+        ;
+    py::class_<ClusterLens>(m, "ClusterLens")
+        .def(py::init<>())
+        .def("addLens", &ClusterLens::addLens)
+        ;
+
     py::class_<RouletteSim>(m, "RouletteSim")
         .def(py::init<>())
         .def("setSourceMode", &RouletteSim::setSourceMode)
