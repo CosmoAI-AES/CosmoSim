@@ -12,6 +12,8 @@
 
 using namespace SymEngine;
 
+#define MAXCLUSTER 50
+
 class Lens {
 
 private:
@@ -73,6 +75,20 @@ class SampledLens : public Lens {
 protected:
     cv::Mat psiX, psiY ;
 public:
+    virtual void calculateAlphaBeta( cv::Point2d xi );
+    virtual cv::Point2d getXi( cv::Point2d ) ;
+
+    virtual double psiValue( double, double ) const ;
+    virtual double psiXvalue( double, double ) const ;
+    virtual double psiYvalue( double, double ) const ;
+} ;
+
+class ClusterLens : public Lens {
+   private:
+      PsiFunctionLens lens[MAXCLUSTER] ;
+      int nlens = 0 ;
+public:
+    virtual void addLens( Lens* );
     virtual void calculateAlphaBeta( cv::Point2d xi );
     virtual cv::Point2d getXi( cv::Point2d ) ;
 

@@ -3,6 +3,7 @@ set(SimLibFiles
         simlib/SampledLens.cpp
         simlib/SampledPsiFunctionLens.cpp
         simlib/Lens.cpp
+	simlib/ClusterLens.cpp
         simlib/PsiFunctionLens.cpp
         simlib/SIS.cpp
         simlib/SIE.cpp
