@@ -23,6 +23,7 @@ enum ModelSpec { CSIM_MODEL_RAYTRACE,
                   CSIM_NOMODEL } ;
 enum PsiSpec    { CSIM_PSI_SIS,
                   CSIM_PSI_SIE,
+                  CSIM_CLUSTER,
                   CSIM_NOPSI_ROULETTE,
                   CSIM_NOPSI_PM,
                   CSIM_NOPSI } ;
@@ -71,6 +72,7 @@ public:
     void setSourceMode(int);
     void setModelMode(int);
     void setLensMode(int);
+    void setCluster(ClusterLens*);
     void setSampled(int);
     void setEinsteinR(double);
     void setRatio(double);

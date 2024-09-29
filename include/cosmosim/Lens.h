@@ -146,9 +146,11 @@ public:
 class ClusterLens : public PsiFunctionLens {
    private:
       PsiFunctionLens *lens[MAXCLUSTER] ;
+      double xshift[MAXCLUSTER], yshift[MAXCLUSTER] ;
       int nlens = 0 ;
 public:
-    virtual void addLens( PsiFunctionLens* );
+    // virtual void addLens( PsiFunctionLens* );
+    virtual void addLens( PsiFunctionLens*, double, double );
     virtual void calculateAlphaBeta( cv::Point2d xi );
     virtual cv::Point2d getXi( cv::Point2d ) ;
 

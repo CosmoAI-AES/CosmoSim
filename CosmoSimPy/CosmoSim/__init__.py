@@ -174,16 +174,25 @@ class CosmoSim(cs.CosmoSim):
         for lens in ll:
             lenstype = lens[0]
             print( lenstype, ":", lens[1:] )
+            nl = len(lens)
+            if nl < 4:
+                raise Exception( f"Too few parameters for constituent lens" )
+            x, y = lens[1], lens[2] ;
             if lenstype == "SIS":
-                l = SIS()
+                l = cs.SIS()
             elif lenstype == "SIE":
-                l = SIE()
+                l = cs.SIE()
+                if nl < 6:
+                    raise Exception( f"Too few parameters for SIE lens" )
+                l.setRatio( lens[4] )
+                l.setOrientation( lens[5] )
             elif lenstype == "PointMass":
-                l = PointMass()
+                l = cs.PointMass()
             else:
                 raise Exception( f"Lens Type not Supported {lenstype}" )
-            cluster.addLens( l )
-        raise Exception("Cluster Lensing not implemented"=
+            l.setEinsteinR( lens[3] )
+            cluster.addLens( l, x, y )
+        return super().setCluster(cluster)
     def setLensMode(self,s):
         print( f"setLensMode({s})")
         return super().setLensMode( int( lensDict[s] ) ) 

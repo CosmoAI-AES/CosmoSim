@@ -139,6 +139,11 @@ void CosmoSim::setLensMode(int m) {
       if (DEBUG) std::cout << "[CosmoSim.cpp] setLensMode(" << lensmode << ") unchanged\n" ;
    }
 }
+void CosmoSim::setCluster(ClusterLens *l) { 
+   lensmode = CSIM_CLUSTER ; 
+   modelchanged = 1 ;
+   lens = psilens = l ;
+}
 void CosmoSim::setSampled(int m) { 
    if ( sampledlens != m ) {
       if (DEBUG) std::cout << "[CosmoSim.cpp] setSampled(" << m 
@@ -156,6 +161,9 @@ void CosmoSim::initLens() {
    if ( sim ) delete sim ;
    psilens = NULL ;
    switch ( lensmode ) {
+       case CSIM_CLUSTER:
+          std::cout << "[initLens] ClusterLens - no further init\n" ;
+          break ;
        case CSIM_PSI_SIE:
           lens = psilens = new SIE() ;
           lens->setFile(filename[CSIM_PSI_SIE]) ;
@@ -408,13 +416,12 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("getOffset", &CosmoSim::getOffset)
         .def("getNu", &CosmoSim::getNu)
         .def("getRelativeEta", &CosmoSim::getRelativeEta)
+        .def("setCluster", &CosmoSim::setCluster)
         ;
 
     py::class_<SIS>(m, "SIS")
         .def(py::init<>())
         .def("setEinsteinR", &SIS::setEinsteinR)
-        .def("setRatio", &SIS::setRatio)
-        .def("setOrientation", &SIS::setOrientation)
         .def("setFile", &SIS::setFile)
         ;
     py::class_<SIE>(m, "SIE")
@@ -427,8 +434,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
     py::class_<PointMass>(m, "PointMass")
         .def(py::init<>())
         .def("setEinsteinR", &PointMass::setEinsteinR)
-        .def("setRatio", &PointMass::setRatio)
-        .def("setOrientation", &PointMass::setOrientation)
         .def("setFile", &PointMass::setFile)
         ;
     py::class_<ClusterLens>(m, "ClusterLens")
