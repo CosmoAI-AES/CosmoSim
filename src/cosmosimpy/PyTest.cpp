@@ -37,33 +37,22 @@ void PyTest::setChild( Child* c ) {
 }
 
 
-PYBIND11_MODULE(CosmoSimPy, m) {
+PYBIND11_MODULE(PyTest, m) {
     m.doc() = "Minimal test for trouble with inheritance in pybind" ;
 
 
-    py::class_<Lens>(m, "Lens")
+    py::class_<Parent>(m, "Lens")
         .def(py::init<>())
-        .def("setEinsteinR", &Lens::setEinsteinR)
-        .def("setNterms", &Lens::setNterms)
-        .def("setFile", &Lens::setFile)
+        .def("setTest", &Parent::setTest)
         ;
-    py::class_<PsiFunctionLens, Lens>(m, "PsiFunctionLens")
+    py::class_<Child, Parent>(m, "Child")
         .def(py::init<>())
+        .def("test", &Child::test)
         ;
-    py::class_<SIS,PsiFunctionLens>(m, "SIS")
+    py::class_<PyTest>(m, "PyTest")
         .def(py::init<>())
-        ;
-    py::class_<SIE,PsiFunctionLens>(m, "SIE")
-        .def(py::init<>())
-        .def("setOrientation", &SIE::setOrientation)
-        .def("setRatio", &SIE::setRatio)
-        ;
-    py::class_<PointMass,PsiFunctionLens>(m, "PointMass")
-        .def(py::init<>())
-        ;
-    py::class_<ClusterLens,PsiFunctionLens>(m, "ClusterLens")
-        .def(py::init<>())
-        .def("addLens", &ClusterLens::addLens)
+        .def("test", &PyTest::test)
+        .def("setChild", &PyTest::setChild)
         ;
 
 }
