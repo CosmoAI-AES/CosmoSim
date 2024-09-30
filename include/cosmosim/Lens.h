@@ -87,6 +87,9 @@ public:
 class PsiFunctionLens : public Lens {
 public:
     virtual void updatePsi( cv::Size ) ;
+    virtual double psiValue( double, double ) const ; /* Not Implemented */
+    virtual double psiXvalue( double, double ) const ; /* Not Implemented */
+    virtual double psiYvalue( double, double ) const ; /* Not Implemented */
 
 } ;
 

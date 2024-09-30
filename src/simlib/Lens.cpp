@@ -161,7 +161,9 @@ cv::Point2d Lens::getXi( cv::Point2d chieta ) {
 
 }
 void Lens::setNterms( int n ) {
-   nterms = n ;
+   std::cout << "[Lens::setNterms] " << n << "\n" ;
+   this->nterms = n ;
+   std::cout << "[Lens::setNterms] returns\n" ;
 }
 
 double Lens::criticalXi( double phi ) const {

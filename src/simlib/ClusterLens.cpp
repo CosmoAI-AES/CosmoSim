@@ -9,6 +9,7 @@ void ClusterLens::addLens( PsiFunctionLens *l ) {
 }
 */
 void ClusterLens::addLens( PsiFunctionLens *l, double x, double y ) {
+   std::cout << "ClusterLEns::addLens]] " << (x,y) << "\n" ;
    this->xshift[this->nlens] = x ;
    this->yshift[this->nlens] = y ;
    this->lens[this->nlens++] = l ;
@@ -50,6 +51,7 @@ void ClusterLens::calculateAlphaBeta( cv::Point2d xi ) {
          }
    }
    for ( int i=0 ; i<this->nlens ; ++i ) {
+       this->lens[i]->setNterms( nterms ) ;
        this->lens[i]->calculateAlphaBeta( xi ) ;
        for (int m = 1; m <= nterms; m++){
          for (int s = 0; s <= (m+1); s++){
