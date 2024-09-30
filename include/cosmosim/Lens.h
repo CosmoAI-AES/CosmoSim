@@ -63,9 +63,9 @@ public:
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
 
-    virtual double psiValue( double, double ) const = 0 ;
-    virtual double psiXvalue( double, double ) const = 0 ;
-    virtual double psiYvalue( double, double ) const = 0 ;
+    virtual double psiValue( double, double ) const ; /* Not Implemented */
+    virtual double psiXvalue( double, double ) const ; /* Not Implemented */
+    virtual double psiYvalue( double, double ) const ; /* Not Implemented */
 
     virtual double criticalXi( double ) const ;
     virtual cv::Point2d caustic( double ) const ;
@@ -87,10 +87,6 @@ public:
 class PsiFunctionLens : public Lens {
 public:
     virtual void updatePsi( cv::Size ) ;
-    virtual double psiValue( double, double ) const ; /* Not Implemented */
-    virtual double psiXvalue( double, double ) const ; /* Not Implemented */
-    virtual double psiYvalue( double, double ) const ; /* Not Implemented */
-
 } ;
 
 class SampledPsiFunctionLens : public SampledLens {

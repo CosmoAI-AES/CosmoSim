@@ -24,12 +24,3 @@ void PsiFunctionLens::updatePsi( cv::Size size ) {
    return ; 
 }
 
-double PsiFunctionLens::psiValue( double x, double y ) const { 
-   throw NotImplemented() ;
-}
-double PsiFunctionLens::psiXvalue( double x, double y ) const {
-   throw NotImplemented() ;
-}
-double PsiFunctionLens::psiYvalue( double x, double y ) const { 
-   throw NotImplemented() ;
-}

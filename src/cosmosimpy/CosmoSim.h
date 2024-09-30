@@ -58,6 +58,8 @@ private:
 public:
     CosmoSim();
 
+    PsiFunctionLens *getLens( int ) ;
+
     void setFile(int,std::string) ;
     void setSourceFile(std::string) ;
     void setXY(double, double) ;

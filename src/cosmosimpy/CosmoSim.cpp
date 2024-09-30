@@ -17,6 +17,19 @@ CosmoSim::CosmoSim() {
 }
 
 
+PsiFunctionLens *CosmoSim::getLens( int lensmode ) { 
+   switch ( lensmode ) {
+      case CSIM_PSI_SIE:
+         return new SIE() ;
+      case CSIM_PSI_SIS:
+         return new SIS() ;
+      case CSIM_CLUSTER:
+         return new ClusterLens() ;
+      default:
+         throw NotImplemented() ;
+   }
+} ;
+
 double CosmoSim::getChi( ) { return chi ; } ;
 cv::Point2d CosmoSim::getRelativeEta( double x, double y ) {
    // Input (x,y) is the centre point $\nu$
@@ -277,7 +290,7 @@ bool CosmoSim::runSim() {
    sim->setNterms( nterms ) ;
    sim->setMaskRadius( maskRadius ) ;
    std::cout  << "[runLens] config 1\n" ;
-   lens->setNterms( nterms ) ;
+   if ( lens != NULL ) lens->setNterms( nterms ) ;
    std::cout  << "[runLens] config 2\n" ;
    sim->setMaskMode( maskmode ) ;
    std::cout  << "[runLens] config 3\n" ;
@@ -295,7 +308,6 @@ bool CosmoSim::runSim() {
          lens->initAlphasBetas() ;
       }
    }
-   std::cout  << "[runLens] ready for threading \n" ;
    Py_BEGIN_ALLOW_THREADS
    if (DEBUG) std::cout << "[runSim] thread section\n" ;
    if ( sim == NULL ) throw std::logic_error("Simulator not initialised") ;
@@ -387,6 +399,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
 
     py::class_<CosmoSim>(m, "CosmoSim")
         .def(py::init<>())
+        .def("getLens", &CosmoSim::getLens)
         .def("setLensMode", &CosmoSim::setLensMode)
         .def("setModelMode", &CosmoSim::setModelMode)
         .def("setSampled", &CosmoSim::setSampled)
@@ -427,27 +440,25 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setCluster", &CosmoSim::setCluster)
         ;
 
-    py::class_<PsiFunctionLens>(m, "PsiFunctionLens")
+    py::class_<Lens>(m, "Lens")
         .def(py::init<>())
-        .def("setEinsteinR", &SIS::setEinsteinR)
-        .def("setFile", &SIS::setFile)
+        .def("setEinsteinR", &Lens::setEinsteinR)
+        .def("setNterms", &Lens::setNterms)
+        .def("setFile", &Lens::setFile)
+        ;
+    py::class_<PsiFunctionLens, Lens>(m, "PsiFunctionLens")
+        .def(py::init<>())
         ;
     py::class_<SIS,PsiFunctionLens>(m, "SIS")
         .def(py::init<>())
-        .def("setEinsteinR", &SIS::setEinsteinR)
-        .def("setFile", &SIS::setFile)
         ;
     py::class_<SIE,PsiFunctionLens>(m, "SIE")
         .def(py::init<>())
-        .def("setEinsteinR", &SIE::setEinsteinR)
-        .def("setRatio", &SIE::setRatio)
         .def("setOrientation", &SIE::setOrientation)
-        .def("setFile", &SIE::setFile)
+        .def("setRatio", &SIE::setRatio)
         ;
     py::class_<PointMass,PsiFunctionLens>(m, "PointMass")
         .def(py::init<>())
-        .def("setEinsteinR", &PointMass::setEinsteinR)
-        .def("setFile", &PointMass::setFile)
         ;
     py::class_<ClusterLens,PsiFunctionLens>(m, "ClusterLens")
         .def(py::init<>())
@@ -478,6 +489,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
     pybind11::enum_<PsiSpec>(m, "PsiSpec") 
        .value( "SIE", CSIM_PSI_SIE )
        .value( "SIS", CSIM_PSI_SIS )
+       .value( "Cluster", CSIM_CLUSTER )
        .value( "PM", CSIM_NOPSI_PM ) 
        .value( "Roulette", CSIM_NOPSI_ROULETTE ) 
        .value( "NoPsi", CSIM_NOPSI ) ;
