@@ -40,6 +40,8 @@ endif ()
 pybind11_add_module(CosmoSimPy MODULE cosmosimpy/CosmoSim.cpp cosmosimpy/RouletteSim.cpp)
 target_link_libraries(CosmoSimPy PRIVATE SimLib)
 
+pybind11_add_module(PyTest MODULE cosmosimpy/pytest.cpp)
+
 
 # copy CosmoSimPy.*.pyd into Python directory
 add_custom_command(TARGET CosmoSimPy POST_BUILD
