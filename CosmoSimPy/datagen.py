@@ -35,7 +35,7 @@ def setParameters(sim,row):
     if row.get("config",None) != None:
         sim.setConfigMode( row["config"] )
     elif row.get("cluster",None) != None:
-        sim.setLensMode( row["lens"] )
+        sim.setCluster( row["cluster"] )
     elif row.get("lens",None) != None:
         sim.setLensMode( row["lens"] )
     if row.get("model",None) != None:

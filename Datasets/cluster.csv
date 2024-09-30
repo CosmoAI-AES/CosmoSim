@@ -1,0 +1,4 @@
+index,filename,source,chi,x,y,sigma,sigma2,theta,cluster
+"sie01",sie01.png,e,50, 24,68,30,15,135,"SIE/0/0/48/0.5/0"
+"sis01",sis01.png,e,50, 24,68,30,15,135,"SIS/0/0/48"
+"dbl01",dbl01.png,e,50, 24,68,30,15,135,"SIS/0/20/48;SIS/0/-20/48"
