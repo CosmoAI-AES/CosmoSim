@@ -1,6 +1,8 @@
-/* (C) 2022-23: Hans Georg Schaathun <georg@schaathun.net> */
+/* (C) 2024: Hans Georg Schaathun <georg@schaathun.net> */
+
 
 #include <pybind11/pybind11.h>
+#include <iostream>
 
 namespace py = pybind11;
 
@@ -13,7 +15,7 @@ class Parent {
 } ;
 class Child : public Parent {
    public:
-      void test() ;
+      virtual void test() ;
 } ;
 class PyTest {
    private:
@@ -24,13 +26,14 @@ class PyTest {
 } ;
 
 void Parent::setTest( int n ) {
+   std::cout << "[Parent::setTest] " << testvar << " -> " << n << "\n" ;
    testvar = n ;
 }
 void Child::test() {
    setTest( 4 ) ;
 }
 void PyTest::test() {
-   child->test() ;
+   child->setTest(5) ;
 }
 void PyTest::setChild( Child* c ) {
    child = c ;
