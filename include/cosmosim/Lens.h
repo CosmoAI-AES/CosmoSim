@@ -33,6 +33,7 @@ protected:
     int nterms=20;
 
 public:
+    // virtual ~Lens() = default ;
     virtual void updatePsi( cv::Size ) ;
     virtual void updatePsi( ) ;
     virtual void setEinsteinR( double ) ;

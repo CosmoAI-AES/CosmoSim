@@ -162,6 +162,7 @@ cv::Point2d Lens::getXi( cv::Point2d chieta ) {
 }
 void Lens::setNterms( int n ) {
    std::cout << "[Lens::setNterms] " << n << "\n" ;
+   std::cout << "[Lens::setNterms] " << nterms << "\n" ;
    this->nterms = n ;
    std::cout << "[Lens::setNterms] returns\n" ;
 }
