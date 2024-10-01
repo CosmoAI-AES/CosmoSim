@@ -152,12 +152,12 @@ void CosmoSim::setLensMode(int m) {
       if (DEBUG) std::cout << "[CosmoSim.cpp] setLensMode(" << lensmode << ") unchanged\n" ;
    }
 }
-void CosmoSim::setCluster(ClusterLens *l) { 
-   std::cout << "[CosmoSim::setCluster]\n" ;
+void CosmoSim::setLens(PsiFunctionLens *l) { 
+   std::cout << "[CosmoSim::setLens]\n" ;
    lensmode = CSIM_CLUSTER ; 
    modelchanged = 1 ;
    lens = psilens = l ;
-   std::cout << "[CosmoSim::setCluster] returning\n" ;
+   std::cout << "[CosmoSim::setLens] returning\n" ;
 }
 void CosmoSim::setSampled(int m) { 
    if ( sampledlens != m ) {
@@ -437,7 +437,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("getOffset", &CosmoSim::getOffset)
         .def("getNu", &CosmoSim::getNu)
         .def("getRelativeEta", &CosmoSim::getRelativeEta)
-        .def("setCluster", &CosmoSim::setCluster)
+        .def("setLens", &CosmoSim::setLens)
         ;
 
     py::class_<Lens>(m, "Lens")

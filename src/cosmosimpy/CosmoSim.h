@@ -74,7 +74,7 @@ public:
     void setSourceMode(int);
     void setModelMode(int);
     void setLensMode(int);
-    void setCluster(ClusterLens*);
+    void setLens(PsiFunctionLens*);
     void setSampled(int);
     void setEinsteinR(double);
     void setRatio(double);

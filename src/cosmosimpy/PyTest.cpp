@@ -8,7 +8,7 @@ namespace py = pybind11;
 
 
 class Parent {
-   private:
+   protected:
       int testvar = 2 ;
    public:
       void setTest( int ) ;

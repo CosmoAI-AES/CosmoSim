@@ -25,12 +25,12 @@ protected:
     double einsteinR /* R_E or \xi_0 */,
            ellipseratio=1 /* f */,
 	   orientation=0 /* \phi */ ;
+    int nterms=20;
     std::string filename = "nosuchfile" ;
     cv::Mat psi ;
 
     std::array<std::array<double, 202>, 201> alphas_val;
     std::array<std::array<double, 202>, 201> betas_val;
-    int nterms=20;
 
 public:
     // virtual ~Lens() = default ;

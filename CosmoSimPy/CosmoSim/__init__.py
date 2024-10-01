@@ -169,7 +169,7 @@ class CosmoSim(cs.CosmoSim):
     def maskImage(self,scale=1):
         return super().maskImage( float(scale) )
     def setCluster(self,s):
-        print( f"setCluster({s})")
+        print( f"setLens({s})")
         ll = [ x.split("/") for x in s.split(";") ]
         cluster = cs.ClusterLens()
         cluster.setNterms(5)
@@ -195,7 +195,7 @@ class CosmoSim(cs.CosmoSim):
                 raise Exception( f"Lens Type not Supported {lenstype}" )
             l.setEinsteinR( lensparam[2] )
             cluster.addLens( l, x, y )
-        return super().setCluster(cluster)
+        return super().setLens(cluster)
     def setLensMode(self,s):
         print( f"setLensMode({s})")
         return super().setLensMode( int( lensDict[s] ) ) 
