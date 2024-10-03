@@ -109,11 +109,12 @@ public:
 
 class RotatedModel : public SimulatorModel { 
 public:
-   using SimulatorModel::SimulatorModel ;
+    RotatedModel( PsiFunctionLens *l );
 protected:
     virtual void updateApparentAbs() ;
     virtual cv::Mat getApparent() const ;
     virtual void updateInner();
+    PsiFunctionLens *pmlens ;
 };
 
 class PointMassExact : public RotatedModel { 
