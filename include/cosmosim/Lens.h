@@ -35,10 +35,10 @@ public:
     void setFile(std::string) ;
     void setNterms(int) ;
 
-    virtual double getAlpha( cv::Point2d xi, int m, int s ) = 0 ;
-    virtual double getBeta( cv::Point2d xi, int m, int s ) = 0 ;
     virtual double getAlphaXi( int m, int s ) = 0 ;
     virtual double getBetaXi( int m, int s ) = 0 ;
+    virtual double getAlpha( cv::Point2d xi, int m, int s ) = 0 ;
+    virtual double getBeta( cv::Point2d xi, int m, int s ) = 0 ;
     double getEinsteinR( ) const ;
 
     double getOrientation( ) const ;
