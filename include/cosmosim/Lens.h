@@ -19,8 +19,6 @@ class Lens {
 protected:
     std::string filename = "nosuchfile" ;
 
-    std::array<std::array<double, 202>, 201> alphas_val;
-    std::array<std::array<double, 202>, 201> betas_val;
     int nterms=20;
 
 public:
@@ -31,8 +29,10 @@ public:
     void setFile(std::string) ;
     void setNterms(int) ;
 
-    double getAlphaXi( int m, int s ) ;
-    double getBetaXi( int m, int s ) ;
+    virtual double getAlphaXi( int m, int s ) = 0 ;
+    virtual double getBetaXi( int m, int s ) = 0 ;
+    virtual double getAlpha( cv::Point2d xi, int m, int s ) = 0;
+    virtual double getBeta( cv::Point2d xi, int m, int s ) = 0;
 
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
@@ -46,11 +46,20 @@ public:
 };
 
 class SampledLens : public Lens {
+private:
+    std::array<std::array<cv::Mat, 52>, 51> alphas_val;
+    std::array<std::array<cv::Mat, 52>, 51> betas_val;
+    cv::Point2d refXi ;
 protected:
     cv::Mat psi, psiX, psiY ;
 public:
     virtual void calculateAlphaBeta( cv::Point2d xi );
     virtual cv::Point2d getXi( cv::Point2d ) ;
+
+    virtual double getAlphaXi( int m, int s ) ;
+    virtual double getBetaXi( int m, int s ) ;
+    virtual double getAlpha( cv::Point2d xi, int m, int s ) ;
+    virtual double getBeta( cv::Point2d xi, int m, int s ) ;
 
     virtual double psiValue( double, double ) const ;
     virtual double psiXvalue( double, double ) const ;
@@ -65,6 +74,8 @@ class PsiFunctionLens : public Lens {
 private:
     std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> alphas_l;
     std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> betas_l;
+    std::array<std::array<double, 202>, 201> alphas_val;
+    std::array<std::array<double, 202>, 201> betas_val;
 protected:
     double einsteinR /* R_E or \xi_0 */,
            ellipseratio=1 /* f */,
@@ -73,8 +84,10 @@ public:
     virtual void initAlphasBetas();
     virtual void calculateAlphaBeta( cv::Point2d xi );
 
-    double getAlpha( cv::Point2d xi, int m, int s ) ;
-    double getBeta( cv::Point2d xi, int m, int s ) ;
+    virtual double getAlphaXi( int m, int s ) ;
+    virtual double getBetaXi( int m, int s ) ;
+    virtual double getAlpha( cv::Point2d xi, int m, int s ) ;
+    virtual double getBeta( cv::Point2d xi, int m, int s ) ;
 
     virtual void setEinsteinR( double ) ;
     double getEinsteinR( ) const ;

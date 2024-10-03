@@ -65,9 +65,10 @@ void SampledLens::calculateAlphaBeta( cv::Point2d xi ) {
 
     int mp, m, s ;
     double C ;
-    // std::cout << psi ;
     cv::Mat psi, matA, matB, matAouter, matBouter, matAx, matAy, matBx, matBy ;
     cv::Point2d ij ;
+
+    refXi = xi ;
 
     this->updatePsi() ;
     psi = -this->getPsi() ;
@@ -98,12 +99,8 @@ void SampledLens::calculateAlphaBeta( cv::Point2d xi ) {
         matA = matAouter.clone() ;
         matB = matBouter.clone() ;
 
-        alphas_val[m][s] = matA.at<double>( ij ) ;
-        betas_val[m][s] =  matB.at<double>( ij ) ;
-        if (DEBUG) std::cout 
-              << "SampledLens (" << m << ", " << s << ") " 
-              << alphas_val[m][s]  << "/"
-              << betas_val[m][s] << "\n"  ;
+        alphas_val[m][s] = matA ;
+        betas_val[m][s] =  matB ;
 
         while( s > 0 && m < nterms ) {
             ++m ; --s ;
@@ -116,12 +113,9 @@ void SampledLens::calculateAlphaBeta( cv::Point2d xi ) {
             matA = C*(matAx + matBy) ;
             matB = C*(matBx - matAy) ;
 
-            alphas_val[m][s] = matA.at<double>( ij ) ;
-            betas_val[m][s] =  matB.at<double>( ij ) ;
-            if (DEBUG) std::cout 
-              << "SampledLens (" << m << ", " << s << ") " 
-              << alphas_val[m][s]  << "/"
-              << betas_val[m][s] << "\n"  ;
+            alphas_val[m][s] = matA ;
+            betas_val[m][s] =  matB ;
+
         }
     }
 }
@@ -145,4 +139,18 @@ void SampledLens::updatePsi( ) {
 }
 void SampledLens::updatePsi( cv::Size size ) { 
    return ; 
+}
+
+
+double SampledLens::getAlphaXi( int m, int s ) {
+   return alphas_val[m][s].at<double>( refXi ) ;
+}
+double SampledLens::getBetaXi( int m, int s ) {
+   return betas_val[m][s].at<double>( refXi ) ;
+}
+double SampledLens::getAlpha( cv::Point2d xi, int m, int s ) {
+   return alphas_val[m][s].at<double>( xi ) ;
+}
+double SampledLens::getBeta( cv::Point2d xi, int m, int s ) {
+   return betas_val[m][s].at<double>( xi ) ;
 }

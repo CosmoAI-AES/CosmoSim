@@ -21,12 +21,6 @@ void Lens::calculateAlphaBeta( cv::Point2d xi ) {
    throw NotImplemented() ;
 }
 
-double Lens::getAlphaXi( int m, int s ) {
-   return alphas_val[m][s] ;
-}
-double Lens::getBetaXi( int m, int s ) {
-   return betas_val[m][s] ;
-}
 cv::Point2d Lens::getXi( cv::Point2d chieta ) {
 
    return chieta + cv::Point2d( 

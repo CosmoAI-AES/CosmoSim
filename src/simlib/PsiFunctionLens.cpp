@@ -20,6 +20,12 @@ void PsiFunctionLens::setEinsteinR( double r ) { einsteinR = r ; }
 double PsiFunctionLens::getEinsteinR() const {
    return einsteinR ;
 }
+double PsiFunctionLens::getAlphaXi( int m, int s ) {
+   return alphas_val[m][s] ;
+}
+double PsiFunctionLens::getBetaXi( int m, int s ) {
+   return betas_val[m][s] ;
+}
 
 double PsiFunctionLens::getAlpha( cv::Point2d xi, int m, int s ) {
    double theta = orientation*PI/180 ;
@@ -86,4 +92,5 @@ void PsiFunctionLens::initAlphasBetas() {
             betas_l[std::stoi(m)][std::stoi(s)].init({x, y, g, f, p}, *beta_sym);
         }
     }
+    std::cout << "initAlphasBetas concludes \n" ;
 }
