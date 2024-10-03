@@ -264,9 +264,9 @@ bool CosmoSim::runSim() {
          sim->setPolar( rPos, thetaPos ) ;
       }
       if ( lens != NULL ) {
-         lens->setEinsteinR( einsteinR ) ;
-         lens->setRatio( ellipseratio ) ;
-         lens->setOrientation( orientation ) ;
+         psilens->setEinsteinR( einsteinR ) ;
+         psilens->setRatio( ellipseratio ) ;
+         psilens->setOrientation( orientation ) ;
          lens->initAlphasBetas() ;
       }
    }
