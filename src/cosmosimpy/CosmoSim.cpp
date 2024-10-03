@@ -172,11 +172,11 @@ void CosmoSim::initLens() {
           break ;
        case CSIM_PSI_SIE:
           lens = psilens = new SIE() ;
-          lens->setFile(filename[CSIM_PSI_SIE]) ;
+          psilens->setFile(filename[CSIM_PSI_SIE]) ;
           break ;
        case CSIM_PSI_SIS:
           lens = psilens = new SIS() ;
-          lens->setFile(filename[CSIM_PSI_SIS]) ;
+          psilens->setFile(filename[CSIM_PSI_SIS]) ;
           break ;
        case CSIM_NOPSI_PM:
           lens = psilens = new PointMass() ;
@@ -193,7 +193,7 @@ void CosmoSim::initLens() {
    }
    if ( sampledlens ) {
      lens = new SampledPsiFunctionLens( psilens ) ;
-     lens->setFile(filename[lensmode]) ;
+     psilens->setFile(filename[lensmode]) ;
    }
    std::cout << "switch( modelmode )\n" ;
    switch ( modelmode ) {
@@ -284,8 +284,11 @@ bool CosmoSim::runSim() {
    sim->setNterms( nterms ) ;
    sim->setMaskRadius( maskRadius ) ;
    std::cout << "[runSim] initialised\n" ;
+<<<<<<< HEAD
    if ( lens != NULL ) lens->setNterms( nterms ) ;
    std::cout  << "[runLens] config 2\n" ;
+=======
+>>>>>>> refactor/lens/simplification2
    sim->setMaskMode( maskmode ) ;
    std::cout << "[runSim] setNterms\n" ;
    if ( CSIM_NOPSI_ROULETTE != lensmode ) {

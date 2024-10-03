@@ -18,14 +18,12 @@ class Lens {
 
 protected:
     std::string filename = "nosuchfile" ;
-    int nterms=20;
 
 public:
 
     virtual void initAlphasBetas() = 0 ;
-    virtual void calculateAlphaBeta( cv::Point2d xi ) = 0;
+    virtual void calculateAlphaBeta( cv::Point2d, int ) = 0;
     void setFile(std::string) ;
-    void setNterms(int) ;
 
     virtual double getAlphaXi( int m, int s ) = 0 ;
     virtual double getBetaXi( int m, int s ) = 0 ;
@@ -50,7 +48,7 @@ protected:
     cv::Mat psi, psiX, psiY ;
 public:
     virtual void initAlphasBetas();
-    virtual void calculateAlphaBeta( cv::Point2d xi );
+    virtual void calculateAlphaBeta( cv::Point2d, int );
     virtual cv::Point2d getXi( cv::Point2d ) ;
 
     virtual double getAlphaXi( int m, int s ) ;
@@ -80,7 +78,7 @@ protected:
 	   orientation=0 /* \phi */ ;
 public:
     virtual void initAlphasBetas();
-    virtual void calculateAlphaBeta( cv::Point2d xi );
+    virtual void calculateAlphaBeta( cv::Point2d, int );
 
     virtual double getAlphaXi( int m, int s ) ;
     virtual double getBetaXi( int m, int s ) ;

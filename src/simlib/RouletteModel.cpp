@@ -79,5 +79,5 @@ void RouletteModel::calculateAlphaBeta() {
     }
     if ( lens == NULL ) throw NotSupported() ;
 
-    lens->calculateAlphaBeta( xi ) ;
+    lens->calculateAlphaBeta( xi, nterms ) ;
 }
