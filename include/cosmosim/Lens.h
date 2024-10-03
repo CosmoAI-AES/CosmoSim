@@ -20,9 +20,6 @@ private:
 
 
 protected:
-    double einsteinR /* R_E or \xi_0 */,
-           ellipseratio=1 /* f */,
-	   orientation=0 /* \phi */ ;
     std::string filename = "nosuchfile" ;
 
     std::array<std::array<double, 202>, 201> alphas_val;
@@ -30,9 +27,6 @@ protected:
     int nterms=20;
 
 public:
-    virtual void setEinsteinR( double ) ;
-    virtual void setOrientation( double ) ;
-    virtual void setRatio( double ) ;
 
 
     virtual void initAlphasBetas();
@@ -44,9 +38,7 @@ public:
     double getBeta( cv::Point2d xi, int m, int s ) ;
     double getAlphaXi( int m, int s ) ;
     double getBetaXi( int m, int s ) ;
-    double getEinsteinR( ) const ;
 
-    double getOrientation( ) const ;
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
 
@@ -75,7 +67,16 @@ public:
 } ;
 
 class PsiFunctionLens : public Lens {
+protected:
+    double einsteinR /* R_E or \xi_0 */,
+           ellipseratio=1 /* f */,
+	   orientation=0 /* \phi */ ;
 public:
+    virtual void setEinsteinR( double ) ;
+    double getEinsteinR( ) const ;
+    virtual void setOrientation( double ) ;
+    double getOrientation( ) const ;
+    virtual void setRatio( double ) ;
 
 } ;
 
@@ -85,9 +86,6 @@ class SampledPsiFunctionLens : public SampledLens {
    public:
       SampledPsiFunctionLens(PsiFunctionLens*) ;
       virtual void updatePsi( cv::Size ) ;
-      virtual void setEinsteinR( double ) ;
-      virtual void setOrientation( double ) ;
-      virtual void setRatio( double ) ;
       virtual double criticalXi( double ) const ;
       virtual cv::Point2d caustic( double phi ) const ;
 } ;

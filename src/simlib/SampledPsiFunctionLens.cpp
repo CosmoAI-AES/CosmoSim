@@ -6,15 +6,6 @@
 SampledPsiFunctionLens::SampledPsiFunctionLens( PsiFunctionLens *psilens ) {
    lens = psilens ;
 }
-void SampledPsiFunctionLens::setEinsteinR( double r ) {
-   lens->setEinsteinR( einsteinR = r ) ; 
-}
-void SampledPsiFunctionLens::setOrientation( double r ) {
-   lens->setOrientation( orientation = r ) ; 
-}
-void SampledPsiFunctionLens::setRatio( double r ) {
-   lens->setRatio( ellipseratio = r ) ; 
-}
 
 void SampledPsiFunctionLens::updatePsi( cv::Size size ) { 
 
