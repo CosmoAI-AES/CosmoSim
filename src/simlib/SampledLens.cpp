@@ -66,11 +66,13 @@ void SampledLens::calculateAlphaBeta( cv::Point2d xi ) {
     int mp, m, s ;
     double C ;
     cv::Mat psi, matA, matB, matAouter, matBouter, matAx, matAy, matBx, matBy ;
+    cv::Point2d refIJ ;
+
 
 
     this->updatePsi() ;
     psi = -this->getPsi() ;
-    cv::Point2d refIJ = imageCoordinate( xi, psi ) ;
+    refIJ = imageCoordinate( xi, psi ) ;
 
     if (DEBUG) std::cout
               << "[SampledLens::calculateAlpaBeta] xi in image space is "
