@@ -24,7 +24,6 @@ protected:
            ellipseratio=1 /* f */,
 	   orientation=0 /* \phi */ ;
     std::string filename = "nosuchfile" ;
-    cv::Mat psi ;
 
     std::array<std::array<double, 202>, 201> alphas_val;
     std::array<std::array<double, 202>, 201> betas_val;
@@ -61,7 +60,7 @@ public:
 
 class SampledLens : public Lens {
 protected:
-    cv::Mat psiX, psiY ;
+    cv::Mat psi, psiX, psiY ;
 public:
     virtual void calculateAlphaBeta( cv::Point2d xi );
     virtual cv::Point2d getXi( cv::Point2d ) ;
