@@ -80,7 +80,7 @@ double PsiFunctionLens::getBetaXi( int m, int s ) {
    return betas_val[m][s] ;
 }
 
-void Lens::setFile( std::string fn ) {
+void PsiFunctionLens::setFile( std::string fn ) {
    filename = fn ;
    std::cout << "setFile " << filename << "\n" ;
 } 

@@ -13,18 +13,10 @@
 using namespace SymEngine;
 
 class Lens {
-
-
-
-protected:
-    std::string filename = "nosuchfile" ;
-
-
 public:
 
     virtual void initAlphasBetas() = 0 ;
     virtual void calculateAlphaBeta( cv::Point2d, int ) = 0;
-    void setFile(std::string) ;
 
     virtual double getAlphaXi( int m, int s ) = 0 ;
     virtual double getBetaXi( int m, int s ) = 0 ;
@@ -72,6 +64,7 @@ private:
     std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> betas_l;
     std::array<std::array<double, 202>, 201> alphas_val;
     std::array<std::array<double, 202>, 201> betas_val;
+    std::string filename = "nosuchfile" ;
 protected:
     double einsteinR /* R_E or \xi_0 */,
            ellipseratio=1 /* f */,
@@ -79,6 +72,8 @@ protected:
 public:
     virtual void initAlphasBetas();
     virtual void calculateAlphaBeta( cv::Point2d, int );
+
+    void setFile(std::string) ;
 
     virtual double getAlphaXi( int m, int s ) ;
     virtual double getBetaXi( int m, int s ) ;
