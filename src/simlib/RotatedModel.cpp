@@ -65,7 +65,6 @@ void RotatedModel::updateInner( ) {
 
 void RotatedModel::updateApparentAbs( ) {
     cv::Mat im = getActual() ;
-    lens->updatePsi(im.size()) ;
     cv::Point2d chieta = cv::Point2d( CHI*getEtaAbs(), 0 ) ;
     cv::Point2d xi1 = lens->getXi( chieta ) ;
     setNu( xi1/CHI ) ;

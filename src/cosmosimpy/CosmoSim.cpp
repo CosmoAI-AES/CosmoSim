@@ -119,16 +119,6 @@ void CosmoSim::setSourceFile( std::string fn ) {
     sourcefile = fn ;
 } 
 
-cv::Mat CosmoSim::getPsiMap( ) {
-   cv::Mat im = lens->getPsi() ;
-   return im ;
-} 
-cv::Mat CosmoSim::getMassMap( ) {
-   throw NotImplemented();
-   // cv::Mat im = lens->getMassMap() ;
-   // return im ;
-} 
-
 void CosmoSim::setCHI(double c) { chi = c/100.0 ; }
 void CosmoSim::setNterms(int c) { nterms = c ; }
 void CosmoSim::setMaskRadius(double c) { maskRadius = c ; }
@@ -427,8 +417,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setBGColour", &CosmoSim::setBGColour)
         .def("setFile", &CosmoSim::setFile)
         .def("setSourceFile", &CosmoSim::setSourceFile)
-        .def("getPsiMap", &CosmoSim::getPsiMap)
-        .def("getMassMap", &CosmoSim::getMassMap)
         .def("getAlpha", &CosmoSim::getAlpha)
         .def("getBeta", &CosmoSim::getBeta)
         .def("getAlphaXi", &CosmoSim::getAlphaXi)

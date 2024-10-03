@@ -27,33 +27,21 @@ protected:
 	   orientation=0 /* \phi */ ;
     int nterms=20;
     std::string filename = "nosuchfile" ;
-    cv::Mat psi ;
 
     std::array<std::array<double, 202>, 201> alphas_val;
     std::array<std::array<double, 202>, 201> betas_val;
 
 public:
-    // virtual ~Lens() = default ;
-    virtual void updatePsi( cv::Size ) ;
-    virtual void updatePsi( ) ;
     virtual void setEinsteinR( double ) ;
     virtual void setOrientation( double ) ;
     virtual void setRatio( double ) ;
 
-    cv::Mat getPsi( ) const ;
-    // cv::Mat getPsiX( ) const ;
-    // cv::Mat getPsiY( ) const ;
-    // cv::Mat getMassMap( ) const ;
-    // cv::Mat getPsiImage( ) const ;  // Discouraged
-    // cv::Mat getMassImage() const ;  // Discouraged
 
     virtual void initAlphasBetas();
     virtual void calculateAlphaBeta( cv::Point2d xi );
     void setFile(std::string) ;
     void setNterms(int) ;
 
-    // std::array<std::array<double, 202>, 201> getAlphas( cv::Point2d xi ) ;
-    // std::array<std::array<double, 202>, 201> getBetas( cv::Point2d xi ) ;
     double getAlpha( cv::Point2d xi, int m, int s ) ;
     double getBeta( cv::Point2d xi, int m, int s ) ;
     double getAlphaXi( int m, int s ) ;
@@ -74,7 +62,7 @@ public:
 
 class SampledLens : public Lens {
 protected:
-    cv::Mat psiX, psiY ;
+    cv::Mat psi, psiX, psiY ;
 public:
     virtual void calculateAlphaBeta( cv::Point2d xi );
     virtual cv::Point2d getXi( cv::Point2d ) ;
@@ -82,12 +70,15 @@ public:
     virtual double psiValue( double, double ) const ;
     virtual double psiXvalue( double, double ) const ;
     virtual double psiYvalue( double, double ) const ;
+
+    virtual void updatePsi( cv::Size ) ;
+    virtual void updatePsi( ) ;
+    cv::Mat getPsi( ) const ;
 } ;
 
 
 class PsiFunctionLens : public Lens {
 public:
-    virtual void updatePsi( cv::Size ) ;
 } ;
 
 class SampledPsiFunctionLens : public SampledLens {
