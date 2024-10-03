@@ -43,12 +43,10 @@ cv::Mat SimulatorModel::getDistorted() const {
 
 void SimulatorModel::update( ) {
    updateApparentAbs() ;
-   std::cout << "[SimulatorModel::update]\n" ;
    return updateInner() ;
 }
 void SimulatorModel::update( cv::Point2d xi ) {
    setXi( xi ) ;
-   std::cout << "[SimulatorModel::update]\n" ;
    return updateInner() ;
 }
 cv::Mat SimulatorModel::getCaustic() {
