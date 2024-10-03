@@ -284,11 +284,6 @@ bool CosmoSim::runSim() {
    sim->setNterms( nterms ) ;
    sim->setMaskRadius( maskRadius ) ;
    std::cout << "[runSim] initialised\n" ;
-<<<<<<< HEAD
-   if ( lens != NULL ) lens->setNterms( nterms ) ;
-   std::cout  << "[runLens] config 2\n" ;
-=======
->>>>>>> refactor/lens/simplification2
    sim->setMaskMode( maskmode ) ;
    std::cout << "[runSim] setNterms\n" ;
    if ( CSIM_NOPSI_ROULETTE != lensmode ) {
