@@ -13,7 +13,7 @@ void Lens::setFile( std::string fn ) {
    std::cout << "setFile " << filename << "\n" ;
 } 
 void Lens::initAlphasBetas() {
-   std::cout << "[Lens.calculateAlphaBeta()] does nothing" ;
+   std::cout << "[Lens.initAlphaBeta()] does nothing\n" ;
 }
 
 

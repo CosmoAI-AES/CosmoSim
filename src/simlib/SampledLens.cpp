@@ -74,7 +74,7 @@ void SampledLens::calculateAlphaBeta( cv::Point2d xi ) {
 
     if (DEBUG) std::cout
               << "[SampledLens::calculateAlpaBeta] xi in image space is "
-              << "; nterms=" << nterms << "\n" ;
+              << refIJ << "; nterms=" << nterms << "\n" ;
 
     for ( mp = 0; mp <= nterms; mp++){
         s = mp+1 ; m = mp ;
