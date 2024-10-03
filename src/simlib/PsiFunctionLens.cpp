@@ -44,7 +44,7 @@ void PsiFunctionLens::initAlphasBetas() {
     }
 }
 
-void PsiFunctionLens::calculateAlphaBeta( cv::Point2d xi ) {
+void PsiFunctionLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
    if (DEBUG) std::cout 
               << "[Lens.calculateAlphaBeta()] " << nterms << "; " 
               << einsteinR << " - " << xi << "\n"  ;
@@ -80,6 +80,10 @@ double PsiFunctionLens::getBetaXi( int m, int s ) {
    return betas_val[m][s] ;
 }
 
+void Lens::setFile( std::string fn ) {
+   filename = fn ;
+   std::cout << "setFile " << filename << "\n" ;
+} 
 
 void PsiFunctionLens::setEinsteinR( double r ) { einsteinR = r ; }
 double PsiFunctionLens::getEinsteinR() const { return einsteinR ; }

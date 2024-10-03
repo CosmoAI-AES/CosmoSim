@@ -63,7 +63,7 @@ void SampledLens::initAlphasBetas() {
    std::cout << "[SampledLens::initAlphasBetas] does nothing\n" ;
 }
 
-void SampledLens::calculateAlphaBeta( cv::Point2d xi ) {
+void SampledLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
 
     // Calculate all amplitudes for given X, Y, einsteinR
 

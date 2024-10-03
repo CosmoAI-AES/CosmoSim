@@ -7,22 +7,12 @@
 #define DEBUG 0
 #endif
 
-
-
-void Lens::setFile( std::string fn ) {
-   filename = fn ;
-   std::cout << "setFile " << filename << "\n" ;
-} 
-
 cv::Point2d Lens::getXi( cv::Point2d chieta ) {
 
    return chieta + cv::Point2d( 
          psiXvalue(chieta.x, chieta.y ),
          psiYvalue(chieta.x, chieta.y ) ) ;
 
-}
-void Lens::setNterms( int n ) {
-   nterms = n ;
 }
 
 double Lens::criticalXi( double phi ) const {
