@@ -6,7 +6,7 @@
 #include <opencv2/opencv.hpp>
 
 #ifndef DEBUG
-#define DEBUG 0
+#define DEBUG 1
 #endif
 
 namespace py = pybind11;
@@ -145,6 +145,7 @@ void CosmoSim::initLens() {
    if ( ! modelchanged ) return ;
    if ( sim ) delete sim ;
    psilens = NULL ;
+   std::cout << "switch( lensmode )\n" ;
    switch ( lensmode ) {
        case CSIM_PSI_SIE:
           lens = psilens = new SIE() ;
@@ -156,6 +157,7 @@ void CosmoSim::initLens() {
           break ;
        case CSIM_NOPSI_PM:
           lens = psilens = new PointMass() ;
+          std::cout << "CSIM_NOPSI_PM\n" ;
           break ;
        case CSIM_NOPSI:
           if (DEBUG) std::cout << "[initLens] Point Mass or No Lens (" 
@@ -170,15 +172,18 @@ void CosmoSim::initLens() {
      lens = new SampledPsiFunctionLens( psilens ) ;
      lens->setFile(filename[lensmode]) ;
    }
+   std::cout << "switch( modelmode )\n" ;
    switch ( modelmode ) {
        case CSIM_MODEL_POINTMASS_ROULETTE:
          if (DEBUG) std::cout << "Running Roulette Point Mass Lens (mode=" 
                    << modelmode << ")\n" ;
          sim = new PointMassRoulette( psilens ) ;
+         std::cout << "CSIM_MODEL_POINTMASS_ROULETTE\n" ;
          break ;
        case CSIM_MODEL_POINTMASS_EXACT:
          if (DEBUG) std::cout << "Running Point Mass Lens (mode=" << modelmode << ")\n" ;
          sim = new PointMassExact( psilens ) ;
+          std::cout << "CSIM_MODEL_POINTMASS_EXACT\n" ;
          break ;
        case CSIM_MODEL_RAYTRACE:
          if (DEBUG) std::cout << "Running Raytrace Lens (mode=" << modelmode << ")\n" ;
@@ -244,6 +249,7 @@ bool CosmoSim::runSim() {
    if ( running ) {
       return false ;
    }
+   std::cout << "[runSim]\n" ;
    initLens() ;
    if ( sim == NULL ) {
       throw std::bad_function_call() ;
@@ -252,8 +258,10 @@ bool CosmoSim::runSim() {
    sim->setBGColour( bgcolour ) ;
    sim->setNterms( nterms ) ;
    sim->setMaskRadius( maskRadius ) ;
+   std::cout << "[runSim] initialised\n" ;
    if ( lens != NULL ) lens->setNterms( nterms ) ;
    sim->setMaskMode( maskmode ) ;
+   std::cout << "[runSim] setNterms\n" ;
    if ( CSIM_NOPSI_ROULETTE != lensmode ) {
       sim->setCHI( chi ) ;
       if ( rPos < 0 ) {
@@ -261,11 +269,14 @@ bool CosmoSim::runSim() {
       } else {
          sim->setPolar( rPos, thetaPos ) ;
       }
+      std::cout << "[runSim] set source pos\n" ;
       if ( lens != NULL ) {
          psilens->setEinsteinR( einsteinR ) ;
          psilens->setRatio( ellipseratio ) ;
          psilens->setOrientation( orientation ) ;
+         std::cout << "[runSim] ready for initAlphasBetas\n" ;
          lens->initAlphasBetas() ;
+         std::cout << "[runSim] done initAlphasBetas\n" ;
       }
    }
    Py_BEGIN_ALLOW_THREADS

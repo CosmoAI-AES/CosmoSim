@@ -15,7 +15,7 @@
 #endif
 
 RotatedModel::RotatedModel( PsiFunctionLens *l ) {
-   pmlens = l ;
+   lens = pmlens = l ;
 }
 
 cv::Mat RotatedModel::getApparent() const {
@@ -68,9 +68,13 @@ void RotatedModel::updateInner( ) {
 }
 
 void RotatedModel::updateApparentAbs( ) {
+    std::cout << "[RotatedModel::updateApparentAbs] 1\n" ;
     cv::Mat im = getActual() ;
     cv::Point2d chieta = cv::Point2d( CHI*getEtaAbs(), 0 ) ;
+    std::cout << "[RotatedModel::updateApparentAbs] 2\n" ;
     cv::Point2d xi1 = lens->getXi( chieta ) ;
+    std::cout << "[RotatedModel::updateApparentAbs] 3\n" ;
     setNu( xi1/CHI ) ;
+    std::cout << "[RotatedModel::updateApparentAbs] 4\n" ;
 }
 

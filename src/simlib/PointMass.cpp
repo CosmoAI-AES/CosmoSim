@@ -20,7 +20,10 @@ double PointMass::psiYvalue( double x, double y ) const {
 }
 
 cv::Point2d PointMass::getXi( cv::Point2d chieta ) {
+   std::cout << "[PointMass.getXi]\n" ;
+   std::cout << "[PointMass.getXi]" << chieta << "\n" ;
    double c = chieta.x*chieta.x + chieta.y*chieta.y ;
    double root = sqrt(0.25*c + einsteinR*einsteinR) ; // /CHI
+   std::cout << "[PointMass.getXi] returning\n" ;
    return chieta/2 + root*chieta/sqrt(c) ;
 }

@@ -49,7 +49,7 @@ class SampledLens : public Lens {
 private:
     std::array<std::array<cv::Mat, 52>, 51> alphas_val;
     std::array<std::array<cv::Mat, 52>, 51> betas_val;
-    cv::Point2d refXi ;
+    cv::Point2d refIJ ;
 protected:
     cv::Mat psi, psiX, psiY ;
 public:

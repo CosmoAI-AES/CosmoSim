@@ -66,17 +66,15 @@ void SampledLens::calculateAlphaBeta( cv::Point2d xi ) {
     int mp, m, s ;
     double C ;
     cv::Mat psi, matA, matB, matAouter, matBouter, matAx, matAy, matBx, matBy ;
-    cv::Point2d ij ;
 
-    refXi = xi ;
 
     this->updatePsi() ;
     psi = -this->getPsi() ;
-    ij = imageCoordinate( xi, psi ) ;
+    cv::Point2d refIJ = imageCoordinate( xi, psi ) ;
 
     if (DEBUG) std::cout
               << "[SampledLens::calculateAlpaBeta] xi in image space is "
-              << ij << "; nterms=" << nterms << "\n" ;
+              << "; nterms=" << nterms << "\n" ;
 
     for ( mp = 0; mp <= nterms; mp++){
         s = mp+1 ; m = mp ;
@@ -99,8 +97,8 @@ void SampledLens::calculateAlphaBeta( cv::Point2d xi ) {
         matA = matAouter.clone() ;
         matB = matBouter.clone() ;
 
-        alphas_val[m][s] = matA ;
-        betas_val[m][s] =  matB ;
+        alphas_val[m][s] = matA.clone() ;
+        betas_val[m][s] =  matB.clone() ;
 
         while( s > 0 && m < nterms ) {
             ++m ; --s ;
@@ -113,8 +111,8 @@ void SampledLens::calculateAlphaBeta( cv::Point2d xi ) {
             matA = C*(matAx + matBy) ;
             matB = C*(matBx - matAy) ;
 
-            alphas_val[m][s] = matA ;
-            betas_val[m][s] =  matB ;
+            alphas_val[m][s] = matA.clone() ;
+            betas_val[m][s] =  matB.clone() ;
 
         }
     }
@@ -143,14 +141,16 @@ void SampledLens::updatePsi( cv::Size size ) {
 
 
 double SampledLens::getAlphaXi( int m, int s ) {
-   return alphas_val[m][s].at<double>( refXi ) ;
+   return alphas_val[m][s].at<double>( refIJ ) ;
 }
 double SampledLens::getBetaXi( int m, int s ) {
-   return betas_val[m][s].at<double>( refXi ) ;
+   return betas_val[m][s].at<double>( refIJ ) ;
 }
 double SampledLens::getAlpha( cv::Point2d xi, int m, int s ) {
-   return alphas_val[m][s].at<double>( xi ) ;
+   cv::Point2d ij = imageCoordinate( xi, psi ) ;
+   return alphas_val[m][s].at<double>( ij ) ;
 }
 double SampledLens::getBeta( cv::Point2d xi, int m, int s ) {
-   return betas_val[m][s].at<double>( xi ) ;
+   cv::Point2d ij = imageCoordinate( xi, psi ) ;
+   return betas_val[m][s].at<double>( ij ) ;
 }
