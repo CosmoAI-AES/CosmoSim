@@ -10,12 +10,6 @@
 #define DEBUG 0
 #endif
 
-void Lens::updatePsi( ) { 
-   return updatePsi( cv::Size(400,400) ) ;
-}
-void Lens::updatePsi( cv::Size size ) { 
-   return ; 
-}
 void Lens::setEinsteinR( double r ) { einsteinR = r ; }
 void Lens::setRatio( double r ) { 
    ellipseratio = r ; 
@@ -24,9 +18,6 @@ void Lens::setRatio( double r ) {
 }
 void Lens::setOrientation( double r ) { orientation = r ; }
 
-cv::Mat Lens::getPsi() const {
-   return psi ;
-}
 
 double Lens::getEinsteinR() const {
    return einsteinR ;

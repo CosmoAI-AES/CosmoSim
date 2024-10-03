@@ -137,3 +137,12 @@ double SampledLens::psiYvalue( double x, double y ) const {
    cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
    return -psiX.at<double>( ij ) ;
 }
+cv::Mat SampledLens::getPsi() const {
+   return psi ;
+}
+void SampledLens::updatePsi( ) { 
+   return updatePsi( cv::Size(400,400) ) ;
+}
+void SampledLens::updatePsi( cv::Size size ) { 
+   return ; 
+}

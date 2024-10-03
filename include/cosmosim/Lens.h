@@ -31,13 +31,10 @@ protected:
     int nterms=20;
 
 public:
-    virtual void updatePsi( cv::Size ) ;
-    virtual void updatePsi( ) ;
     virtual void setEinsteinR( double ) ;
     virtual void setOrientation( double ) ;
     virtual void setRatio( double ) ;
 
-    cv::Mat getPsi( ) const ;
 
     virtual void initAlphasBetas();
     virtual void calculateAlphaBeta( cv::Point2d xi );
@@ -72,11 +69,14 @@ public:
     virtual double psiValue( double, double ) const ;
     virtual double psiXvalue( double, double ) const ;
     virtual double psiYvalue( double, double ) const ;
+
+    virtual void updatePsi( cv::Size ) ;
+    virtual void updatePsi( ) ;
+    cv::Mat getPsi( ) const ;
 } ;
 
 class PsiFunctionLens : public Lens {
 public:
-    virtual void updatePsi( cv::Size ) ;
 
 } ;
 
