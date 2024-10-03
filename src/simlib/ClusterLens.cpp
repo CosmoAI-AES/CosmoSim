@@ -39,7 +39,7 @@ double ClusterLens::psiYvalue( double x, double y ) const {
    }
    return r ;
 }
-void ClusterLens::calculateAlphaBeta( cv::Point2d xi ) {
+void ClusterLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
    if (DEBUG) std::cout 
               << "[ClusterLens->calculateAlphaBeta()] " << nterms << "; " 
               << xi << "\n"  ;
@@ -51,8 +51,7 @@ void ClusterLens::calculateAlphaBeta( cv::Point2d xi ) {
          }
    }
    for ( int i=0 ; i<this->nlens ; ++i ) {
-       this->lens[i]->setNterms( nterms ) ;
-       this->lens[i]->calculateAlphaBeta( xi ) ;
+       this->lens[i]->calculateAlphaBeta( xi, nterms ) ;
        for (int m = 1; m <= nterms; m++){
          for (int s = 0; s <= (m+1); s++){
             alphas_val[m][s] += this->lens[i]->getAlphaXi(m,s) ;

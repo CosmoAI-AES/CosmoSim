@@ -150,7 +150,7 @@ private:
 public:
     // virtual void addLens( PsiFunctionLens* );
     virtual void addLens( PsiFunctionLens*, double, double );
-    virtual void calculateAlphaBeta( cv::Point2d xi );
+    virtual void calculateAlphaBeta( cv::Point2d, int );
     virtual cv::Point2d getXi( cv::Point2d ) ;
 
     virtual double psiValue( double, double ) const ;

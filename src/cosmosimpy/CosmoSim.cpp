@@ -435,7 +435,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
     py::class_<PsiFunctionLens>(m, "PsiFunctionLens")
         .def(py::init<>())
         .def("setEinsteinR", &PsiFunctionLens::setEinsteinR)
-        .def("setNterms", &PsiFunctionLens::setNterms)
         .def("setFile", &PsiFunctionLens::setFile)
         ;
     py::class_<SIS,PsiFunctionLens>(m, "SIS")
