@@ -61,5 +61,6 @@ void ClusterLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
    }
 }
 cv::Point2d ClusterLens::getXi( cv::Point2d chieta ) {
+   std::cout << "[ClusterLens::getXi] not implemented\n" ;
    throw NotImplemented() ;
 }

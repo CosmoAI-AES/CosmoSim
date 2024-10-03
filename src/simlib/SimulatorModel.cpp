@@ -9,7 +9,7 @@
 #include <thread>
 
 #undef DEBUG
-#define DEBUG 0
+#define DEBUG 1
 
 SimulatorModel::SimulatorModel() :
         CHI(0.5),
@@ -43,10 +43,12 @@ cv::Mat SimulatorModel::getDistorted() const {
 
 void SimulatorModel::update( ) {
    updateApparentAbs() ;
+   std::cout << "[SimulatorModel::update] Done updateApparentAbs()\n" ;
    return updateInner() ;
 }
 void SimulatorModel::update( cv::Point2d xi ) {
    setXi( xi ) ;
+   std::cout << "[SimulatorModel::update] Done setXi()\n" ;
    return updateInner() ;
 }
 cv::Mat SimulatorModel::getCaustic() {
@@ -412,9 +414,13 @@ cv::Point2d SimulatorModel::getOffset( cv::Point2d xi1 ) {
 }
 
 void SimulatorModel::updateApparentAbs( ) {
+    std::cout << "[SimulatorModel::updateApparentAbs] 1\n" ;
     cv::Mat im = getActual() ;
+    std::cout << "[SimulatorModel::updateApparentAbs] 2\n" ;
     cv::Point2d chieta = CHI*getEta() ;
+    std::cout << "[SimulatorModel::updateApparentAbs] 3\n" ;
     cv::Point2d xi1 = lens->getXi( chieta ) ;
+    std::cout << "[SimulatorModel::updateApparentAbs] 4\n" ;
     setNu( xi1/CHI ) ;
 }
 

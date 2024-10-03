@@ -172,7 +172,6 @@ class CosmoSim(cs.CosmoSim):
         print( f"setLens({s})")
         ll = [ x.split("/") for x in s.split(";") ]
         cluster = cs.ClusterLens()
-        cluster.setNterms(5)
         for lens in ll:
             lenstype = lens[0]
             lensparam = [ float(x) for x in lens[1:] ]
