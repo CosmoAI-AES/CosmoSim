@@ -14,9 +14,6 @@ using namespace SymEngine;
 
 class Lens {
 
-private:
-    std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> alphas_l;
-    std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> betas_l;
 
 
 protected:
@@ -34,8 +31,6 @@ public:
     void setFile(std::string) ;
     void setNterms(int) ;
 
-    double getAlpha( cv::Point2d xi, int m, int s ) ;
-    double getBeta( cv::Point2d xi, int m, int s ) ;
     double getAlphaXi( int m, int s ) ;
     double getBetaXi( int m, int s ) ;
 
@@ -67,11 +62,20 @@ public:
 } ;
 
 class PsiFunctionLens : public Lens {
+private:
+    std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> alphas_l;
+    std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> betas_l;
 protected:
     double einsteinR /* R_E or \xi_0 */,
            ellipseratio=1 /* f */,
 	   orientation=0 /* \phi */ ;
 public:
+    virtual void initAlphasBetas();
+    virtual void calculateAlphaBeta( cv::Point2d xi );
+
+    double getAlpha( cv::Point2d xi, int m, int s ) ;
+    double getBeta( cv::Point2d xi, int m, int s ) ;
+
     virtual void setEinsteinR( double ) ;
     double getEinsteinR( ) const ;
     virtual void setOrientation( double ) ;

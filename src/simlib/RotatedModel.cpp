@@ -14,6 +14,10 @@
 #define DEBUG 0
 #endif
 
+RotatedModel::RotatedModel( PsiFunctionLens *l ) {
+   pmlens = l ;
+}
+
 cv::Mat RotatedModel::getApparent() const {
    cv::Mat src, dst ;
    src = source->getImage() ;

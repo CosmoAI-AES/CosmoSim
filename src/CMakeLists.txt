@@ -13,13 +13,13 @@ set(SimLibFiles
         simlib/ImageSource.cpp
         simlib/SimulatorModel.cpp
         simlib/PointMass.cpp
-        simlib/PointMassExact.cpp
-        simlib/PointMassRoulette.cpp
         simlib/RouletteRegenerator.cpp
         simlib/simaux.cpp
         simlib/Source.cpp
         simlib/SphericalSource.cpp
         simlib/TriangleSource.cpp
+        simlib/PointMassRoulette.cpp
+        simlib/PointMassExact.cpp
         )
      # Currently unused:
      #    simlib/LensMap.cpp

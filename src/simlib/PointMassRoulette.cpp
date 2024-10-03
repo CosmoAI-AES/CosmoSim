@@ -7,7 +7,7 @@
  * subclass. */
 cv::Point2d PointMassRoulette::getDistortedPos(double r, double theta) const {
     double R = getXiAbs()  ;
-    double einsteinR = lens->getEinsteinR() ;
+    double einsteinR = pmlens->getEinsteinR() ;
 
     double nu1 = r*cos(theta) ;
     double nu2 = r*sin(theta) ;
