@@ -82,10 +82,10 @@ public:
     virtual void initAlphasBetas();
     virtual void calculateAlphaBeta( cv::Point2d xi );
 
-    virtual double getAlpha( cv::Point2d xi, int m, int s ) ;
-    virtual double getBeta( cv::Point2d xi, int m, int s ) ;
     virtual double getAlphaXi( int m, int s ) ;
     virtual double getBetaXi( int m, int s ) ;
+    virtual double getAlpha( cv::Point2d xi, int m, int s ) ;
+    virtual double getBeta( cv::Point2d xi, int m, int s ) ;
 
     void setEinsteinR( double ) ;
     double getEinsteinR( ) const ;
