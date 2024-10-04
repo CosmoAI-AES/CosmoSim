@@ -8,11 +8,6 @@
 #endif
 
 cv::Point2d Lens::getXi( cv::Point2d chieta ) {
-   /*
-   return chieta + cv::Point2d( 
-         psiXvalue(chieta.x, chieta.y ),
-         psiYvalue(chieta.x, chieta.y ) ) ;
-         */
 
    cv::Point2d xi0, xi1 = chieta ;
    int cont = 1, count = 0, maxcount = 200 ;
