@@ -19,7 +19,7 @@ CosmoSim::CosmoSim() {
 void CosmoSim::setXY( double x, double y) { xPos = x ; yPos = y ; rPos = -1 ; }
 void CosmoSim::setPolar(int r, int theta) { rPos = r ; thetaPos = theta ; }
 
-void CosmoSim::setLens(PsiFunctionLens *l) { 
+void CosmoSim::setLens(ClusterLens *l) { 
    std::cout << "[CosmoSim::setLens]\n" ;
    lens = l ;
    std::cout << "[CosmoSim::setLens] returning\n" ;

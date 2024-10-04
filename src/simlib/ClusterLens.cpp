@@ -3,11 +3,6 @@
 #include "cosmosim/Lens.h"
 #include "simaux.h"
 
-/*
-void ClusterLens::addLens( PsiFunctionLens *l ) {
-   return this->addLens( l, 0, 0 ) ;
-}
-*/
 void ClusterLens::addLens( PsiFunctionLens *l, double x, double y ) {
    std::cout << "ClusterLEns::addLens]] " << (x,y) << "\n" ;
    this->xshift[this->nlens] = x ;

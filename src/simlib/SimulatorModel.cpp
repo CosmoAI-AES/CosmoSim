@@ -41,6 +41,7 @@ cv::Mat SimulatorModel::getDistorted() const {
 }
 
 void SimulatorModel::update( ) {
+   std::cout << "[SimulatorModel::update] start\n" ;
    updateApparentAbs() ;
    std::cout << "[SimulatorModel::update] Done updateApparentAbs()\n" ;
    cv::Mat imgApparent = getApparent() ;
@@ -87,9 +88,6 @@ void SimulatorModel::setXY( double X, double Y ) {
     eta = cv::Point2d( X, Y ) ;
 }
 
-double SimulatorModel::getPhi( ) const {
-    return atan2(eta.y, eta.x); // Angle relative to x-axis
-}
 
 /* Set the actual positions in the source plane using Polar Coordinates */
 void SimulatorModel::setPolar( double R, double theta ) {
@@ -98,16 +96,6 @@ void SimulatorModel::setPolar( double R, double theta ) {
 }
 
 /* Getters */
-cv::Point2d SimulatorModel::getXi() const { 
-   return referenceXi ;
-}
-double SimulatorModel::getXiAbs() const { 
-   cv::Point2d xi = getXi() ;
-   return sqrt( xi.x*xi.x + xi.y*xi.y ) ;
-}
-cv::Point2d SimulatorModel::getTrueXi() const { 
-   return CHI*nu ;
-}
 cv::Point2d SimulatorModel::getNu() const { 
    return nu ;
 }
@@ -117,52 +105,14 @@ double SimulatorModel::getNuAbs() const {
 cv::Point2d SimulatorModel::getEta() const {
    return eta ;
 }
-double SimulatorModel::getEtaSquare() const {
-   return eta.x*eta.x + eta.y*eta.y ;
-}
 double SimulatorModel::getEtaAbs() const {
    return sqrt( eta.x*eta.x + eta.y*eta.y ) ;
 }
 void SimulatorModel::setNu( cv::Point2d n ) {
    nu = n ;
-   referenceXi = nu*CHI ;
-   etaOffset = cv::Point2d( 0, 0 ) ;
-   if (DEBUG) std::cout << "[setNu] etaOffset set to zero.\n" ;
 }
-void SimulatorModel::setXi( cv::Point2d xi1 ) {
-   // xi1 is an alternative reference point \xi'
-   referenceXi = xi1 ;   // reset \xi
-
-   // etaOffset is the difference between source point corresponding to the
-   // reference point in the lens plane and the actual source centre
-   etaOffset = getOffset( xi1 ) ;
-}
-void SimulatorModel::setLens( Lens *l ) {
+void SimulatorModel::setLens( ClusterLens *l ) {
    lens = l ;
-}
-
-cv::Point2d SimulatorModel::getRelativeEta( cv::Point2d xi1 ) {
-   // returns $\vec\eta''$
-   cv::Point2d releta ;
-   releta = eta - xi1/CHI ;
-   return releta ;
-}
-
-cv::Point2d SimulatorModel::getOffset( cv::Point2d xi1 ) {
-   cv::Point2d releta, eta, r ; 
-
-   releta = xi1 - cv::Point2d( lens->psiXvalue( xi1.x, xi1.y ),
-                       lens->psiYvalue( xi1.x, xi1.y ) ) ;
-   eta = getEta() ;
-   r = releta/CHI - eta ;
-
-   std::cout << "[getOffset] eta=" << eta << "; xi1=" << xi1
-             << "; releta=" << releta 
-             << "; return " << r << std::endl ;
-
-   // return is the difference between source point corresponding to the
-   // reference point in the lens plane and the actual source centre
-   return r ;
 }
 
 void SimulatorModel::updateApparentAbs( ) {
@@ -171,8 +121,10 @@ void SimulatorModel::updateApparentAbs( ) {
     std::cout << "[SimulatorModel::updateApparentAbs] 2\n" ;
     cv::Point2d chieta = CHI*getEta() ;
     std::cout << "[SimulatorModel::updateApparentAbs] 3\n" ;
-    cv::Point2d xi1 = lens->getXi( chieta ) ;
+    lens->addLens( new SIS(), 0, 0 ) ;
     std::cout << "[SimulatorModel::updateApparentAbs] 4\n" ;
+    cv::Point2d xi1 = lens->getXi( chieta ) ;
+    std::cout << "[SimulatorModel::updateApparentAbs] 5\n" ;
     setNu( xi1/CHI ) ;
 }
 

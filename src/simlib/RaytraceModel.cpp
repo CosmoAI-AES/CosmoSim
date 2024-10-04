@@ -9,14 +9,6 @@ cv::Point2d RaytraceModel::calculateEta( cv::Point2d xi ) {
    cv::Point2d xy = cv::Point2d(
          lens->psiXvalue( xi.x, xi.y ),
          lens->psiYvalue( xi.x, xi.y ) ) ;
-   /* psiXvalue/psiYvalue are defined in
-    *   PsiFunctionLens, based on evaluation of analytic derivatives
-    *   Lens, based on a sampled array of derivative evaluations
-    * SampledPsiFunctionLens relies on the definition in Lens and calculates
-    * the sampled array using a differentiation filter on a sampling of psi.
-    * These differentiated arrays are used for getXi (both roulette and raytrace)
-    * and for the deflection in raytrace.
-    */
    return (xi - xy)/CHI ;
 }
 void RaytraceModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) {
@@ -43,12 +35,6 @@ void RaytraceModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst
         }
     }
 }
-
-/* getDistortedPos() is not used for raytracing, but
- * it has to be defined, since it is declared in the superclass.  */
-cv::Point2d RaytraceModel::getDistortedPos(double r, double theta) const {
-   throw NotImplemented() ;
-};
 
 /* This just splits the image space in chunks and runs distort() in parallel */
 void RaytraceModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {

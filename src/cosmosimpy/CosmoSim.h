@@ -21,7 +21,7 @@ private:
     SimulatorModel *sim = NULL ;
     SphericalSource *src = NULL ;
 
-    PsiFunctionLens *lens = NULL ;
+    ClusterLens *lens = NULL ;
 
 public:
     CosmoSim();
@@ -29,7 +29,7 @@ public:
     void setXY(double, double) ;
     void setPolar(int, int) ;
 
-    void setLens(PsiFunctionLens*);
+    void setLens(ClusterLens*);
     void setSourceParameters(double,double,double);
 
     bool runSim();

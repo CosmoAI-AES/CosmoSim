@@ -20,10 +20,6 @@ private:
     cv::Point2d referenceXi = cv::Point2d(0,0) ;   // Local origin in the lens plane
 
 protected:
-    cv::Point2d etaOffset = cv::Point2d(0,0) ;
-        // Offset in the source plane resulting from moving xi
-	//
-
     cv::Mat imgDistorted;
 
     virtual void parallelDistort(const cv::Mat &src, cv::Mat &dst);
@@ -31,27 +27,19 @@ protected:
 
     double CHI;
     SphericalSource *source ;
-    Lens *lens = NULL ;
-
-    double getPhi() const ; // polar angle of source position
+    ClusterLens *lens = NULL ;
 
     void setNu( cv::Point2d ) ;
-    void setXi( cv::Point2d ) ;
 
     void updateApparentAbs() ;
-    virtual cv::Point2d getDistortedPos(double r, double theta) const = 0 ;
 
     double getNuAbs() const ;
-    double getXiAbs() const ;
     double getEtaAbs() const ;
-    double getEtaSquare() const ;
     cv::Point2d getEta() const ;
 
 public:
     SimulatorModel();
     virtual ~SimulatorModel();
-    cv::Point2d getOffset( cv::Point2d ) ;
-    cv::Point2d getRelativeEta( cv::Point2d ) ;
 
     void update();
 
@@ -63,11 +51,9 @@ public:
 
     /* Getters (Parameters) */
     cv::Point2d getNu() const ;
-    cv::Point2d getXi() const ;
-    cv::Point2d getTrueXi() const ;
 
     /* Setters */
-    virtual void setLens( Lens* ) ;
+    virtual void setLens( ClusterLens* ) ;
 
     void setXY(double, double) ;
     void setPolar(double, double) ;
@@ -82,7 +68,6 @@ protected:
     virtual cv::Point2d calculateEta( cv::Point2d ) ;
     virtual void parallelDistort(const cv::Mat &src, cv::Mat &dst);
     virtual void distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) ;
-    virtual cv::Point2d getDistortedPos(double r, double theta) const ;
 private:
 };
 
