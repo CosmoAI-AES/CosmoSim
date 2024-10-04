@@ -8,4 +8,3 @@
 
 
 void PsiFunctionLens::setEinsteinR( double r ) { einsteinR = r ; }
-double PsiFunctionLens::getEinsteinR() const { return einsteinR ; }

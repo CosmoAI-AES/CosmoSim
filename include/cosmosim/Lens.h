@@ -26,7 +26,6 @@ protected:
 	   orientation=0 /* \phi */ ;
 public:
     void setEinsteinR( double ) ;
-    double getEinsteinR( ) const ;
 } ;
 
 class PointMass : public PsiFunctionLens { 
