@@ -171,6 +171,7 @@ class CosmoSim(cs.CosmoSim):
     def setCluster(self,s):
         print( f"setLens({s})")
         ll = [ x.split("/") for x in s.split(";") ]
+        self.lenslist = []
         cluster = cs.ClusterLens()
         for lens in ll:
             lenstype = lens[0]
@@ -193,6 +194,7 @@ class CosmoSim(cs.CosmoSim):
             else:
                 raise Exception( f"Lens Type not Supported {lenstype}" )
             l.setEinsteinR( lensparam[2] )
+            self.lenslist.append( l )
             cluster.addLens( l, x, y )
         self.cluster = cluster
         return super().setLens(cluster)

@@ -11,6 +11,12 @@
 // NEW \phi
 // TODO \chi_L in terms of \chi
 
+cv::Point2d SIE::getXi( cv::Point2d chieta ) {
+   return chieta + cv::Point2d( 
+         psiXvalue(chieta.x, chieta.y ),
+         psiYvalue(chieta.x, chieta.y ) ) ;
+}
+
 double SIE::psifunctionPolar( double R, double phi ) const {
    /* ellipseratio = f */
 

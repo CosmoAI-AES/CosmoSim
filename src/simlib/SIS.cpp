@@ -5,6 +5,11 @@
 
 #define norm(x,y) sqrt( x*x + y*y ) 
 
+cv::Point2d SIS::getXi( cv::Point2d chieta ) {
+   return chieta + cv::Point2d( 
+         psiXvalue(chieta.x, chieta.y ),
+         psiYvalue(chieta.x, chieta.y ) ) ;
+}
 
 double SIS::psiValue( double x, double y ) const {
    return einsteinR*sqrt( x*x + y*y ) ;

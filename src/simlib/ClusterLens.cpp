@@ -26,14 +26,18 @@ double ClusterLens::psiValue( double x, double y ) const {
 double ClusterLens::psiXvalue( double x, double y ) const {
    int i ;
    double r = 0 ;
+   std::cout << "[ClusterLens::psiXvalue] " << nlens << "\n" ;
    for ( i=0 ; i<this->nlens ; ++i ) {
-      r += this->lens[i]->psiXvalue( x-this->xshift[i], y-this->yshift[i] ) ;
+      double x1=x-this->xshift[i], 
+             y1=y-this->yshift[i]  ;
+      r += this->lens[i]->psiXvalue( x1, y1 ) ;
    }
    return r ;
 }
 double ClusterLens::psiYvalue( double x, double y ) const { 
    int i ;
    double r = 0 ;
+   std::cout << "[ClusterLens::psiYvalue] " << nlens << "\n" ;
    for ( i=0 ; i<this->nlens ; ++i ) {
       r += this->lens[i]->psiYvalue( x-this->xshift[i], y-this->yshift[i] ) ;
    }
@@ -59,9 +63,4 @@ void ClusterLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
          }
        }
    }
-}
-cv::Point2d ClusterLens::getXi( cv::Point2d chieta ) {
-   std::cout << "[ClusterLens::getXi] not implemented\n" ;
-   // return chieta ;
-   throw NotImplemented() ;
 }

@@ -118,6 +118,8 @@ public:
     virtual double psiXvalue( double, double ) const ;
     virtual double psiYvalue( double, double ) const ;
 
+    virtual cv::Point2d getXi( cv::Point2d ) ;
+
     virtual double criticalXi( double ) const ;
     virtual cv::Point2d caustic( double ) const ;
 };
@@ -132,6 +134,8 @@ public:
     virtual double psiValue( double, double ) const ;
     virtual double psiXvalue( double, double ) const ;
     virtual double psiYvalue( double, double ) const ;
+
+    virtual cv::Point2d getXi( cv::Point2d ) ;
 
     virtual double criticalXi( double ) const ;
     virtual cv::Point2d caustic( double ) const ;
@@ -149,7 +153,6 @@ public:
     // virtual void addLens( PsiFunctionLens* );
     virtual void addLens( PsiFunctionLens*, double, double );
     virtual void calculateAlphaBeta( cv::Point2d, int );
-    virtual cv::Point2d getXi( cv::Point2d ) ;
 
     virtual double psiValue( double, double ) const ;
     virtual double psiXvalue( double, double ) const ;

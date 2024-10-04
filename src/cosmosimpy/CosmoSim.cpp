@@ -463,12 +463,14 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("psiValue", &SIS::psiValue)
         .def("psiXvalue", &SIS::psiXvalue)
         .def("psiYvalue", &SIS::psiYvalue)
+        .def("getXi", &ClusterLens::getXi)
         ;
     py::class_<SIE,PsiFunctionLens>(m, "SIE")
         .def(py::init<>())
         .def("psiValue", &SIE::psiValue)
         .def("psiXvalue", &SIE::psiXvalue)
         .def("psiYvalue", &SIE::psiYvalue)
+        .def("getXi", &ClusterLens::getXi)
         ;
     py::class_<PointMass,PsiFunctionLens>(m, "PointMass")
         .def(py::init<>())
@@ -481,7 +483,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def(py::init<>())
         .def("addLens", &ClusterLens::addLens)
         .def("calculateAlphaBeta", &ClusterLens::calculateAlphaBeta)
-        .def("getXi", &ClusterLens::getXi)
         .def("psiValue", &ClusterLens::psiValue)
         .def("psiXvalue", &ClusterLens::psiXvalue)
         .def("psiYvalue", &ClusterLens::psiYvalue)
