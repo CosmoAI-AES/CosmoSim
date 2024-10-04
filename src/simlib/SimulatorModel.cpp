@@ -43,39 +43,10 @@ cv::Mat SimulatorModel::getDistorted() const {
 void SimulatorModel::update( ) {
    updateApparentAbs() ;
    std::cout << "[SimulatorModel::update] Done updateApparentAbs()\n" ;
-   return updateInner() ;
+   cv::Mat imgApparent = getApparent() ;
+   imgDistorted = cv::Mat::zeros(imgApparent.size(), imgApparent.type()) ;
+   parallelDistort(imgApparent, imgDistorted);
 }
-void SimulatorModel::update( cv::Point2d xi ) {
-   setXi( xi ) ;
-   std::cout << "[SimulatorModel::update] Done setXi()\n" ;
-   return updateInner() ;
-}
-
-void SimulatorModel::updateInner( ) {
-    cv::Mat imgApparent = getApparent() ;
-
-    if ( DEBUG ) {
-      std::cout << "[SimulatorModel::updateInner()] R=" << getEtaAbs() 
-              << "; CHI=" << CHI << "\n" ;
-      std::cout << "[SimulatorModel::updateInner()] xi=" << getXi()   
-              << "; eta=" << getEta() << "; etaOffset=" << etaOffset << "\n" ;
-      std::cout << "[SimulatorModel::updateInner()] nu=" << getNu()   
-              << "; centre=" << getCentre() << "\n" << std::flush ;
-    }
-
-    auto startTime = std::chrono::system_clock::now();
-
-    imgDistorted = cv::Mat::zeros(imgApparent.size(), imgApparent.type()) ;
-    parallelDistort(imgApparent, imgDistorted);
-
-    // Calculate run time for this function and print diagnostic output
-    auto endTime = std::chrono::system_clock::now();
-    std::cout << "Time to update(): " 
-              << std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count() 
-              << " milliseconds" << std::endl << std::flush ;
-
-}
-
 
 /* This just splits the image space in chunks and runs distort() in parallel */
 void SimulatorModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
@@ -99,42 +70,6 @@ void SimulatorModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
 }
 
 void SimulatorModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) {
-    // Iterate over the pixels in the image distorted image.
-    // (row,col) are pixel co-ordinates
-    cv::Point2d xi = getXi() ;
-    for (int row = begin; row < end; row++) {
-        for (int col = 0; col < dst.cols; col++) {
-
-            cv::Point2d pos, ij ;
-
-            // Set coordinate system with origin at the centre of mass
-            // in the distorted image in the lens plane.
-            double x = (col - dst.cols / 2.0 ) * CHI - xi.x;
-            double y = (dst.rows / 2.0 - row ) * CHI - xi.y;
-            // (x,y) are coordinates in the lens plane, and hence the
-            // multiplication by CHI
-
-            // Calculate distance and angle of the point evaluated 
-            // relative to CoM (origin)
-            double r = sqrt(x * x + y * y);
-
-            double theta = x == 0 ? signf(y)*PI/2 : atan2(y, x);
-            pos = this->getDistortedPos(r, theta);
-            pos += etaOffset ;
-
-            // Translate to array index in the source plane
-            ij = imageCoordinate( pos, src ) ;
-  
-            // If the pixel is within range, copy value from src to dst
-            if (ij.x < src.rows-1 && ij.y < src.cols-1 && ij.x >= 0 && ij.y >= 0) {
-                 if ( 3 == src.channels() ) {
-                    dst.at<cv::Vec3b>(row, col) = src.at<cv::Vec3b>( ij.x, ij.y );
-                 } else {
-                    dst.at<uchar>(row, col) = src.at<uchar>( ij.x, ij.y );
-                 }
-            }
-        }
-    }
 }
 
 /** *** Setters *** */
@@ -145,18 +80,11 @@ void SimulatorModel::setSource(SphericalSource *src) {
     source = src ;
 }
 
-/* C. Lens Model setter */
-void SimulatorModel::setCHI(double chi) {
-   CHI = chi ;
-}
-
 /* D. Position (eta) setters */
 
 /* Set the actual positions in the source plane using Cartesian Coordinates */
 void SimulatorModel::setXY( double X, double Y ) {
-
     eta = cv::Point2d( X, Y ) ;
-
 }
 
 double SimulatorModel::getPhi( ) const {
@@ -169,12 +97,7 @@ void SimulatorModel::setPolar( double R, double theta ) {
     eta = cv::Point2d( R*cos(phi), R*sin(phi) ) ;
 }
 
-
 /* Getters */
-cv::Point2d SimulatorModel::getCentre( ) const {
-   cv::Point2d xichi =  getXi()/CHI ;
-   return xichi ;
-}
 cv::Point2d SimulatorModel::getXi() const { 
    return referenceXi ;
 }

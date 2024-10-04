@@ -24,7 +24,6 @@ protected:
         // Offset in the source plane resulting from moving xi
 	//
 
-    virtual void updateInner();
     cv::Mat imgDistorted;
 
     virtual void parallelDistort(const cv::Mat &src, cv::Mat &dst);
@@ -33,14 +32,13 @@ protected:
     double CHI;
     SphericalSource *source ;
     Lens *lens = NULL ;
-    double maskRadius=0 ;
 
     double getPhi() const ; // polar angle of source position
 
     void setNu( cv::Point2d ) ;
     void setXi( cv::Point2d ) ;
 
-    virtual void updateApparentAbs() ;
+    void updateApparentAbs() ;
     virtual cv::Point2d getDistortedPos(double r, double theta) const = 0 ;
 
     double getNuAbs() const ;
@@ -48,7 +46,6 @@ protected:
     double getEtaAbs() const ;
     double getEtaSquare() const ;
     cv::Point2d getEta() const ;
-    cv::Point2d getCentre() const ;
 
 public:
     SimulatorModel();
@@ -57,7 +54,6 @@ public:
     cv::Point2d getRelativeEta( cv::Point2d ) ;
 
     void update();
-    void update( cv::Point2d );
 
     /* Getters (images) */
     cv::Mat getActual() const ;
@@ -75,8 +71,6 @@ public:
 
     void setXY(double, double) ;
     void setPolar(double, double) ;
-    void setCHI(double) ;
-    void setNterms(int);
     void setSource(SphericalSource*) ;
 
 };
