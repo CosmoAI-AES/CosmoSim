@@ -35,47 +35,5 @@ public:
 protected:
     virtual void drawSource(int, int, cv::Mat &) ;
 };
-
-class EllipsoidSource : public Source {
-
-private:
-    double sigma1, sigma2, theta ;
-
-public:
-    EllipsoidSource(int,double,double) ;
-    EllipsoidSource(int,double,double,double) ;
-
-protected:
-    virtual void drawSource(int, int, cv::Mat &) ;
-    virtual void drawParallel(cv::Mat &img) ;
-
-};
-
-class TriangleSource : public Source {
-
-private:
-    double sigma, theta ;
-
-public:
-    TriangleSource(int,double) ;
-    TriangleSource(int,double,double) ;
-    virtual cv::Mat getImage() ;
-
-protected:
-    virtual void drawSource(int, int, cv::Mat &) ;
-    virtual void drawParallel(cv::Mat &img) ;
-
-};
-
-class ImageSource : public Source {
-   public:
-      ImageSource( int, std::string ) ;
-      virtual cv::Mat getImage() ;
-   protected:
-      std::string filename ;
-      virtual void drawSource(int, int, cv::Mat &) ;
-};
-
-
 #endif // COSMOSIM_SOURCE_H
 

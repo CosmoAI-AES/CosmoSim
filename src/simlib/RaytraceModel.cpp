@@ -50,28 +50,6 @@ cv::Point2d RaytraceModel::getDistortedPos(double r, double theta) const {
    throw NotImplemented() ;
 };
 
-void RaytraceModel::undistort(const cv::Mat& src, cv::Mat& dst) {
-
-    for (int row = 0; row < dst.rows; row++) {
-        for (int col = 0; col < dst.cols; col++) {
-
-            cv::Point2d eta, ij, srcPos ;
-
-            srcPos = pointCoordinate( cv::Point2d( row, col ), src ) ;
-            eta = calculateEta( CHI*srcPos ) ;
-            ij = imageCoordinate( eta, dst ) ;
-  
-            if (ij.x <= dst.rows-1 && ij.y <= dst.cols-1 && ij.x >= 0 && ij.y >= 0) {
-                 if ( 3 == src.channels() ) {
-                    dst.at<cv::Vec3b>(ij.x, ij.y ) = src.at<cv::Vec3b>( row, col ) ;
-                 } else {
-                    int px = dst.at<uchar>(ij.x, ij.y ) = src.at<uchar>(row, col) ;
-                 }
-            }
-        }
-    }
-}
-
 /* This just splits the image space in chunks and runs distort() in parallel */
 void RaytraceModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
     int n_threads = std::thread::hardware_concurrency();

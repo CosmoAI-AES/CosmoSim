@@ -30,33 +30,7 @@ public:
     virtual double psiXvalue( double, double ) const ; /* Not Implemented */
     virtual double psiYvalue( double, double ) const ; /* Not Implemented */
 
-    virtual double criticalXi( double ) const ;
-    virtual cv::Point2d caustic( double ) const ;
 };
-
-class SampledLens : public Lens {
-private:
-    std::array<std::array<double, 202>, 201> alphas_val;
-    std::array<std::array<double, 202>, 201> betas_val;
-protected:
-    cv::Mat psi, psiX, psiY ;
-public:
-    virtual void calculateAlphaBeta( cv::Point2d, int );
-    virtual cv::Point2d getXi( cv::Point2d ) ;
-
-    virtual double getAlphaXi( int m, int s ) ;
-    virtual double getBetaXi( int m, int s ) ;
-    virtual double getAlpha( cv::Point2d xi, int m, int s ) ;
-    virtual double getBeta( cv::Point2d xi, int m, int s ) ;
-
-    virtual double psiValue( double, double ) const ;
-    virtual double psiXvalue( double, double ) const ;
-    virtual double psiYvalue( double, double ) const ;
-
-    virtual void updatePsi( cv::Size ) ;
-    virtual void updatePsi( ) ;
-    cv::Mat getPsi( ) const ;
-} ;
 
 
 class PsiFunctionLens : public Lens {
@@ -88,15 +62,6 @@ public:
     void setRatio( double ) ;
 } ;
 
-class SampledPsiFunctionLens : public SampledLens {
-   private:
-      PsiFunctionLens *lens ;
-   public:
-      SampledPsiFunctionLens(PsiFunctionLens*) ;
-      virtual void updatePsi( cv::Size ) ;
-      virtual double criticalXi( double ) const ;
-      virtual cv::Point2d caustic( double phi ) const ;
-} ;
 
 class PointMass : public PsiFunctionLens { 
 
@@ -118,8 +83,6 @@ public:
     virtual double psiXvalue( double, double ) const ;
     virtual double psiYvalue( double, double ) const ;
 
-    virtual double criticalXi( double ) const ;
-    virtual cv::Point2d caustic( double ) const ;
 };
 
 class SIE : public PsiFunctionLens { 
@@ -133,8 +96,6 @@ public:
     virtual double psiXvalue( double, double ) const ;
     virtual double psiYvalue( double, double ) const ;
 
-    virtual double criticalXi( double ) const ;
-    virtual cv::Point2d caustic( double ) const ;
 
 };
 

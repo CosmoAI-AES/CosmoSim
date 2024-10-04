@@ -1,30 +1,16 @@
 
 set(SimLibFiles
-        simlib/SampledLens.cpp
-        simlib/SampledPsiFunctionLens.cpp
         simlib/Lens.cpp
 	simlib/ClusterLens.cpp
         simlib/PsiFunctionLens.cpp
         simlib/SIS.cpp
-        simlib/SIE.cpp
         simlib/RaytraceModel.cpp
-        simlib/RouletteModel.cpp
-        simlib/RotatedModel.cpp
-        simlib/EllipsoidSource.cpp
-        simlib/ImageSource.cpp
         simlib/SimulatorModel.cpp
         simlib/PointMass.cpp
-        simlib/PointMassExact.cpp
-        simlib/PointMassRoulette.cpp
-        simlib/RouletteRegenerator.cpp
         simlib/simaux.cpp
         simlib/Source.cpp
         simlib/SphericalSource.cpp
-        simlib/TriangleSource.cpp
         )
-     # Currently unused:
-     #    simlib/LensMap.cpp
-     #    simlib/PMCLens.cpp
 
 add_library(SimLib ${SimLibFiles})
 set_target_properties(SimLib PROPERTIES POSITION_INDEPENDENT_CODE ON)
@@ -37,7 +23,7 @@ endif ()
 
 
 # Python Bindings
-pybind11_add_module(CosmoSimPy MODULE cosmosimpy/CosmoSim.cpp cosmosimpy/RouletteSim.cpp)
+pybind11_add_module(CosmoSimPy MODULE cosmosimpy/CosmoSim.cpp )
 target_link_libraries(CosmoSimPy PRIVATE SimLib)
 
 pybind11_add_module(PyTest MODULE cosmosimpy/PyTest.cpp)

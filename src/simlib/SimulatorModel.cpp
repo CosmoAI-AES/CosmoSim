@@ -51,60 +51,7 @@ void SimulatorModel::update( cv::Point2d xi ) {
    std::cout << "[SimulatorModel::update] Done setXi()\n" ;
    return updateInner() ;
 }
-cv::Mat SimulatorModel::getCaustic() {
-   cv::Mat src = getCritical() ;
-   cv::Mat img = cv::Mat::zeros(src.size(), src.type());
-   undistort( src, img ) ;
-   return img ;
-}
-cv::Mat SimulatorModel::getCritical() {
-   cv::Mat src = getSource() ;
-   cv::Mat img = cv::Mat::zeros(src.size(), src.type());
-   drawCritical( img ) ;
-   return img ;
-}
-void SimulatorModel::drawCaustics( cv::Mat img ) {
-   try {
-      for ( int i=0 ; i < 360*5 ; ++i ) {
-         double phi = i*PI/(180*5) ;
-         cv::Point2d xy = lens->caustic( phi )/CHI ;
-         cv::Point2d ij = imageCoordinate( xy, img ) ;
-         cv::Vec3b red = (0,0,255) ;
-         if ( 3 == img.channels() ) {
-            img.at<cv::Vec3b>( ij.x, ij.y ) = red ;
-         } else {
-            img.at<uchar>( ij.x, ij.y ) = 255 ;
-         }
-      }
-   } catch ( NotImplemented e ) {
-      std::cerr << e.what() << std::endl ;
-      std::cerr << "Caustics not drawn" << std::endl ;
-   }
-}
-void SimulatorModel::drawCritical() {
-   drawCritical( imgDistorted ) ;
-}
-void SimulatorModel::drawCritical( cv::Mat img ) {
-   try {
-      for ( int i=0 ; i < 360*5 ; ++i ) {
-         double phi = i*PI/(180*5) ;
-         double xi = lens->criticalXi( phi )/CHI ;
-         double x = cos(phi)*xi ;
-         double y = sin(phi)*xi ;
-         cv::Point2d xy = cv::Point( x, y ) ;
-         cv::Point2d ij = imageCoordinate( xy, img ) ;
-         cv::Vec3b red = (0,0,255) ;
-         if ( 3 == img.channels() ) {
-            img.at<cv::Vec3b>( ij.x, ij.y ) = red ;
-         } else {
-            img.at<uchar>( ij.x, ij.y ) = 255 ;
-         }
-      }
-   } catch ( NotImplemented e ) {
-      std::cerr << e.what() << std::endl ;
-      std::cerr << "Critical Curves not drawn" << std::endl ;
-   }
-}
+
 void SimulatorModel::updateInner( ) {
     cv::Mat imgApparent = getApparent() ;
 
@@ -211,45 +158,6 @@ void SimulatorModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& ds
                     dst.at<uchar>(row, col) = src.at<uchar>( ij.x, ij.y );
                  }
               }
-            }
-        }
-    }
-}
-void SimulatorModel::undistort(const cv::Mat& src, cv::Mat& dst) {
-    throw NotImplemented() ;
-    // Iterate over the pixels in the apparent image src and create
-    // a corresponding source image dst.
-    // This is intended for use to draw the caustics.
-    cv::Point2d xi = getXi() ;
-    for (int row = 0; row < dst.rows; row++) {
-        for (int col = 0; col < dst.cols; col++) {
-
-            cv::Point2d pos, ij ;
-
-            // Set coordinate system with origin at the centre of mass
-            // in the distorted image in the lens plane.
-            double x = (col - dst.cols / 2.0 ) * CHI - xi.x;
-            double y = (dst.rows / 2.0 - row ) * CHI - xi.y;
-            // (x,y) are coordinates in the lens plane, and hence the
-            // multiplication by CHI
-
-            
-            double r = sqrt(x * x + y * y);
-            double theta = x == 0 ? signf(y)*PI/2 : atan2(y, x);
-
-            pos = this->getDistortedPos(r, theta);
-
-            // Translate to array index in the source plane
-            ij = imageCoordinate( pos, src ) ;
-  
-            // If the pixel is within range, copy value from src to dst
-            if (ij.x < src.rows-1 && ij.y < src.cols-1 && ij.x >= 0 && ij.y >= 0) {
-               if ( 3 == src.channels() ) {
-                  dst.at<cv::Vec3b>(ij.x, ij.y) = src.at<cv::Vec3b>( row, col ) ;
-                  
-               } else {
-                  dst.at<uchar>(ij.x, ij.y ) = src.at<uchar>(  row, col ) ;
-               }
             }
         }
     }

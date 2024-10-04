@@ -29,7 +29,6 @@ protected:
 
     virtual void parallelDistort(const cv::Mat &src, cv::Mat &dst);
     virtual void distort(int row, int col, const cv::Mat &src, cv::Mat &dst);
-    virtual void undistort(const cv::Mat &src, cv::Mat &dst);
 
     double CHI;
     Source *source ;
@@ -98,12 +97,6 @@ public:
     void markMask( cv::InputOutputArray ) ;
     void maskImage( cv::InputOutputArray, double ) ;
 
-    /* Critical Curves and Caustics */
-    cv::Mat getCaustic() ;
-    cv::Mat getCritical() ;
-    void drawCritical() ;
-    void drawCritical( cv::Mat ) ;
-    void drawCaustics( cv::Mat ) ;
 
 };
 
@@ -117,22 +110,6 @@ protected:
     PsiFunctionLens *pmlens ;
 };
 
-class PointMassExact : public RotatedModel { 
-public:
-    using RotatedModel::RotatedModel ;
-protected:
-    virtual cv::Point2d getDistortedPos(double r, double theta) const;
-};
-
-
-class PointMassRoulette: public RotatedModel { 
-public:
-    using RotatedModel::RotatedModel ;
-protected:
-    virtual cv::Point2d getDistortedPos(double r, double theta) const;
-};
-
-
 class RaytraceModel : public SimulatorModel { 
 public:
     using SimulatorModel::SimulatorModel ;
@@ -140,7 +117,6 @@ protected:
     virtual cv::Point2d calculateEta( cv::Point2d ) ;
     virtual void parallelDistort(const cv::Mat &src, cv::Mat &dst);
     virtual void distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) ;
-    virtual void undistort(const cv::Mat &src, cv::Mat &dst);
     virtual cv::Point2d getDistortedPos(double r, double theta) const ;
 private:
 };
