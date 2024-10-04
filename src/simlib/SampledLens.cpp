@@ -17,7 +17,7 @@ cv::Point2d SampledLens::getXi( cv::Point2d chieta ) {
    int cont = 1, count = 0, maxcount = 200 ;
    double dist, dist0=pow(10,12), threshold = 0.02 ;
 
-   /* Get the lens potential */
+   // Get the lens potential 
    updatePsi() ;
    int ncols=psi.cols, nrows=psi.rows ;
 
@@ -27,15 +27,17 @@ cv::Point2d SampledLens::getXi( cv::Point2d chieta ) {
              << "; size: " << psi.size() << "\n" ;
    }
 
-   /* Diagnostic output */
-   double minVal, maxVal;
-   cv::Point minLoc, maxLoc;
-   minMaxLoc( psiX, &minVal, &maxVal, &minLoc, &maxLoc ) ;
-   if (DEBUG) std::cout << "[SampledLens] psiX min=" << minVal << "; max=" << maxVal << "\n" ;
-   minMaxLoc( psiY, &minVal, &maxVal, &minLoc, &maxLoc ) ;
-   if (DEBUG) std::cout << "[SampledLens] psiY min=" << minVal << "; max=" << maxVal << "\n" ;
+   // Diagnostic output 
+   if (DEBUG) {
+      double minVal, maxVal;
+      cv::Point minLoc, maxLoc;
+      minMaxLoc( psiX, &minVal, &maxVal, &minLoc, &maxLoc ) ;
+      std::cout << "[SampledLens] psiX min=" << minVal << "; max=" << maxVal << "\n" ;
+      minMaxLoc( psiY, &minVal, &maxVal, &minLoc, &maxLoc ) ;
+      std::cout << "[SampledLens] psiY min=" << minVal << "; max=" << maxVal << "\n" ;
+   }
    
-   /** This block makes a fix-point iteration to find \xi. */
+   // This block makes a fix-point iteration to find \xi. 
    while ( cont ) {
       xi0 = xi1 ;
       cv::Point2d ij = imageCoordinate( xi0, psi ) ;
