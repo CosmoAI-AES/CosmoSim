@@ -17,13 +17,6 @@ using namespace SymEngine;
 class Lens {
 public:
 
-    virtual void calculateAlphaBeta( cv::Point2d, int ) ; /* Not implemented */
-
-    virtual double getAlphaXi( int m, int s ) ; /* Not implemented */
-    virtual double getBetaXi( int m, int s ) ; /* Not implemented */
-    virtual double getAlpha( cv::Point2d xi, int m, int s ) ; /* Not implemented */
-    virtual double getBeta( cv::Point2d xi, int m, int s ) ; /* Not implemented */
-
     virtual cv::Point2d getXi( cv::Point2d ) ;
 
     virtual double psiValue( double, double ) const ; /* Not Implemented */
@@ -45,15 +38,9 @@ protected:
            ellipseratio=1 /* f */,
 	   orientation=0 /* \phi */ ;
 public:
-    void initAlphasBetas();
-    virtual void calculateAlphaBeta( cv::Point2d, int );
 
     void setFile(std::string) ;
 
-    virtual double getAlphaXi( int m, int s ) ;
-    virtual double getBetaXi( int m, int s ) ;
-    virtual double getAlpha( cv::Point2d xi, int m, int s ) ;
-    virtual double getBeta( cv::Point2d xi, int m, int s ) ;
 
     void setEinsteinR( double ) ;
     double getEinsteinR( ) const ;
@@ -109,7 +96,6 @@ private:
 public:
     // virtual void addLens( PsiFunctionLens* );
     virtual void addLens( PsiFunctionLens*, double, double );
-    virtual void calculateAlphaBeta( cv::Point2d, int );
     virtual cv::Point2d getXi( cv::Point2d ) ;
 
     virtual double psiValue( double, double ) const ;

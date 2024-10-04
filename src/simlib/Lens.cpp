@@ -15,13 +15,6 @@ cv::Point2d Lens::getXi( cv::Point2d chieta ) {
 
 }
 
-void Lens::calculateAlphaBeta( cv::Point2d, int ) { throw NotImplemented() ; }
-double Lens::getAlphaXi( int m, int s ) { throw NotImplemented() ; }
-double Lens::getBetaXi( int m, int s ) { throw NotImplemented() ; }
-double Lens::getAlpha( cv::Point2d xi, int m, int s ) { throw NotImplemented() ; }
-double Lens::getBeta( cv::Point2d xi, int m, int s ) { throw NotImplemented() ; }
-
-
 double Lens::psiValue( double x, double y ) const { 
    throw NotImplemented() ;
 }

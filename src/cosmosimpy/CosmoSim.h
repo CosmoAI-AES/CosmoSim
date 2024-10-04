@@ -3,7 +3,6 @@
 #ifndef COSMOSIM_FACADE_H
 #define COSMOSIM_FACADE_H
 
-#include "cosmosim/Roulette.h"
 #include "cosmosim/Simulator.h"
 #include "cosmosim/Source.h"
 #include "cosmosim/Lens.h"

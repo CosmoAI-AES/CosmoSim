@@ -43,11 +43,9 @@ bool CosmoSim::runSim() {
    psilens = NULL ;
    sim = new RaytraceModel() ;
    sim->setLens(lens) ;
-   if ( sim == NULL ) {
-      throw std::bad_function_call() ;
-   }
+
    src = new SphericalSource( size, sourceSize ) ;
-   if (sim) sim->setSource( src ) ;
+   sim->setSource( src ) ;
 
    if ( rPos < 0 ) {
          sim->setXY( xPos, yPos ) ;
@@ -79,11 +77,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
 
     py::class_<Lens>(m, "Lens")
         .def(py::init<>())
-        .def("calculateAlphaBeta", &Lens::calculateAlphaBeta)
-        .def("getAlphaXi", &Lens::getAlphaXi)
-        .def("getBetaXi", &Lens::getBetaXi)
-        .def("getAlpha", &Lens::getAlpha)
-        .def("getBeta", &Lens::getBeta)
         .def("getXi", &Lens::getXi)
         .def("psiValue", &Lens::psiValue)
         .def("psiXvalue", &Lens::psiXvalue)
@@ -91,15 +84,9 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         ;
     py::class_<PsiFunctionLens,Lens>(m, "PsiFunctionLens")
         .def(py::init<>())
-        .def("calculateAlphaBeta", &PsiFunctionLens::calculateAlphaBeta)
-        .def("getAlphaXi", &PsiFunctionLens::getAlphaXi)
-        .def("getBetaXi", &PsiFunctionLens::getBetaXi)
-        .def("getAlpha", &PsiFunctionLens::getAlpha)
-        .def("getBeta", &PsiFunctionLens::getBeta)
         .def("setEinsteinR", &PsiFunctionLens::setEinsteinR)
         .def("setOrientation", &PsiFunctionLens::setOrientation)
         .def("setRatio", &PsiFunctionLens::setRatio)
-        .def("setFile", &PsiFunctionLens::setFile)
         ;
     py::class_<SIS,PsiFunctionLens>(m, "SIS")
         .def(py::init<>())
@@ -117,7 +104,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
     py::class_<ClusterLens,PsiFunctionLens>(m, "ClusterLens")
         .def(py::init<>())
         .def("addLens", &ClusterLens::addLens)
-        .def("calculateAlphaBeta", &ClusterLens::calculateAlphaBeta)
         .def("getXi", &ClusterLens::getXi)
         .def("psiValue", &ClusterLens::psiValue)
         .def("psiXvalue", &ClusterLens::psiXvalue)

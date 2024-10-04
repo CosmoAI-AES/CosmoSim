@@ -13,7 +13,6 @@
 
 SimulatorModel::SimulatorModel() :
         CHI(0.5),
-        nterms(10),
         source(NULL)
 { }
 
@@ -66,8 +65,6 @@ void SimulatorModel::updateInner( ) {
 
     auto startTime = std::chrono::system_clock::now();
 
-    this->calculateAlphaBeta() ;
-
     imgDistorted = cv::Mat::zeros(imgApparent.size(), imgApparent.type()) ;
     parallelDistort(imgApparent, imgDistorted);
 
@@ -83,28 +80,9 @@ void SimulatorModel::updateInner( ) {
 /* This just splits the image space in chunks and runs distort() in parallel */
 void SimulatorModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
     int n_threads = std::thread::hardware_concurrency();
-    if (DEBUG) {
-       std::cout << "[parallelDistort] Running with " << n_threads << " threads (maskMode="
-                 << maskMode << ")\n" ;
-    }
 
     std::vector<std::thread> threads_vec;
-    double maskRadius = getMaskRadius() ;
     int lower=0, rng=dst.rows, rng1 ; 
-    if ( maskMode ) {
-        double mrng ;
-        cv::Point2d origin = getCentre() ;
-        cv::Point2d ij = imageCoordinate( origin, dst ) ;
-        if (DEBUG) std::cout << "mask " << ij << " - " << origin << "\n" ;
-        lower = floor( ij.x - maskRadius ) ;
-        if ( lower < 0 ) lower = 0 ;
-        mrng = dst.rows - lower ;
-        rng = ceil( 2.0*maskRadius ) + 1 ;
-        if ( rng > mrng ) rng = mrng ;
-        if (DEBUG) std::cout << maskRadius << " - " << lower << "/" << rng << "\n" ;
-    } else if (DEBUG) {
-        std::cout << "[SimulatorModel] No mask \n" ;
-    } 
     rng1 = ceil( (double) rng / (double) n_threads ) ;
     if (DEBUG) std::cout << "[parallelDistort] lower=" << lower << "; rng=" << rng
             << "; rng1=" << rng1 << std::endl ;
@@ -123,7 +101,6 @@ void SimulatorModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
 void SimulatorModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) {
     // Iterate over the pixels in the image distorted image.
     // (row,col) are pixel co-ordinates
-    double maskRadius = getMaskRadius()*CHI ;
     cv::Point2d xi = getXi() ;
     for (int row = begin; row < end; row++) {
         for (int col = 0; col < dst.cols; col++) {
@@ -141,40 +118,26 @@ void SimulatorModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& ds
             // relative to CoM (origin)
             double r = sqrt(x * x + y * y);
 
-            if ( maskMode && r > maskRadius ) {
-            } else {
-              double theta = x == 0 ? signf(y)*PI/2 : atan2(y, x);
-              pos = this->getDistortedPos(r, theta);
-              pos += etaOffset ;
+            double theta = x == 0 ? signf(y)*PI/2 : atan2(y, x);
+            pos = this->getDistortedPos(r, theta);
+            pos += etaOffset ;
 
-              // Translate to array index in the source plane
-              ij = imageCoordinate( pos, src ) ;
+            // Translate to array index in the source plane
+            ij = imageCoordinate( pos, src ) ;
   
-              // If the pixel is within range, copy value from src to dst
-              if (ij.x < src.rows-1 && ij.y < src.cols-1 && ij.x >= 0 && ij.y >= 0) {
+            // If the pixel is within range, copy value from src to dst
+            if (ij.x < src.rows-1 && ij.y < src.cols-1 && ij.x >= 0 && ij.y >= 0) {
                  if ( 3 == src.channels() ) {
                     dst.at<cv::Vec3b>(row, col) = src.at<cv::Vec3b>( ij.x, ij.y );
                  } else {
                     dst.at<uchar>(row, col) = src.at<uchar>( ij.x, ij.y );
                  }
-              }
             }
         }
     }
 }
 
-/* Initialiser.  The default implementation does nothing.
- * This is correct for any subclass that does not need the alpha/beta tables. */
-void SimulatorModel::calculateAlphaBeta() { }
-
-
 /** *** Setters *** */
-
-/* A.  Mode setters */
-void SimulatorModel::setMaskMode(bool b) {
-   maskMode = b ; 
-}
-void SimulatorModel::setBGColour(int b) { bgcolour = b ; }
 
 /* B. Source model setter */
 void SimulatorModel::setSource(Source *src) {
@@ -183,9 +146,6 @@ void SimulatorModel::setSource(Source *src) {
 }
 
 /* C. Lens Model setter */
-void SimulatorModel::setNterms(int n) {
-   nterms = n ;
-}
 void SimulatorModel::setCHI(double chi) {
    CHI = chi ;
 }
@@ -209,35 +169,6 @@ void SimulatorModel::setPolar( double R, double theta ) {
     eta = cv::Point2d( R*cos(phi), R*sin(phi) ) ;
 }
 
-
-/* Masking */
-void SimulatorModel::maskImage( ) {
-    maskImage( imgDistorted, 1 ) ;
-}
-void SimulatorModel::maskImage( double scale ) {
-    maskImage( imgDistorted, scale ) ;
-}
-void SimulatorModel::markMask( ) {
-    markMask( imgDistorted ) ;
-}
-void SimulatorModel::maskImage( cv::InputOutputArray imgD, double scale ) {
-
-      cv::Mat imgDistorted = getDistorted() ;
-      cv::Point2d origo = imageCoordinate( getCentre(), imgDistorted ) ;
-      origo = cv::Point2d( origo.y, origo.x ) ;
-      cv::Mat mask( imgD.size(), CV_8UC1, cv::Scalar(255) ) ;
-      cv::Mat black( imgD.size(), imgD.type(), cv::Scalar(0) ) ;
-      cv::circle( mask, origo, scale*getMaskRadius(), cv::Scalar(0), cv::FILLED ) ;
-      black.copyTo( imgD, mask ) ;
-}
-void SimulatorModel::markMask( cv::InputOutputArray imgD ) {
-      cv::Mat imgDistorted = getDistorted() ;
-      cv::Point2d origo = imageCoordinate( getCentre(), imgDistorted ) ;
-      origo = cv::Point2d( origo.y, origo.x ) ;
-      cv::circle( imgD, origo, getMaskRadius(), cv::Scalar(255), 1 ) ;
-      cv::circle( imgD, origo, 3, cv::Scalar(0), 1 ) ;
-      cv::circle( imgD, origo, 1, cv::Scalar(0), cv::FILLED ) ;
-}
 
 /* Getters */
 cv::Point2d SimulatorModel::getCentre( ) const {
@@ -268,14 +199,6 @@ double SimulatorModel::getEtaSquare() const {
 }
 double SimulatorModel::getEtaAbs() const {
    return sqrt( eta.x*eta.x + eta.y*eta.y ) ;
-}
-double SimulatorModel::getMaskRadius() const { 
-   // return 1024*1024 ; 
-   if ( maskRadius > 0 ) {
-      return maskRadius ;
-   } else {
-      return getXiAbs()/CHI ; 
-   }
 }
 void SimulatorModel::setNu( cv::Point2d n ) {
    nu = n ;
@@ -310,11 +233,9 @@ cv::Point2d SimulatorModel::getOffset( cv::Point2d xi1 ) {
    eta = getEta() ;
    r = releta/CHI - eta ;
 
-   if (DEBUG) {
-     std::cout << "[getOffset] eta=" << eta << "; xi1=" << xi1
+   std::cout << "[getOffset] eta=" << eta << "; xi1=" << xi1
              << "; releta=" << releta 
              << "; return " << r << std::endl ;
-   }
 
    // return is the difference between source point corresponding to the
    // reference point in the lens plane and the actual source centre
@@ -332,6 +253,3 @@ void SimulatorModel::updateApparentAbs( ) {
     setNu( xi1/CHI ) ;
 }
 
-void SimulatorModel::setMaskRadius( double r ) {
-   maskRadius = r ;
-}

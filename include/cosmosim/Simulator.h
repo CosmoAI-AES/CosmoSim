@@ -33,20 +33,14 @@ protected:
     double CHI;
     Source *source ;
     Lens *lens = NULL ;
-    int nterms;
     double maskRadius=0 ;
 
     double getPhi() const ; // polar angle of source position
 
-    int bgcolour = 0;
-
-    bool maskMode = false ;
-    double getMaskRadius() const ;
     void setNu( cv::Point2d ) ;
     void setXi( cv::Point2d ) ;
 
     virtual void updateApparentAbs() ;
-    virtual void calculateAlphaBeta() ;
     virtual cv::Point2d getDistortedPos(double r, double theta) const = 0 ;
 
     double getNuAbs() const ;
@@ -85,29 +79,6 @@ public:
     void setNterms(int);
     void setSource(Source*) ;
 
-    void setCentred( bool ) ;
-    void setMaskMode( bool ) ;
-    void setBGColour( int ) ;
-
-    /* Masking */
-    void setMaskRadius( double ) ;
-    void maskImage( ) ;
-    void maskImage( double ) ;
-    void markMask( ) ;
-    void markMask( cv::InputOutputArray ) ;
-    void maskImage( cv::InputOutputArray, double ) ;
-
-
-};
-
-class RotatedModel : public SimulatorModel { 
-public:
-    RotatedModel( PsiFunctionLens *l );
-protected:
-    virtual void updateApparentAbs() ;
-    virtual cv::Mat getApparent() const ;
-    virtual void updateInner();
-    PsiFunctionLens *pmlens ;
 };
 
 class RaytraceModel : public SimulatorModel { 
@@ -125,11 +96,6 @@ private:
 void refLines(cv::Mat&) ;
 
 class NotImplemented : public std::exception
-{
-public:
-    virtual const char * what () ;
-};
-class NotSupported : public std::exception
 {
 public:
     virtual const char * what () ;

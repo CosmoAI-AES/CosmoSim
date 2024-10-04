@@ -73,6 +73,3 @@ cv::Point2d pointCoordinate( cv::Point2d pt, cv::Mat im ) {
 const char * NotImplemented::what () {
        return "Function not implemented" ;
 };
-const char * NotSupported::what () {
-       return "Function not supported in this context" ;
-};
