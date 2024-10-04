@@ -33,8 +33,6 @@ protected:
 
     void updateApparentAbs() ;
 
-    double getNuAbs() const ;
-    double getEtaAbs() const ;
     cv::Point2d getEta() const ;
 
 public:

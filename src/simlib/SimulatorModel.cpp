@@ -99,14 +99,8 @@ void SimulatorModel::setPolar( double R, double theta ) {
 cv::Point2d SimulatorModel::getNu() const { 
    return nu ;
 }
-double SimulatorModel::getNuAbs() const { 
-   return sqrt( nu.x*nu.x + nu.y*nu.y ) ;
-}
 cv::Point2d SimulatorModel::getEta() const {
    return eta ;
-}
-double SimulatorModel::getEtaAbs() const {
-   return sqrt( eta.x*eta.x + eta.y*eta.y ) ;
 }
 void SimulatorModel::setNu( cv::Point2d n ) {
    nu = n ;
