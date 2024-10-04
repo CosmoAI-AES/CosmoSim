@@ -21,7 +21,8 @@ def setParameters(sim,row):
     if row.get("sigma",None) != None:
         sim.setSourceParameters( row["sigma"],
             row.get("sigma2",-1), row.get("theta",-1) )
-    elif row.get("cluster",None) != None:
+    if row.get("cluster",None) != None:
+        print( "Cluster", row["cluster"] )
         sim.setCluster( row["cluster"] )
 
 def makeSingle(sim,args,row):

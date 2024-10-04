@@ -57,6 +57,8 @@ class CosmoSim(cs.CosmoSim):
                 raise Exception( f"Lens Type not Supported {lenstype}" )
             l.setEinsteinR( lensparam[2] )
             cluster.addLens( l, x, y )
+        self.cluster = cluster
+        print ("setCluster returns")
         return super().setLens(cluster)
 
     def simThread(self):
