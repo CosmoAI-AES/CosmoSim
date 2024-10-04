@@ -7,11 +7,17 @@
 namespace py = pybind11;
 
 
-class Parent {
+class GrandParent {
+   private:
+      int x[10] ;
+   public:
+      virtual void setTest( int ) ;
+} ;
+class Parent : public GrandParent {
    protected:
       int testvar = 2 ;
    public:
-      void setTest( int ) ;
+      virtual void setTest( int ) ;
 } ;
 class Child : public Parent {
    public:
@@ -25,6 +31,9 @@ class PyTest {
       void test() ;
 } ;
 
+void GrandParent::setTest( int n ) {
+   std::cout << "[GrandParent::setTest] " << n << "\n" ;
+}
 void Parent::setTest( int n ) {
    std::cout << "[Parent::setTest] " << testvar << " -> " << n << "\n" ;
    testvar = n ;
