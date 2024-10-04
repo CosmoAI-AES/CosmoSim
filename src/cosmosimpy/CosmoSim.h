@@ -31,8 +31,6 @@ private:
 public:
     CosmoSim();
 
-    PsiFunctionLens *getLens( int ) ;
-
     void setXY(double, double) ;
     void setPolar(int, int) ;
 
