@@ -31,7 +31,7 @@ protected:
     virtual void distort(int row, int col, const cv::Mat &src, cv::Mat &dst);
 
     double CHI;
-    Source *source ;
+    SphericalSource *source ;
     Lens *lens = NULL ;
     double maskRadius=0 ;
 
@@ -77,7 +77,7 @@ public:
     void setPolar(double, double) ;
     void setCHI(double) ;
     void setNterms(int);
-    void setSource(Source*) ;
+    void setSource(SphericalSource*) ;
 
 };
 

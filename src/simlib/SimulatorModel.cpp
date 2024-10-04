@@ -140,7 +140,7 @@ void SimulatorModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& ds
 /** *** Setters *** */
 
 /* B. Source model setter */
-void SimulatorModel::setSource(Source *src) {
+void SimulatorModel::setSource(SphericalSource *src) {
     if ( source != NULL ) delete source ;
     source = src ;
 }

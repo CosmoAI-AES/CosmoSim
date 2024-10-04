@@ -7,33 +7,20 @@
 #include "opencv2/opencv.hpp"
 #endif
 
-class Source {
-
-protected:
+class SphericalSource  {
+private:
+    double sigma ;
     cv::Mat imgApparent;
     int size ;
     int drawn ;
-
-public:
-    Source(int) ;
-    virtual ~Source();
-    virtual cv::Mat getImage() ;
-
-protected:
-    virtual void drawParallel(cv::Mat &img) ;
-    virtual void drawSource(int, int, cv::Mat &) = 0 ;
-};
-
-class SphericalSource : public Source {
-
-private:
-    double sigma ;
+    void drawSource(int, int, cv::Mat &) ;
+    void drawParallel(cv::Mat &img) ;
 
 public:
     SphericalSource(int,double) ;
+    cv::Mat getImage() ;
 
-protected:
-    virtual void drawSource(int, int, cv::Mat &) ;
+
 };
 #endif // COSMOSIM_SOURCE_H
 

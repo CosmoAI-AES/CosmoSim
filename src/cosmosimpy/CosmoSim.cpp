@@ -21,7 +21,6 @@ void CosmoSim::setPolar(int r, int theta) { rPos = r ; thetaPos = theta ; }
 
 void CosmoSim::setLens(PsiFunctionLens *l) { 
    std::cout << "[CosmoSim::setLens]\n" ;
-   lensmode = CSIM_CLUSTER ; 
    modelchanged = 1 ;
    lens = psilens = l ;
    std::cout << "[CosmoSim::setLens] returning\n" ;
@@ -29,9 +28,6 @@ void CosmoSim::setLens(PsiFunctionLens *l) {
 
 void CosmoSim::setSourceParameters(double s1, double s2, double theta ) {
    sourceSize = s1 ;
-   if ( s2 >= 0 ) sourceSize2 = s2 ;
-   if ( theta >= 0 ) sourceTheta = theta ;
-   // srcmode = mode ;
 }
 
 bool CosmoSim::runSim() { 

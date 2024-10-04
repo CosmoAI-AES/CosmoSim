@@ -8,7 +8,6 @@ set(SimLibFiles
         simlib/SimulatorModel.cpp
         simlib/PointMass.cpp
         simlib/simaux.cpp
-        simlib/Source.cpp
         simlib/SphericalSource.cpp
         )
 
