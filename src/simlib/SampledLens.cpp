@@ -59,9 +59,6 @@ cv::Point2d SampledLens::getXi( cv::Point2d chieta ) {
    }
    return xi1 ;
 }
-void SampledLens::initAlphasBetas() {
-   std::cout << "[SampledLens::initAlphasBetas] does nothing\n" ;
-}
 
 void SampledLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
 

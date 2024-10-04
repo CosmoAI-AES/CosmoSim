@@ -17,7 +17,6 @@ using namespace SymEngine;
 class Lens {
 public:
 
-    virtual void initAlphasBetas() = 0 ;
     virtual void calculateAlphaBeta( cv::Point2d, int ) = 0;
 
     virtual double getAlphaXi( int m, int s ) = 0 ;
@@ -42,7 +41,6 @@ private:
 protected:
     cv::Mat psi, psiX, psiY ;
 public:
-    virtual void initAlphasBetas();
     virtual void calculateAlphaBeta( cv::Point2d, int );
     virtual cv::Point2d getXi( cv::Point2d ) ;
 

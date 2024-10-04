@@ -298,7 +298,7 @@ bool CosmoSim::runSim() {
          psilens->setRatio( ellipseratio ) ;
          psilens->setOrientation( orientation ) ;
          std::cout << "[runSim] ready for initAlphasBetas\n" ;
-         lens->initAlphasBetas() ;
+         psilens->initAlphasBetas() ;
          std::cout << "[runSim] done initAlphasBetas\n" ;
       }
    }

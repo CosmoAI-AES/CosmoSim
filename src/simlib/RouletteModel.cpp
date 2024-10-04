@@ -18,7 +18,6 @@ RouletteModel::RouletteModel() :
 
 void RouletteModel::setLens( Lens *l ) {
    lens = l ;
-   lens->initAlphasBetas() ;
 } 
 
 // Calculate the main formula for the SIS model
