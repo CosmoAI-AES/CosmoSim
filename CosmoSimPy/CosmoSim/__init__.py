@@ -194,6 +194,7 @@ class CosmoSim(cs.CosmoSim):
                 raise Exception( f"Lens Type not Supported {lenstype}" )
             l.setEinsteinR( lensparam[2] )
             cluster.addLens( l, x, y )
+        self.cluster = cluster
         return super().setLens(cluster)
     def setLensMode(self,s):
         print( f"setLensMode({s})")
