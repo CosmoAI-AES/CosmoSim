@@ -17,12 +17,12 @@ using namespace SymEngine;
 class Lens {
 public:
 
-    virtual void calculateAlphaBeta( cv::Point2d, int ) = 0;
+    virtual void calculateAlphaBeta( cv::Point2d, int ) ; /* Not implemented */
 
-    virtual double getAlphaXi( int m, int s ) = 0 ;
-    virtual double getBetaXi( int m, int s ) = 0 ;
-    virtual double getAlpha( cv::Point2d xi, int m, int s ) = 0 ;
-    virtual double getBeta( cv::Point2d xi, int m, int s ) = 0 ;
+    virtual double getAlphaXi( int m, int s ) ; /* Not implemented */
+    virtual double getBetaXi( int m, int s ) ; /* Not implemented */
+    virtual double getAlpha( cv::Point2d xi, int m, int s ) ; /* Not implemented */
+    virtual double getBeta( cv::Point2d xi, int m, int s ) ; /* Not implemented */
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
 
@@ -71,7 +71,7 @@ protected:
            ellipseratio=1 /* f */,
 	   orientation=0 /* \phi */ ;
 public:
-    virtual void initAlphasBetas();
+    void initAlphasBetas();
     virtual void calculateAlphaBeta( cv::Point2d, int );
 
     void setFile(std::string) ;
