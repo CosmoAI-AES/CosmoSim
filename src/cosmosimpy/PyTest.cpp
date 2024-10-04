@@ -17,10 +17,10 @@ class Parent : public GrandParent {
    protected:
       int testvar = 2 ;
    public:
-      virtual void setTest( int ) ;
 } ;
 class Child : public Parent {
    public:
+      virtual void setTest( int ) ;
       virtual void test() ;
 } ;
 class PyTest {
@@ -34,7 +34,7 @@ class PyTest {
 void GrandParent::setTest( int n ) {
    std::cout << "[GrandParent::setTest] " << n << "\n" ;
 }
-void Parent::setTest( int n ) {
+void Child::setTest( int n ) {
    std::cout << "[Parent::setTest] " << testvar << " -> " << n << "\n" ;
    testvar = n ;
 }

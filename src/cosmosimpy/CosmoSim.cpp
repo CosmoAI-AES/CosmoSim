@@ -80,8 +80,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
     py::class_<PsiFunctionLens,Lens>(m, "PsiFunctionLens")
         .def(py::init<>())
         .def("setEinsteinR", &PsiFunctionLens::setEinsteinR)
-        .def("setOrientation", &PsiFunctionLens::setOrientation)
-        .def("setRatio", &PsiFunctionLens::setRatio)
         ;
     py::class_<SIS,PsiFunctionLens>(m, "SIS")
         .def(py::init<>())

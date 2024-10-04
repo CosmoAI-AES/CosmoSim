@@ -9,10 +9,3 @@
 
 void PsiFunctionLens::setEinsteinR( double r ) { einsteinR = r ; }
 double PsiFunctionLens::getEinsteinR() const { return einsteinR ; }
-void PsiFunctionLens::setRatio( double r ) { 
-   ellipseratio = r ; 
-   if ( r >= 1 ) ellipseratio = 0.999 ;
-   if ( r <= 0 ) ellipseratio = 0.001 ;
-}
-void PsiFunctionLens::setOrientation( double r ) { orientation = r ; }
-double PsiFunctionLens::getOrientation() const { return this->orientation ; }
