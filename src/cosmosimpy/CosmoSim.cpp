@@ -22,7 +22,7 @@ void CosmoSim::setPolar(int r, int theta) { rPos = r ; thetaPos = theta ; }
 void CosmoSim::setLens(PsiFunctionLens *l) { 
    std::cout << "[CosmoSim::setLens]\n" ;
    modelchanged = 1 ;
-   lens = psilens = l ;
+   lens = l ;
    std::cout << "[CosmoSim::setLens] returning\n" ;
 }
 
@@ -36,7 +36,6 @@ bool CosmoSim::runSim() {
       return false ;
    }
    std::cout << "[runSim]\n" ;
-   psilens = NULL ;
    sim = new RaytraceModel() ;
    sim->setLens(lens) ;
 

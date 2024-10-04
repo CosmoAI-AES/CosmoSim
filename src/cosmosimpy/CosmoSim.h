@@ -15,22 +15,18 @@ class CosmoSim {
 private:
     int size=512, basesize=512 ;
     double chi=0.5 ;
-    double ellipseratio=0.5, orientation=0, einsteinR=20 ;
+    double einsteinR=20 ;
     int modelchanged = 1 ;
     int sourceSize=20 ;
     double xPos=10, yPos=0, rPos=10, thetaPos=0; ;
-    cv::Point2d centrepoint ;
     SimulatorModel *sim = NULL ;
     SphericalSource *src = NULL ;
     bool running = false ;
-    bool maskmode ;
 
     void initSource() ;
     void initLens() ;
-    std::string filename[10], sourcefile = "einstein.png" ;
 
-    Lens *lens = NULL ;
-    PsiFunctionLens *psilens = NULL ;
+    PsiFunctionLens *lens = NULL ;
 
 public:
     CosmoSim();
