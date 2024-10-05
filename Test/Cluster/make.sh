@@ -11,12 +11,13 @@ fn=../sie.csv
 configlist="srousie sraysie rousie raysie"
 # configlist='"Sampled Roulette SIS" "Sampled Raytrace SIS" "Roulette SIS" "Raytrace SIS"'
 
-mkdir -p singleton reference
+mkdir -p singleton reference diff actual montage
 
 python3 $pdir/datagen.py $opt --model Raytrace --csvfile singleton.csv --directory=singleton --actual -R 
 python3 $pdir/datagen.py $opt --model Raytrace --csvfile reference.csv --directory=reference -R 
 
-mkdir -p actual montage
+python3 $pdir/compare.py --diff diff singleton reference
+
 mv singleton/actual* actual
 
 for f in diff/*
