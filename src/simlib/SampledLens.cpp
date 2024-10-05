@@ -59,7 +59,11 @@ cv::Point2d SampledLens::getXi( cv::Point2d chieta ) {
    }
    return xi1 ;
 }
-void SampledLens::calculateAlphaBeta( cv::Point2d xi ) {
+void SampledLens::initAlphasBetas() {
+   std::cout << "[SampledLens::initAlphasBetas] does nothing\n" ;
+}
+
+void SampledLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
 
     // Calculate all amplitudes for given X, Y, einsteinR
 
@@ -136,4 +140,27 @@ double SampledLens::psiXvalue( double x, double y ) const {
 double SampledLens::psiYvalue( double x, double y ) const { 
    cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
    return -psiX.at<double>( ij ) ;
+}
+cv::Mat SampledLens::getPsi() const {
+   return psi ;
+}
+void SampledLens::updatePsi( ) { 
+   return updatePsi( cv::Size(400,400) ) ;
+}
+void SampledLens::updatePsi( cv::Size size ) { 
+   return ; 
+}
+
+double SampledLens::getAlpha( cv::Point2d xi, int m, int s ) {
+   throw NotImplemented() ;
+}
+double SampledLens::getBeta( cv::Point2d xi, int m, int s ) {
+   throw NotImplemented() ;
+}
+
+double SampledLens::getAlphaXi( int m, int s ) {
+   return alphas_val[m][s] ;
+}
+double SampledLens::getBetaXi( int m, int s ) {
+   return betas_val[m][s] ;
 }

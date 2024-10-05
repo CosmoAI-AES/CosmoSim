@@ -7,8 +7,8 @@
 #define DEBUG 0
 #endif
 
-#define alpha_(m,s)  ( NULL == this->lens ? alphas_val[m][s] : this->lens->getAlphaXi( m, s ) )
-#define beta_(m,s)  ( NULL == this->lens ? betas_val[m][s] : this->lens->getBetaXi( m, s ) )
+#define alpha_(m,s)  this->lens->getAlphaXi( m, s )
+#define beta_(m,s)   this->lens->getBetaXi( m, s ) 
 
 RouletteModel::RouletteModel() :
    SimulatorModel::SimulatorModel()
@@ -79,5 +79,5 @@ void RouletteModel::calculateAlphaBeta() {
     }
     if ( lens == NULL ) throw NotSupported() ;
 
-    lens->calculateAlphaBeta( xi ) ;
+    lens->calculateAlphaBeta( xi, nterms ) ;
 }

@@ -89,9 +89,6 @@ public:
     cv::Mat getActual(bool,bool) ;
     cv::Mat getDistorted(bool,bool) ;
 
-    cv::Mat getPsiMap() ;
-    cv::Mat getMassMap() ;
-
     cv::Point2d getOffset( double x, double y ) ;
     cv::Point2d getNu( ) ;
     cv::Point2d getRelativeEta( double x, double y ) ;

@@ -13,51 +13,15 @@
 using namespace SymEngine;
 
 class Lens {
-
-private:
-    std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> alphas_l;
-    std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> betas_l;
-
-
-protected:
-    double einsteinR /* R_E or \xi_0 */,
-           ellipseratio=1 /* f */,
-	   orientation=0 /* \phi */ ;
-    std::string filename = "nosuchfile" ;
-    cv::Mat psi ;
-
-    std::array<std::array<double, 202>, 201> alphas_val;
-    std::array<std::array<double, 202>, 201> betas_val;
-    int nterms=20;
-
 public:
-    virtual void updatePsi( cv::Size ) ;
-    virtual void updatePsi( ) ;
-    virtual void setEinsteinR( double ) ;
-    virtual void setOrientation( double ) ;
-    virtual void setRatio( double ) ;
 
-    cv::Mat getPsi( ) const ;
-    // cv::Mat getPsiX( ) const ;
-    // cv::Mat getPsiY( ) const ;
-    // cv::Mat getMassMap( ) const ;
-    // cv::Mat getPsiImage( ) const ;  // Discouraged
-    // cv::Mat getMassImage() const ;  // Discouraged
+    virtual void initAlphasBetas() = 0 ;
+    virtual void calculateAlphaBeta( cv::Point2d, int ) = 0;
 
-    virtual void initAlphasBetas();
-    virtual void calculateAlphaBeta( cv::Point2d xi );
-    void setFile(std::string) ;
-    void setNterms(int) ;
-
-    // std::array<std::array<double, 202>, 201> getAlphas( cv::Point2d xi ) ;
-    // std::array<std::array<double, 202>, 201> getBetas( cv::Point2d xi ) ;
-    double getAlpha( cv::Point2d xi, int m, int s ) ;
-    double getBeta( cv::Point2d xi, int m, int s ) ;
-    double getAlphaXi( int m, int s ) ;
-    double getBetaXi( int m, int s ) ;
-    double getEinsteinR( ) const ;
-
-    double getOrientation( ) const ;
+    virtual double getAlphaXi( int m, int s ) = 0 ;
+    virtual double getBetaXi( int m, int s ) = 0 ;
+    virtual double getAlpha( cv::Point2d xi, int m, int s ) = 0 ;
+    virtual double getBeta( cv::Point2d xi, int m, int s ) = 0 ;
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
 
@@ -70,21 +34,57 @@ public:
 };
 
 class SampledLens : public Lens {
+private:
+    std::array<std::array<double, 202>, 201> alphas_val;
+    std::array<std::array<double, 202>, 201> betas_val;
 protected:
-    cv::Mat psiX, psiY ;
+    cv::Mat psi, psiX, psiY ;
 public:
-    virtual void calculateAlphaBeta( cv::Point2d xi );
+    virtual void initAlphasBetas();
+    virtual void calculateAlphaBeta( cv::Point2d, int );
     virtual cv::Point2d getXi( cv::Point2d ) ;
+
+    virtual double getAlphaXi( int m, int s ) ;
+    virtual double getBetaXi( int m, int s ) ;
+    virtual double getAlpha( cv::Point2d xi, int m, int s ) ;
+    virtual double getBeta( cv::Point2d xi, int m, int s ) ;
 
     virtual double psiValue( double, double ) const ;
     virtual double psiXvalue( double, double ) const ;
     virtual double psiYvalue( double, double ) const ;
+
+    virtual void updatePsi( cv::Size ) ;
+    virtual void updatePsi( ) ;
+    cv::Mat getPsi( ) const ;
 } ;
 
 class PsiFunctionLens : public Lens {
+private:
+    std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> alphas_l;
+    std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> betas_l;
+    std::array<std::array<double, 202>, 201> alphas_val;
+    std::array<std::array<double, 202>, 201> betas_val;
+    std::string filename = "nosuchfile" ;
+protected:
+    double einsteinR /* R_E or \xi_0 */,
+           ellipseratio=1 /* f */,
+	   orientation=0 /* \phi */ ;
 public:
-    virtual void updatePsi( cv::Size ) ;
+    virtual void initAlphasBetas();
+    virtual void calculateAlphaBeta( cv::Point2d, int );
 
+    void setFile(std::string) ;
+
+    virtual double getAlphaXi( int m, int s ) ;
+    virtual double getBetaXi( int m, int s ) ;
+    virtual double getAlpha( cv::Point2d xi, int m, int s ) ;
+    virtual double getBeta( cv::Point2d xi, int m, int s ) ;
+
+    void setEinsteinR( double ) ;
+    double getEinsteinR( ) const ;
+    void setOrientation( double ) ;
+    double getOrientation( ) const ;
+    void setRatio( double ) ;
 } ;
 
 class SampledPsiFunctionLens : public SampledLens {
@@ -93,9 +93,6 @@ class SampledPsiFunctionLens : public SampledLens {
    public:
       SampledPsiFunctionLens(PsiFunctionLens*) ;
       virtual void updatePsi( cv::Size ) ;
-      virtual void setEinsteinR( double ) ;
-      virtual void setOrientation( double ) ;
-      virtual void setRatio( double ) ;
       virtual double criticalXi( double ) const ;
       virtual cv::Point2d caustic( double phi ) const ;
 } ;

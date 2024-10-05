@@ -413,7 +413,6 @@ cv::Point2d SimulatorModel::getOffset( cv::Point2d xi1 ) {
 
 void SimulatorModel::updateApparentAbs( ) {
     cv::Mat im = getActual() ;
-    lens->updatePsi(im.size()) ;
     cv::Point2d chieta = CHI*getEta() ;
     cv::Point2d xi1 = lens->getXi( chieta ) ;
     setNu( xi1/CHI ) ;

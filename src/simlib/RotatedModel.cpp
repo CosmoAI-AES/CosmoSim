@@ -11,8 +11,12 @@
 #include "simaux.h"
 
 #ifndef DEBUG
-#define DEBUG 0
+#define DEBUG 1
 #endif
+
+RotatedModel::RotatedModel( PsiFunctionLens *l ) {
+   lens = pmlens = l ;
+}
 
 cv::Mat RotatedModel::getApparent() const {
    cv::Mat src, dst ;
@@ -64,10 +68,13 @@ void RotatedModel::updateInner( ) {
 }
 
 void RotatedModel::updateApparentAbs( ) {
+    std::cout << "[RotatedModel::updateApparentAbs] 1\n" ;
     cv::Mat im = getActual() ;
-    lens->updatePsi(im.size()) ;
     cv::Point2d chieta = cv::Point2d( CHI*getEtaAbs(), 0 ) ;
+    std::cout << "[RotatedModel::updateApparentAbs] 2\n" ;
     cv::Point2d xi1 = lens->getXi( chieta ) ;
+    std::cout << "[RotatedModel::updateApparentAbs] 3\n" ;
     setNu( xi1/CHI ) ;
+    std::cout << "[RotatedModel::updateApparentAbs] 4\n" ;
 }
 
