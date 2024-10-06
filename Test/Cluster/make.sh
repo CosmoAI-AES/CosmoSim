@@ -1,6 +1,6 @@
 #! /bin/sh
 
-( cd ../.. && cmake --build build ) || exit 1
+( cd ../.. && cmake --build build && cmake --install build --prefix . ) || exit 1
 
 opt=$*
 
