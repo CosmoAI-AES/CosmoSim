@@ -45,11 +45,9 @@ void PsiFunctionLens::initAlphasBetas() {
 }
 
 void PsiFunctionLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
-   if (DEBUG) std::cout 
-              << "[Lens.calculateAlphaBeta()] " << nterms << "; " 
+    if (DEBUG) std::cout 
+              << "[PsiFunctionLens.calculateAlphaBeta()] " << nterms << "; " 
               << einsteinR << " - " << xi << "\n"  ;
-
-    std::cout << "[Lens.calculateAlphasBeta] f=" << ellipseratio << "; orientation=" << orientation << "\n" ;
 
     // calculate all amplitudes for given xi, einsteinR
     for (int m = 1; m <= nterms; m++){
