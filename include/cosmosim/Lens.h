@@ -157,6 +157,9 @@ public:
     virtual double psiValue( double, double ) const ;
     virtual double psiXvalue( double, double ) const ;
     virtual double psiYvalue( double, double ) const ;
+
+    virtual double getAlpha( cv::Point2d xi, int m, int s ) ; 
+    virtual double getBeta( cv::Point2d xi, int m, int s ) ; 
 } ;
 
 #endif // LENS_H

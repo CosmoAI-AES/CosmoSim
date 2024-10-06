@@ -62,3 +62,20 @@ void ClusterLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
        }
    }
 }
+double ClusterLens::getAlpha( cv::Point2d xi, int m, int s ) {
+   int i ;
+   double r = 0 ;
+   for ( i=0 ; i<this->nlens ; ++i ) {
+      r += this->lens[i]->getAlpha( xi - cv::Point2d( xshift[i], yshift[i] ), m, s ) ;
+   }
+   return r ;
+}
+double ClusterLens::getBeta( cv::Point2d xi, int m, int s ) {
+   int i ;
+   double r = 0 ;
+   for ( i=0 ; i<this->nlens ; ++i ) {
+      r += this->lens[i]->getBeta( xi - cv::Point2d( xshift[i], yshift[i] ), m, s ) ;
+   }
+   return r ;
+}
+
