@@ -3,9 +3,8 @@
 #include "cosmosim/Roulette.h"
 #include "simaux.h"
 
-#ifndef DEBUG
+#undef DEBUG
 #define DEBUG 0
-#endif
 
 #define alpha_(m,s)  this->lens->getAlphaXi( m, s )
 #define beta_(m,s)   this->lens->getBetaXi( m, s ) 
@@ -50,7 +49,7 @@ cv::Point2d RouletteModel::getDistortedPos(double r, double theta) const {
     // return cv::Point2d( nu1/CHI, nu2/CHI ) ;
     cv::Point2d rpt = cv::Point2d( nu1/CHI, nu2/CHI ) ;
 
-    if ( DEBUG && r < 2 ) {
+    if ( DEBUG && (r < 2) ) {
        std::cout << "[getDistortedPos] nu=" << rpt << 
           " theta=" << theta << " r=" << r << "\n" ;
     }

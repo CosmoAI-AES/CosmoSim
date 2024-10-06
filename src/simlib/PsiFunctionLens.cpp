@@ -57,9 +57,8 @@ void PsiFunctionLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
             alphas_val[m][s] = getAlpha( xi, m, s ) ;
             betas_val[m][s] = getBeta( xi, m, s ) ;
             if (DEBUG) std::cout 
-              << "Lens (" << m << ", " << s << ") " 
-              << alphas_val[m][s]  << "/"
-              << betas_val[m][s] << "\n"  ;
+              << "PsiFunctionLens (" << m << ", " << s << ") " 
+              << alphas_val[m][s]  << "/" << betas_val[m][s] << "\n"  ;
         }
     }
 }

@@ -58,6 +58,9 @@ void ClusterLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
          for (int s = 0; s <= (m+1); s++){
             alphas_val[m][s] += this->lens[i]->getAlphaXi(m,s) ;
             betas_val[m][s] += this->lens[i]->getBetaXi(m,s) ;
+            if (DEBUG) std::cout 
+              << "ClusterLens (" << m << ", " << s << ") " 
+              << alphas_val[m][s]  << "/" << betas_val[m][s] << "\n"  ;
          }
        }
    }
