@@ -65,13 +65,14 @@ private:
     std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> betas_l;
     std::array<std::array<double, 202>, 201> alphas_val;
     std::array<std::array<double, 202>, 201> betas_val;
-    std::string filename = "nosuchfile" ;
 protected:
+    std::string filename = "nosuchfile" ;
+
     double einsteinR /* R_E or \xi_0 */,
            ellipseratio=1 /* f */,
 	   orientation=0 /* \phi */ ;
 public:
-    void initAlphasBetas();
+    virtual void initAlphasBetas();
     virtual void calculateAlphaBeta( cv::Point2d, int );
 
     void setFile(std::string) ;
@@ -152,6 +153,7 @@ private:
 public:
     // virtual void addLens( PsiFunctionLens* );
     virtual void addLens( PsiFunctionLens*, double, double );
+    virtual void initAlphasBetas();
     virtual void calculateAlphaBeta( cv::Point2d, int );
 
     virtual double psiValue( double, double ) const ;

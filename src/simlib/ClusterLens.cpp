@@ -82,3 +82,11 @@ double ClusterLens::getBeta( cv::Point2d xi, int m, int s ) {
    return r ;
 }
 
+void ClusterLens::initAlphasBetas() {
+   std::cout << "[ClusterLens.initAlphasBetas] " << filename << "\n" ;
+   for ( int i=0 ; i<this->nlens ; ++i ) {
+      std::cout << "[ClusterLens.initAlphasBetas] " << i << "\n" ;
+      lens[i]->setFile( filename ) ;
+      lens[i]->initAlphasBetas() ;
+   }
+}

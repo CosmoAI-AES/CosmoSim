@@ -15,7 +15,8 @@ void PsiFunctionLens::initAlphasBetas() {
     auto p = SymEngine::symbol("p"); /* theta  */
 
     std::ifstream input;
-    std::cout << "Amplitudes file " << filename << "\n" ;
+    std::cout << "[PsiFunctionLens.initAlphasBetas] Amplitudes file "
+        << filename << "\n" ;
 
     if ( filename.compare("nosuchfile") == 0 )  return ;
 

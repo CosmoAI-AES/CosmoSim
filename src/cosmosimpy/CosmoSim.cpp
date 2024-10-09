@@ -293,10 +293,12 @@ bool CosmoSim::runSim() {
       } else {
          sim->setPolar( rPos, thetaPos ) ;
       }
-      if ( lens != NULL && CSIM_CLUSTER != lensmode ) {
+      if ( psilens != NULL && CSIM_CLUSTER != lensmode ) {
          psilens->setEinsteinR( einsteinR ) ;
          psilens->setRatio( ellipseratio ) ;
          psilens->setOrientation( orientation ) ;
+      }
+      if ( psilens != NULL ) {
          std::cout << "[runSim] ready for initAlphasBetas\n" ;
          psilens->initAlphasBetas() ;
          std::cout << "[runSim] done initAlphasBetas\n" ;
