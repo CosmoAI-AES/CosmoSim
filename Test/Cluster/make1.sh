@@ -16,13 +16,13 @@ configlist="srousie sraysie rousie raysie"
 
 mkdir -p singleton reference diff actual montage
 
-python3 $pdir/datagen.py $opt --model Raytrace --csvfile singleton.csv --directory=singleton --actual -R 
-python3 $pdir/datagen.py $opt --model Raytrace --csvfile reference.csv --directory=reference -R 
+python3 $pdir/datagen.py $opt --model Raytrace --csvfile singleton1.csv --directory=singleton --actual -R 
+python3 $pdir/datagen.py $opt --model Raytrace --csvfile reference1.csv --directory=reference -R 
 python3 $pdir/compare.py --diff diff singleton reference
 
 mkdir -p singleton-roulette reference-roulette diff-roulette montage-roulette
-python3 $pdir/datagen.py $opt --model Roulette --csvfile singleton.csv --directory=singleton-roulette --actual -R  -n 5
-python3 $pdir/datagen.py $opt --model Roulette --csvfile reference.csv --directory=reference-roulette -R -n 5
+python3 $pdir/datagen.py $opt --model Roulette --csvfile singleton1.csv --directory=singleton-roulette --actual -R  -n 5
+python3 $pdir/datagen.py $opt --model Roulette --csvfile reference1.csv --directory=reference-roulette -R -n 5
 python3 $pdir/compare.py --diff diff-roulette singleton-roulette reference-roulette
 
 mv singleton/actual* actual
