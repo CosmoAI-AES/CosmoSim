@@ -137,12 +137,12 @@ void CosmoSim::setModelMode(int m) {
 }
 void CosmoSim::setLensMode(int m) { 
    if ( lensmode != m ) {
-      if (DEBUG) std::cout << "[CosmoSim.cpp] setLensMode(" << lensmode 
+      std::cout << "[CosmoSim.cpp] setLensMode(" << lensmode 
          << " -> " << m << ")\n" ;
       lensmode = m ; 
       modelchanged = 1 ;
    } else {
-      if (DEBUG) std::cout << "[CosmoSim.cpp] setLensMode(" << lensmode << ") unchanged\n" ;
+      std::cout << "[CosmoSim.cpp] setLensMode(" << lensmode << ") unchanged\n" ;
    }
 }
 void CosmoSim::setLens(PsiFunctionLens *l) { 
@@ -154,8 +154,7 @@ void CosmoSim::setLens(PsiFunctionLens *l) {
 }
 void CosmoSim::setSampled(int m) { 
    if ( sampledlens != m ) {
-      if (DEBUG) std::cout << "[CosmoSim.cpp] setSampled(" << m 
-         << " -> " << m << ")\n" ;
+      std::cout << "[CosmoSim.cpp] setSampled(" << m << " -> " << m << ")\n" ;
       sampledlens = m ; 
       modelchanged = 1 ;
    }

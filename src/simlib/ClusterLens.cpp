@@ -85,3 +85,12 @@ void ClusterLens::initAlphasBetas() {
       lens[i]->initAlphasBetas() ;
    }
 }
+std::string ClusterLens::idString() {
+   std::string r = "ClusterLens [" ;
+   for ( int i=0 ; i<this->nlens ; ++i ) {
+      r += lens[i]->idString() ;
+      r += ";" ;
+   }
+   r += "]" ;
+   return r ;
+};

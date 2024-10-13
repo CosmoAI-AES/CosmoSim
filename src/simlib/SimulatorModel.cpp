@@ -39,6 +39,7 @@ cv::Mat SimulatorModel::getDistorted() const {
 }
 
 void SimulatorModel::update( ) {
+   std::cout << "[SimulatorModel::update] Lens: " << lens->idString() << "\n" ;
    updateApparentAbs() ;
    std::cout << "[SimulatorModel::update] Done updateApparentAbs()\n" ;
    return updateInner() ;

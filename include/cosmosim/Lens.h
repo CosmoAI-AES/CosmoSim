@@ -32,6 +32,8 @@ public:
 
     virtual double criticalXi( double ) const ;
     virtual cv::Point2d caustic( double ) const ;
+
+    virtual std::string idString() ;
 };
 
 class SampledLens : public Lens {
@@ -162,6 +164,7 @@ public:
 
     virtual double getAlpha( cv::Point2d xi, int m, int s ) ; 
     virtual double getBeta( cv::Point2d xi, int m, int s ) ; 
+    virtual std::string idString() ;
 } ;
 
 #endif // LENS_H

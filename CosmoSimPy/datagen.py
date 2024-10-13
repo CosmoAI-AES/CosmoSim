@@ -196,21 +196,21 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    print( "Instantiate Simulator ... " )
+    print( "[datagen.py] Instantiate Simulator ... " )
     if args.amplitudes:
        sim = CosmoSim(fn=args.amplitudes)
     elif args.nterms:
        sim = CosmoSim(maxm=int(args.nterms))
     else:
        sim = CosmoSim()
-    print( "Done" )
+    print( "[datagen.py] Simulator initialised" )
     if args.phi:
         sim.setPolar( float(args.x), float(args.phi) )
     else:
         sim.setXY( float(args.x), float(args.y) )
     if args.sourcemode:
         sim.setSourceMode( args.sourcemode )
-    sim.setSourceParameters( float(args.sigma),
+        sim.setSourceParameters( float(args.sigma),
             float(args.sigma2), float(args.theta) )
     if args.sampled:
         sim.setSampled( 1 )

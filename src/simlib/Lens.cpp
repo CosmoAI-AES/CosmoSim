@@ -52,3 +52,7 @@ cv::Point2d Lens::caustic( double phi ) const { throw NotImplemented() ; }
 double Lens::psiValue( double x, double y ) const { throw NotImplemented() ; }
 double Lens::psiXvalue( double x, double y ) const { throw NotImplemented() ; }
 double Lens::psiYvalue( double x, double y ) const { throw NotImplemented() ; }
+
+std::string Lens::idString() {
+   return "Lens (Superclass)" ;
+};
