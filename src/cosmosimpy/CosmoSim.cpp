@@ -164,7 +164,6 @@ void CosmoSim::initLens() {
    if (DEBUG) std::cout << "[initLens] ellipseratio = " << ellipseratio << "\n" ;
    if ( ! modelchanged ) return ;
    if ( sim ) delete sim ;
-   psilens = NULL ;
    std::cout << "switch( lensmode )\n" ;
    switch ( lensmode ) {
        case CSIM_CLUSTER:
@@ -185,7 +184,7 @@ void CosmoSim::initLens() {
        case CSIM_NOPSI:
           if (DEBUG) std::cout << "[initLens] Point Mass or No Lens (" 
                 << lensmode << ")\n" ;
-          lens = NULL ;
+          lens = psilens = NULL ;
           break ;
        default:
          std::cerr << "No such lens model!\n" ;
@@ -285,7 +284,9 @@ bool CosmoSim::runSim() {
    sim->setMaskRadius( maskRadius ) ;
    std::cout << "[runSim] initialised\n" ;
    sim->setMaskMode( maskmode ) ;
-   std::cout << "[runSim] setNterms\n" ;
+   std::cout << "[runSim] " << CSIM_CLUSTER << " - " << CSIM_MODEL_ROULETTE << "\n" ; 
+   std::cout << "[runSim] " << lensmode << " - " << modelmode << 
+      " (" << (psilens == NULL) << ")\n" ; 
    if ( CSIM_NOPSI_ROULETTE != lensmode ) {
       sim->setCHI( chi ) ;
       if ( rPos < 0 ) {

@@ -4,24 +4,19 @@
 
 ( cd ../.. && cmake --build build && cmake --install build --prefix . ) || exit 1
 
-
 opt=$*
 
 pdir=../../CosmoSimPy/
-fn=../sie.csv
+
 # Note, origin.csv specifies scenarioes with the almost source at the origin.
 
-mkdir -p singleton reference diff actual montage
-
-# python3 $pdir/datagen.py $opt --model Raytrace --csvfile singleton1.csv --directory=singleton --actual -R  > raytrace-sin.log 
-# python3 $pdir/datagen.py $opt --model Raytrace --csvfile reference1.csv --directory=reference -R  > raytrace-ref.log 
-# python3 $pdir/compare.py --diff diff singleton reference
-
 mkdir -p singleton-roulette reference-roulette diff-roulette montage-roulette
+
 python3 $pdir/datagen.py $opt --model Roulette --csvfile singleton1.csv --directory=singleton-roulette --actual -R  -n 5 >roulette-sin.log 
 python3 $pdir/datagen.py $opt --model Roulette --csvfile reference1.csv --directory=reference-roulette -R -n 5 >roulette-ref.log 
-python3 $pdir/compare.py --diff diff-roulette singleton-roulette reference-roulette
+python3 $pdir/compare.py --diff diff-roulette reference-roulette singleton-roulette 
 
+mkdir -p actual
 mv singleton-roulette/actual* actual
 
 for f in diff-roulette/*
