@@ -22,7 +22,7 @@ cv::Point2d Lens::getXi( cv::Point2d chieta ) {
       double x = psiXvalue( xi0.x, xi0.y ),
              y = psiYvalue( xi0.x, xi0.y ) ;
       if (DEBUG) std::cout
-	   << "[SampledLens] Fix pt it'n " << count
+	   << "[Lens] Fix pt it'n " << count
            << "; xi0=" << xi0 << "; Delta eta = " << x << ", " << y << "\n" ;
       xi1 = chieta + cv::Point2d( x, y ) ;
       dist = cv::norm( cv::Mat(xi1-xi0), cv::NORM_L2 ) ;
