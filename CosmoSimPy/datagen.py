@@ -35,6 +35,7 @@ def setParameters(sim,row):
     if row.get("config",None) != None:
         sim.setConfigMode( row["config"] )
     elif row.get("cluster",None) != None:
+        print( "setCluster from CSV" )
         sim.setCluster( row["cluster"] )
     elif row.get("lens",None) != None:
         sim.setLensMode( row["lens"] )
@@ -219,6 +220,7 @@ if __name__ == "__main__":
     if args.config:
         sim.setConfigMode( args.config )
     elif args.cluster:
+        print( "setCluster from arguments" )
         sim.setCluster( args.cluster )
     elif args.lensmode:
         sim.setLensMode( args.lensmode )
