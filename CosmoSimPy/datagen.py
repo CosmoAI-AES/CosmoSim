@@ -68,6 +68,7 @@ def makeSingle(sim,args,name=None,row=None,outstream=None):
     elif name == None:
         name = args.name
     print ( "[datagen.py] ready for runSim()\n" ) ;
+    sys.stdout.flush()
     sim.runSim()
     print ( "[datagen.py] runSim() completed\n" ) ;
     centrepoint = makeOutput(sim,args,name,actual=args.actual,apparent=args.apparent,original=args.original,reflines=args.reflines,critical=args.criticalcurves)
@@ -101,6 +102,7 @@ def makeSingle(sim,args,name=None,row=None,outstream=None):
         a = sim.getPsiMap()
         print(a.shape, a.dtype)
         print(a)
+        sys.stdout.flush()
         nx,ny = a.shape
         X, Y = np.meshgrid( range(nx), range(ny) )
         hf = plt.figure()
@@ -124,6 +126,7 @@ def makeSingle(sim,args,name=None,row=None,outstream=None):
     if outstream:
         maxm = int(args.nterms)
         print( "[datagen.py] Finding Alpha/beta; centrepoint=", centrepoint )
+        sys.stdout.flush()
         r = [ row[x] for x in outcols ]
         releta = sim.getRelativeEta(centrepoint=centrepoint)
         offset = sim.getOffset(centrepoint=centrepoint)
@@ -197,6 +200,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     print( "[datagen.py] Instantiate Simulator ... " )
+    sys.stdout.flush()
     if args.amplitudes:
        sim = CosmoSim(fn=args.amplitudes)
     elif args.nterms:

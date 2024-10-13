@@ -3,7 +3,7 @@
 import CosmoSim.CosmoSimPy as cs
 import numpy as np
 import threading as th
-import os
+import os, sys
 
 import traceback
 
@@ -170,6 +170,7 @@ class CosmoSim(cs.CosmoSim):
         return super().maskImage( float(scale) )
     def setCluster(self,s):
         print( f"[CosmoSim/py] setCluster({s})")
+        sys.stdout.flush()
         ll = [ x.split("/") for x in s.split(";") ]
         self.lenslist = []
         cluster = cs.ClusterLens()
@@ -177,6 +178,7 @@ class CosmoSim(cs.CosmoSim):
             lenstype = lens[0]
             lensparam = [ float(x) for x in lens[1:] ]
             print( lenstype, ":", lensparam )
+            sys.stdout.flush()
             nl = len(lensparam)
             if nl < 3:
                 raise Exception( f"Too few parameters for constituent lens" )
@@ -200,6 +202,7 @@ class CosmoSim(cs.CosmoSim):
             cluster.addLens( l, x, y )
         self.cluster = cluster
         print( f"[CosmoSim/py] setCluster calls setLens")
+        sys.stdout.flush()
         super().setLens(cluster)
         return
     def setLensMode(self,s):

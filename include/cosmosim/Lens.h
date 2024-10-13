@@ -165,6 +165,9 @@ public:
     virtual double getAlpha( cv::Point2d xi, int m, int s ) ; 
     virtual double getBeta( cv::Point2d xi, int m, int s ) ; 
     virtual std::string idString() ;
+
+    virtual double getAlphaXi( int m, int s ) ;
+    virtual double getBetaXi( int m, int s ) ;
 } ;
 
 #endif // LENS_H

@@ -1,5 +1,7 @@
 #! /bin/sh
 
+. ../../pythonenv/bin/activate
+
 ( cd ../.. && cmake --build build ) || exit 1
 
 opt=$*

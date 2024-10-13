@@ -40,6 +40,7 @@ cv::Mat SimulatorModel::getDistorted() const {
 
 void SimulatorModel::update( ) {
    std::cout << "[SimulatorModel::update] Lens: " << lens->idString() << "\n" ;
+   std::cout << "[SimulatorModel::update] CHI=" << CHI << "\n" ;
    updateApparentAbs() ;
    std::cout << "[SimulatorModel::update] Done updateApparentAbs()\n" ;
    return updateInner() ;
@@ -133,11 +134,9 @@ void SimulatorModel::updateInner( ) {
 
 /* This just splits the image space in chunks and runs distort() in parallel */
 void SimulatorModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
-    int n_threads = std::thread::hardware_concurrency();
-    if (DEBUG) {
-       std::cout << "[parallelDistort] Running with " << n_threads << " threads (maskMode="
+    int n_threads = 1 ; // std::thread::hardware_concurrency();
+    std::cout << "[SimulatorModel::parallelDistort] " << n_threads << " threads (maskMode="
                  << maskMode << ")\n" ;
-    }
 
     std::vector<std::thread> threads_vec;
     double maskRadius = getMaskRadius() ;
@@ -157,7 +156,7 @@ void SimulatorModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
         std::cout << "[SimulatorModel] No mask \n" ;
     } 
     rng1 = ceil( (double) rng / (double) n_threads ) ;
-    if (DEBUG) std::cout << "[parallelDistort] lower=" << lower << "; rng=" << rng
+    std::cout << "[SimulatorModel::parallelDistort] lower=" << lower << "; rng=" << rng
             << "; rng1=" << rng1 << std::endl ;
     for (int i = 0; i < n_threads; i++) {
         int begin = lower+rng1*i, end = begin+rng1 ;
@@ -176,6 +175,8 @@ void SimulatorModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& ds
     // (row,col) are pixel co-ordinates
     double maskRadius = getMaskRadius()*CHI ;
     cv::Point2d xi = getXi() ;
+    std::cout << "[SimulatorModel::distort] begin=" << begin << "; end=" << end
+            << std::endl ;
     for (int row = begin; row < end; row++) {
         for (int col = 0; col < dst.cols; col++) {
 

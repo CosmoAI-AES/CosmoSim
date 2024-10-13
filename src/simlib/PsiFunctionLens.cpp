@@ -72,6 +72,7 @@ double PsiFunctionLens::getBeta( cv::Point2d xi, int m, int s ) {
 }
 
 double PsiFunctionLens::getAlphaXi( int m, int s ) {
+   // std::cout << "[PsiFunctionLens::getAlphaXi] ("<<m<<","<<s<<") "<< alphas_val[m][s] <<std::endl;
    return alphas_val[m][s] ;
 }
 double PsiFunctionLens::getBetaXi( int m, int s ) {
