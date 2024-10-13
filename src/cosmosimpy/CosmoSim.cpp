@@ -115,6 +115,9 @@ void CosmoSim::diagnostics() {
 void CosmoSim::setFile( int key, std::string fn ) {
     filename[key] = fn ;
 } 
+std::string CosmoSim::getFile( int key ) {
+    return filename[key] ;
+} 
 void CosmoSim::setSourceFile( std::string fn ) {
     sourcefile = fn ;
 } 
@@ -423,6 +426,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setResolution", &CosmoSim::setResolution)
         .def("setBGColour", &CosmoSim::setBGColour)
         .def("setFile", &CosmoSim::setFile)
+        .def("getFile", &CosmoSim::getFile)
         .def("setSourceFile", &CosmoSim::setSourceFile)
         .def("getAlpha", &CosmoSim::getAlpha)
         .def("getBeta", &CosmoSim::getBeta)

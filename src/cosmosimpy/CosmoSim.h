@@ -61,6 +61,7 @@ public:
     PsiFunctionLens *getLens( int ) ;
 
     void setFile(int,std::string) ;
+    std::string getFile(int) ;
     void setSourceFile(std::string) ;
     void setXY(double, double) ;
     void setPolar(int, int) ;

@@ -183,12 +183,14 @@ class CosmoSim(cs.CosmoSim):
             x, y = lensparam[0], lensparam[1] ;
             if lenstype == "SIS":
                 l = cs.SIS()
+                l.setFile( super().getFile( PsiSpec.SIS ) )
             elif lenstype == "SIE":
                 l = cs.SIE()
                 if nl < 5:
                     raise Exception( f"Too few parameters for SIE lens" )
                 l.setRatio( lensparam[3] )
                 l.setOrientation( lensparam[4] )
+                l.setFile( super().getFile( PsiSpec.SIE ) )
             elif lenstype == "PointMass":
                 l = cs.PointMass()
             else:

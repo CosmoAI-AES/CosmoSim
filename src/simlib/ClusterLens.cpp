@@ -86,7 +86,7 @@ void ClusterLens::initAlphasBetas() {
    std::cout << "[ClusterLens.initAlphasBetas] " << filename << "\n" ;
    for ( int i=0 ; i<this->nlens ; ++i ) {
       std::cout << "[ClusterLens.initAlphasBetas] " << i << "\n" ;
-      lens[i]->setFile( filename ) ;
+      // lens[i]->setFile( filename ) ;
       lens[i]->initAlphasBetas() ;
    }
 }
