@@ -1,7 +1,7 @@
 
 all: alltests
 
-status: alltests
+status: cpptests
 	cat */*.status
 
 clean alltests:
