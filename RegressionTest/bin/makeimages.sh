@@ -16,5 +16,5 @@ dir=$1
 test $dir || dir=`date "+%Y%m%d"`
 mkdir -p $dir
 
-datagen.py --directory="$dir" --csvfile debug.csv  || exit 1
+datagen.py $opts --directory="$dir" --csvfile debug.csv  || exit 1
 

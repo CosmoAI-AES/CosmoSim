@@ -35,3 +35,7 @@ if test -f baseline.config
 then
    baseline=`cat baseline.config`
 fi
+if test -f local.config
+then
+   . local.config
+fi
