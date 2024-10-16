@@ -6,8 +6,8 @@
 #undef DEBUG
 #define DEBUG 0
 
-#define alpha_(m,s)  this->lens->getAlphaXi( m, s )
-#define beta_(m,s)   this->lens->getBetaXi( m, s ) 
+#define alpha_(m,s)  ( ( NULL == lens ) ? alphas_val[m][s] : this->lens->getAlphaXi( m, s ) )
+#define beta_(m,s)   ( ( NULL == lens ) ? betas_val[m][s] : this->lens->getBetaXi( m, s )  )
 
 RouletteModel::RouletteModel() :
    SimulatorModel::SimulatorModel()
@@ -52,9 +52,11 @@ cv::Point2d RouletteModel::getDistortedPos(double r, double theta) const {
     cv::Point2d rpt = cv::Point2d( nu1/CHI, nu2/CHI ) ;
 
     if ( DEBUG && (r < 2) ) {
+       std::string s = "No lens" ;
        std::cout << "[getDistortedPos] nu=" << rpt << 
           " theta=" << theta << " r=" << r << "\n" ;
-       std::cout << lens->idString() << CHI << cv::Point2d(r,theta) << "->" << rpt << std::endl ;
+       if ( lens != NULL ) s = lens->idString() ;
+       std::cout << s << CHI << cv::Point2d(r,theta) << "->" << rpt << std::endl ;
     }
 
     return rpt ;
