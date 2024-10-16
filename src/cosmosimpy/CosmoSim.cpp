@@ -9,10 +9,13 @@
 #define DEBUG 1
 #endif
 
+#include <thread>
+
 namespace py = pybind11;
 
 CosmoSim::CosmoSim() {
-   if (DEBUG) std::cout << "CosmoSim Constructor\n" ;
+   std::cout << "CosmoSim Constructor\n" ;
+   std::cout << "Number of CPU cores: " << std::thread::hardware_concurrency() << std::endl ; 
    rPos = -1 ;
 }
 
