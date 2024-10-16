@@ -9,6 +9,10 @@ clean alltests:
 	cd raytrace ; $(MAKE) $@
 	cd roulette ; $(MAKE) $@
 	cd roulettepm ; $(MAKE) $@
+	cd new-roulette ; $(MAKE) alltests
+	cd new-raytrace ; $(MAKE) alltests
+	cd sampled-roulette ; $(MAKE) alltests
+	cd sampled-raytrace ; $(MAKE) alltests
 	cd roulettegen ; $(MAKE) $@
 	cd amplitudes ; $(MAKE) $@
 
@@ -17,6 +21,10 @@ cpptests:
 	cd raytrace ; $(MAKE) alltests
 	cd roulette ; $(MAKE) alltests
 	cd roulettepm ; $(MAKE) alltests
+	cd new-roulette ; $(MAKE) alltests
+	cd new-raytrace ; $(MAKE) alltests
+	cd sampled-roulette ; $(MAKE) alltests
+	cd sampled-raytrace ; $(MAKE) alltests
 	# cd roulettelens ; $(MAKE) alltests
 
 baselines:
