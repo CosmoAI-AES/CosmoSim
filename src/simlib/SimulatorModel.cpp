@@ -39,8 +39,10 @@ cv::Mat SimulatorModel::getDistorted() const {
 }
 
 void SimulatorModel::update( ) {
-   std::cout << "[SimulatorModel::update] Lens: " << lens->idString() << "\n" ;
-   std::cout << "[SimulatorModel::update] CHI=" << CHI << "\n" ;
+   if ( lens != NULL ) {
+      std::cout << "[SimulatorModel::update] Lens: " << lens->idString() << "\n" ;
+      std::cout << "[SimulatorModel::update] CHI=" << CHI << "\n" ;
+   } ;
    updateApparentAbs() ;
    std::cout << "[SimulatorModel::update] Done updateApparentAbs()\n" ;
    return updateInner() ;
