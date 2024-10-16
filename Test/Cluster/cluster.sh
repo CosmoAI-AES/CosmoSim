@@ -1,4 +1,5 @@
 #! /bin/sh
+# Deprecated in favour of RegressionTest/cluster
 
 . ../../pythonenv/bin/activate
 
@@ -8,11 +9,6 @@ opt=$*
 
 pdir=../../CosmoSimPy/
 
-# Note, origin.csv specifies scenarioes with the almost source at the origin.
-
-configlist="srousie sraysie rousie raysie"
-# configlist='"Sampled Roulette SIS" "Sampled Raytrace SIS" "Roulette SIS" "Raytrace SIS"'
-
 mkdir -p cluster
 
-python3 $pdir/datagen.py $opt --model Raytrace --csvfile ../cluster.csv --directory=cluster --actual -R 
+python3 $pdir/datagen.py $opt --model Raytrace --csvfile ../../RegressionTest/cluster.csv --directory=cluster --actual -R 
