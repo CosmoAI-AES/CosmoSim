@@ -2,6 +2,8 @@
 
 # Build script
 
+. pythonenv/bin/activate
+
 rm -rf build
 
 if /bin/true
