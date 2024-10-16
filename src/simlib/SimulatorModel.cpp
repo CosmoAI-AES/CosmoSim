@@ -136,7 +136,7 @@ void SimulatorModel::updateInner( ) {
 
 /* This just splits the image space in chunks and runs distort() in parallel */
 void SimulatorModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
-    int n_threads = 1 ; // std::thread::hardware_concurrency();
+    int n_threads = std::thread::hardware_concurrency() ;
     if (DEBUG) std::cout << "[SimulatorModel::parallelDistort] " << n_threads << " threads (maskMode="
                  << maskMode << ")\n" ;
 
