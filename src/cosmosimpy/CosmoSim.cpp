@@ -23,7 +23,7 @@ PsiFunctionLens *CosmoSim::getLens( int lensmode ) {
          return new SIE() ;
       case CSIM_PSI_SIS:
          return new SIS() ;
-      case CSIM_CLUSTER:
+      case CSIM_PSI_CLUSTER:
          return new ClusterLens() ;
       default:
          throw NotImplemented() ;
@@ -147,7 +147,7 @@ void CosmoSim::setLensMode(int m) {
 }
 void CosmoSim::setLens(PsiFunctionLens *l) { 
    std::cout << "[CosmoSim::setLens]\n" ;
-   lensmode = CSIM_CLUSTER ; 
+   lensmode = CSIM_PSI_CLUSTER ; 
    modelchanged = 1 ;
    lens = psilens = l ;
    std::cout << "[CosmoSim::setLens] returning\n" ;
@@ -168,7 +168,7 @@ void CosmoSim::initLens() {
    if ( sim ) delete sim ;
    std::cout << "switch( lensmode )\n" ;
    switch ( lensmode ) {
-       case CSIM_CLUSTER:
+       case CSIM_PSI_CLUSTER:
           std::cout << "[initLens] ClusterLens - no further init\n" ;
           break ;
        case CSIM_PSI_SIE:
@@ -286,7 +286,7 @@ bool CosmoSim::runSim() {
    sim->setMaskRadius( maskRadius ) ;
    std::cout << "[runSim] initialised\n" ;
    sim->setMaskMode( maskmode ) ;
-   std::cout << "[runSim] " << CSIM_CLUSTER << " - " << CSIM_MODEL_ROULETTE << "\n" ; 
+   std::cout << "[runSim] " << CSIM_PSI_CLUSTER << " - " << CSIM_MODEL_ROULETTE << "\n" ; 
    std::cout << "[runSim] " << lensmode << " - " << modelmode << 
       " (" << (psilens == NULL) << ")\n" ; 
    if ( CSIM_NOPSI_ROULETTE != lensmode ) {
@@ -296,7 +296,7 @@ bool CosmoSim::runSim() {
       } else {
          sim->setPolar( rPos, thetaPos ) ;
       }
-      if ( psilens != NULL && CSIM_CLUSTER != lensmode ) {
+      if ( psilens != NULL && CSIM_PSI_CLUSTER != lensmode ) {
          psilens->setEinsteinR( einsteinR ) ;
          psilens->setRatio( ellipseratio ) ;
          psilens->setOrientation( orientation ) ;
@@ -521,7 +521,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
     pybind11::enum_<PsiSpec>(m, "PsiSpec") 
        .value( "SIE", CSIM_PSI_SIE )
        .value( "SIS", CSIM_PSI_SIS )
-       .value( "Cluster", CSIM_CLUSTER )
+       .value( "Cluster", CSIM_PSI_CLUSTER )
        .value( "PM", CSIM_NOPSI_PM ) 
        .value( "Roulette", CSIM_NOPSI_ROULETTE ) 
        .value( "NoPsi", CSIM_NOPSI ) ;
