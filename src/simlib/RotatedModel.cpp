@@ -11,7 +11,7 @@
 #include "simaux.h"
 
 #ifndef DEBUG
-#define DEBUG 1
+#define DEBUG 0
 #endif
 
 RotatedModel::RotatedModel( PsiFunctionLens *l ) {
