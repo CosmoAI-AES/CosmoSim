@@ -8,6 +8,8 @@
 + New tests to compare and analyse models.
 + Partial support for SIE
 + Allow masking with explicit radius in `roulettegen.py`
++ Support for clusterlenses with several lenses in the same lens plane
++ Python bindings for lens classes
 
 ### Fixed
 
