@@ -23,6 +23,12 @@
 - `--xireference` is now default.  It can be turned off with `--no-xireference`,
   but only the default is tested.
 
+### Changed
+
+- The Roulette Regenerator needs debugging and documentation.
+- SIE is slow and irresponsive in the GUI, probably due to the computational
+  complexity of the distortion function
+
 ## [2.4.3] - 2024-05-16
 
 ### Fixed

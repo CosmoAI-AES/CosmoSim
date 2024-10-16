@@ -47,6 +47,7 @@ double SIE::psiValue( double x, double y ) const {
 }
 
 double SIE::psiXvalue( double x, double y ) const {
+   doube xp, yp ;
    double sq = sqrt( 1 - ellipseratio*ellipseratio ) ; /* $f'$ */
    double sqf = sqrt( ellipseratio )/sq ;  /* $\sqrt(f)/f'$ */
 
@@ -54,17 +55,18 @@ double SIE::psiXvalue( double x, double y ) const {
    double theta = orientation*PI/180 ;
    double ct = cos(theta) ;
    double st = sin(theta) ;
-   double xp = ct*x + st*y ;
+   xp = ct*x + st*y ;
    xp /= R ;
    xp *= sq ;
    xp /= ellipseratio ;
-   double yp = - st*x + ct*y ;
+   yp = - st*x + ct*y ;
    yp /= R ;
    yp *= sq ;
 
    return einsteinR*sqf*( ct * asinh(xp) - st * asin(yp)) ;
 }
 double SIE::psiYvalue( double x, double y ) const {
+   doube xp, yp ;
    double sq = sqrt( 1 - ellipseratio*ellipseratio ) ; /* $f'$ */
    double sqf = sqrt( ellipseratio )/sq ;  /* $\sqrt(f)/f'$ */
 
@@ -72,11 +74,11 @@ double SIE::psiYvalue( double x, double y ) const {
    double theta = orientation*PI/180 ;
    double ct = cos(theta) ;
    double st = sin(theta) ;
-   double xp = ct*x + st*y ;
+   xp = ct*x + st*y ;
    xp /= R ;
    xp *= sq ;
    xp /= ellipseratio ;
-   double yp = - st*x + ct*y ;
+   yp = - st*x + ct*y ;
    yp /= R ;
    yp *= sq ;
 
