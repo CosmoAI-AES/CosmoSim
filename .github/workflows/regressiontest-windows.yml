@@ -69,7 +69,7 @@ jobs:
       - name: move artifacts in place
         shell: bash
         run: |
-          mv CosmoSimPy-*-python*/CosmoSimPy.*.{pyd,so}  CosmoSimPy/CosmoSim
+          mv CosmoSimPy-*-python*/CosmoSimPy.*.pyd  CosmoSimPy/CosmoSim
       - name: makeimages
         run: |
           cd RegressionTest/${{ matrix.test-dir }}
