@@ -41,7 +41,7 @@ runs:
         shell: bash
         run: |
           find /Library -name "*.icns"
-          pyinstaller --windowed --osx-bundle-identifier no.ntnu.iir.CosmoGUI CosmoSimPy/CosmoGUI.py
+          pyinstaller --windowed --icon icon.icns --osx-bundle-identifier no.ntnu.iir.CosmoGUI CosmoSimPy/CosmoGUI.py
       - name: Remove non-app data
         shell: bash
         run: |
