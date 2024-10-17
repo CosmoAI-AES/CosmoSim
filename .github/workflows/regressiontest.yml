@@ -74,10 +74,16 @@ jobs:
           python-version: ${{ matrix.python-version }}
           architecture: 'x64'
           cache: "pip"
+      - name: Install prerequisites
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+          python3-opencv \
+          libopencv-dev 
       - name: pip-installations
         run: |
           pip install -r requirements.txt
-          pip install stitching
       - name: artifact
         uses: actions/download-artifact@v4
         with:
