@@ -63,7 +63,7 @@ runs:
           libxcb-res0-dev \
           python3-opencv \
           libopencv-dev 
-          sudo pip3 install conan==1.64.0
+          pip3 install -r requirements.txt
       - name: Config Conan
         shell: bash
         run: |
@@ -94,6 +94,9 @@ runs:
       - name: Test
         shell: bash
         run: |
-          pip3 install -r requirements.txt
+          strings build/lib/CosmoSimPy.*.so | grep ClusterLens
           cp build/lib/CosmoSimPy.*.so CosmoSimPy/CosmoSim
+          ls -l CosmoSimPy/CosmoSim
+          date
+          python3 --version
           python3 CosmoSimPy/datagen.py

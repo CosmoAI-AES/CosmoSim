@@ -1,6 +1,6 @@
 
-SVG=lensmodel.svg points.svg relativeeta.svg
-PDF=lensmodel.pdf points.pdf relativeeta.pdf
+SVG=lensmodel.svg points.svg relativeeta.svg software.svg
+PDF=lensmodel.pdf points.pdf relativeeta.pdf software.pdf
 
 all: $(SVG)
 pdf: $(PDF)

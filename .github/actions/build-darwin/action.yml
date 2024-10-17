@@ -11,7 +11,6 @@ inputs:
 
 runs:
     using: "composite"
-
     steps:
       - name: Setup Python 3.x
         uses: actions/setup-python@v5
@@ -22,9 +21,11 @@ runs:
       - name: Install prerequisites
         shell: bash
         run: |
-          sudo pip3 install conan==1.64
+          pip3 install -r requirements.txt
           conan profile new default --detect
           conan profile update settings.compiler.version=${{ inputs.compiler-version }} default
+          brew install gettext
+          brew link gettext --force
       - name: Run conan
         shell: bash
         run: |

@@ -91,9 +91,17 @@
    \begin{class}[text width = 24mm]{SIS}{15 , -5.5}
       \inherit{PsiFunctionLens}
    \end{class}
-   \begin{class}[text width = 24mm]{SIE}{18 , -5.5}
+   \begin{class}[text width = 24mm]{SIE}{17.5 , -7.5}
       \inherit{PsiFunctionLens}
    \end{class}
+
+% Lens.h:class ClusterLens : public PsiFunctionLens { 
+   \begin{class}[text width = 24mm]{ClusterLens}{18 , -5.5}
+      \inherit{PsiFunctionLens}
+   \end{class}
+   % \unidirectionalAssociation{ClusterLens}{}{1..*}{PsiFunctionLens}
+   \draw [objectline, ->] 
+       (ClusterLens.north) |- (PsiFunctionLens.east) ;
 
 \end{tikzpicture}
 

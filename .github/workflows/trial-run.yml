@@ -15,9 +15,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-22.04]
         compiler_version: [10]
-        python-version: ['3.9','3.11','3.12']
+        python-version: ['3.11','3.12']
     steps:
       - uses: actions/checkout@v4
       - name: Build Project
