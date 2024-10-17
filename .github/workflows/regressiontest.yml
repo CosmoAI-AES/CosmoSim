@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-24.04]
         compiler-version: [10]
         python-version: ['3.11']
 
@@ -49,7 +49,7 @@ jobs:
            compiler-version: ${{ matrix.compiler-version }}
            python-version: ${{ matrix.python-version }}
 
-  regressiion-test:
+  regression-test:
 
     runs-on:  ${{ matrix.os }}
     needs: 
@@ -59,7 +59,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04,windows-2019]
-        test-dir: [ 'exactpm', 'raytrace', 'roulette', 'roulettepm', 'roulettelens' ]
+        test-dir: [ 'exactpm', 'raytrace', 'roulette', 'roulettepm',
+          'new-roulette', 'new-raytrace',
+          'sampled-roulette', 'sampled-raytrace',
+          'cluster-roulette', 'cluster-raytrace',
+          'cluster-sampled-roulette', 'cluster-sampled-raytrace',
+        ]
         python-version: ['3.11']
     steps:
       - uses: actions/checkout@v4
