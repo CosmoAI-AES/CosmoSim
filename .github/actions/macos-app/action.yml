@@ -45,6 +45,10 @@ runs:
         shell: bash
         run: |
           rm -rf dist/CosmoGUI
+      - name: Diagnostic
+        shell: bash
+        run: |
+          find /Library -name icon-windowed.icns
       - name: Archive Python link library
         uses: actions/upload-artifact@v4
         with:
