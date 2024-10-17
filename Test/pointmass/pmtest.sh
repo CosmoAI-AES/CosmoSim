@@ -2,16 +2,26 @@
 
 ( cd ../.. && cmake --build build )
 
-pdir=../../Python
+. ../../pythonenv/bin/activate
+
+pdir=../../CosmoSimPy
 dir1=Exact
-dir2=Roulette
+dir2=Raytrace
 diffdir=diff
 
 mkdir -p $dir1 $dir2 $diffdir
 
 fn=../spheres.csv
 
-python3 $pdir/datagen.py -L p --directory="$dir1" --csvfile $fn  
-python3 $pdir/datagen.py -L r --directory="$dir2" --csvfile $fn  --mask
+python3 $pdir/datagen.py --config p --directory="$dir1" --csvfile $fn  
+python3 $pdir/datagen.py --lens PointMass --model Raytrace --directory="$dir2" --csvfile $fn  --actual --mask
 python3 $pdir/compare.py --diff $diffdir $dir1 $dir2
 
+mkdir -p actual
+mv "$dir2"/actual-* actual/
+
+for f in diff/*
+do
+  ff=`basename $f`
+  $CONVERT \( actuals/actual-$ff "$dir1"/$ff +append \) \( "$dir2"/$ff diff-sampled-compare/$ff +append \) -append montage/$ff
+done
