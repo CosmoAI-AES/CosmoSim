@@ -13,6 +13,8 @@ runs:
     using: "composite"
 
     steps:
+      - uses: kenchan0130/actions-system-info@master
+        id: system-info
       - uses: actions/checkout@v4
       - name: Setup Python 3.x
         uses: actions/setup-python@v5
@@ -22,7 +24,7 @@ runs:
       - name: Install prerequisites
         shell: bash
         run: |
-          sudo pip3 install conan==1.64
+          sudo pip3 install -r requirements.txt
           conan profile new default --detect
           conan profile update settings.compiler.version=${{ inputs.compiler-version }} default
           pip3 install pyinstaller
