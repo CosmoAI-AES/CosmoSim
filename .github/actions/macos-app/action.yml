@@ -40,7 +40,7 @@ runs:
       - name: Make application bundle
         shell: bash
         run: |
-          find /Library -name icon-windowed.icns
+          find /Library -name "*.icns"
           pyinstaller --windowed --osx-bundle-identifier no.ntnu.iir.CosmoGUI CosmoSimPy/CosmoGUI.py
       - name: Remove non-app data
         shell: bash
