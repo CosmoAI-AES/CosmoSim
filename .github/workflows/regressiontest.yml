@@ -75,7 +75,9 @@ jobs:
           architecture: 'x64'
           cache: "pip"
       - name: pip-installations
-        run: pip install -r requirements.txt
+        run: 
+          pip install -r requirements.txt
+          pip install stitching
       - name: artifact
         uses: actions/download-artifact@v4
         with:
