@@ -7,11 +7,10 @@ inputs:
     default: 14
   python-version:
     required: false
-    default: '3.11'
+    default: '3.10'
 
 runs:
     using: "composite"
-
     steps:
       - name: Setup Python 3.x
         uses: actions/setup-python@v5
