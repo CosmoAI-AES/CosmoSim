@@ -1,47 +1,43 @@
 # (C) 2023: Hans Georg Schaathun <georg@schaathun.net> 
 
-name: "Regression Test (Modular)"
+name: "Regression Test on Windows"
 
 on: 
    push:
-       branches: [ feature/regressiontests, develop ]
+       branches: [ feature/regressiontests ]
    release:
    workflow_dispatch:
    workflow_call:
 
 jobs:
-  build-on-linux:
 
-    name: Build on Linux
+  build-on-windows:
+    name: Build on Windows
     runs-on: ${{ matrix.os }}
-    env:
-      CC: gcc-${{ matrix.compiler-version }}
-      CXX: g++-${{ matrix.compiler-version }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04]
+        os: [windows-2019]
         compiler-version: [10]
         python-version: ['3.11']
-
     steps:
       - uses: actions/checkout@v4
       - name: Build Project
-        uses: ./.github/actions/build-linux
+        uses: ./.github/actions/build-windows
         with:
            compiler-version: ${{ matrix.compiler-version }}
            python-version: ${{ matrix.python-version }}
-
 
   regression-test:
 
     runs-on:  ${{ matrix.os }}
     needs: 
+      - build-on-windows
       - build-on-linux
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04]
+        os: [windows-2019]
         test-dir: [ 'exactpm', 'raytrace', 'roulette', 'roulettepm',
           'new-roulette', 'new-raytrace',
           'sampled-roulette', 'sampled-raytrace',
@@ -57,13 +53,6 @@ jobs:
           python-version: ${{ matrix.python-version }}
           architecture: 'x64'
           cache: "pip"
-      - name: Install prerequisites
-        shell: bash
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-          python3-opencv \
-          libopencv-dev 
       - name: pip-installations
         run: |
           pip install -r requirements.txt
