@@ -4,7 +4,7 @@
 #include "simaux.h"
 
 #ifndef DEBUG
-#define DEBUG 1
+#define DEBUG 0
 #endif
 
 cv::Point2d Lens::getXi( cv::Point2d chieta ) {
@@ -13,8 +13,7 @@ cv::Point2d Lens::getXi( cv::Point2d chieta ) {
    int cont = 1, count = 0, maxcount = 200 ;
    double dist, dist0=pow(10,12), threshold = 0.02 ;
 
-   std::cout << "[Lens::getXi]\n" ;
-   std::cout << "[Lens::getXi] " << chieta << "\n" ;
+   if (DEBUG) std::cout << "[Lens::getXi] " << chieta << "\n" ;
 
    /** This block makes a fix-point iteration to find \xi. */
    while ( cont ) {
