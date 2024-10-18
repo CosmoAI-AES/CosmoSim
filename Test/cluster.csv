@@ -1,5 +1,0 @@
-index,filename,source,chi,x,y,sigma,sigma2,theta,cluster
-"dbl01",dbl01.png,e,50, 24,0,30,15,135,"SIS/0/20/48;SIS/0/-20/48"
-"dbl11",dbl11.png,e,50, 24,68,30,15,135,"SIS/0/20/48;SIS/0/-20/48"
-"dbl02",dbl02.png,e,50, 24,0,30,15,135,"SIS/0/20/20;SIS/0/-20/20;SIS/-20/0/48"
-"dbl12",dbl12.png,e,50, 24,68,30,15,135,"SIS/0/20/20;SIS/0/-20/20;SIS/-20/0/48"
