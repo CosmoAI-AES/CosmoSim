@@ -19,7 +19,7 @@ montage.status:
 images.status:
 	( makeimages.sh && \
 		echo makeimages.sh succeeded > $@ || \
-		echo makeimages.sh error: $$? ) 
+		echo makeimages.sh error: $$? > $@ ) 
 compare.status:
 	( compareimages.sh && \
 		echo `pwd`: compareimages.sh succeeded > $@ || \

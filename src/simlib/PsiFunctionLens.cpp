@@ -1,5 +1,7 @@
 /* (C) 2024: Hans Georg Schaathun <georg@schaathun.net> */
 
+#define DEBUG 1
+
 #include "cosmosim/Lens.h"
 #include "simaux.h"
 
@@ -55,9 +57,7 @@ void PsiFunctionLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
         for (int s = (m+1)%2; s <= (m+1); s+=2) {
             alphas_val[m][s] = getAlpha( xi, m, s ) ;
             betas_val[m][s] = getBeta( xi, m, s ) ;
-            std::cout 
-               << "PsiFunctionLens (" << m << ", " << s << ") "
-               << std::endl ;
+            // std::cout << "PsiFunctionLens (" << m << ", " << s << ") " << std::endl ;
               // << alphas_val[m][s]  << "/" << betas_val[m][s] << "\n"  ;
         }
     }
