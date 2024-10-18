@@ -15,7 +15,7 @@ void PsiFunctionLens::initAlphasBetas() {
     auto p = SymEngine::symbol("p"); /* theta  */
 
     std::ifstream input;
-    std::cout << "[PsiFunctionLens.initAlphasBetas] Amplitudes file "
+    if (DEBUG) std::cout << "[PsiFunctionLens.initAlphasBetas] Amplitudes file "
         << filename << "\n" ;
 
     if ( filename.compare("nosuchfile") == 0 )  return ;
@@ -72,7 +72,6 @@ double PsiFunctionLens::getBeta( cv::Point2d xi, int m, int s ) {
 }
 
 double PsiFunctionLens::getAlphaXi( int m, int s ) {
-   // std::cout << "[PsiFunctionLens::getAlphaXi] ("<<m<<","<<s<<") "<< alphas_val[m][s] <<std::endl;
    return alphas_val[m][s] ;
 }
 double PsiFunctionLens::getBetaXi( int m, int s ) {

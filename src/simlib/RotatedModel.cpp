@@ -11,7 +11,7 @@
 #include "simaux.h"
 
 #ifndef DEBUG
-#define DEBUG 1
+#define DEBUG 0
 #endif
 
 RotatedModel::RotatedModel( PsiFunctionLens *l ) {
@@ -68,13 +68,9 @@ void RotatedModel::updateInner( ) {
 }
 
 void RotatedModel::updateApparentAbs( ) {
-    std::cout << "[RotatedModel::updateApparentAbs] 1\n" ;
     cv::Mat im = getActual() ;
     cv::Point2d chieta = cv::Point2d( CHI*getEtaAbs(), 0 ) ;
-    std::cout << "[RotatedModel::updateApparentAbs] 2\n" ;
     cv::Point2d xi1 = lens->getXi( chieta ) ;
-    std::cout << "[RotatedModel::updateApparentAbs] 3\n" ;
     setNu( xi1/CHI ) ;
-    std::cout << "[RotatedModel::updateApparentAbs] 4\n" ;
 }
 
