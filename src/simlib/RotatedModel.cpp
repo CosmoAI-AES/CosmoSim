@@ -10,10 +10,6 @@
 #include "cosmosim/Simulator.h"
 #include "simaux.h"
 
-#ifndef DEBUG
-#define DEBUG 0
-#endif
-
 RotatedModel::RotatedModel( PsiFunctionLens *l ) {
    lens = pmlens = l ;
 }
