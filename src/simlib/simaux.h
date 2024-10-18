@@ -17,5 +17,5 @@ void gradient(cv::InputArray, cv::OutputArray, cv::OutputArray ) ;
 // #define diffY(src,out) Sobel(src,out,CV_64FC1, 0, 1, 3, -1.0/8)
 
 #ifndef DEBUG
-#  define DEBUG 1
+#  define DEBUG 0
 #endif
