@@ -6,11 +6,6 @@
 #include "cosmosim/Lens.h"
 #include "simaux.h"
 
-// \xi_0 ~ einsteinR
-// NEW f
-// NEW \phi
-// TODO \chi_L in terms of \chi
-
 cv::Point2d SIE::getXi( cv::Point2d chieta ) {
    return chieta + cv::Point2d( 
          psiXvalue(chieta.x, chieta.y ),

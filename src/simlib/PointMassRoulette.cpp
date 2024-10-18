@@ -2,10 +2,6 @@
 
 #include "cosmosim/Roulette.h"
 
-#ifndef DEBUG
-#define DEBUG 0
-#endif
-
 /* The following is a default implementation for the point mass lens. 
  * It would be better to make the class abstract and move this definition to the 
  * subclass. */
@@ -18,8 +14,6 @@ cv::Point2d PointMassRoulette::getDistortedPos(double r, double theta) const {
     double frac = (einsteinR * einsteinR) / R ;
     double rf = r/R ;
 
-    if (DEBUG) std::cout << "[PointMassRoulette] " << (nu1,nu2) << "\n" ;
-
     for (int m=1; m<=nterms; m++){
        double sign = m%2 ? -1 : +1 ;
        double f = sign*pow(rf, m) ;
@@ -28,6 +22,5 @@ cv::Point2d PointMassRoulette::getDistortedPos(double r, double theta) const {
     }
     // The return value should be normalised coordinates in the source plane.
     // We have calculated the coordinates in the lens plane.
-    if (DEBUG) std::cout << "[PointMassRoulette] return \n" ;
     return cv::Point2d( nu1 / CHI, nu2 / CHI ) ;
 }

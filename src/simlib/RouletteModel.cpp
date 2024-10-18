@@ -3,9 +3,6 @@
 #include "cosmosim/Roulette.h"
 #include "simaux.h"
 
-#undef DEBUG
-#define DEBUG 0
-
 #define alpha_(m,s)  ( ( NULL == lens ) ? alphas_val[m][s] : this->lens->getAlphaXi( m, s ) )
 #define beta_(m,s)   ( ( NULL == lens ) ? betas_val[m][s] : this->lens->getBetaXi( m, s )  )
 

@@ -51,11 +51,11 @@ void PsiFunctionLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
               << einsteinR << " - " << xi << "\n"  ;
 
     // calculate all amplitudes for given xi, einsteinR
-    for (int m = 1; m <= nterms; m++){
-        for (int s = (m+1)%2; s <= (m+1); s+=2){
+    for (int m = 1; m <= nterms; m++) {
+        for (int s = (m+1)%2; s <= (m+1); s+=2) {
             alphas_val[m][s] = getAlpha( xi, m, s ) ;
             betas_val[m][s] = getBeta( xi, m, s ) ;
-            if (DEBUG) std::cout 
+            std::cout 
               << "PsiFunctionLens (" << m << ", " << s << ") " 
               << alphas_val[m][s]  << "/" << betas_val[m][s] << "\n"  ;
         }
