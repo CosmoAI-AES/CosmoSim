@@ -76,3 +76,4 @@ const char * NotImplemented::what () {
 const char * NotSupported::what () {
        return "Function not supported in this context" ;
 };
+
