@@ -14,4 +14,6 @@ cv::Point2d pointCoordinate( cv::Point2d pt, cv::Mat im ) ;
 cv::Point2d imageCoordinate( cv::Point2d pt, cv::Mat im ) ;
 void gradient(cv::InputArray, cv::OutputArray, cv::OutputArray ) ;
 
-#define DEBUG 1
+#ifndef DEBUG
+#  define DEBUG 0
+#endif
