@@ -5,10 +5,6 @@
 #include "cosmosim/Lens.h"
 #include "simaux.h"
 
-#ifndef DEBUG
-#define DEBUG 0
-#endif
-
 cv::Point2d SampledLens::getXi( cv::Point2d chieta ) {
 
    cv::Point2d xi0, xi1 = chieta ;
