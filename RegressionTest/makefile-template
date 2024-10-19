@@ -33,6 +33,7 @@ test:
 	echo $(PATH)
 clean:
 	rm -f *.status
+	rm -rf montage diff
 
 baseline%:
 	makeimages.sh $@
