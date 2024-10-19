@@ -5,10 +5,10 @@
 
 ### Added
 
-+ New tests to compare and analyse models.
-+ Partial support for SIE
-+ Allow masking with explicit radius in `roulettegen.py`
++ Support for SIE
 + Support for clusterlenses with several lenses in the same lens plane
++ Allow masking with explicit radius in `roulettegen.py`
++ New tests to compare and analyse models.
 + Python bindings for lens classes
 
 ### Fixed
@@ -17,6 +17,7 @@
     + Raytrace never masks during computation
     + All models allow postprocessing mask with the same radius
       (except roulette resimulation which requires explicit radius)
++ Refactoring, moving features from superclasses to subclasses to simplify API
 
 ### Changed
 
