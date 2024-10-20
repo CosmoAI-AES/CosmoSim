@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+## [2.5.0] - 2024-10-20
+
 ### Added
 
 + Support for SIE
