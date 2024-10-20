@@ -20,6 +20,7 @@ Source::Source(int sz) :
     drawn = 0 ;
     imgApparent = cv::Mat(size, size, CV_8UC1, cv::Scalar(0, 0, 0)) ;
 }
+Source::Source() : Source(512) {}
 
 /* Getters for the images */
 cv::Mat Source::getImage() { 

@@ -444,6 +444,26 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setLens", &CosmoSim::setLens)
         ;
 
+    py::class_<Source>(m, "Source")
+        .def(py::init<int>())
+        .def("getImage", &Source::getImage)
+        ;
+    py::class_<SphericalSource,Source>(m, "SphericalSource")
+        .def(py::init<int,double>())
+        ;
+    py::class_<EllipsoidSource,Source>(m, "EllipsoidSource")
+        .def(py::init<int,double,double,double>())
+        ;
+    py::class_<SourceConstellation,Source>(m, "SourceConstellation")
+        .def(py::init<>())
+        .def("addSource", &SourceConstellation::addSource)
+        ;
+    py::class_<TriangleSource,Source>(m, "TriangleSource")
+        .def(py::init<int,double,double>())
+        ;
+    py::class_<ImageSource,Source>(m, "ImageSource")
+        .def(py::init<int,std::string>())
+        ;
     py::class_<Lens>(m, "Lens")
         .def(py::init<>())
         .def("calculateAlphaBeta", &Lens::calculateAlphaBeta)

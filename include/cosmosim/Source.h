@@ -18,12 +18,13 @@ protected:
 
 public:
     Source(int) ;
+    Source() ;
     virtual ~Source();
     virtual cv::Mat getImage() ;
 
 protected:
     virtual void drawParallel(cv::Mat &img) ;
-    virtual void drawSource(int, int, cv::Mat &) = 0 ;
+    virtual void drawSource(int, int, cv::Mat &) ;
 };
 
 class SourceConstellation : public Source {
