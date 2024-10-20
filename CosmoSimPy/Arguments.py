@@ -7,12 +7,12 @@ class CosmoParser(argparse.ArgumentParser):
     super().__init__(*a,**kw)
 
     # Model selection
-    self.add_argument('-l', '--lensmode',
+    self.add_argument('-l', '--lens',
             help="lens model")
     self.add_argument('--cluster', help="cluster lens")
-    self.add_argument('-L', '--modelmode',
+    self.add_argument('-L', '--model',
             help="simulation model")
-    self.add_argument('-S', '--sourcemode',
+    self.add_argument('-S', '--source',
             default="Spherical", help="source model")
     self.add_argument('-G', '--sampled', action='store_true',
             default=False, help="Sample the lens model")

@@ -212,8 +212,8 @@ if __name__ == "__main__":
         sim.setPolar( float(args.x), float(args.phi) )
     else:
         sim.setXY( float(args.x), float(args.y) )
-    if args.sourcemode:
-        sim.setSourceMode( args.sourcemode )
+    if args.source:
+        sim.setSourceMode( args.source)
         sim.setSourceParameters( float(args.sigma),
             float(args.sigma2), float(args.theta) )
     if args.sampled:
@@ -226,11 +226,11 @@ if __name__ == "__main__":
     elif args.cluster:
         print( "setCluster from arguments" )
         sim.setCluster( args.cluster )
-    elif args.lensmode:
-        sim.setLensMode( args.lensmode )
+    elif args.lens:
+        sim.setLensMode( args.lens)
 
-    if args.modelmode:
-        sim.setModelMode( args.modelmode )
+    if args.model:
+        sim.setModelMode( args.model)
     if args.chi:
         sim.setCHI( float(args.chi) )
     if args.einsteinradius:
