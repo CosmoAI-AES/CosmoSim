@@ -7,6 +7,7 @@
  */
 
 #include "cosmosim/Source.h"
+#include "simaux.h"
 
 #include <thread>
 
@@ -42,4 +43,8 @@ void Source::drawParallel(cv::Mat& dst){
     for (auto& thread : threads_vec) {
         thread.join();
     }
+}
+
+void Source::drawSource(int begin, int end, cv::Mat& dst) {
+      throw NotImplemented() ;
 }

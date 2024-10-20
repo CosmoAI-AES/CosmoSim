@@ -21,6 +21,7 @@ set(SimLibFiles
         simlib/Source.cpp
         simlib/SphericalSource.cpp
         simlib/TriangleSource.cpp
+        simlib/SourceConstellation.cpp
         )
      # Currently unused:
      #    simlib/LensMap.cpp

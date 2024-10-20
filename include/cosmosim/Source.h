@@ -7,6 +7,8 @@
 #include "opencv2/opencv.hpp"
 #endif
 
+#define MAXCLUSTER 50
+
 class Source {
 
 protected:
@@ -22,6 +24,21 @@ public:
 protected:
     virtual void drawParallel(cv::Mat &img) ;
     virtual void drawSource(int, int, cv::Mat &) = 0 ;
+};
+
+class SourceConstellation : public Source {
+
+   private:
+       Source  *src[MAXCLUSTER] ;
+       double xshift[MAXCLUSTER], yshift[MAXCLUSTER] ;
+       int nsrc = 0 ;
+
+   public:
+       virtual ~SourceConstellation();
+       virtual void addSource( Source *, double, double ) ;
+
+   protected:
+       virtual void drawParallel(cv::Mat &img) ;
 };
 
 class SphericalSource : public Source {
