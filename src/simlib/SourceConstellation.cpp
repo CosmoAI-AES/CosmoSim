@@ -16,6 +16,10 @@ void SourceConstellation::addSource( Source *l, double x, double y ) {
 }
 void SourceConstellation::drawParallel(cv::Mat& dst){
     for ( int i=0 ; i<nsrc ; ++i ) {
-       cv::add( dst, src[i]->getImage(), dst ) ;
+       cv::Mat tr = (cv::Mat_<double>(2,3) << 1, 0, xshift[i], 0, 1, yshift[i]);
+       cv::Mat s = src[i]->getImage() ;
+       cv::Mat tmp = cv::Mat::zeros(s.size(), s.type());
+       cv::warpAffine(s, tmp, tr, s.size()) ;
+       cv::add( dst, tmp, dst ) ;
     }
 }
