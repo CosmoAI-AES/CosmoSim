@@ -14,7 +14,8 @@
 enum SourceSpec { CSIM_SOURCE_SPHERE,
                   CSIM_SOURCE_ELLIPSE,
                   CSIM_SOURCE_IMAGE,
-                  CSIM_SOURCE_TRIANGLE } ;
+                  CSIM_SOURCE_TRIANGLE,
+                  CSIM_SOURCE_EXTERN } ;
 enum ModelSpec { CSIM_MODEL_RAYTRACE,
                   CSIM_MODEL_ROULETTE,
                   CSIM_MODEL_ROULETTE_REGEN,
@@ -49,6 +50,7 @@ private:
     bool maskmode ;
 
     void initSource() ;
+    int setSource( Source *src ) ;
     void initLens() ;
     std::string filename[10], sourcefile = "einstein.png" ;
 
@@ -102,6 +104,7 @@ public:
     double getBeta( double x, double y, int m, int s ) ;
     double getAlphaXi( int m, int s ) ;
     double getBetaXi( int m, int s ) ;
+
 };
 
 class RouletteSim {
@@ -118,6 +121,7 @@ private:
     bool maskmode ;
 
     void initSource() ;
+    int setSource( Source *src ) ;
 
     RouletteRegenerator *sim = NULL ;
 

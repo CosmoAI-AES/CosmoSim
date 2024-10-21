@@ -1,6 +1,7 @@
 
 from CosmoSimPy import SphericalSource, EllipsoidSource, TriangleSource, ImageSource
 from CosmoSim import sourceDict
+import numpy as np
 
 class Parameters:
     """
@@ -31,9 +32,11 @@ def makeSource(param):
     if mode == sourceDict.get( "Spherical" ):
         return SphericalSource( size, param.get( "sigma" ) )
     elif mode == sourceDict.get( "Ellipsoid" ):
-        return SphericalSource( size, param.get( "sigma" ), param.get( "sigma2" ), param.get( "theta" ) )
+        return SphericalSource( size, param.get( "sigma" ),
+                param.get( "sigma2" ), param.get( "theta" )*np.pi/180 )
     elif mode == sourceDict.get( "Triangle" ):
-        return SphericalSource( size, param.get( "sigma" ), param.get( "theta" ) )
+        return SphericalSource( size, param.get( "sigma" ),
+                param.get( "theta" )*np.pi/180 )
     elif mode == sourceDict.get( "Iamge (Einstein)" ):
         return ImageSource()
     else:

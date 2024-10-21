@@ -267,11 +267,23 @@ void CosmoSim::initSource( ) {
        case CSIM_SOURCE_TRIANGLE:
          src = new TriangleSource( size, sourceSize, sourceTheta*PI/180 ) ;
          break ;
+       case CSIM_SOURCE_EXTERN:
+         std::cerr << "Externally defined source!\n" ;
+         break ;
        default:
          std::cerr << "No such source mode!\n" ;
          throw NotImplemented();
     }
     if (sim) sim->setSource( src ) ;
+}
+int CosmoSim::setSource( Source *src ) {
+    srcmode = CSIM_SOURCE_EXTERN ;
+    if (sim) {
+       sim->setSource( src ) ;
+       return 1 ; 
+    } else {
+       return 0 ;
+    }
 }
 bool CosmoSim::runSim() { 
    std::cout  << "[runLens] starting \n" ;

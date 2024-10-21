@@ -170,3 +170,12 @@ cv::Mat RouletteSim::getDistorted(bool refLinesMode) {
    return im;
 }
 
+int RouletteSim::setSource( Source *src ) {
+    srcmode = CSIM_SOURCE_EXTERN ;
+    if (sim) {
+       sim->setSource( src ) ;
+       return 1 ; 
+    } else {
+       return 0 ;
+    }
+}
