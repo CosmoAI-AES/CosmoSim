@@ -14,7 +14,8 @@ import matplotlib.pyplot as plt
 from CosmoSim.Image import centreImage, drawAxes
 from CosmoSim import CosmoSim,getMSheaders
 
-from Arguments import CosmoParser, setParameters
+from Arguments import CosmoParser
+from CosmoSim.Parameters import Parameters, makeSource
 import pandas as pd
 
 defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "x", "y" ]
@@ -27,11 +28,6 @@ def setParameters(sim,row):
     elif row.get("phi",None) != None:
         print( "Polar", row["x"], row["phi"] )
         sim.setPolar( row["x"], row["phi"] )
-    if row.get("source",None) != None:
-        sim.setSourceMode( row["source"] )
-    if row.get("sigma",None) != None:
-        sim.setSourceParameters( row["sigma"],
-            row.get("sigma2",-1), row.get("theta",-1) )
     if row.get("config",None) != None:
         sim.setConfigMode( row["config"] )
     elif row.get("cluster",None) != None:
@@ -57,16 +53,19 @@ def setParameters(sim,row):
     if row.get("nterms",None) != None:
         sim.setNterms( row["nterms"] )
 
-def makeSingle(sim,args,name=None,row=None,outstream=None):
+def makeSingle(sim,param,name=None,row=None,outstream=None):
     """Process a single parameter set, given either as a pandas row or
     just as args parsed from the command line.
     """
     if not row is None:
        setParameters( sim, row )
        print( "index", row["index"] )
-       name=row["filename"].split(".")[0]
+       param.setRow( row )
+       src = makeSource( param )
+       sim->setSource( src )
+       name = row["filename"].split(".")[0]
     elif name == None:
-        name = args.name
+        name = param.get( "name" )
     print ( "[datagen.py] ready for runSim()\n" ) ;
     sys.stdout.flush()
     sim.runSim()
@@ -262,7 +261,8 @@ if __name__ == "__main__":
            headers += "\n"
            outstream.write(headers)
         for index,row in frame.iterrows():
-            makeSingle(sim,args,row=row,outstream=outstream)
+            param = Parameters( args )
+            makeSingle(sim,param,row=row,outstream=outstream)
     else:
         makeSingle(sim,args)
     sim.close()
