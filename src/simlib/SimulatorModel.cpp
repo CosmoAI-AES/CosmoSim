@@ -15,7 +15,8 @@ SimulatorModel::SimulatorModel() :
 { }
 
 SimulatorModel::~SimulatorModel() {
-   delete source ;
+    // delete source ;
+    // delete segfaults on object created in python
 }
 
 /* Getters for the images */
@@ -275,7 +276,8 @@ void SimulatorModel::setBGColour(int b) { bgcolour = b ; }
 
 /* B. Source model setter */
 void SimulatorModel::setSource(Source *src) {
-    if ( source != NULL ) delete source ;
+    // if ( source != NULL ) delete source ;
+    // delete segfaults on object created in python
     if ( NULL == src ) {
        std::cout << "[SimulatorModel::setSource] NULL source\n" ;
     } else {

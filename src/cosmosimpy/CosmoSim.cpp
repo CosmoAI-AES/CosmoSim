@@ -1,10 +1,12 @@
 /* (C) 2022-23: Hans Georg Schaathun <georg@schaathun.net> */
 
+
 #include "CosmoSim.h"
 
 #include <pybind11/pybind11.h>
 #include <opencv2/opencv.hpp>
 
+#undef DEBUG
 #ifndef DEBUG
 #define DEBUG 1
 #endif
@@ -168,7 +170,11 @@ void CosmoSim::setBGColour(int b) { bgcolour = b ; }
 void CosmoSim::initLens() {
    if (DEBUG) std::cout << "[initLens] ellipseratio = " << ellipseratio << "\n" ;
    if ( ! modelchanged ) return ;
-   if ( sim ) delete sim ;
+   if ( sim ) {
+      std::cout << "[initLens] delete sim\n" ;
+      delete sim ;
+      // sim = NULL ;
+   }
    std::cout << "switch( lensmode )\n" ;
    switch ( lensmode ) {
        case CSIM_PSI_CLUSTER:
@@ -210,7 +216,7 @@ void CosmoSim::initLens() {
        case CSIM_MODEL_POINTMASS_EXACT:
          if (DEBUG) std::cout << "Running Point Mass Lens (mode=" << modelmode << ")\n" ;
          sim = new PointMassExact( psilens ) ;
-          std::cout << "CSIM_MODEL_POINTMASS_EXACT\n" ;
+         std::cout << "CSIM_MODEL_POINTMASS_EXACT\n" ;
          break ;
        case CSIM_MODEL_RAYTRACE:
          if (DEBUG) std::cout << "Running Raytrace Lens (mode=" << modelmode << ")\n" ;
@@ -275,7 +281,9 @@ void CosmoSim::initSource( ) {
          throw NotImplemented();
     }
     if (sim) {
-       std::cout  << "[initSource] setting source\n" ;
+       std::cout  << "[initSource] setting source (" << (NULL==sim) << ")\n" ;
+       cv::Mat im = sim->getDistorted() ;
+       std::cout  << "[initSource] setting source (" << (NULL==sim) << ")\n" ;
        sim->setSource( src ) ;
     } else {
        std::cout  << "[initSource] no simulator\n" ;
@@ -285,6 +293,7 @@ int CosmoSim::setSource( Source *src ) {
     std::cout  << "[setSource]\n" ;
     srcmode = CSIM_SOURCE_EXTERN ;
     this->src = src ;
+    /*
     if (sim) {
        std::cout  << "[setSource] setting source\n" ;
        sim->setSource( src ) ;
@@ -293,6 +302,8 @@ int CosmoSim::setSource( Source *src ) {
        std::cout  << "[setSource] no simulator\n" ;
        return 0 ;
     }
+    */
+    return 1 ; 
 }
 bool CosmoSim::runSim() { 
    std::cout  << "[runLens] starting \n" ;
