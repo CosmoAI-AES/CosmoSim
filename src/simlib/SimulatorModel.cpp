@@ -29,6 +29,10 @@ cv::Mat SimulatorModel::getActual() const {
 
 }
 cv::Mat SimulatorModel::getSource() const {
+   std::cout << "[SimulatorModel::getSource()]\n" ;
+   if ( NULL == source ) {
+       std::cout << "[SimulatorModel::getSource()] Source not defined.\n" ;
+   }
    return source->getImage() ;
 }
 cv::Mat SimulatorModel::getApparent() const {
@@ -272,6 +276,11 @@ void SimulatorModel::setBGColour(int b) { bgcolour = b ; }
 /* B. Source model setter */
 void SimulatorModel::setSource(Source *src) {
     if ( source != NULL ) delete source ;
+    if ( NULL == src ) {
+       std::cout << "[SimulatorModel::setSource] NULL source\n" ;
+    } else {
+       std::cout << "[SimulatorModel::setSource] setting source\n" ;
+    }
     source = src ;
 }
 

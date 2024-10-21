@@ -11,6 +11,25 @@ ModelSpec = cs.ModelSpec
 SourceSpec = cs.SourceSpec
 PsiSpec = cs.PsiSpec
 
+def makeSource(param):
+    """
+    Factory function to create a Source object given the parameter list.
+    """
+    mode = sourceDict[ param.get("source") ]
+    size = param.get( "imagesize" )
+    if mode == sourceDict.get( "Spherical" ):
+        return cs.SphericalSource( size, param.get( "sigma" ) )
+    elif mode == sourceDict.get( "Ellipsoid" ):
+        return cs.EllipsoidSource( size, param.get( "sigma" ),
+                param.get( "sigma2" ), param.get( "theta" )*np.pi/180 )
+    elif mode == sourceDict.get( "Triangle" ):
+        return cs.TriangleSource( size, param.get( "sigma" ),
+                param.get( "theta" )*np.pi/180 )
+    elif mode == sourceDict.get( "Iamge (Einstein)" ):
+        return cs.ImageSource()
+    else:
+        raise Exception( "Unknown Source Mode" )
+
 lensDict = {
         "SIS" : PsiSpec.SIS,
         "PM" : PsiSpec.PM,
@@ -121,6 +140,9 @@ class CosmoSim(cs.CosmoSim):
         self.simThread = th.Thread(target=self.simThread)
         self.simThread.start()
         self.bgcolour = 0
+    def makeSource(self,param):
+        self._src = makeSource(param)
+        self.setSource( self._src )
     def getRelativeEta(self,centrepoint):
         # print ( "[getRelativeEta] centrepoint=", centrepoint, "in Planar Co-ordinates"  )
         r = super().getRelativeEta(centrepoint[0],centrepoint[1])

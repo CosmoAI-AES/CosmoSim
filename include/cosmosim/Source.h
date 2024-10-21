@@ -1,3 +1,5 @@
+/* (C) 2024: Hans Georg Schaathun <georg@schaathun.net> */
+
 #ifndef COSMOSIM_SOURCE_H
 #define COSMOSIM_SOURCE_H
 
@@ -35,6 +37,7 @@ class SourceConstellation : public Source {
        int nsrc = 0 ;
 
    public:
+       using Source::Source ;
        virtual ~SourceConstellation();
        virtual void addSource( Source *, double, double ) ;
 

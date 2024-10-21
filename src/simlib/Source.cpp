@@ -24,6 +24,7 @@ Source::Source() : Source(512) {}
 
 /* Getters for the images */
 cv::Mat Source::getImage() { 
+   std::cout << "[Source::getImage()]\n" << std::flush ;
    if ( ! drawn ) {
       drawParallel( imgApparent ) ;
       drawn = 1 ;

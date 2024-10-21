@@ -274,14 +274,23 @@ void CosmoSim::initSource( ) {
          std::cerr << "No such source mode!\n" ;
          throw NotImplemented();
     }
-    if (sim) sim->setSource( src ) ;
+    if (sim) {
+       std::cout  << "[initSource] setting source\n" ;
+       sim->setSource( src ) ;
+    } else {
+       std::cout  << "[initSource] no simulator\n" ;
+    }
 }
 int CosmoSim::setSource( Source *src ) {
+    std::cout  << "[setSource]\n" ;
     srcmode = CSIM_SOURCE_EXTERN ;
+    this->src = src ;
     if (sim) {
+       std::cout  << "[setSource] setting source\n" ;
        sim->setSource( src ) ;
        return 1 ; 
     } else {
+       std::cout  << "[setSource] no simulator\n" ;
        return 0 ;
     }
 }
@@ -468,7 +477,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def(py::init<int,double,double,double>())
         ;
     py::class_<SourceConstellation,Source>(m, "SourceConstellation")
-        .def(py::init<>())
+        .def(py::init<int>())
         .def("addSource", &SourceConstellation::addSource)
         ;
     py::class_<TriangleSource,Source>(m, "TriangleSource")

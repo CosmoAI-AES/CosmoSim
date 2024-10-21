@@ -15,7 +15,7 @@ from CosmoSim.Image import centreImage, drawAxes
 from CosmoSim import CosmoSim,getMSheaders
 
 from Arguments import CosmoParser
-from CosmoSim.Parameters import Parameters, makeSource
+from CosmoSim.Parameters import Parameters
 import pandas as pd
 
 defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "x", "y" ]
@@ -61,8 +61,7 @@ def makeSingle(sim,param,name=None,row=None,outstream=None):
        setParameters( sim, row )
        print( "index", row["index"] )
        param.setRow( row )
-       src = makeSource( param )
-       sim.setSource( src )
+       sim.makeSource( param )
        name = row["filename"].split(".")[0]
     elif name == None:
         name = param.get( "name" )
