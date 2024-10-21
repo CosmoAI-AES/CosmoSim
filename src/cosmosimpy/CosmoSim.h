@@ -50,7 +50,6 @@ private:
     bool maskmode ;
 
     void initSource() ;
-    int setSource( Source *src ) ;
     void initLens() ;
     std::string filename[10], sourcefile = "einstein.png" ;
 
@@ -83,6 +82,8 @@ public:
     void setRatio(double);
     void setOrientation(double);
     void setSourceParameters(double,double,double);
+
+    int setSource( Source *src ) ;
 
     bool runSim();
     bool moveSim( double, double ) ;
@@ -121,7 +122,6 @@ private:
     bool maskmode ;
 
     void initSource() ;
-    int setSource( Source *src ) ;
 
     RouletteRegenerator *sim = NULL ;
 
@@ -135,6 +135,7 @@ public:
     void setResolution(int);
     void setBGColour(int);
 
+    int setSource( Source *src ) ;
     void setSourceMode(int);
     void setSourceParameters(double,double,double);
 

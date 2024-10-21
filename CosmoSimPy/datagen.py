@@ -62,7 +62,7 @@ def makeSingle(sim,param,name=None,row=None,outstream=None):
        print( "index", row["index"] )
        param.setRow( row )
        src = makeSource( param )
-       sim->setSource( src )
+       sim.setSource( src )
        name = row["filename"].split(".")[0]
     elif name == None:
         name = param.get( "name" )
