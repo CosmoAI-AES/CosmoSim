@@ -444,6 +444,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setBGColour", &CosmoSim::setBGColour)
         .def("setFile", &CosmoSim::setFile)
         .def("getFile", &CosmoSim::getFile)
+        .def("setSource", &CosmoSim::setSource)
         .def("setSourceFile", &CosmoSim::setSourceFile)
         .def("getAlpha", &CosmoSim::getAlpha)
         .def("getBeta", &CosmoSim::getBeta)
