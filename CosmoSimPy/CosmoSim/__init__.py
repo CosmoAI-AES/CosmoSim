@@ -16,15 +16,15 @@ def makeSource(param):
     Factory function to create a Source object given the parameter list.
     """
     mode = sourceDict[ param.get("source") ]
-    size = param.get( "imagesize" )
+    size = int( param.get( "imagesize" ) )
     if mode == sourceDict.get( "Spherical" ):
-        return cs.SphericalSource( size, param.get( "sigma" ) )
+        return cs.SphericalSource( size, float(param.get( "sigma" )) )
     elif mode == sourceDict.get( "Ellipsoid" ):
-        return cs.EllipsoidSource( size, param.get( "sigma" ),
-                param.get( "sigma2" ), param.get( "theta" )*np.pi/180 )
+        return cs.EllipsoidSource( size, float(param.get( "sigma" )),
+                float(param.get( "sigma2" )), float(param.get( "theta" ))*np.pi/180 )
     elif mode == sourceDict.get( "Triangle" ):
-        return cs.TriangleSource( size, param.get( "sigma" ),
-                param.get( "theta" )*np.pi/180 )
+        return cs.TriangleSource( size, float(param.get( "sigma" )),
+                float(param.get( "theta" ))*np.pi/180 )
     elif mode == sourceDict.get( "Iamge (Einstein)" ):
         return cs.ImageSource()
     else:

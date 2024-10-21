@@ -19,4 +19,4 @@ mkdir -p $dir
 test $csv || csv=debug.csv
 echo $csv
 
-datagen.py $opts --directory="$dir" --csvfile $csv  || exit 1
+datagen.py $opts -Z 400 --directory="$dir" --csvfile $csv  || exit 1
