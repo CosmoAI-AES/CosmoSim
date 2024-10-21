@@ -26,7 +26,7 @@ def makeSource(param):
         return cs.TriangleSource( size, float(param.get( "sigma" )),
                 float(param.get( "theta" ))*np.pi/180 )
     elif mode == sourceDict.get( "Iamge (Einstein)" ):
-        return cs.ImageSource()
+        return cs.ImageSource( getSourceFileName( ) )
     else:
         raise Exception( "Unknown Source Mode" )
 

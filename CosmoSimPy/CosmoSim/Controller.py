@@ -154,13 +154,14 @@ class SourcePane(ttk.Frame):
         self.push(runsim=False)
         modeVar.trace_add("write", self.push) 
     def push(self,*a,runsim=True):
-        print( "[CosmoGUI] Push source parameters" )
-        self.sim.setSourceParameters(
-                self.sigmaSlider.get(),
-                self.sigma2Slider.get(),
-                self.thetaSlider.get()
-                )
-        self.sim.setSourceMode(self.sourceVar.get())
+        p = {
+           "source": self.sourceVar.get(),
+           "sigma":  self.sigmaSlider.get(),
+           "sigma2":  self.sigma2Slider.get(),
+           "theta":  self.thetaSlider.get(),
+           }
+        print( "[CosmoGUI] Push source parameters", p )
+        self.sim.makeSource(p)
         if runsim: self.sim.runSimulator()
 
 class ResolutionPane(ttk.Frame):
