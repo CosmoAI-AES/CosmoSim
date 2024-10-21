@@ -63,7 +63,6 @@ public:
 
     void setFile(int,std::string) ;
     std::string getFile(int) ;
-    void setSourceFile(std::string) ;
     void setXY(double, double) ;
     void setPolar(int, int) ;
     void setCHI(double);
@@ -73,7 +72,6 @@ public:
     void setResolution(int);
     void setBGColour(int);
 
-    void setSourceMode(int);
     void setModelMode(int);
     void setLensMode(int);
     void setLens(PsiFunctionLens*);
@@ -81,7 +79,6 @@ public:
     void setEinsteinR(double);
     void setRatio(double);
     void setOrientation(double);
-    void setSourceParameters(double,double,double);
 
     int setSource( Source *src ) ;
 

@@ -93,11 +93,6 @@ def setParameters(sim,row):
     elif row.get("phi",None) != None:
         print( "Polar", row["x"], row["phi"] )
         sim.setPolar( row["x"], row["phi"] )
-    if row.get("source",None) != None:
-        sim.setSourceMode( row["source"] )
-    if row.get("sigma",None) != None:
-        sim.setSourceParameters( row["sigma"],
-            row.get("sigma2",-1), row.get("theta",-1) )
     if row.get("lens",None) != None:
         sim.setModelMode( row["lens"] )
     if row.get("chi",None) != None:

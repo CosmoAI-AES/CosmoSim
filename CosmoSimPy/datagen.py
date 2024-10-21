@@ -210,10 +210,6 @@ if __name__ == "__main__":
         sim.setPolar( float(args.x), float(args.phi) )
     else:
         sim.setXY( float(args.x), float(args.y) )
-    if args.source:
-        sim.setSourceMode( args.source)
-        sim.setSourceParameters( float(args.sigma),
-            float(args.sigma2), float(args.theta) )
     if args.sampled:
         sim.setSampled( 1 )
     else:

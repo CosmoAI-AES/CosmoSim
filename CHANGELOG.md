@@ -3,6 +3,11 @@
 
 ## Unreleased
 
+### Changed
+
++ Refactoring.  Moved source instantiation to Python.  This reduces coupling and
+  simplifies parameter passing when a wider range of source models is supported.
+
 ## [2.5.0] - 2024-10-20
 
 ### Added

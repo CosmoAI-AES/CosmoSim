@@ -123,9 +123,6 @@ void CosmoSim::setFile( int key, std::string fn ) {
 std::string CosmoSim::getFile( int key ) {
     return filename[key] ;
 } 
-void CosmoSim::setSourceFile( std::string fn ) {
-    sourcefile = fn ;
-} 
 
 void CosmoSim::setCHI(double c) { chi = c/100.0 ; }
 void CosmoSim::setNterms(int c) { nterms = c ; }
@@ -164,7 +161,6 @@ void CosmoSim::setSampled(int m) {
       modelchanged = 1 ;
    }
 }
-void CosmoSim::setSourceMode(int m) { srcmode = m ; }
 void CosmoSim::setMaskMode(bool b) { maskmode = b ; }
 void CosmoSim::setBGColour(int b) { bgcolour = b ; }
 void CosmoSim::initLens() {
@@ -247,12 +243,6 @@ void CosmoSim::setOrientation(double r) { orientation = r ; }
 void CosmoSim::setImageSize(int sz ) { size = sz ; }
 void CosmoSim::setResolution(int sz ) { 
    basesize = sz ; 
-}
-void CosmoSim::setSourceParameters(double s1, double s2, double theta ) {
-   sourceSize = s1 ;
-   if ( s2 >= 0 ) sourceSize2 = s2 ;
-   if ( theta >= 0 ) sourceTheta = theta ;
-   // srcmode = mode ;
 }
 void CosmoSim::initSource( ) {
    // Deleting the source object messes up the heap and causes
@@ -440,14 +430,12 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setLensMode", &CosmoSim::setLensMode)
         .def("setModelMode", &CosmoSim::setModelMode)
         .def("setSampled", &CosmoSim::setSampled)
-        .def("setSourceMode", &CosmoSim::setSourceMode)
         .def("setEinsteinR", &CosmoSim::setEinsteinR)
         .def("setRatio", &CosmoSim::setRatio)
         .def("setOrientation", &CosmoSim::setOrientation)
         .def("setNterms", &CosmoSim::setNterms)
         .def("setMaskRadius", &CosmoSim::setMaskRadius)
         .def("setCHI", &CosmoSim::setCHI)
-        .def("setSourceParameters", &CosmoSim::setSourceParameters)
         .def("setXY", &CosmoSim::setXY)
         .def("setPolar", &CosmoSim::setPolar)
         .def("getActual", &CosmoSim::getActual)
@@ -465,7 +453,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setFile", &CosmoSim::setFile)
         .def("getFile", &CosmoSim::getFile)
         .def("setSource", &CosmoSim::setSource)
-        .def("setSourceFile", &CosmoSim::setSourceFile)
         .def("getAlpha", &CosmoSim::getAlpha)
         .def("getBeta", &CosmoSim::getBeta)
         .def("getAlphaXi", &CosmoSim::getAlphaXi)
