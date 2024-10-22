@@ -133,7 +133,6 @@ class CosmoSim(cs.CosmoSim):
             print( "Amplitudes file:", fn )
             super().setFile( PsiSpec.SIS, fn )
             super().setFile( PsiSpec.SIE, fn )
-        super().setSourceFile( getSourceFileName( ) )
         self._continue = True
         self.updateEvent = th.Event()
         self.simEvent = th.Event()
