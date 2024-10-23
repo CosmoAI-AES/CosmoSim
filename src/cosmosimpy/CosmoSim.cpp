@@ -59,11 +59,6 @@ double CosmoSim::getAlphaXi( int m, int s ) {
    xi /= chi ;
    return getAlpha( xi.x, xi.y, m, s ) ;
 
-      if ( NULL != psilens )
-          return psilens->getAlphaXi( m, s ) ;
-      else if ( NULL != lens )
-          return lens->getAlphaXi( m, s ) ;
-      else throw NotSupported();
 }
 double CosmoSim::getBetaXi( int m, int s ) {
    // cv::Point2d xi = lens->getXi( sim->getEta() ) ;
@@ -71,11 +66,6 @@ double CosmoSim::getBetaXi( int m, int s ) {
    if (DEBUG) std::cout << "[getBetaXi] xi = " << xi << std::endl ;
    xi /= chi ;
    return getBeta( xi.x, xi.y, m, s ) ;
-      if ( NULL != psilens )
-          return psilens->getBetaXi( m, s ) ;
-      else if ( NULL != lens )
-          return lens->getBetaXi( m, s ) ;
-      else throw NotSupported();
 }
 double CosmoSim::getAlpha(
       double x, double y, int m, int s 
@@ -198,7 +188,6 @@ void CosmoSim::initLens() {
    }
    if ( sampledlens ) {
      lens = new SampledPsiFunctionLens( psilens ) ;
-     psilens->setFile(filename[lensmode]) ;
    }
    std::cout << "switch( modelmode )\n" ;
    switch ( modelmode ) {
