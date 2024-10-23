@@ -245,41 +245,6 @@ int CosmoSim::getImageSize() { return size ; }
 void CosmoSim::setResolution(int sz ) { 
    basesize = sz ; 
 }
-void CosmoSim::initSource( ) {
-   // Deleting the source object messes up the heap and causes
-   // subsequent instantiation to fail.  This is probably because
-   // the imgApparent (cv:;Mat) is not freed correctly.
-   // if ( src ) delete src ;
-   switch ( srcmode ) {
-       case CSIM_SOURCE_SPHERE:
-         src = new SphericalSource( size, sourceSize ) ;
-         break ;
-       case CSIM_SOURCE_ELLIPSE:
-         src = new EllipsoidSource( size, sourceSize,
-               sourceSize2, sourceTheta*PI/180 ) ;
-         break ;
-       case CSIM_SOURCE_IMAGE:
-         src = new ImageSource( size, sourcefile ) ;
-         break ;
-       case CSIM_SOURCE_TRIANGLE:
-         src = new TriangleSource( size, sourceSize, sourceTheta*PI/180 ) ;
-         break ;
-       case CSIM_SOURCE_EXTERN:
-         std::cerr << "Externally defined source!\n" ;
-         break ;
-       default:
-         std::cerr << "No such source mode!\n" ;
-         throw NotImplemented();
-    }
-    if (sim) {
-       std::cout  << "[initSource] setting source (" << (NULL==sim) << ")\n" ;
-       cv::Mat im = sim->getDistorted() ;
-       std::cout  << "[initSource] setting source (" << (NULL==sim) << ")\n" ;
-       sim->setSource( src ) ;
-    } else {
-       std::cout  << "[initSource] no simulator\n" ;
-    }
-}
 int CosmoSim::setSource( Source *src ) {
     std::cout  << "[setSource]\n" ;
     srcmode = CSIM_SOURCE_EXTERN ;
@@ -297,7 +262,7 @@ int CosmoSim::setSource( Source *src ) {
     return 1 ; 
 }
 bool CosmoSim::runSim() { 
-   std::cout  << "[runLens] starting \n" ;
+   std::cout  << "[runSim] starting \n" ;
    if ( running ) {
       return false ;
    }
@@ -306,7 +271,7 @@ bool CosmoSim::runSim() {
    if ( sim == NULL ) {
       throw std::bad_function_call() ;
    }
-   initSource() ;
+   sim->setSource( src ) ;
    sim->setBGColour( bgcolour ) ;
    sim->setNterms( nterms ) ;
    sim->setMaskRadius( maskRadius ) ;

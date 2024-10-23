@@ -49,7 +49,6 @@ private:
     bool running = false ;
     bool maskmode ;
 
-    void initSource() ;
     void initLens() ;
     std::string filename[10], sourcefile = "einstein.png" ;
 

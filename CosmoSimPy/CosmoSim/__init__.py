@@ -1,4 +1,4 @@
-# (C) 2022-23: Hans Georg Schaathun <georg@schaathun.net> 
+# (C) 2022-24: Hans Georg Schaathun <georg@schaathun.net> 
 
 import CosmoSim.CosmoSimPy as cs
 import numpy as np
@@ -16,7 +16,7 @@ def makeSource(param):
     Factory function to create a Source object given the parameter list.
     """
     mode = sourceDict[ param.get("source") ]
-    size = param.get( "imagesize" ) 
+    size = int( param.get( "imagesize" ) )
     if mode == sourceDict.get( "Spherical" ):
         return cs.SphericalSource( size, float(param.get( "sigma" )) )
     elif mode == sourceDict.get( "Ellipsoid" ):
@@ -185,8 +185,6 @@ class CosmoSim(cs.CosmoSim):
         self.simThread.join()
     def getUpdateEvent(self):
         return self.updateEvent
-    def setSourceMode(self,s):
-        return super().setSourceMode( int( sourceDict[s] ) ) 
     def moveSim(self,rot,scale):
         return super().moveSim( float(rot), float(scale) )
     def maskImage(self,scale=1):
@@ -260,6 +258,7 @@ class CosmoSim(cs.CosmoSim):
         have changed.  This triggers an event which will be handled
         when the simulator is idle.
         """
+        print( "CosmoSim.runSimulator() [python]" )
         self.simEvent.set()
 
     def getApparentImage(self,reflines=True):
