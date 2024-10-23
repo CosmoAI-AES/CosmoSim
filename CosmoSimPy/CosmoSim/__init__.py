@@ -1,4 +1,4 @@
-# (C) 2022-23: Hans Georg Schaathun <georg@schaathun.net> 
+# (C) 2022-24: Hans Georg Schaathun <georg@schaathun.net> 
 
 import CosmoSim.CosmoSimPy as cs
 import numpy as np
@@ -136,12 +136,13 @@ class CosmoSim(cs.CosmoSim):
         self._continue = True
         self.updateEvent = th.Event()
         self.simEvent = th.Event()
-        self.simThread = th.Thread(target=self.simThread)
-        self.simThread.start()
+        self._simThread = th.Thread(target=self.simThread)
+        self._simThread.start()
         self.bgcolour = 0
     def makeSource(self,param):
+        if param.get( "imagesize" ) == None:
+           param.__setitem__( "imagesize", self.getImageSize() )
         self._src = makeSource(param)
-        self.setSource( self._src )
     def getRelativeEta(self,centrepoint):
         # print ( "[getRelativeEta] centrepoint=", centrepoint, "in Planar Co-ordinates"  )
         r = super().getRelativeEta(centrepoint[0],centrepoint[1])
@@ -180,11 +181,9 @@ class CosmoSim(cs.CosmoSim):
         """
         self._continue = False
         self.simEvent.set()
-        self.simThread.join()
+        self._simThread.join()
     def getUpdateEvent(self):
         return self.updateEvent
-    def setSourceMode(self,s):
-        return super().setSourceMode( int( sourceDict[s] ) ) 
     def moveSim(self,rot,scale):
         return super().moveSim( float(rot), float(scale) )
     def maskImage(self,scale=1):
@@ -252,12 +251,17 @@ class CosmoSim(cs.CosmoSim):
                self.simEvent.clear()
                self.runSim()
                self.updateEvent.set()
+    def runSim(self):
+        self._src_ = self._src
+        self.setSource( self._src_ )
+        return super().runSim()
     def runSimulator(self):
         """
         Run the simulator; that is, tell it that the parameters
         have changed.  This triggers an event which will be handled
         when the simulator is idle.
         """
+        print( "CosmoSim.runSimulator() [python]" )
         self.simEvent.set()
 
     def getApparentImage(self,reflines=True):
@@ -313,8 +317,8 @@ class RouletteSim(cs.RouletteSim):
         self._continue = True
         self.updateEvent = th.Event()
         self.simEvent = th.Event()
-        self.simThread = th.Thread(target=self.simThread)
-        self.simThread.start()
+        self._simThread = th.Thread(target=self.simThread)
+        self._simThread.start()
         self.bgcolour = 0
 
     def close(self):
@@ -325,7 +329,7 @@ class RouletteSim(cs.RouletteSim):
         """
         self._continue = False
         self.simEvent.set()
-        self.simThread.join()
+        self._simThread.join()
     def getUpdateEvent(self):
         return self.updateEvent
     def setSourceMode(self,s):
@@ -344,6 +348,7 @@ class RouletteSim(cs.RouletteSim):
             self.simEvent.wait()
             if self._continue:
                self.simEvent.clear()
+               self
                self.runSim()
                self.updateEvent.set()
     def runSimulator(self):

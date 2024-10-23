@@ -90,10 +90,6 @@ void RouletteSim::initSource( ) {
     std::cout << "[RouletteSim.cpp] initSource() completes\n" ;
 }
 bool RouletteSim::runSim() { 
-   if ( running ) {
-      std::cout << "[RouletteSim.cpp] runSim() - simulator already running.\n" ;
-      return false ;
-   }
    std::cout << "[RouletteSim.cpp] runSim() - running similator\n" << std::flush ;
    if ( NULL == sim )
 	 throw std::logic_error( "Simulator not initialised" ) ;

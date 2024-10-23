@@ -46,10 +46,8 @@ private:
     int bgcolour=0 ;
     SimulatorModel *sim = NULL ;
     Source *src = NULL ;
-    bool running = false ;
     bool maskmode ;
 
-    void initSource() ;
     void initLens() ;
     std::string filename[10], sourcefile = "einstein.png" ;
 
@@ -69,6 +67,7 @@ public:
     void setNterms(int);
     void setMaskRadius(double);
     void setImageSize(int);
+    int getImageSize();
     void setResolution(int);
     void setBGColour(int);
 
@@ -115,7 +114,6 @@ private:
     int nterms=16 ;
     int bgcolour=0 ;
     Source *src = NULL ;
-    bool running = false ;
     bool maskmode ;
 
     void initSource() ;

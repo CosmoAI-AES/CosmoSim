@@ -160,8 +160,9 @@ class SourcePane(ttk.Frame):
            "sigma2":  self.sigma2Slider.get(),
            "theta":  self.thetaSlider.get(),
            }
-        print( "[CosmoGUI] Push source parameters", p )
+        print( "[Controller.py] Push source parameters", p )
         self.sim.makeSource(p)
+        print( "[Controller.py] makeSource has returned" )
         if runsim: self.sim.runSimulator()
 
 class ResolutionPane(ttk.Frame):

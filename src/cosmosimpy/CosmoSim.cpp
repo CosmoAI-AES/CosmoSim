@@ -6,9 +6,8 @@
 #include <pybind11/pybind11.h>
 #include <opencv2/opencv.hpp>
 
-#undef DEBUG
 #ifndef DEBUG
-#define DEBUG 1
+#define DEBUG 0
 #endif
 
 #include <thread>
@@ -241,43 +240,9 @@ void CosmoSim::setRatio(double r) {
 }
 void CosmoSim::setOrientation(double r) { orientation = r ; }
 void CosmoSim::setImageSize(int sz ) { size = sz ; }
+int CosmoSim::getImageSize() { return size ; }
 void CosmoSim::setResolution(int sz ) { 
    basesize = sz ; 
-}
-void CosmoSim::initSource( ) {
-   // Deleting the source object messes up the heap and causes
-   // subsequent instantiation to fail.  This is probably because
-   // the imgApparent (cv:;Mat) is not freed correctly.
-   // if ( src ) delete src ;
-   switch ( srcmode ) {
-       case CSIM_SOURCE_SPHERE:
-         src = new SphericalSource( size, sourceSize ) ;
-         break ;
-       case CSIM_SOURCE_ELLIPSE:
-         src = new EllipsoidSource( size, sourceSize,
-               sourceSize2, sourceTheta*PI/180 ) ;
-         break ;
-       case CSIM_SOURCE_IMAGE:
-         src = new ImageSource( size, sourcefile ) ;
-         break ;
-       case CSIM_SOURCE_TRIANGLE:
-         src = new TriangleSource( size, sourceSize, sourceTheta*PI/180 ) ;
-         break ;
-       case CSIM_SOURCE_EXTERN:
-         std::cerr << "Externally defined source!\n" ;
-         break ;
-       default:
-         std::cerr << "No such source mode!\n" ;
-         throw NotImplemented();
-    }
-    if (sim) {
-       std::cout  << "[initSource] setting source (" << (NULL==sim) << ")\n" ;
-       cv::Mat im = sim->getDistorted() ;
-       std::cout  << "[initSource] setting source (" << (NULL==sim) << ")\n" ;
-       sim->setSource( src ) ;
-    } else {
-       std::cout  << "[initSource] no simulator\n" ;
-    }
 }
 int CosmoSim::setSource( Source *src ) {
     std::cout  << "[setSource]\n" ;
@@ -296,24 +261,21 @@ int CosmoSim::setSource( Source *src ) {
     return 1 ; 
 }
 bool CosmoSim::runSim() { 
-   std::cout  << "[runLens] starting \n" ;
-   if ( running ) {
-      return false ;
-   }
-   std::cout << "[runSim]\n" ;
+   std::cout  << "[runSim] starting \n" ;
    initLens() ;
    if ( sim == NULL ) {
       throw std::bad_function_call() ;
    }
-   initSource() ;
+   sim->setSource( src ) ;
    sim->setBGColour( bgcolour ) ;
    sim->setNterms( nterms ) ;
    sim->setMaskRadius( maskRadius ) ;
-   std::cout << "[runSim] initialised\n" ;
    sim->setMaskMode( maskmode ) ;
-   std::cout << "[runSim] " << CSIM_PSI_CLUSTER << " - " << CSIM_MODEL_ROULETTE << "\n" ; 
-   std::cout << "[runSim] " << lensmode << " - " << modelmode << 
-      " (" << (psilens == NULL) << ")\n" ; 
+   if (DEBUG) {
+      std::cout << "[runSim] " << CSIM_PSI_CLUSTER << " - " << CSIM_MODEL_ROULETTE << "\n" ; 
+      std::cout << "[runSim] " << lensmode << " - " << modelmode << 
+         " (" << (psilens == NULL) << ")\n" ; 
+   }
    if ( CSIM_NOPSI_ROULETTE != lensmode ) {
       sim->setCHI( chi ) ;
       if ( rPos < 0 ) {
@@ -327,9 +289,9 @@ bool CosmoSim::runSim() {
          psilens->setOrientation( orientation ) ;
       }
       if ( psilens != NULL ) {
-         std::cout << "[runSim] ready for initAlphasBetas\n" ;
+         if (DEBUG) std::cout << "[runSim] ready for initAlphasBetas\n" ;
          psilens->initAlphasBetas() ;
-         std::cout << "[runSim] done initAlphasBetas\n" ;
+         if (DEBUG) std::cout << "[runSim] done initAlphasBetas\n" ;
       }
    }
    Py_BEGIN_ALLOW_THREADS
@@ -341,6 +303,7 @@ bool CosmoSim::runSim() {
    sim->update() ;
    if (DEBUG) std::cout << "[CosmoSim.cpp] end of thread section\n" ;
    Py_END_ALLOW_THREADS
+   std::cout << "[runSim] completes\n" ;
    return true ;
 }
 bool CosmoSim::moveSim( double rot, double scale ) { 
@@ -448,6 +411,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("showMask", &CosmoSim::showMask)
         .def("setMaskMode", &CosmoSim::setMaskMode)
         .def("setImageSize", &CosmoSim::setImageSize)
+        .def("getImageSize", &CosmoSim::getImageSize)
         .def("setResolution", &CosmoSim::setResolution)
         .def("setBGColour", &CosmoSim::setBGColour)
         .def("setFile", &CosmoSim::setFile)
