@@ -249,10 +249,12 @@ class CosmoSim(cs.CosmoSim):
             self.simEvent.wait()
             if self._continue:
                self.simEvent.clear()
-               self._src_ = self._src
-               self.setSource( self._src_ )
                self.runSim()
                self.updateEvent.set()
+    def runSim(self):
+        self._src_ = self._src
+        self.setSource( self._src_ )
+        return super().runSim()
     def runSimulator(self):
         """
         Run the simulator; that is, tell it that the parameters
