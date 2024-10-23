@@ -69,6 +69,7 @@ public:
     void setNterms(int);
     void setMaskRadius(double);
     void setImageSize(int);
+    int getImageSize();
     void setResolution(int);
     void setBGColour(int);
 

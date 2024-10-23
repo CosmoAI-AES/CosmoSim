@@ -241,6 +241,7 @@ void CosmoSim::setRatio(double r) {
 }
 void CosmoSim::setOrientation(double r) { orientation = r ; }
 void CosmoSim::setImageSize(int sz ) { size = sz ; }
+int CosmoSim::getImageSize() { return size ; }
 void CosmoSim::setResolution(int sz ) { 
    basesize = sz ; 
 }
@@ -448,6 +449,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("showMask", &CosmoSim::showMask)
         .def("setMaskMode", &CosmoSim::setMaskMode)
         .def("setImageSize", &CosmoSim::setImageSize)
+        .def("getImageSize", &CosmoSim::getImageSize)
         .def("setResolution", &CosmoSim::setResolution)
         .def("setBGColour", &CosmoSim::setBGColour)
         .def("setFile", &CosmoSim::setFile)

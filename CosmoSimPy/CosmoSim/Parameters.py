@@ -26,4 +26,6 @@ class Parameters:
         return r
     def __getitem__(self,key):
         return get(key)
+    def __setitem__(self,key,v):
+        self._row[key] = v
 
