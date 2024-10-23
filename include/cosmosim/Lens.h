@@ -44,7 +44,6 @@ protected:
     cv::Mat psi, psiX, psiY ;
 public:
     virtual void calculateAlphaBeta( cv::Point2d, int );
-    virtual cv::Point2d getXi( cv::Point2d ) ;
 
     virtual double getAlphaXi( int m, int s ) ;
     virtual double getBetaXi( int m, int s ) ;
@@ -96,6 +95,7 @@ class SampledPsiFunctionLens : public SampledLens {
       PsiFunctionLens *lens ;
    public:
       SampledPsiFunctionLens(PsiFunctionLens*) ;
+      SampledPsiFunctionLens(PsiFunctionLens*,int) ;
       virtual void updatePsi( cv::Size ) ;
       virtual double criticalXi( double ) const ;
       virtual cv::Point2d caustic( double phi ) const ;

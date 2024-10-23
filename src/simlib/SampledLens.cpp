@@ -5,58 +5,6 @@
 #include "cosmosim/Lens.h"
 #include "simaux.h"
 
-cv::Point2d SampledLens::getXi( cv::Point2d chieta ) {
-
-   cv::Point2d xi0, xi1 = chieta ;
-
-   // cv::Mat psi, psiX, psiY ;
-   int cont = 1, count = 0, maxcount = 200 ;
-   double dist, dist0=pow(10,12), threshold = 0.002 ;
-
-   // Get the lens potential 
-   updatePsi() ;
-   int ncols=psi.cols, nrows=psi.rows ;
-
-   if (DEBUG) {
-      std::cout << "[SampledLens] getXi()"
-             << " chi*eta = " << chieta 
-             << "; size: " << psi.size() << "\n" ;
-   }
-
-   // Diagnostic output 
-   if (DEBUG) {
-      double minVal, maxVal;
-      cv::Point minLoc, maxLoc;
-      minMaxLoc( psiX, &minVal, &maxVal, &minLoc, &maxLoc ) ;
-      std::cout << "[SampledLens] psiX min=" << minVal << "; max=" << maxVal << "\n" ;
-      minMaxLoc( psiY, &minVal, &maxVal, &minLoc, &maxLoc ) ;
-      std::cout << "[SampledLens] psiY min=" << minVal << "; max=" << maxVal << "\n" ;
-   }
-   
-   // This block makes a fix-point iteration to find \xi. 
-   while ( cont ) {
-      xi0 = xi1 ;
-      cv::Point2d ij = imageCoordinate( xi0, psi ) ;
-      double x = -psiY.at<double>( ij ), y = -psiX.at<double>( ij ) ;
-      if (DEBUG) std::cout
-	   << "[SampledLens] Fix pt it'n " << count
-           << "; xi0=" << xi0 << "; Delta eta = " << x << ", " << y << "\n" ;
-      xi1 = chieta + cv::Point2d( x, y ) ;
-      dist = cv::norm( cv::Mat(xi1-xi0), cv::NORM_L2 ) ;
-      if ( dist < threshold ) cont = 0 ;
-      if ( ++count > maxcount ) cont = 0 ;
-   }
-   if (DEBUG) {
-      if ( dist > threshold ) {
-         std::cout << "Bad approximation of xi: xi0=" << xi0 
-            << "; xi1=" << xi1 << "; dist=" << dist << "\n" ;
-      } else {
-         std::cout << "[SampledLens] Good approximation: xi0=" << xi0 
-            << "; xi1=" << xi1 << "\n" ;
-      }
-   }
-   return xi1 ;
-}
 
 void SampledLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
 
@@ -68,7 +16,6 @@ void SampledLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
     cv::Mat psi, matA, matB, matAouter, matBouter, matAx, matAy, matBx, matBy ;
     cv::Point2d ij ;
 
-    this->updatePsi() ;
     psi = -this->getPsi() ;
     ij = imageCoordinate( xi, psi ) ;
 
@@ -129,7 +76,10 @@ double SampledLens::psiValue( double x, double y ) const {
    return psi.at<double>( ij ) ;
 }
 double SampledLens::psiXvalue( double x, double y ) const {
+   // std::cout << "[SampledLens::psiXvalue]\n" ;
    cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
+   // std::cout << "[SampledLens::psiXvalue]" << ij << std::endl  ;
+   // std::cout << "[SampledLens::psiXvalue]" << psiY << std::endl  ;
    return -psiY.at<double>( ij ) ;
 }
 double SampledLens::psiYvalue( double x, double y ) const { 
