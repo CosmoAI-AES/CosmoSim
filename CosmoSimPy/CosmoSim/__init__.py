@@ -136,14 +136,13 @@ class CosmoSim(cs.CosmoSim):
         self._continue = True
         self.updateEvent = th.Event()
         self.simEvent = th.Event()
-        self.simThread = th.Thread(target=self.simThread)
-        self.simThread.start()
+        self._simThread = th.Thread(target=self.simThread)
+        self._simThread.start()
         self.bgcolour = 0
     def makeSource(self,param):
         if param.get( "imagesize" ) == None:
            param.__setitem__( "imagesize", self.getImageSize() )
         self._src = makeSource(param)
-        self.setSource( self._src )
     def getRelativeEta(self,centrepoint):
         # print ( "[getRelativeEta] centrepoint=", centrepoint, "in Planar Co-ordinates"  )
         r = super().getRelativeEta(centrepoint[0],centrepoint[1])
@@ -182,7 +181,7 @@ class CosmoSim(cs.CosmoSim):
         """
         self._continue = False
         self.simEvent.set()
-        self.simThread.join()
+        self._simThread.join()
     def getUpdateEvent(self):
         return self.updateEvent
     def moveSim(self,rot,scale):
@@ -250,6 +249,8 @@ class CosmoSim(cs.CosmoSim):
             self.simEvent.wait()
             if self._continue:
                self.simEvent.clear()
+               self._src_ = self._src
+               self.setSource( self._src_ )
                self.runSim()
                self.updateEvent.set()
     def runSimulator(self):
@@ -314,8 +315,8 @@ class RouletteSim(cs.RouletteSim):
         self._continue = True
         self.updateEvent = th.Event()
         self.simEvent = th.Event()
-        self.simThread = th.Thread(target=self.simThread)
-        self.simThread.start()
+        self._simThread = th.Thread(target=self.simThread)
+        self._simThread.start()
         self.bgcolour = 0
 
     def close(self):
@@ -326,7 +327,7 @@ class RouletteSim(cs.RouletteSim):
         """
         self._continue = False
         self.simEvent.set()
-        self.simThread.join()
+        self._simThread.join()
     def getUpdateEvent(self):
         return self.updateEvent
     def setSourceMode(self,s):
@@ -345,6 +346,7 @@ class RouletteSim(cs.RouletteSim):
             self.simEvent.wait()
             if self._continue:
                self.simEvent.clear()
+               self
                self.runSim()
                self.updateEvent.set()
     def runSimulator(self):

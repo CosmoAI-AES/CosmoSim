@@ -6,9 +6,8 @@
 #include <pybind11/pybind11.h>
 #include <opencv2/opencv.hpp>
 
-#undef DEBUG
 #ifndef DEBUG
-#define DEBUG 1
+#define DEBUG 0
 #endif
 
 #include <thread>
@@ -263,10 +262,6 @@ int CosmoSim::setSource( Source *src ) {
 }
 bool CosmoSim::runSim() { 
    std::cout  << "[runSim] starting \n" ;
-   if ( running ) {
-      return false ;
-   }
-   std::cout << "[runSim]\n" ;
    initLens() ;
    if ( sim == NULL ) {
       throw std::bad_function_call() ;
@@ -275,11 +270,12 @@ bool CosmoSim::runSim() {
    sim->setBGColour( bgcolour ) ;
    sim->setNterms( nterms ) ;
    sim->setMaskRadius( maskRadius ) ;
-   std::cout << "[runSim] initialised\n" ;
    sim->setMaskMode( maskmode ) ;
-   std::cout << "[runSim] " << CSIM_PSI_CLUSTER << " - " << CSIM_MODEL_ROULETTE << "\n" ; 
-   std::cout << "[runSim] " << lensmode << " - " << modelmode << 
-      " (" << (psilens == NULL) << ")\n" ; 
+   if (DEBUG) {
+      std::cout << "[runSim] " << CSIM_PSI_CLUSTER << " - " << CSIM_MODEL_ROULETTE << "\n" ; 
+      std::cout << "[runSim] " << lensmode << " - " << modelmode << 
+         " (" << (psilens == NULL) << ")\n" ; 
+   }
    if ( CSIM_NOPSI_ROULETTE != lensmode ) {
       sim->setCHI( chi ) ;
       if ( rPos < 0 ) {
@@ -293,9 +289,9 @@ bool CosmoSim::runSim() {
          psilens->setOrientation( orientation ) ;
       }
       if ( psilens != NULL ) {
-         std::cout << "[runSim] ready for initAlphasBetas\n" ;
+         if (DEBUG) std::cout << "[runSim] ready for initAlphasBetas\n" ;
          psilens->initAlphasBetas() ;
-         std::cout << "[runSim] done initAlphasBetas\n" ;
+         if (DEBUG) std::cout << "[runSim] done initAlphasBetas\n" ;
       }
    }
    Py_BEGIN_ALLOW_THREADS
@@ -307,6 +303,7 @@ bool CosmoSim::runSim() {
    sim->update() ;
    if (DEBUG) std::cout << "[CosmoSim.cpp] end of thread section\n" ;
    Py_END_ALLOW_THREADS
+   std::cout << "[runSim] completes\n" ;
    return true ;
 }
 bool CosmoSim::moveSim( double rot, double scale ) { 

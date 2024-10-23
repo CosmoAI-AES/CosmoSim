@@ -46,7 +46,6 @@ private:
     int bgcolour=0 ;
     SimulatorModel *sim = NULL ;
     Source *src = NULL ;
-    bool running = false ;
     bool maskmode ;
 
     void initLens() ;
@@ -115,7 +114,6 @@ private:
     int nterms=16 ;
     int bgcolour=0 ;
     Source *src = NULL ;
-    bool running = false ;
     bool maskmode ;
 
     void initSource() ;
