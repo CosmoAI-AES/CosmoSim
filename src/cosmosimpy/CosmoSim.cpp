@@ -158,7 +158,6 @@ void CosmoSim::initLens() {
    if ( sim ) {
       std::cout << "[initLens] delete sim\n" ;
       delete sim ;
-      // sim = NULL ;
    }
    std::cout << "switch( lensmode )\n" ;
    switch ( lensmode ) {
@@ -186,9 +185,8 @@ void CosmoSim::initLens() {
          std::cerr << "No such lens model!\n" ;
          throw NotImplemented();
    }
-   if ( sampledlens ) {
-     lens = new SampledPsiFunctionLens( psilens ) ;
-   }
+   std::cout << "[initLens] instantiated lens\n" ;
+
    std::cout << "switch( modelmode )\n" ;
    switch ( modelmode ) {
        case CSIM_MODEL_POINTMASS_ROULETTE:
@@ -223,6 +221,27 @@ void CosmoSim::initLens() {
     std::cout  << "[initLens] returning \n" ;
     return ;
 }
+
+void CosmoSim::configLens() {
+   // Set lens parameters
+   if ( psilens != NULL  ) {
+      if ( CSIM_PSI_CLUSTER != lensmode ) {
+         psilens->setEinsteinR( einsteinR ) ;
+         psilens->setRatio( ellipseratio ) ;
+         psilens->setOrientation( orientation ) ;
+      }
+      if (DEBUG) std::cout << "[runSim] ready for initAlphasBetas\n" ;
+      psilens->initAlphasBetas() ;
+      if (DEBUG) std::cout << "[runSim] done initAlphasBetas\n" ;
+   }
+
+   std::cout << "[initLens] ready to sample lens\n" ;
+   if ( sampledlens ) {
+     lens = new SampledPsiFunctionLens( psilens ) ;
+     std::cout << "[initLens] lens sampled\n" ;
+     sim->setLens( lens ) ;
+   }
+}
 void CosmoSim::setEinsteinR(double r) { einsteinR = r ; }
 void CosmoSim::setRatio(double r) { 
    ellipseratio = r ; 
@@ -237,61 +256,44 @@ int CosmoSim::setSource( Source *src ) {
     std::cout  << "[setSource]\n" ;
     srcmode = CSIM_SOURCE_EXTERN ;
     this->src = src ;
-    /*
-    if (sim) {
-       std::cout  << "[setSource] setting source\n" ;
-       sim->setSource( src ) ;
-       return 1 ; 
-    } else {
-       std::cout  << "[setSource] no simulator\n" ;
-       return 0 ;
-    }
-    */
     return 1 ; 
 }
 bool CosmoSim::runSim() { 
    std::cout  << "[runSim] starting \n" ;
-   initLens() ;
+
+   // Configure the lens
+   initLens() ;   // initLens() implements changing lens and model modes
    if ( sim == NULL ) {
-      throw std::bad_function_call() ;
+      std::cout << "Simulator not initialised after initLens().\n" ;
+      throw std::logic_error("Simulator not initialised") ;
    }
-   sim->setSource( src ) ;
+   configLens() ; // configLens() implements parameter changes
+
+   // Set simulation parameters
+   sim->setCHI( chi ) ;
    sim->setBGColour( bgcolour ) ;
    sim->setNterms( nterms ) ;
    sim->setMaskRadius( maskRadius ) ;
    sim->setMaskMode( maskmode ) ;
-   if (DEBUG) {
-      std::cout << "[runSim] " << CSIM_PSI_CLUSTER << " - " << CSIM_MODEL_ROULETTE << "\n" ; 
-      std::cout << "[runSim] " << lensmode << " - " << modelmode << 
-         " (" << (psilens == NULL) << ")\n" ; 
-   }
-   if ( CSIM_NOPSI_ROULETTE != lensmode ) {
-      sim->setCHI( chi ) ;
-      if ( rPos < 0 ) {
+
+   // Set source position
+   if ( rPos < 0 ) {
          sim->setXY( xPos, yPos ) ;
-      } else {
+   } else {
          sim->setPolar( rPos, thetaPos ) ;
-      }
-      if ( psilens != NULL && CSIM_PSI_CLUSTER != lensmode ) {
-         psilens->setEinsteinR( einsteinR ) ;
-         psilens->setRatio( ellipseratio ) ;
-         psilens->setOrientation( orientation ) ;
-      }
-      if ( psilens != NULL ) {
-         if (DEBUG) std::cout << "[runSim] ready for initAlphasBetas\n" ;
-         psilens->initAlphasBetas() ;
-         if (DEBUG) std::cout << "[runSim] done initAlphasBetas\n" ;
-      }
    }
+   sim->setSource( src ) ;
+
+   // run the actal simulator
    Py_BEGIN_ALLOW_THREADS
    if (DEBUG) std::cout << "[runSim] thread section\n" ;
    if ( sim == NULL ) {
-      std::cout << "Simulator not initialised\n" ;
+      std::cout << "Simulator not initialised in thread section.\n" ;
       throw std::logic_error("Simulator not initialised") ;
    }
    sim->update() ;
-   if (DEBUG) std::cout << "[CosmoSim.cpp] end of thread section\n" ;
    Py_END_ALLOW_THREADS
+
    std::cout << "[runSim] completes\n" ;
    return true ;
 }
@@ -519,7 +521,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
        .value( "SIS", CSIM_PSI_SIS )
        .value( "Cluster", CSIM_PSI_CLUSTER )
        .value( "PM", CSIM_NOPSI_PM ) 
-       .value( "Roulette", CSIM_NOPSI_ROULETTE ) 
        .value( "NoPsi", CSIM_NOPSI ) ;
     pybind11::enum_<SourceSpec>(m, "SourceSpec") 
        .value( "Sphere", CSIM_SOURCE_SPHERE )

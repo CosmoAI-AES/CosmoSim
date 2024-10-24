@@ -33,7 +33,6 @@ def makeSource(param):
 lensDict = {
         "SIS" : PsiSpec.SIS,
         "PM" : PsiSpec.PM,
-        "Roulette" : PsiSpec.Roulette,
         "Cluster" : PsiSpec.Cluster,
         "SIE" : PsiSpec.SIE,
         }

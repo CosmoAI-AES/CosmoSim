@@ -25,7 +25,6 @@ enum ModelSpec { CSIM_MODEL_RAYTRACE,
 enum PsiSpec    { CSIM_PSI_SIS,
                   CSIM_PSI_SIE,
                   CSIM_PSI_CLUSTER,
-                  CSIM_NOPSI_ROULETTE,
                   CSIM_NOPSI_PM,
                   CSIM_NOPSI } ;
 
@@ -49,6 +48,7 @@ private:
     bool maskmode ;
 
     void initLens() ;
+    void configLens() ;
     std::string filename[10], sourcefile = "einstein.png" ;
 
     Lens *lens = NULL ;

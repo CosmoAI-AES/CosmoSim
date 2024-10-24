@@ -14,15 +14,12 @@ class Parameters:
     def setRow(self,row):
         self._row = row
     def get(self,key,default=None):
-        print( "Parameters.get(", key, ")" )
         try:
             r = self._args.__dict__[key]
         except AttributeError:
             print( self._args )
             r = default
-        print( "Parameters.get() args ->", r )
         r = self._row.get(key,r)
-        print( "Parameters.get() row ->", r )
         return r
     def __getitem__(self,key):
         return get(key)
