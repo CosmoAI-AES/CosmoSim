@@ -24,11 +24,6 @@ protected:
     std::array<std::array<double, 202>, 201> betas_val;
 
     virtual cv::Point2d getDistortedPos(double r, double theta) const;
-    // virtual void markMask( cv::InputOutputArray ) ;
-    // virtual void maskImage( cv::InputOutputArray, double ) ;
-    // virtual double getMaskRadius() const ;
-
-    virtual void calculateAlphaBeta();
 };
 
 
@@ -41,7 +36,6 @@ class RouletteRegenerator : public RouletteModel {
     void setBetaXi( int, int, double ) ;
   protected:
     virtual void updateApparentAbs() ;
-    virtual void calculateAlphaBeta();
   private:
 };
 

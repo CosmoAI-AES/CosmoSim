@@ -270,7 +270,16 @@ void SimulatorModel::undistort(const cv::Mat& src, cv::Mat& dst) {
 
 /* Initialiser.  The default implementation does nothing.
  * This is correct for any subclass that does not need the alpha/beta tables. */
-void SimulatorModel::calculateAlphaBeta() { }
+void SimulatorModel::calculateAlphaBeta() { 
+
+    if ( lens == NULL ) {
+        std::cout << "[calculateAlphaBeta] No lens - does nothing.\n" ;
+    } else {
+        cv::Point2d xi = getXi() ;
+        std::cout << "[calculateAlphaBeta] [" << xi << "] ... \n" ;
+        lens->calculateAlphaBeta( xi, nterms ) ;
+    }
+}
 
 
 /** *** Setters *** */
