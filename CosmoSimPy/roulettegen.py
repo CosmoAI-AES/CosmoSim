@@ -101,12 +101,13 @@ def main(args):
             # print( "Relative eta", row.get("reletaX", None), row.get("reletaY",None) )
             # print( "Centre Point", row.get("centreX",None), row.get("centreY",None) )
             if args.xireference:
-                print( "xi", row["xiX"], row["xiY"], row["sigma"] )
-                sim.initSim( 0, 0 )
-            else:
                 print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
-                sim.initSim( row["offsetX"], row["offsetY"] )
-            print( "Initialised simulator" )
+                pt = ( row["offsetX"], row["offsetY"] )
+            else:
+                print( "xi", row["xiX"], row["xiY"], row["sigma"] )
+                pt = (0,0)
+            sim.initSim( *pt )
+            print( "Initialised simulator at point", pt )
             sys.stdout.flush()
 
             setAmplitudes( sim, row, coefs )
