@@ -155,8 +155,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setMaskRadius", &RouletteSim::setMaskRadius)
         .def("runSim", &RouletteSim::runSim)
         .def("initSim", &RouletteSim::initSim)
-        .def("diagnostics", &RouletteSim::diagnostics)
-        .def("maskImage", &RouletteSim::maskImage)
         .def("showMask", &RouletteSim::showMask)
         .def("setMaskMode", &RouletteSim::setMaskMode)
         .def("setImageSize", &RouletteSim::setImageSize)

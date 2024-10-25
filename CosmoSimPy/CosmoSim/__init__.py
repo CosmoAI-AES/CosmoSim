@@ -346,8 +346,8 @@ class RouletteSim(cs.RouletteSim):
         Return the Distorted Image from the simulator as a numpy array.
         """
         try:
-            if mask: self.maskImage()
-            if showmask: self.showMask()
+            if mask: self._rsim.maskImage()
+            if showmask: self._rsim.showMask()
         except:
             print( "Masking not supported for this lens model." )
         im = np.array(self._rsim.getDistorted(),copy=False)

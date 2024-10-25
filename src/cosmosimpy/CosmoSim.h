@@ -128,13 +128,9 @@ public:
     void setResolution(int);
 
     bool runSim();
-    void diagnostics();
 
-    void maskImage(double) ;
-    void showMask() ;
     void setMaskMode(bool) ;
 
-    cv::Mat getSource(bool) ;
 };
 
 #endif // COSMOSIM_FACADE_H

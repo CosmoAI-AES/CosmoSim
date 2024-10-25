@@ -7,6 +7,8 @@
 #include "simaux.h"
 
 #include <thread>
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
 
 SimulatorModel::SimulatorModel() :
         CHI(0.5),
@@ -50,7 +52,10 @@ void SimulatorModel::update( ) {
    } ;
    updateApparentAbs() ;
    if (DEBUG) std::cout << "[SimulatorModel::update] Done updateApparentAbs()\n" ;
-   return updateInner() ;
+   Py_BEGIN_ALLOW_THREADS
+   std::cout << "[SimulatorModel::update] thread section\n" << std::flush ;
+   updateInner() ;
+   Py_END_ALLOW_THREADS
 }
 void SimulatorModel::update( cv::Point2d xi ) {
    setXi( xi ) ;
