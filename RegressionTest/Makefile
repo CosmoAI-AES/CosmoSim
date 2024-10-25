@@ -17,7 +17,7 @@ clean alltests:
 	cd cluster-raytrace ; $(MAKE) $@
 	cd cluster-sampled-roulette ; $(MAKE) $@
 	cd cluster-sampled-raytrace ; $(MAKE) $@
-	cd roulettegen ; $(MAKE) $@
+	cd roulettegen-old ; $(MAKE) $@
 	cd amplitudes ; $(MAKE) $@
 
 cpptests:
@@ -33,7 +33,7 @@ cpptests:
 	cd cluster-raytrace ; $(MAKE) alltests
 	cd cluster-sampled-roulette ; $(MAKE) alltests
 	cd cluster-sampled-raytrace ; $(MAKE) alltests
-	# cd roulettelens ; $(MAKE) alltests
+	cd roulettegen-old ; $(MAKE) alltests
 
 baselines:
 	cd exactpm ; $(MAKE) baseline`date "+%Y%m%d"`
