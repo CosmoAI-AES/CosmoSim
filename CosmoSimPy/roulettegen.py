@@ -109,7 +109,7 @@ def main(args):
                 print( "xi", row["xiX"], row["xiY"], row["sigma"] )
                 pt = (0,0)
             rsim.setCentrePy( *pt )
-            sim.initSim( *pt )
+            sim.initSim( rsim )
             print( "Initialised simulator at point", pt )
             sys.stdout.flush()
 
@@ -121,10 +121,6 @@ def main(args):
             src = cs.makeSource( param )
             rsim.setSource( src )
 
-            if row.get("source",None) != None:
-                sim.setSourceMode( row["source"] )
-            sim.setSourceParameters( float(row["sigma"]), float(row.get("sigma2",0)),
-                                     float(row.get("theta",0)) ) 
             fn = row.get("filename",None)
             if fn is None:
                 namestem = f"image-{int(row['index']):05}" 

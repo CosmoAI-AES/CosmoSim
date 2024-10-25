@@ -116,23 +116,17 @@ private:
     Source *src = NULL ;
     bool maskmode ;
 
-    void initSource() ;
-
     RouletteRegenerator *sim = NULL ;
 
 public:
     RouletteSim();
-    void initSim( double, double ) ;
+    void initSim( RouletteRegenerator* ) ;
 
     void setNterms(int);
     void setMaskRadius(double);
     void setImageSize(int);
     void setResolution(int);
     void setBGColour(int);
-
-    int setSource( Source *src ) ;
-    void setSourceMode(int);
-    void setSourceParameters(double,double,double);
 
     bool runSim();
     void diagnostics();

@@ -39,17 +39,11 @@ void RouletteSim::diagnostics() {
 void RouletteSim::setNterms(int c) { nterms = c ; }
 void RouletteSim::setMaskRadius(double c) { maskRadius = c ; }
 
-void RouletteSim::setSourceMode(int m) { srcmode = m ; }
 void RouletteSim::setMaskMode(bool b) { maskmode = b ; }
 void RouletteSim::setBGColour(int b) { bgcolour = b ; }
-void RouletteSim::initSim( double offsetX, double offsetY ) {
+void RouletteSim::initSim( RouletteRegenerator *rsim ) {
    std::cout << "[RouletteSim.cpp] initSim\n" ;
-
-   if ( sim ) delete sim ;
-
-   std::cout << "Running Roulette Regenerator; centrepoint=" << centrepoint << "\n" ;
-   sim = new RouletteRegenerator() ;
-   sim->setCentre( cv::Point2d( offsetX, offsetY ), cv::Point2d( 0, 0 ) ) ;
+   sim = rsim ;
 
    return ;
 }
@@ -58,41 +52,11 @@ void RouletteSim::setResolution(int sz ) {
    basesize = sz ; 
    std::cout << "[setResolution] basesize=" << basesize << "; size=" << size << "\n" ;
 }
-void RouletteSim::setSourceParameters(double s1, double s2, double theta ) {
-   sourceSize = s1 ;
-   if ( s2 >= 0 ) sourceSize2 = s2 ;
-   if ( theta >= 0 ) sourceTheta = theta ;
-   // srcmode = mode ;
-}
-void RouletteSim::initSource( ) {
-   std::cout << "[RouletteSim.cpp] initSource()\n" ;
-   // Deleting the source object messes up the heap and causes
-   // subsequent instantiation to fail.  This is probably because
-   // the imgApparent (cv:;Mat) is not freed correctly.
-   // if ( src ) delete src ;
-   switch ( srcmode ) {
-       case CSIM_SOURCE_SPHERE:
-         src = new SphericalSource( size, sourceSize ) ;
-         break ;
-       case CSIM_SOURCE_ELLIPSE:
-         src = new EllipsoidSource( size, sourceSize,
-               sourceSize2, sourceTheta*PI/180 ) ;
-         break ;
-       case CSIM_SOURCE_TRIANGLE:
-         src = new TriangleSource( size, sourceSize, sourceTheta*PI/180 ) ;
-         break ;
-       default:
-         std::cout << "No such source mode!\n" ;
-         throw NotImplemented();
-    }
-    if (sim) sim->setSource( src ) ;
-    std::cout << "[RouletteSim.cpp] initSource() completes\n" ;
-}
+
 bool RouletteSim::runSim() { 
    std::cout << "[RouletteSim.cpp] runSim() - running similator\n" << std::flush ;
    if ( NULL == sim )
 	 throw std::logic_error( "Simulator not initialised" ) ;
-   initSource() ;
    sim->setBGColour( bgcolour ) ;
    sim->setMaskRadius( maskRadius ) ;
    sim->setNterms( nterms ) ;
@@ -165,12 +129,3 @@ cv::Mat RouletteSim::getDistorted(bool refLinesMode) {
    return im;
 }
 
-int RouletteSim::setSource( Source *src ) {
-    srcmode = CSIM_SOURCE_EXTERN ;
-    if (sim) {
-       sim->setSource( src ) ;
-       return 1 ; 
-    } else {
-       return 0 ;
-    }
-}

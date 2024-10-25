@@ -14,7 +14,7 @@ clean:
 	rm -f roulette.csv
 	rm -rf diff *-diff montage *-montage *-images Original
 
-alltests:  montage.log 
+alltests:  roulette-montage.log 
 
 roulette.csv: debug.csv
 	mkdir -p Original
