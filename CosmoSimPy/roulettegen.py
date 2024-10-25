@@ -21,11 +21,9 @@ from RouletteAmplitudes import RouletteAmplitudes
 
 def makeSingle(sim,args,name=None,row=None):
     print( "makeSingle" )
-    sys.stdout.flush()
+
     if name == None: name = args.name
     sim._rsim.update()
-    print( "runSim() returned" )
-    sys.stdout.flush()
 
     im = sim.getDistortedImage( showmask=args.showmask ) 
     print( "Distorted image", type(im), im.shape )
@@ -66,9 +64,6 @@ def main(args):
 
     print( "Instantiate RouletteSim object ... " )
     sim = cs.RouletteSim()
-    print( "Done" )
-
-
 
     print( "Load CSV file:", args.csvfile )
     frame = pd.read_csv(args.csvfile)
