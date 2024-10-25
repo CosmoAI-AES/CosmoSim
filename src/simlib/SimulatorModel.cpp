@@ -418,7 +418,7 @@ void SimulatorModel::setLens( Lens *l ) {
 cv::Point2d SimulatorModel::getRelativeEta( cv::Point2d xi1 ) {
    // returns $\vec\eta''$
    cv::Point2d releta ;
-   releta = eta - xi1/CHI ;
+   releta = getEta() - xi1/CHI ;
    return releta ;
 }
 
