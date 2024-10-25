@@ -11,6 +11,8 @@ ModelSpec = cs.ModelSpec
 SourceSpec = cs.SourceSpec
 PsiSpec = cs.PsiSpec
 
+RouletteRegenerator = cs.RouletteRegenerator 
+
 def makeSource(param):
     """
     Factory function to create a Source object given the parameter list.

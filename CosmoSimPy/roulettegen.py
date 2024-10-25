@@ -12,7 +12,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from CosmoSim.Image import drawAxes
-from CosmoSim import RouletteSim as CosmoSim,getMSheaders,PsiSpec,ModelSpec
+from CosmoSim.Parameters import Parameters
+from CosmoSim import RouletteSim,getMSheaders,PsiSpec,ModelSpec, RouletteRegenerator,makeSource
 
 from Arguments import CosmoParser
 import pandas as pd
@@ -65,7 +66,7 @@ def main(args):
         raise Exception( "No CSV file given; the --csvfile option is mandatory." )
 
     print( "Instantiate RouletteSim object ... " )
-    sim = CosmoSim()
+    sim = RouletteSim()
     print( "Done" )
 
     if args.imagesize:
@@ -95,6 +96,8 @@ def main(args):
     if not args.maskradius is None:
         sim.setMaskRadius( float(args.maskradius) )
         
+    rsim = RouletteRegenerator()
+    param = Parameters( args )
     for index,row in frame.iterrows():
             print( "Processing", index )
             sys.stdout.flush()
@@ -114,6 +117,9 @@ def main(args):
             print( "index", row["index"] )
             sys.stdout.flush()
                     
+            param.setRow( row )
+            src = makeSource( param )
+
             if row.get("source",None) != None:
                 sim.setSourceMode( row["source"] )
             sim.setSourceParameters( float(row["sigma"]), float(row.get("sigma2",0)),
