@@ -130,6 +130,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
 
     py::class_<SimulatorModel>(m, "SimulatorModel")
         .def(py::init<>())
+        .def("update", py::overload_cast<>(&SimulatorModel::update))
         .def("setSource", &SimulatorModel::setSource)
         .def("setNterms", &SimulatorModel::setNterms)
         .def("setMaskMode", &SimulatorModel::setMaskMode)
@@ -148,18 +149,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setCentrePy", &RouletteRegenerator::setCentrePy)
         .def("setAlphaXi", &RouletteRegenerator::setAlphaXi)
         .def("setBetaXi", &RouletteRegenerator::setBetaXi) ;
-
-    py::class_<RouletteSim>(m, "RouletteSim")
-        .def(py::init<>())
-        .def("setNterms", &RouletteSim::setNterms)
-        .def("setMaskRadius", &RouletteSim::setMaskRadius)
-        .def("runSim", &RouletteSim::runSim)
-        .def("initSim", &RouletteSim::initSim)
-        .def("showMask", &RouletteSim::showMask)
-        .def("setMaskMode", &RouletteSim::setMaskMode)
-        .def("setImageSize", &RouletteSim::setImageSize)
-        .def("setResolution", &RouletteSim::setResolution)
-        ;
 
     pybind11::enum_<PsiSpec>(m, "PsiSpec") 
        .value( "SIE", CSIM_PSI_SIE )

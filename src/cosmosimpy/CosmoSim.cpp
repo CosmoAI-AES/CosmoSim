@@ -284,14 +284,14 @@ bool CosmoSim::runSim() {
    sim->setSource( src ) ;
 
    // run the actal simulator
-   Py_BEGIN_ALLOW_THREADS
+   // Py_BEGIN_ALLOW_THREADS
    if (DEBUG) std::cout << "[runSim] thread section\n" ;
    if ( sim == NULL ) {
       std::cout << "Simulator not initialised in thread section.\n" ;
       throw std::logic_error("Simulator not initialised") ;
    }
    sim->update() ;
-   Py_END_ALLOW_THREADS
+   // Py_END_ALLOW_THREADS
 
    std::cout << "[runSim] completes\n" ;
    return true ;

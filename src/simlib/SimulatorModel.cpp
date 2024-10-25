@@ -57,11 +57,13 @@ void SimulatorModel::update( ) {
    updateInner() ;
    Py_END_ALLOW_THREADS
 }
+
 void SimulatorModel::update( cv::Point2d xi ) {
    setXi( xi ) ;
    if (DEBUG) std::cout << "[SimulatorModel::update] Done setXi()\n" ;
    return updateInner() ;
 }
+
 cv::Mat SimulatorModel::getCaustic() {
    cv::Mat src = getCritical() ;
    cv::Mat img = cv::Mat::zeros(src.size(), src.type());

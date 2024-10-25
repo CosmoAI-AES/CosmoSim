@@ -23,7 +23,7 @@ def makeSingle(sim,args,name=None,row=None):
     print( "makeSingle" )
     sys.stdout.flush()
     if name == None: name = args.name
-    sim.runSim()
+    sim._rsim.update()
     print( "runSim() returned" )
     sys.stdout.flush()
 
@@ -68,11 +68,7 @@ def main(args):
     sim = cs.RouletteSim()
     print( "Done" )
 
-    if args.imagesize:
-        sim.setImageSize( int(args.imagesize) )
-        sim.setResolution( int(args.imagesize) )
 
-    sim.setMaskMode( args.mask )
 
     print( "Load CSV file:", args.csvfile )
     frame = pd.read_csv(args.csvfile)
@@ -80,10 +76,6 @@ def main(args):
     print( "columns:", cols )
     
     coefs = RouletteAmplitudes(cols)
-    if args.nterms:
-        sim.setNterms( int(args.nterms) )
-    else:
-        sim.setNterms( coefs.getNterms() )
     print( "Number of roulette terms: ", coefs.getNterms() )
 
     count = 1
@@ -92,10 +84,15 @@ def main(args):
     else:
         maxcount = int(args.maxcount)
 
-    if not args.maskradius is None:
-        sim.setMaskRadius( float(args.maskradius) )
-        
     rsim = cs.RouletteRegenerator()
+    rsim.setMaskMode( args.mask )
+    if not args.maskradius is None:
+        rsim.setMaskRadius( float(args.maskradius) )
+    if args.nterms:
+        rsim.setNterms( int(args.nterms) )
+    else:
+        rsim.setNterms( coefs.getNterms() )
+        
     param = Parameters( args )
     for index,row in frame.iterrows():
             print( "[roulettegen.py] Processing", index )

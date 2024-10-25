@@ -10,10 +10,6 @@ RouletteSim::RouletteSim() {
 }
 
 
-void RouletteSim::setNterms(int c) { nterms = c ; }
-void RouletteSim::setMaskRadius(double c) { maskRadius = c ; }
-
-void RouletteSim::setMaskMode(bool b) { maskmode = b ; }
 void RouletteSim::initSim( RouletteRegenerator *rsim ) {
    std::cout << "[RouletteSim.cpp] initSim\n" ;
    sim = rsim ;
@@ -31,10 +27,6 @@ bool RouletteSim::runSim() {
    if ( NULL == sim )
 	 throw std::logic_error( "Simulator not initialised" ) ;
 
-   sim->setMaskRadius( maskRadius ) ;
-   sim->setNterms( nterms ) ;
-   sim->setMaskMode( maskmode ) ;
-   
    sim->update() ;
    std::cout << "[RouletteSim.cpp] runSim() - complete\n" << std::flush ;
    return true ;

@@ -104,33 +104,5 @@ public:
 
 };
 
-class RouletteSim {
-private:
-    int size=512, basesize=512 ;
-    int srcmode=CSIM_SOURCE_SPHERE, sourceSize=20, sourceSize2=10,
-        sourceTheta=0 ;
-    cv::Point2d centrepoint ;
-    double maskRadius=0 ;
-    int nterms=16 ;
-    int bgcolour=0 ;
-    Source *src = NULL ;
-    bool maskmode ;
-
-    RouletteRegenerator *sim = NULL ;
-
-public:
-    RouletteSim();
-    void initSim( RouletteRegenerator* ) ;
-
-    void setNterms(int);
-    void setMaskRadius(double);
-    void setImageSize(int);
-    void setResolution(int);
-
-    bool runSim();
-
-    void setMaskMode(bool) ;
-
-};
 
 #endif // COSMOSIM_FACADE_H
