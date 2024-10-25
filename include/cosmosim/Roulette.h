@@ -36,6 +36,7 @@ class RouletteRegenerator : public RouletteModel {
   public:
     using RouletteModel::RouletteModel ;
     void setCentre( cv::Point2d, cv::Point2d ) ;
+    void setCentrePy( double, double ) ;
     void setAlphaXi( int, int, double ) ;
     void setBetaXi( int, int, double ) ;
   protected:

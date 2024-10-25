@@ -104,11 +104,11 @@ def main(args):
             # print( "Centre Point", row.get("centreX",None), row.get("centreY",None) )
             if args.xireference:
                 print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
-                pt = np.array( [ row["offsetX"], row["offsetY"] ] )
+                pt = ( row["offsetX"], row["offsetY"] )
             else:
                 print( "xi", row["xiX"], row["xiY"], row["sigma"] )
-                pt = np.array([0,0] )
-            rsim.setCentre( pt, np.array([0,0]) )
+                pt = (0,0)
+            rsim.setCentrePy( *pt )
             sim.initSim( *pt )
             print( "Initialised simulator at point", pt )
             sys.stdout.flush()

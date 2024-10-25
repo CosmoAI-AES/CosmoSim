@@ -7,6 +7,10 @@ void RouletteRegenerator::updateApparentAbs( ) {
     std::cout << "[RouletteRegenerator] updateApparentAbs() does nothing.\n" ;
 }
 
+void RouletteRegenerator::setCentrePy( double x, double y ) {
+   this->setCentre( cv::Point2d(x,y), cv::Point2d( 0,0 ) ) ;
+}
+
 void RouletteRegenerator::setCentre( cv::Point2d pt, cv::Point2d eta ) {
    setNu( cv::Point2d( 0,0 ) ) ;
    setXY( eta.x, eta.y ) ;
