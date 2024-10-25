@@ -315,49 +315,13 @@ class RouletteSim(cs.RouletteSim):
     """
     def __init__(self,*a,maxm=50,**kw):
         super().__init__(*a,**kw)
-
-        self._continue = True
-        self.updateEvent = th.Event()
-        self.simEvent = th.Event()
-        self._simThread = th.Thread(target=self.simThread)
-        self._simThread.start()
         self.bgcolour = 0
 
-    def close(self):
-        """
-        Terminate the worker thread.
-        This should be called before terminating the program,
-        because stale threads would otherwise block.
-        """
-        self._continue = False
-        self.simEvent.set()
-        self._simThread.join()
-    def getUpdateEvent(self):
-        return self.updateEvent
     def maskImage(self,scale=1):
         return super().maskImage( float(scale) )
 
     def setBGColour(self,s):
         self.bgcolour = s
-    def simThread(self):
-        """
-        This function repeatedly runs the simulator when the parameters
-        have changed.  It is intended to run in a dedicated thread.
-        """
-        while self._continue:
-            self.simEvent.wait()
-            if self._continue:
-               self.simEvent.clear()
-               self
-               self.runSim()
-               self.updateEvent.set()
-    def runSimulator(self):
-        """
-        Run the simulator; that is, tell it that the parameters
-        have changed.  This triggers an event which will be handled
-        when the simulator is idle.
-        """
-        self.simEvent.set()
 
     def getApparentImage(self,reflines=True):
         """

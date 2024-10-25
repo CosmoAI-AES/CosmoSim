@@ -128,7 +128,6 @@ def main(args):
             count += 1
             if count > maxcount: break
 
-    sim.close()
     print( "[roulettegen.py] Done" )
 
 if __name__ == "__main__":
