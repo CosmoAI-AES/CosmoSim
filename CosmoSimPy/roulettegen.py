@@ -93,11 +93,11 @@ def main(args):
             print( "[roulettegen.py] Processing", index )
 
             if args.xireference:
-                print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
-                pt = ( row["offsetX"], row["offsetY"] )
-            else:
                 print( "xi", row["xiX"], row["xiY"], row["sigma"] )
                 pt = (0,0)
+            else:
+                print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
+                pt = ( row["offsetX"], row["offsetY"] )
             rsim.setCentrePy( *pt )
             sim.initSim( rsim )
             print( "Initialised simulator at point", pt )
