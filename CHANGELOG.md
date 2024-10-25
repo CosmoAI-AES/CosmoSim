@@ -6,6 +6,8 @@
 ### Changed
 
 + Refactoring.  Simplified, restructured, and commented the CosmoSim object code.
++ Refactoring.  Removed the RouletteSim class, calling RouletteRegenerator
+  directly from python code.
 + Refactoring.  Moved source instantiation to Python.  This reduces coupling and
   simplifies parameter passing when a wider range of source models is supported.
 
