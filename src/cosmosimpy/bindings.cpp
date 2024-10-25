@@ -130,18 +130,22 @@ PYBIND11_MODULE(CosmoSimPy, m) {
 
     py::class_<SimulatorModel>(m, "SimulatorModel")
         .def(py::init<>())
-        .def("setSource", &RouletteRegenerator::setSource)
-        .def("setNterms", &RouletteRegenerator::setNterms)
-        .def("setMaskMode", &RouletteRegenerator::setMaskMode)
-        .def("setBGColour", &RouletteRegenerator::setBGColour)
-        .def("setMaskRadius", &RouletteRegenerator::setMaskRadius)
-        // .def("maskImage", &RouletteRegenerator::maskImage)
-        .def("getActual", &RouletteRegenerator::getActual)
-        .def("getApparent", &RouletteRegenerator::getSource)
-        .def("getDistorted", &RouletteRegenerator::getDistorted) ;
-    py::class_<RouletteRegenerator,SimulatorModel>(m, "RouletteRegenerator")
+        .def("setSource", &SimulatorModel::setSource)
+        .def("setNterms", &SimulatorModel::setNterms)
+        .def("setMaskMode", &SimulatorModel::setMaskMode)
+        .def("setBGColour", &SimulatorModel::setBGColour)
+        .def("setMaskRadius", &SimulatorModel::setMaskRadius)
+        // .def("maskImage", &SimulatorModel::maskImage)
+        .def("getActual", &SimulatorModel::getActual)
+        .def("getApparent", &SimulatorModel::getApparent)
+        .def("getDistorted", &SimulatorModel::getDistorted) 
+        .def("setLens", &SimulatorModel::setLens) ;
+    py::class_<RouletteModel,SimulatorModel>(m, "RouletteModel")
         .def(py::init<>())
-        .def("setCentre", &RouletteRegenerator::setAlphaXi)
+        .def("setLens", &RouletteModel::setLens) ;
+    py::class_<RouletteRegenerator,RouletteModel>(m, "RouletteRegenerator")
+        .def(py::init<>())
+        .def("setCentre", &RouletteRegenerator::setCentre)
         .def("setAlphaXi", &RouletteRegenerator::setAlphaXi)
         .def("setBetaXi", &RouletteRegenerator::setBetaXi) ;
 
@@ -234,6 +238,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
     // `np.array(im, copy=False)` where `im` is the `Mat` object.
 
     pybind11::class_<cv::Point2d>(m, "Point", pybind11::buffer_protocol())
+        .def(py::init<>())
         .def_buffer([](cv::Point2d& pt) -> pybind11::buffer_info {
                 return pybind11::buffer_info(
                     // Pointer to buffer

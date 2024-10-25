@@ -9,11 +9,10 @@ import cv2 as cv
 import sys
 import os
 import numpy as np
-import matplotlib.pyplot as plt
 
 from CosmoSim.Image import drawAxes
 from CosmoSim.Parameters import Parameters
-from CosmoSim import RouletteSim,getMSheaders,PsiSpec,ModelSpec, RouletteRegenerator,makeSource
+import CosmoSim as cs
 
 from Arguments import CosmoParser
 import pandas as pd
@@ -66,7 +65,7 @@ def main(args):
         raise Exception( "No CSV file given; the --csvfile option is mandatory." )
 
     print( "Instantiate RouletteSim object ... " )
-    sim = RouletteSim()
+    sim = cs.RouletteSim()
     print( "Done" )
 
     if args.imagesize:
@@ -96,7 +95,7 @@ def main(args):
     if not args.maskradius is None:
         sim.setMaskRadius( float(args.maskradius) )
         
-    rsim = RouletteRegenerator()
+    rsim = cs.RouletteRegenerator()
     param = Parameters( args )
     for index,row in frame.iterrows():
             print( "Processing", index )
@@ -105,10 +104,11 @@ def main(args):
             # print( "Centre Point", row.get("centreX",None), row.get("centreY",None) )
             if args.xireference:
                 print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
-                pt = ( row["offsetX"], row["offsetY"] )
+                pt = np.array( [ row["offsetX"], row["offsetY"] ] )
             else:
                 print( "xi", row["xiX"], row["xiY"], row["sigma"] )
-                pt = (0,0)
+                pt = np.array([0,0] )
+            rsim.setCentre( pt, np.array([0,0]) )
             sim.initSim( *pt )
             print( "Initialised simulator at point", pt )
             sys.stdout.flush()
@@ -118,7 +118,8 @@ def main(args):
             sys.stdout.flush()
                     
             param.setRow( row )
-            src = makeSource( param )
+            src = cs.makeSource( param )
+            rsim.setSource( src )
 
             if row.get("source",None) != None:
                 sim.setSourceMode( row["source"] )

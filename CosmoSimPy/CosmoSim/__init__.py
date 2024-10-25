@@ -12,6 +12,7 @@ SourceSpec = cs.SourceSpec
 PsiSpec = cs.PsiSpec
 
 RouletteRegenerator = cs.RouletteRegenerator 
+Point = cs.Point 
 
 def makeSource(param):
     """

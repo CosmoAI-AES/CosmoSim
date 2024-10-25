@@ -47,8 +47,7 @@ void RouletteSim::initSim( double offsetX, double offsetY ) {
 
    if ( sim ) delete sim ;
 
-   std::cout << "Running Roulette Regenerator; "
-                << "centrepoint=" << centrepoint << "\n" ;
+   std::cout << "Running Roulette Regenerator; centrepoint=" << centrepoint << "\n" ;
    sim = new RouletteRegenerator() ;
    sim->setCentre( cv::Point2d( offsetX, offsetY ), cv::Point2d( 0, 0 ) ) ;
 
