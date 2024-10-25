@@ -126,7 +126,6 @@ public:
     void setMaskRadius(double);
     void setImageSize(int);
     void setResolution(int);
-    void setBGColour(int);
 
     bool runSim();
     void diagnostics();
@@ -138,9 +137,6 @@ public:
     cv::Mat getSource(bool) ;
     cv::Mat getActual(bool) ;
     cv::Mat getDistorted(bool) ;
-
-    void setAlphaXi( int m, int s, double val ) ;
-    void setBetaXi( int m, int s, double val ) ;
 };
 
 #endif // COSMOSIM_FACADE_H

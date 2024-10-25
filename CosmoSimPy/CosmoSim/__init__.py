@@ -334,8 +334,6 @@ class RouletteSim(cs.RouletteSim):
         self._simThread.join()
     def getUpdateEvent(self):
         return self.updateEvent
-    def setSourceMode(self,s):
-        return super().setSourceMode( int( sourceDict[s] ) ) 
     def maskImage(self,scale=1):
         return super().maskImage( float(scale) )
 

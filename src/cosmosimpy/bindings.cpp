@@ -164,9 +164,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setMaskMode", &RouletteSim::setMaskMode)
         .def("setImageSize", &RouletteSim::setImageSize)
         .def("setResolution", &RouletteSim::setResolution)
-        .def("setBGColour", &RouletteSim::setBGColour)
-        .def("setAlphaXi", &RouletteSim::setAlphaXi)
-        .def("setBetaXi", &RouletteSim::setBetaXi) ;
+        ;
 
     pybind11::enum_<PsiSpec>(m, "PsiSpec") 
        .value( "SIE", CSIM_PSI_SIE )

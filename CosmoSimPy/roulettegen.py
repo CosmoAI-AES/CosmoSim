@@ -49,15 +49,15 @@ def makeSingle(sim,args,name=None,row=None):
        cv.imwrite(fn,im)
     return None
 
-def setAmplitudes( sim, row, coefs ):
+def setAmplitudes( rsim, row, coefs ):
     maxm = coefs.getNterms()
     for m in range(maxm+1):
         for s in range((m+1)%2, m+2, 2):
             alpha = row[f"alpha[{m}][{s}]"]
             beta = row[f"beta[{m}][{s}]"]
             print( f"alpha[{m}][{s}] = {alpha}\t\tbeta[{m}][{s}] = {beta}." )
-            sim.setAlphaXi( m, s, alpha )
-            sim.setBetaXi( m, s, beta )
+            rsim.setAlphaXi( m, s, alpha )
+            rsim.setBetaXi( m, s, beta )
 
 
 def main(args):
@@ -98,10 +98,8 @@ def main(args):
     rsim = cs.RouletteRegenerator()
     param = Parameters( args )
     for index,row in frame.iterrows():
-            print( "Processing", index )
-            sys.stdout.flush()
-            # print( "Relative eta", row.get("reletaX", None), row.get("reletaY",None) )
-            # print( "Centre Point", row.get("centreX",None), row.get("centreY",None) )
+            print( "[roulettegen.py] Processing", index )
+
             if args.xireference:
                 print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
                 pt = ( row["offsetX"], row["offsetY"] )
@@ -113,7 +111,7 @@ def main(args):
             print( "Initialised simulator at point", pt )
             sys.stdout.flush()
 
-            setAmplitudes( sim, row, coefs )
+            setAmplitudes( rsim, row, coefs )
             print( "index", row["index"] )
             sys.stdout.flush()
                     

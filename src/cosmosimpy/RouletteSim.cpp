@@ -10,18 +10,6 @@ RouletteSim::RouletteSim() {
 }
 
 
-void RouletteSim::setAlphaXi( int m, int s, double val ) {
-      if ( NULL == sim )
-	 throw std::logic_error( "Simulator not initialised" ) ;
-      return sim->setAlphaXi( m, s, val ) ;
-}
-void RouletteSim::setBetaXi( int m, int s, double val ) {
-      if ( NULL == sim )
-	 throw std::logic_error( "Simulator not initialised" ) ;
-      return sim->setBetaXi( m, s, val ) ;
-}
-
-
 void RouletteSim::diagnostics() {
    if ( src ) {
       cv::Mat im = src->getImage() ;
@@ -40,7 +28,6 @@ void RouletteSim::setNterms(int c) { nterms = c ; }
 void RouletteSim::setMaskRadius(double c) { maskRadius = c ; }
 
 void RouletteSim::setMaskMode(bool b) { maskmode = b ; }
-void RouletteSim::setBGColour(int b) { bgcolour = b ; }
 void RouletteSim::initSim( RouletteRegenerator *rsim ) {
    std::cout << "[RouletteSim.cpp] initSim\n" ;
    sim = rsim ;
@@ -57,7 +44,7 @@ bool RouletteSim::runSim() {
    std::cout << "[RouletteSim.cpp] runSim() - running similator\n" << std::flush ;
    if ( NULL == sim )
 	 throw std::logic_error( "Simulator not initialised" ) ;
-   sim->setBGColour( bgcolour ) ;
+
    sim->setMaskRadius( maskRadius ) ;
    sim->setNterms( nterms ) ;
    sim->setMaskMode( maskmode ) ;
