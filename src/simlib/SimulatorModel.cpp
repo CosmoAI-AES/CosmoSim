@@ -435,3 +435,4 @@ void SimulatorModel::updateApparentAbs( ) {
 void SimulatorModel::setMaskRadius( double r ) {
    maskRadius = r ;
 }
+cv::Point2d SimulatorModel::getDistortedPos(double r, double theta) const { throw NotImplemented() ; }

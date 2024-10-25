@@ -48,7 +48,7 @@ protected:
 
     virtual void updateApparentAbs() ;
     virtual void calculateAlphaBeta() ;
-    virtual cv::Point2d getDistortedPos(double r, double theta) const = 0 ;
+    virtual cv::Point2d getDistortedPos(double r, double theta) const ;
 
     double getNuAbs() const ;
     double getXiAbs() const ;
