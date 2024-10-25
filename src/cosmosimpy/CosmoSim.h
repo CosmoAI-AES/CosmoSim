@@ -135,8 +135,6 @@ public:
     void setMaskMode(bool) ;
 
     cv::Mat getSource(bool) ;
-    cv::Mat getActual(bool) ;
-    cv::Mat getDistorted(bool) ;
 };
 
 #endif // COSMOSIM_FACADE_H

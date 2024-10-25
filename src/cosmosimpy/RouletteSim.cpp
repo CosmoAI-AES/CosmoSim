@@ -69,50 +69,10 @@ cv::Mat RouletteSim::getSource(bool refLinesMode) {
    }
    return im ;
 }
-cv::Mat RouletteSim::getActual(bool refLinesMode) {
-   if ( NULL == sim )
-      throw std::bad_function_call() ;
-   std::cout << "[RouletteSim] getActual()\n" ;
-   cv::Mat im = sim->getActual() ;
-   std::cout << "basesize=" << basesize << "; size=" << size << "\n" ;
-   if ( basesize < size ) {
-      cv::Mat ret(cv::Size(basesize, basesize), im.type(),
-                  cv::Scalar::all(255));
-      cv::resize(im,ret,cv::Size(basesize,basesize) ) ;
-      im = ret ;
-   } else {
-      im = im.clone() ;
-   }
-   if (refLinesMode) {
-      refLines(im) ;
-   }
-   return im ;
-}
 void RouletteSim::maskImage( double scale ) {
           sim->maskImage( scale ) ;
 }
 void RouletteSim::showMask() {
           sim->markMask() ;
-}
-
-cv::Mat RouletteSim::getDistorted(bool refLinesMode) {
-   if ( NULL == sim )
-      throw std::bad_function_call() ;
-   cv::Mat im ;
-   if ( basesize < size ) {
-      std::cout << "basesize=" << basesize << "; size=" << size << "\n" ;
-      im = sim->getDistorted() ;
-      cv::Mat ret(cv::Size(basesize, basesize), sim->getActual().type(),
-                  cv::Scalar::all(255));
-      cv::resize(im,ret,cv::Size(basesize,basesize) ) ;
-      im = ret ;
-   } else {
-      // It is necessary to clone because the distorted image is created
-      // by cropping, and the pixmap is thus larger than the image,
-      // causing subsequent conversion to a numpy array to be misaligned. 
-      im = sim->getDistorted().clone() ;
-   }
-   if (refLinesMode) refLines(im) ;
-   return im;
 }
 

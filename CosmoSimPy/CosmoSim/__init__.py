@@ -315,6 +315,7 @@ class RouletteSim(cs.RouletteSim):
     """
     def __init__(self,*a,maxm=50,**kw):
         super().__init__(*a,**kw)
+
         self.bgcolour = 0
 
     def maskImage(self,scale=1):
@@ -327,16 +328,19 @@ class RouletteSim(cs.RouletteSim):
         """
         Return the Apparent Image from the simulator as a numpy array.
         """
-        im = np.array(self.getApparent(reflines),copy=False)
+        im = np.array(self._rsim.getApparent(),copy=False)
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
     def getActualImage(self,reflines=True,caustics=False):
         """
         Return the Actual Image from the simulator as a numpy array.
         """
-        im = np.array(self.getActual(reflines,caustics),copy=False)
+        im = np.array(self._rsim.getActual(),copy=False)
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
+    def initSim(self,rsim):
+        self._rsim = rsim
+        return super().initSim(rsim)
     def getDistortedImage(self,reflines=False,mask=False,showmask=False):
         """
         Return the Distorted Image from the simulator as a numpy array.
@@ -346,6 +350,6 @@ class RouletteSim(cs.RouletteSim):
             if showmask: self.showMask()
         except:
             print( "Masking not supported for this lens model." )
-        im = np.array(self.getDistorted(reflines),copy=False)
+        im = np.array(self._rsim.getDistorted(),copy=False)
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
