@@ -153,9 +153,9 @@ class SourceConstellation(cs.SourceConstellation):
         self._sources = []
         print( "SourceConstellation.__init__" )
         super().__init__(size)
-    def addLens(self,src,*a):
+    def addSource(self,src,*a):
         self._sources.append(src)
-        return super().addLens(src,*a)
+        return super().addSource(src,*a)
 class CosmoSim(cs.CosmoSim):
     """
     Simulator for gravitational lensing.
