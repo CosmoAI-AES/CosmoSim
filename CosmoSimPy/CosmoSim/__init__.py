@@ -15,9 +15,9 @@ RouletteRegenerator = cs.RouletteRegenerator
 Point = cs.Point 
 
 def makeSourceConstellation(src,size):
-    ss = src.get("source").split(";")
+    ss = src.split(";")
     sl = [ x.split("/") for x in ss ]
-    constellation = SourceConstellation(size)
+    constellation = cs.SourceConstellation(size)
     for s in sl:
         mode = sourceDict[s[0]]
         if mode == sourceDict.get( "Spherical" ):
@@ -40,9 +40,8 @@ def makeSource(param):
     """
     size = int( param.get( "imagesize" ) )
     src = param.get("source")
+    print( "makeSource", src )
     if src.find("/") < 0:
-        return makeSourceConstellation(src,size)
-    else:
        mode = sourceDict[src]
        if mode == sourceDict.get( "Spherical" ):
            return cs.SphericalSource( size, float(param.get( "sigma" )) )
@@ -56,6 +55,8 @@ def makeSource(param):
            return cs.ImageSource( getSourceFileName( ) )
        else:
            raise Exception( "Unknown Source Mode" )
+    else:
+        return makeSourceConstellation(src,size)
 
 lensDict = {
         "SIS" : PsiSpec.SIS,
