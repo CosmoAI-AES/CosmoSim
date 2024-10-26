@@ -17,7 +17,7 @@ Point = cs.Point
 def makeSourceConstellation(src,size):
     ss = src.split(";")
     sl = [ x.split("/") for x in ss ]
-    constellation = cs.SourceConstellation(size)
+    constellation = SourceConstellation(size)
     for s in sl:
         mode = sourceDict[s[0]]
         if mode == sourceDict.get( "Spherical" ):
@@ -143,6 +143,13 @@ def getSourceFileName():
     return( os.path.join( dir, f"einstein.png" ) )
     
 
+class SourceConstellation(cs.SourceConstellation):
+    def __init__(self,*a):
+        self._sources = []
+        return super().__init__(*a)
+    def addLens(self,src,*a):
+        self._sources.append(src)
+        return super().addLens(src,*a)
 class CosmoSim(cs.CosmoSim):
     """
     Simulator for gravitational lensing.
