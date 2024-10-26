@@ -33,6 +33,7 @@ def makeSourceConstellation(src,size):
             raise Exception( "Unknown Source Mode" )
 
         constellation.addSource( constituent, float(s[1]), float(s[2]))
+    print( "makeSourceConstellation() returns" )
 
 def makeSource(param):
     """
@@ -44,19 +45,21 @@ def makeSource(param):
     if src.find("/") < 0:
        mode = sourceDict[src]
        if mode == sourceDict.get( "Spherical" ):
-           return cs.SphericalSource( size, float(param.get( "sigma" )) )
+           r = cs.SphericalSource( size, float(param.get( "sigma" )) )
        elif mode == sourceDict.get( "Ellipsoid" ):
-           return cs.EllipsoidSource( size, float(param.get( "sigma" )),
+           r = cs.EllipsoidSource( size, float(param.get( "sigma" )),
                    float(param.get( "sigma2" )), float(param.get( "theta" ))*np.pi/180 )
        elif mode == sourceDict.get( "Triangle" ):
-           return cs.TriangleSource( size, float(param.get( "sigma" )),
+           r = cs.TriangleSource( size, float(param.get( "sigma" )),
                    float(param.get( "theta" ))*np.pi/180 )
        elif mode == sourceDict.get( "Iamge (Einstein)" ):
-           return cs.ImageSource( getSourceFileName( ) )
+           r = cs.ImageSource( getSourceFileName( ) )
        else:
            raise Exception( "Unknown Source Mode" )
     else:
-        return makeSourceConstellation(src,size)
+        r = makeSourceConstellation(src,size)
+    print( "makeSource() returns" )
+    return r 
 
 lensDict = {
         "SIS" : PsiSpec.SIS,
@@ -177,6 +180,7 @@ class CosmoSim(cs.CosmoSim):
         if param.get( "imagesize" ) == None:
            param.__setitem__( "imagesize", self.getImageSize() )
         self._src = makeSource(param)
+        print( "CosmoSim.makeSource() returns" )
     def getRelativeEta(self,centrepoint):
         # print ( "[getRelativeEta] centrepoint=", centrepoint, "in Planar Co-ordinates"  )
         r = super().getRelativeEta(centrepoint[0],centrepoint[1])
