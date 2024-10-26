@@ -14,24 +14,48 @@ PsiSpec = cs.PsiSpec
 RouletteRegenerator = cs.RouletteRegenerator 
 Point = cs.Point 
 
+def makeSourceConstellation(src,size):
+    ss = src.get("source").split(";")
+    sl = [ x.split("/") for x in ss ]
+    constellation = SourceConstellation(size)
+    for s in sl:
+        mode = sourceDict[s[0]]
+        if mode == sourceDict.get( "Spherical" ):
+            constituent = cs.SphericalSource( size, float(s[3]) )
+        elif mode == sourceDict.get( "Ellipsoid" ):
+            constituent = cs.EllipsoidSource( size, float(s[3]),
+                    float(s[4]), float(s[5])*np.pi/180 )
+        elif mode == sourceDict.get( "Triangle" ):
+            constituent = cs.TriangleSource( size, float(s[3]), float(s[4])*np.pi/180 )
+        elif mode == sourceDict.get( "Iamge (Einstein)" ):
+            constituent = cs.ImageSource( getSourceFileName( ) )
+        else:
+            raise Exception( "Unknown Source Mode" )
+
+        constellation.addSource( constituent, float(s[1]), float(s[2]))
+
 def makeSource(param):
     """
     Factory function to create a Source object given the parameter list.
     """
-    mode = sourceDict[ param.get("source") ]
     size = int( param.get( "imagesize" ) )
-    if mode == sourceDict.get( "Spherical" ):
-        return cs.SphericalSource( size, float(param.get( "sigma" )) )
-    elif mode == sourceDict.get( "Ellipsoid" ):
-        return cs.EllipsoidSource( size, float(param.get( "sigma" )),
-                float(param.get( "sigma2" )), float(param.get( "theta" ))*np.pi/180 )
-    elif mode == sourceDict.get( "Triangle" ):
-        return cs.TriangleSource( size, float(param.get( "sigma" )),
-                float(param.get( "theta" ))*np.pi/180 )
-    elif mode == sourceDict.get( "Iamge (Einstein)" ):
-        return cs.ImageSource( getSourceFileName( ) )
+    src = param.get("source")
+    if src.find("/") < 0:
+        return makeSourceConstellation(src,size)
     else:
-        raise Exception( "Unknown Source Mode" )
+       mode = sourceDict[src]
+       if mode == sourceDict.get( "Spherical" ):
+           return cs.SphericalSource( size, float(param.get( "sigma" )) )
+       elif mode == sourceDict.get( "Ellipsoid" ):
+           return cs.EllipsoidSource( size, float(param.get( "sigma" )),
+                   float(param.get( "sigma2" )), float(param.get( "theta" ))*np.pi/180 )
+       elif mode == sourceDict.get( "Triangle" ):
+           return cs.TriangleSource( size, float(param.get( "sigma" )),
+                   float(param.get( "theta" ))*np.pi/180 )
+       elif mode == sourceDict.get( "Iamge (Einstein)" ):
+           return cs.ImageSource( getSourceFileName( ) )
+       else:
+           raise Exception( "Unknown Source Mode" )
 
 lensDict = {
         "SIS" : PsiSpec.SIS,
