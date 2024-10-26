@@ -9,10 +9,11 @@ SourceConstellation::~SourceConstellation() {
 }
 
 void SourceConstellation::addSource( Source *l, double x, double y ) {
-   std::cout << "SourceConstellation::addSource]] " << (x,y) << "\n" ;
+   std::cout << "SourceConstellation::addSource]] " << cv::Point2d(x,y) << "\n" ;
    this->xshift[this->nsrc] = x ;
    this->yshift[this->nsrc] = y ;
    this->src[this->nsrc++] = l ;
+   std::cout << "SourceConstellation::addSource]] returns\n" ;
 }
 void SourceConstellation::drawParallel(cv::Mat& dst){
     for ( int i=0 ; i<nsrc ; ++i ) {
