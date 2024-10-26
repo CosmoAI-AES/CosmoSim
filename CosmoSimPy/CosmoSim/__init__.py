@@ -34,6 +34,7 @@ def makeSourceConstellation(src,size):
 
         constellation.addSource( constituent, float(s[1]), float(s[2]))
     print( "makeSourceConstellation() returns" )
+    return constellation
 
 def makeSource(param):
     """
@@ -58,6 +59,7 @@ def makeSource(param):
            raise Exception( "Unknown Source Mode" )
     else:
         r = makeSourceConstellation(src,size)
+        print( "makeSource() - makeSourceConstellation() has returned" )
     print( "makeSource() returns" )
     return r 
 
@@ -147,9 +149,10 @@ def getSourceFileName():
     
 
 class SourceConstellation(cs.SourceConstellation):
-    def __init__(self,*a):
+    def __init__(self,size):
         self._sources = []
-        return super().__init__(*a)
+        print( "SourceConstellation.__init__" )
+        super().__init__(size)
     def addLens(self,src,*a):
         self._sources.append(src)
         return super().addLens(src,*a)
