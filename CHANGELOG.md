@@ -3,6 +3,13 @@
 
 ## Unreleased
 
+## [2.5.1] - 2024-10-27
+
+### Added
+
++ Source constellations.  Multiple sources can be view through the same
+  lens (cluster).  (Not supported in GUI.)
+
 ### Changed
 
 + Refactoring.  Simplified, restructured, and commented the CosmoSim object code.
