@@ -3,9 +3,14 @@
 #include "cosmosim/Source.h"
 
 SourceConstellation::~SourceConstellation() { 
+   std::cout << "SourceConstellation::destructor]] does nothing\n" ;
+   /*
    for ( int i=0 ; i<nsrc ; ++i ) {
+      std::cout << "SourceConstellation::destructor]] " << i << "\n" ;
       delete src[i] ;
    }
+   std::cout << "SourceConstellation::destructor]] terminates\n" ;
+   */
 }
 
 void SourceConstellation::addSource( Source *l, double x, double y ) {

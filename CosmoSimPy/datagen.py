@@ -69,8 +69,11 @@ def makeSingle(sim,param,name=None,row=None,outstream=None):
     sys.stdout.flush()
     sim.runSim()
     print ( "[datagen.py] runSim() completed\n" ) ;
-    centrepoint = makeOutput(sim,args,name,actual=args.actual,apparent=args.apparent,original=args.original,reflines=args.reflines,critical=args.criticalcurves)
-    print( "[datagen.py] Centre Point", centrepoint, "(Centre of Luminence in Planar Co-ordinates)" )
+    centrepoint = makeOutput(sim,args,name,actual=args.actual,
+                             apparent=args.apparent,original=args.original,
+                             reflines=args.reflines,critical=args.criticalcurves)
+    print( "[datagen.py] Centre Point", centrepoint,
+          "(Centre of Luminence in Planar Co-ordinates)" )
     if args.join:
         # sim.setMaskMode(False)
         sim.runSim()
@@ -121,6 +124,7 @@ def makeSingle(sim,param,name=None,row=None,outstream=None):
         fn = os.path.join(args.directory,"kappa-" + str(name) + ".svg" ) 
         plt.savefig( fn )
         plt.close()
+    print( "ready for outstream" )
     if outstream:
         maxm = int(args.nterms)
         print( "[datagen.py] Finding Alpha/beta; centrepoint=", centrepoint )
@@ -147,10 +151,15 @@ def makeSingle(sim,param,name=None,row=None,outstream=None):
         line = ",".join( [ str(x) for x in r ] )
         line += "\n"
         outstream.write( line )
+    print( "makeSingle() returns" )
 
 
-def makeOutput(sim,args,name=None,rot=0,scale=1,actual=False,apparent=False,original=False,reflines=False,critical=False):
+def makeOutput(sim,args,name=None,rot=0,scale=1,
+               actual=False,apparent=False,original=False,
+               reflines=False,critical=False):
+
     im = sim.getDistortedImage( critical=critical, showmask=args.showmask ) 
+    print( "getDistortedImage() has returned" )
 
     (cx,cy) = 0,0
     if args.centred:
@@ -188,15 +197,7 @@ def makeOutput(sim,args,name=None,rot=0,scale=1,actual=False,apparent=False,orig
     return (cx,cy)
 
 
-
-if __name__ == "__main__":
-    parser = CosmoParser(
-          prog = 'CosmoSim makeimage',
-          description = 'Generaet an image for given lens and source parameters',
-          epilog = '')
-
-    args = parser.parse_args()
-
+def main(args):
     print( "[datagen.py] Instantiate Simulator ... " )
     sys.stdout.flush()
     if args.amplitudes:
@@ -260,5 +261,17 @@ if __name__ == "__main__":
             makeSingle(sim,param,row=row,outstream=outstream)
     else:
         makeSingle(sim,args)
+    print( "ready to close simulator" )
     sim.close()
+    print( "simulator closed" )
     if outstream != None: outstream.close()
+
+if __name__ == "__main__":
+    parser = CosmoParser(
+          prog = 'CosmoSim makeimage',
+          description = 'Generaet an image for given lens and source parameters',
+          epilog = '')
+
+    args = parser.parse_args()
+    main(args)
+    print( "[datagen.py] the end" )

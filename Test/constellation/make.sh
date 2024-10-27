@@ -11,4 +11,4 @@ pdir=../../CosmoSimPy/
 
 mkdir -p constellation
 
-python3 $pdir/datagen.py $opt --model Raytrace --csvfile constellation.csv --directory=onstellation --actual -R 
+python3 $pdir/datagen.py $opt --model Raytrace --csvfile constellation.csv --directory=constellation --actual -R 

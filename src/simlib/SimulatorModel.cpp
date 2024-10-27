@@ -121,9 +121,9 @@ void SimulatorModel::drawCritical( cv::Mat img ) {
 void SimulatorModel::updateInner( ) {
     cv::Mat imgApparent = getApparent() ;
 
-    if ( DEBUG ) {
-      std::cout << "[SimulatorModel::updateInner()] R=" << getEtaAbs() 
+    std::cout << "[SimulatorModel::updateInner()] R=" << getEtaAbs() 
               << "; CHI=" << CHI << "\n" ;
+    if ( DEBUG ) {
       std::cout << "[SimulatorModel::updateInner()] xi=" << getXi()   
               << "; eta=" << getEta() << "; etaOffset=" << etaOffset << "\n" ;
       std::cout << "[SimulatorModel::updateInner()] nu=" << getNu()   
