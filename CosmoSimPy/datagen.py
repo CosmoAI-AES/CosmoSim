@@ -246,6 +246,7 @@ def main(args):
 
     sim.setMaskMode( args.mask )
 
+    param = Parameters( args )
     if args.csvfile:
         print( "Load CSV file:", args.csvfile )
         frame = pd.read_csv(args.csvfile)
@@ -257,7 +258,6 @@ def main(args):
            headers += "\n"
            outstream.write(headers)
         for index,row in frame.iterrows():
-            param = Parameters( args )
             makeSingle(sim,param,row=row,outstream=outstream)
     else:
         makeSingle(sim,param)
