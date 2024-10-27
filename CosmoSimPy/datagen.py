@@ -61,12 +61,11 @@ def makeSingle(sim,param,name=None,row=None,outstream=None):
        setParameters( sim, row )
        print( "index", row["index"] )
        param.setRow( row )
-       sim.makeSource( param )
        name = row["filename"].split(".")[0]
     elif name == None:
         name = param.get( "name" )
+    sim.makeSource( param )
     print ( "[datagen.py] ready for runSim()\n" ) ;
-    sys.stdout.flush()
     sim.runSim()
     print ( "[datagen.py] runSim() completed\n" ) ;
     centrepoint = makeOutput(sim,args,name,actual=args.actual,
