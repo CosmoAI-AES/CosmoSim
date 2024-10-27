@@ -1,5 +1,5 @@
 #! /usr/bin/env python3
-# (C) 2023: Hans Georg Schaathun <georg@schaathun.net>
+# (C) 2024: Hans Georg Schaathun <georg@schaathun.net>
 
 """
 Generate an image for given parameters.
@@ -260,7 +260,7 @@ def main(args):
             param = Parameters( args )
             makeSingle(sim,param,row=row,outstream=outstream)
     else:
-        makeSingle(sim,args)
+        makeSingle(sim,param)
     print( "ready to close simulator" )
     sim.close()
     print( "simulator closed" )
