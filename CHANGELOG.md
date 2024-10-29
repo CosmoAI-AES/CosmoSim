@@ -3,6 +3,11 @@
 
 ## Unreleased
 
+### Fixed
+
++ Fixed bug in PointMass lens.  It now works correctly with Raytrace.
+  (Minor visible discrepancy against PointMassExact, probably numerical error.)
+
 ### Changed
 
 + Refactoring.  Simplified, restructured, and commented the CosmoSim object code.

@@ -1,20 +1,21 @@
 #! /bin/sh
 
-( cd ../.. && cmake --build build )
-
 . ../../pythonenv/bin/activate
+
+( cd ../.. && cmake --build build )
 
 pdir=../../CosmoSimPy
 dir1=Exact
 dir2=Raytrace
 diffdir=diff
 
-mkdir -p $dir1 $dir2 $diffdir montage
+mkdir -p $dir1 $dir2 $diffdir montage SIS
 
 fn=../spheres.csv
 
 python3 $pdir/datagen.py --config p --directory="$dir1" --csvfile $fn  
 python3 $pdir/datagen.py --lens PM --model Raytrace --directory="$dir2" --csvfile $fn  --actual 
+python3 $pdir/datagen.py --lens SIS --model Raytrace --directory="SIS" --csvfile $fn  
 python3 $pdir/compare.py --diff $diffdir $dir1 $dir2
 
 mkdir -p actual
