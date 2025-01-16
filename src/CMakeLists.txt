@@ -21,6 +21,7 @@ set(SimLibFiles
         simlib/Source.cpp
         simlib/SphericalSource.cpp
         simlib/TriangleSource.cpp
+        simlib/SourceConstellation.cpp
         )
      # Currently unused:
      #    simlib/LensMap.cpp
@@ -28,7 +29,7 @@ set(SimLibFiles
 
 add_library(SimLib ${SimLibFiles})
 set_target_properties(SimLib PROPERTIES POSITION_INDEPENDENT_CODE ON)
-target_include_directories(SimLib PUBLIC "${CMAKE_SOURCE_DIR}/include")
+target_include_directories(SimLib PUBLIC "${CMAKE_SOURCE_DIR}/include" ${pybind11_INCLUDE_DIRS})
 if (${host} MATCHES "idun.*")
     target_link_libraries(SimLib PUBLIC ${OpenCV_LIBS} ${LLIBS})
 else ()
@@ -37,10 +38,8 @@ endif ()
 
 
 # Python Bindings
-pybind11_add_module(CosmoSimPy MODULE cosmosimpy/CosmoSim.cpp cosmosimpy/RouletteSim.cpp)
+pybind11_add_module(CosmoSimPy MODULE cosmosimpy/bindings.cpp cosmosimpy/CosmoSim.cpp )
 target_link_libraries(CosmoSimPy PRIVATE SimLib)
-
-pybind11_add_module(PyTest MODULE cosmosimpy/PyTest.cpp)
 
 
 # copy CosmoSimPy.*.pyd into Python directory

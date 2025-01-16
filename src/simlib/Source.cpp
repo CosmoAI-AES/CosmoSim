@@ -7,6 +7,7 @@
  */
 
 #include "cosmosim/Source.h"
+#include "simaux.h"
 
 #include <thread>
 
@@ -19,9 +20,11 @@ Source::Source(int sz) :
     drawn = 0 ;
     imgApparent = cv::Mat(size, size, CV_8UC1, cv::Scalar(0, 0, 0)) ;
 }
+Source::Source() : Source(512) {}
 
 /* Getters for the images */
 cv::Mat Source::getImage() { 
+   std::cout << "[Source::getImage()]\n" << std::flush ;
    if ( ! drawn ) {
       drawParallel( imgApparent ) ;
       drawn = 1 ;
@@ -42,4 +45,8 @@ void Source::drawParallel(cv::Mat& dst){
     for (auto& thread : threads_vec) {
         thread.join();
     }
+}
+
+void Source::drawSource(int begin, int end, cv::Mat& dst) {
+      throw NotImplemented() ;
 }

@@ -9,10 +9,10 @@ import cv2 as cv
 import sys
 import os
 import numpy as np
-import matplotlib.pyplot as plt
 
 from CosmoSim.Image import drawAxes
-from CosmoSim import RouletteSim as CosmoSim,getMSheaders,PsiSpec,ModelSpec
+from CosmoSim.Parameters import Parameters
+import CosmoSim as cs
 
 from Arguments import CosmoParser
 import pandas as pd
@@ -21,11 +21,9 @@ from RouletteAmplitudes import RouletteAmplitudes
 
 def makeSingle(sim,args,name=None,row=None):
     print( "makeSingle" )
-    sys.stdout.flush()
+
     if name == None: name = args.name
-    sim.runSim()
-    print( "runSim() returned" )
-    sys.stdout.flush()
+    sim._rsim.update()
 
     im = sim.getDistortedImage( showmask=args.showmask ) 
     print( "Distorted image", type(im), im.shape )
@@ -49,15 +47,15 @@ def makeSingle(sim,args,name=None,row=None):
        cv.imwrite(fn,im)
     return None
 
-def setAmplitudes( sim, row, coefs ):
+def setAmplitudes( rsim, row, coefs ):
     maxm = coefs.getNterms()
     for m in range(maxm+1):
         for s in range((m+1)%2, m+2, 2):
             alpha = row[f"alpha[{m}][{s}]"]
             beta = row[f"beta[{m}][{s}]"]
             print( f"alpha[{m}][{s}] = {alpha}\t\tbeta[{m}][{s}] = {beta}." )
-            sim.setAlphaXi( m, s, alpha )
-            sim.setBetaXi( m, s, beta )
+            rsim.setAlphaXi( m, s, alpha )
+            rsim.setBetaXi( m, s, beta )
 
 
 def main(args):
@@ -65,14 +63,7 @@ def main(args):
         raise Exception( "No CSV file given; the --csvfile option is mandatory." )
 
     print( "Instantiate RouletteSim object ... " )
-    sim = CosmoSim()
-    print( "Done" )
-
-    if args.imagesize:
-        sim.setImageSize( int(args.imagesize) )
-        sim.setResolution( int(args.imagesize) )
-
-    sim.setMaskMode( args.mask )
+    sim = cs.RouletteSim()
 
     print( "Load CSV file:", args.csvfile )
     frame = pd.read_csv(args.csvfile)
@@ -80,10 +71,6 @@ def main(args):
     print( "columns:", cols )
     
     coefs = RouletteAmplitudes(cols)
-    if args.nterms:
-        sim.setNterms( int(args.nterms) )
-    else:
-        sim.setNterms( coefs.getNterms() )
     print( "Number of roulette terms: ", coefs.getNterms() )
 
     count = 1
@@ -92,31 +79,38 @@ def main(args):
     else:
         maxcount = int(args.maxcount)
 
+    rsim = cs.RouletteRegenerator()
+    rsim.setMaskMode( args.mask )
     if not args.maskradius is None:
-        sim.setMaskRadius( float(args.maskradius) )
+        rsim.setMaskRadius( float(args.maskradius) )
+    if args.nterms:
+        rsim.setNterms( int(args.nterms) )
+    else:
+        rsim.setNterms( coefs.getNterms() )
         
+    param = Parameters( args )
     for index,row in frame.iterrows():
-            print( "Processing", index )
-            sys.stdout.flush()
-            # print( "Relative eta", row.get("reletaX", None), row.get("reletaY",None) )
-            # print( "Centre Point", row.get("centreX",None), row.get("centreY",None) )
+            print( "[roulettegen.py] Processing", index )
+
             if args.xireference:
                 print( "xi", row["xiX"], row["xiY"], row["sigma"] )
-                sim.initSim( 0, 0 )
+                pt = (0,0)
             else:
                 print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
-                sim.initSim( row["offsetX"], row["offsetY"] )
-            print( "Initialised simulator" )
+                pt = ( row["offsetX"], row["offsetY"] )
+            rsim.setCentrePy( *pt )
+            sim.initSim( rsim )
+            print( "Initialised simulator at point", pt )
             sys.stdout.flush()
 
-            setAmplitudes( sim, row, coefs )
+            setAmplitudes( rsim, row, coefs )
             print( "index", row["index"] )
             sys.stdout.flush()
                     
-            if row.get("source",None) != None:
-                sim.setSourceMode( row["source"] )
-            sim.setSourceParameters( float(row["sigma"]), float(row.get("sigma2",0)),
-                                     float(row.get("theta",0)) ) 
+            param.setRow( row )
+            src = cs.makeSource( param )
+            rsim.setSource( src )
+
             fn = row.get("filename",None)
             if fn is None:
                 namestem = f"image-{int(row['index']):05}" 
@@ -126,7 +120,6 @@ def main(args):
             count += 1
             if count > maxcount: break
 
-    sim.close()
     print( "[roulettegen.py] Done" )
 
 if __name__ == "__main__":

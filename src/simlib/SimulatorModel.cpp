@@ -7,6 +7,8 @@
 #include "simaux.h"
 
 #include <thread>
+#include <pybind11/pybind11.h>
+namespace py = pybind11;
 
 SimulatorModel::SimulatorModel() :
         CHI(0.5),
@@ -15,7 +17,8 @@ SimulatorModel::SimulatorModel() :
 { }
 
 SimulatorModel::~SimulatorModel() {
-   delete source ;
+    // delete source ;
+    // delete segfaults on object created in python
 }
 
 /* Getters for the images */
@@ -29,6 +32,10 @@ cv::Mat SimulatorModel::getActual() const {
 
 }
 cv::Mat SimulatorModel::getSource() const {
+   std::cout << "[SimulatorModel::getSource()]\n" ;
+   if ( NULL == source ) {
+       std::cout << "[SimulatorModel::getSource()] Source not defined.\n" ;
+   }
    return source->getImage() ;
 }
 cv::Mat SimulatorModel::getApparent() const {
@@ -45,13 +52,18 @@ void SimulatorModel::update( ) {
    } ;
    updateApparentAbs() ;
    if (DEBUG) std::cout << "[SimulatorModel::update] Done updateApparentAbs()\n" ;
-   return updateInner() ;
+   Py_BEGIN_ALLOW_THREADS
+   std::cout << "[SimulatorModel::update] thread section\n" << std::flush ;
+   updateInner() ;
+   Py_END_ALLOW_THREADS
 }
+
 void SimulatorModel::update( cv::Point2d xi ) {
    setXi( xi ) ;
    if (DEBUG) std::cout << "[SimulatorModel::update] Done setXi()\n" ;
    return updateInner() ;
 }
+
 cv::Mat SimulatorModel::getCaustic() {
    cv::Mat src = getCritical() ;
    cv::Mat img = cv::Mat::zeros(src.size(), src.type());
@@ -109,9 +121,9 @@ void SimulatorModel::drawCritical( cv::Mat img ) {
 void SimulatorModel::updateInner( ) {
     cv::Mat imgApparent = getApparent() ;
 
-    if ( DEBUG ) {
-      std::cout << "[SimulatorModel::updateInner()] R=" << getEtaAbs() 
+    std::cout << "[SimulatorModel::updateInner()] R=" << getEtaAbs() 
               << "; CHI=" << CHI << "\n" ;
+    if ( DEBUG ) {
       std::cout << "[SimulatorModel::updateInner()] xi=" << getXi()   
               << "; eta=" << getEta() << "; etaOffset=" << etaOffset << "\n" ;
       std::cout << "[SimulatorModel::updateInner()] nu=" << getNu()   
@@ -258,7 +270,16 @@ void SimulatorModel::undistort(const cv::Mat& src, cv::Mat& dst) {
 
 /* Initialiser.  The default implementation does nothing.
  * This is correct for any subclass that does not need the alpha/beta tables. */
-void SimulatorModel::calculateAlphaBeta() { }
+void SimulatorModel::calculateAlphaBeta() { 
+
+    if ( lens == NULL ) {
+        std::cout << "[calculateAlphaBeta] No lens - does nothing.\n" ;
+    } else {
+        cv::Point2d xi = getXi() ;
+        std::cout << "[calculateAlphaBeta] [" << xi << "] ... \n" ;
+        lens->calculateAlphaBeta( xi, nterms ) ;
+    }
+}
 
 
 /** *** Setters *** */
@@ -271,7 +292,13 @@ void SimulatorModel::setBGColour(int b) { bgcolour = b ; }
 
 /* B. Source model setter */
 void SimulatorModel::setSource(Source *src) {
-    if ( source != NULL ) delete source ;
+    // if ( source != NULL ) delete source ;
+    // delete segfaults on object created in python
+    if ( NULL == src ) {
+       std::cout << "[SimulatorModel::setSource] NULL source\n" ;
+    } else {
+       std::cout << "[SimulatorModel::setSource] setting source\n" ;
+    }
     source = src ;
 }
 
@@ -391,7 +418,7 @@ void SimulatorModel::setLens( Lens *l ) {
 cv::Point2d SimulatorModel::getRelativeEta( cv::Point2d xi1 ) {
    // returns $\vec\eta''$
    cv::Point2d releta ;
-   releta = eta - xi1/CHI ;
+   releta = getEta() - xi1/CHI ;
    return releta ;
 }
 
@@ -424,3 +451,4 @@ void SimulatorModel::updateApparentAbs( ) {
 void SimulatorModel::setMaskRadius( double r ) {
    maskRadius = r ;
 }
+cv::Point2d SimulatorModel::getDistortedPos(double r, double theta) const { throw NotImplemented() ; }

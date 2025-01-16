@@ -10,15 +10,18 @@
 
    \begin{package}{simlib}
 
-      \begin{abstractclass}{SimulatorModel}{0 , 10}
+      \begin{abstractclass}{SimulatorModel}{0 , 11}
       \end{abstractclass}
 
-      \begin{abstractclass}{Lens}{6 , 10}
+      \begin{abstractclass}{Lens}{-6 , 12}
       \end{abstractclass}
       \unidirectionalAssociation{SimulatorModel}{}{1}{Lens}
 
       \begin{abstractclass}{Source}{-6 , 10}
       \end{abstractclass}
+      \begin{class}{RouletteRegenerator}{6 , 10}
+	 \inherit{SimulatorModel}
+      \end{class}
       \unidirectionalAssociation{SimulatorModel}{}{1}{Source}
 
    \end{package}
@@ -34,14 +37,14 @@
       \umlnote (note2) at (0,5) { Python };
       \draw [dashed] (note1) -> (CosmoSimPy) ;
       \draw [dashed] (note2) -> (CosmoSim) ;
-      \begin{class}{RouletteSimC++}{6 , 7}
-      \end{class}
-      \draw [dashed] (note1) -> (RouletteSimC++) ;
-      \unidirectionalAssociation{RouletteSimC++}{}{1}{SimulatorModel}
+      % \begin{class}{RouletteSimC++}{6 , 7}
+      % \end{class}
+      % \draw [dashed] (note1) -> (RouletteSimC++) ;
       \begin{class}{RouletteSim}{6 , 5}
-         \inherit{RouletteSimC++}
+         % \inherit{RouletteSimC++}
       \end{class}
       \draw [dashed] (note2) -> (RouletteSim) ;
+      \unidirectionalAssociation{RouletteSim}{}{1}{RouletteRegenerator}
    \end{package}
 
    \begin{package}{Python Scripts}

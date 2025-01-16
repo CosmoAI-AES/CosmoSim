@@ -3,6 +3,21 @@
 
 ## Unreleased
 
+## [2.5.1] - 2024-10-27
+
+### Added
+
++ Source constellations.  Multiple sources can be view through the same
+  lens (cluster).  (Not supported in GUI.)
+
+### Changed
+
++ Refactoring.  Simplified, restructured, and commented the CosmoSim object code.
++ Refactoring.  Removed the RouletteSim class, calling RouletteRegenerator
+  directly from python code.
++ Refactoring.  Moved source instantiation to Python.  This reduces coupling and
+  simplifies parameter passing when a wider range of source models is supported.
+
 ## [2.5.0] - 2024-10-20
 
 ### Added

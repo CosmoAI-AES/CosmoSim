@@ -1,5 +1,5 @@
 #! /usr/bin/env python3
-# (C) 2023: Hans Georg Schaathun <georg@schaathun.net>
+# (C) 2024: Hans Georg Schaathun <georg@schaathun.net>
 
 """
 Generate an image for given parameters.
@@ -14,7 +14,8 @@ import matplotlib.pyplot as plt
 from CosmoSim.Image import centreImage, drawAxes
 from CosmoSim import CosmoSim,getMSheaders
 
-from Arguments import CosmoParser, setParameters
+from Arguments import CosmoParser
+from CosmoSim.Parameters import Parameters
 import pandas as pd
 
 defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "x", "y" ]
@@ -27,11 +28,6 @@ def setParameters(sim,row):
     elif row.get("phi",None) != None:
         print( "Polar", row["x"], row["phi"] )
         sim.setPolar( row["x"], row["phi"] )
-    if row.get("source",None) != None:
-        sim.setSourceMode( row["source"] )
-    if row.get("sigma",None) != None:
-        sim.setSourceParameters( row["sigma"],
-            row.get("sigma2",-1), row.get("theta",-1) )
     if row.get("config",None) != None:
         sim.setConfigMode( row["config"] )
     elif row.get("cluster",None) != None:
@@ -57,22 +53,26 @@ def setParameters(sim,row):
     if row.get("nterms",None) != None:
         sim.setNterms( row["nterms"] )
 
-def makeSingle(sim,args,name=None,row=None,outstream=None):
+def makeSingle(sim,param,name=None,row=None,outstream=None):
     """Process a single parameter set, given either as a pandas row or
     just as args parsed from the command line.
     """
     if not row is None:
        setParameters( sim, row )
        print( "index", row["index"] )
-       name=row["filename"].split(".")[0]
+       param.setRow( row )
+       name = row["filename"].split(".")[0]
     elif name == None:
-        name = args.name
+        name = param.get( "name" )
+    sim.makeSource( param )
     print ( "[datagen.py] ready for runSim()\n" ) ;
-    sys.stdout.flush()
     sim.runSim()
     print ( "[datagen.py] runSim() completed\n" ) ;
-    centrepoint = makeOutput(sim,args,name,actual=args.actual,apparent=args.apparent,original=args.original,reflines=args.reflines,critical=args.criticalcurves)
-    print( "[datagen.py] Centre Point", centrepoint, "(Centre of Luminence in Planar Co-ordinates)" )
+    centrepoint = makeOutput(sim,args,name,actual=args.actual,
+                             apparent=args.apparent,original=args.original,
+                             reflines=args.reflines,critical=args.criticalcurves)
+    print( "[datagen.py] Centre Point", centrepoint,
+          "(Centre of Luminence in Planar Co-ordinates)" )
     if args.join:
         # sim.setMaskMode(False)
         sim.runSim()
@@ -123,6 +123,7 @@ def makeSingle(sim,args,name=None,row=None,outstream=None):
         fn = os.path.join(args.directory,"kappa-" + str(name) + ".svg" ) 
         plt.savefig( fn )
         plt.close()
+    print( "ready for outstream" )
     if outstream:
         maxm = int(args.nterms)
         print( "[datagen.py] Finding Alpha/beta; centrepoint=", centrepoint )
@@ -149,10 +150,15 @@ def makeSingle(sim,args,name=None,row=None,outstream=None):
         line = ",".join( [ str(x) for x in r ] )
         line += "\n"
         outstream.write( line )
+    print( "makeSingle() returns" )
 
 
-def makeOutput(sim,args,name=None,rot=0,scale=1,actual=False,apparent=False,original=False,reflines=False,critical=False):
+def makeOutput(sim,args,name=None,rot=0,scale=1,
+               actual=False,apparent=False,original=False,
+               reflines=False,critical=False):
+
     im = sim.getDistortedImage( critical=critical, showmask=args.showmask ) 
+    print( "getDistortedImage() has returned" )
 
     (cx,cy) = 0,0
     if args.centred:
@@ -190,15 +196,7 @@ def makeOutput(sim,args,name=None,rot=0,scale=1,actual=False,apparent=False,orig
     return (cx,cy)
 
 
-
-if __name__ == "__main__":
-    parser = CosmoParser(
-          prog = 'CosmoSim makeimage',
-          description = 'Generaet an image for given lens and source parameters',
-          epilog = '')
-
-    args = parser.parse_args()
-
+def main(args):
     print( "[datagen.py] Instantiate Simulator ... " )
     sys.stdout.flush()
     if args.amplitudes:
@@ -212,10 +210,6 @@ if __name__ == "__main__":
         sim.setPolar( float(args.x), float(args.phi) )
     else:
         sim.setXY( float(args.x), float(args.y) )
-    if args.sourcemode:
-        sim.setSourceMode( args.sourcemode )
-        sim.setSourceParameters( float(args.sigma),
-            float(args.sigma2), float(args.theta) )
     if args.sampled:
         sim.setSampled( 1 )
     else:
@@ -226,11 +220,11 @@ if __name__ == "__main__":
     elif args.cluster:
         print( "setCluster from arguments" )
         sim.setCluster( args.cluster )
-    elif args.lensmode:
-        sim.setLensMode( args.lensmode )
+    elif args.lens:
+        sim.setLensMode( args.lens)
 
-    if args.modelmode:
-        sim.setModelMode( args.modelmode )
+    if args.model:
+        sim.setModelMode( args.model)
     if args.chi:
         sim.setCHI( float(args.chi) )
     if args.einsteinradius:
@@ -251,6 +245,7 @@ if __name__ == "__main__":
 
     sim.setMaskMode( args.mask )
 
+    param = Parameters( args )
     if args.csvfile:
         print( "Load CSV file:", args.csvfile )
         frame = pd.read_csv(args.csvfile)
@@ -262,8 +257,20 @@ if __name__ == "__main__":
            headers += "\n"
            outstream.write(headers)
         for index,row in frame.iterrows():
-            makeSingle(sim,args,row=row,outstream=outstream)
+            makeSingle(sim,param,row=row,outstream=outstream)
     else:
-        makeSingle(sim,args)
+        makeSingle(sim,param)
+    print( "ready to close simulator" )
     sim.close()
+    print( "simulator closed" )
     if outstream != None: outstream.close()
+
+if __name__ == "__main__":
+    parser = CosmoParser(
+          prog = 'CosmoSim makeimage',
+          description = 'Generaet an image for given lens and source parameters',
+          epilog = '')
+
+    args = parser.parse_args()
+    main(args)
+    print( "[datagen.py] the end" )

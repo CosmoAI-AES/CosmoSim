@@ -9,29 +9,35 @@ CONVERT=convert
 
 all: alltests
 
-status: 
-	cat */*.status
 clean:
 	rm -f *.status *.log
 	rm -f roulette.csv
 	rm -rf diff *-diff montage *-montage *-images Original
 
-alltests:  montage.log 
+alltests:  roulette-montage.log 
 
 roulette.csv: debug.csv
 	mkdir -p Original
-	datagen.py -Z 600 --nterms 10 --csvfile $< --outfile $@ --xireference -D Original | tee images.log 
+	datagen.py -Z 600 --centred --model Raytrace --nterms 10 --csvfile $< --outfile $@ -D Original | tee images.log 
+roulette.log: debug.csv
+	mkdir -p Roulette
+	datagen.py -Z 600 --centred --model Roulette --nterms 10 --csvfile $< --outfile $@ -D Roulette | tee images.log 
 %-gen.log: %.csv
 	mkdir -p $*-images
-	roulettegen.py --xireferenc -n 10 -Z 600 --csvfile $< -D $*-images
+	roulettegen.py -n 10 -Z 600 --csvfile $< -D $*-images | tee $@
 %-reflines.log: %.csv
 	mkdir -p $*-images
-	roulettegen.py --xireferenc -n 10 -Z 600 --csvfile $< -D $*-images -R
+	roulettegen.py -n 10 -Z 600 --csvfile $< -D $*-images -R | tee $@
 %-compare.log: %-gen.log
 	mkdir -p diff
 	compare.py --diff diff --masked Original $*-images | tee $@ ; exit 0
-montage.log: roulette-compare.log 
-	./montageimages.sh  | tee montage.log
+compare.log: roulette.csv roulette.log
+	mkdir -p diff2
+	compare.py --diff diff2 --masked Original Roulette | tee $@ ; exit 0
+roulette-montage.log: roulette-compare.log 
+	./montageimages.sh  | tee $@
+montage.log: roulette.csv compare.log 
+	./montageimages.sh Original Roulette diff2 montage2 | tee $@
 
 # Testing
 false.log:

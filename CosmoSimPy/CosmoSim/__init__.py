@@ -1,4 +1,4 @@
-# (C) 2022-23: Hans Georg Schaathun <georg@schaathun.net> 
+# (C) 2022-24: Hans Georg Schaathun <georg@schaathun.net> 
 
 import CosmoSim.CosmoSimPy as cs
 import numpy as np
@@ -11,10 +11,61 @@ ModelSpec = cs.ModelSpec
 SourceSpec = cs.SourceSpec
 PsiSpec = cs.PsiSpec
 
+RouletteRegenerator = cs.RouletteRegenerator 
+Point = cs.Point 
+
+def makeSourceConstellation(src,size):
+    ss = src.split(";")
+    sl = [ x.split("/") for x in ss ]
+    constellation = SourceConstellation(size)
+    for s in sl:
+        mode = sourceDict[s[0]]
+        if mode == sourceDict.get( "Spherical" ):
+            constituent = cs.SphericalSource( size, float(s[3]) )
+        elif mode == sourceDict.get( "Ellipsoid" ):
+            constituent = cs.EllipsoidSource( size, float(s[3]),
+                    float(s[4]), float(s[5])*np.pi/180 )
+        elif mode == sourceDict.get( "Triangle" ):
+            constituent = cs.TriangleSource( size, float(s[3]), float(s[4])*np.pi/180 )
+        elif mode == sourceDict.get( "Iamge (Einstein)" ):
+            constituent = cs.ImageSource( getSourceFileName( ) )
+        else:
+            raise Exception( "Unknown Source Mode" )
+
+        constellation.addSource( constituent, float(s[1]), float(s[2]))
+    print( "makeSourceConstellation() returns" )
+    return constellation
+
+def makeSource(param):
+    """
+    Factory function to create a Source object given the parameter list.
+    """
+    size = int( param.get( "imagesize" ) )
+    src = param.get("source")
+    print( "makeSource", src )
+    if src.find("/") < 0:
+       mode = sourceDict[src]
+       if mode == sourceDict.get( "Spherical" ):
+           r = cs.SphericalSource( size, float(param.get( "sigma" )) )
+       elif mode == sourceDict.get( "Ellipsoid" ):
+           r = cs.EllipsoidSource( size, float(param.get( "sigma" )),
+                   float(param.get( "sigma2" )), float(param.get( "theta" ))*np.pi/180 )
+       elif mode == sourceDict.get( "Triangle" ):
+           r = cs.TriangleSource( size, float(param.get( "sigma" )),
+                   float(param.get( "theta" ))*np.pi/180 )
+       elif mode == sourceDict.get( "Iamge (Einstein)" ):
+           r = cs.ImageSource( getSourceFileName( ) )
+       else:
+           raise Exception( "Unknown Source Mode" )
+    else:
+        r = makeSourceConstellation(src,size)
+        print( "makeSource() - makeSourceConstellation() has returned" )
+    print( "makeSource() returns" )
+    return r 
+
 lensDict = {
         "SIS" : PsiSpec.SIS,
         "PM" : PsiSpec.PM,
-        "Roulette" : PsiSpec.Roulette,
         "Cluster" : PsiSpec.Cluster,
         "SIE" : PsiSpec.SIE,
         }
@@ -97,6 +148,14 @@ def getSourceFileName():
     return( os.path.join( dir, f"einstein.png" ) )
     
 
+class SourceConstellation(cs.SourceConstellation):
+    def __init__(self,size):
+        self._sources = []
+        print( "SourceConstellation.__init__" )
+        super().__init__(size)
+    def addSource(self,src,*a):
+        self._sources.append(src)
+        return super().addSource(src,*a)
 class CosmoSim(cs.CosmoSim):
     """
     Simulator for gravitational lensing.
@@ -114,13 +173,17 @@ class CosmoSim(cs.CosmoSim):
             print( "Amplitudes file:", fn )
             super().setFile( PsiSpec.SIS, fn )
             super().setFile( PsiSpec.SIE, fn )
-        super().setSourceFile( getSourceFileName( ) )
         self._continue = True
         self.updateEvent = th.Event()
         self.simEvent = th.Event()
-        self.simThread = th.Thread(target=self.simThread)
-        self.simThread.start()
+        self._simThread = th.Thread(target=self.simThread)
+        self._simThread.start()
         self.bgcolour = 0
+    def makeSource(self,param):
+        if param.get( "imagesize" ) == None:
+           param.__setitem__( "imagesize", self.getImageSize() )
+        self._src = makeSource(param)
+        print( "CosmoSim.makeSource() returns" )
     def getRelativeEta(self,centrepoint):
         # print ( "[getRelativeEta] centrepoint=", centrepoint, "in Planar Co-ordinates"  )
         r = super().getRelativeEta(centrepoint[0],centrepoint[1])
@@ -159,11 +222,9 @@ class CosmoSim(cs.CosmoSim):
         """
         self._continue = False
         self.simEvent.set()
-        self.simThread.join()
+        self._simThread.join()
     def getUpdateEvent(self):
         return self.updateEvent
-    def setSourceMode(self,s):
-        return super().setSourceMode( int( sourceDict[s] ) ) 
     def moveSim(self,rot,scale):
         return super().moveSim( float(rot), float(scale) )
     def maskImage(self,scale=1):
@@ -210,7 +271,7 @@ class CosmoSim(cs.CosmoSim):
         return super().setLensMode( int( lensDict[s] ) ) 
     def setModelMode(self,s):
         print( f"setModelMode({s})")
-        traceback.print_stack()
+        # traceback.print_stack()
         return super().setModelMode( int( modelDict[s] ) ) 
     def setConfigMode(self,s):
         print( f"setConfigMode({s})")
@@ -231,12 +292,17 @@ class CosmoSim(cs.CosmoSim):
                self.simEvent.clear()
                self.runSim()
                self.updateEvent.set()
+    def runSim(self):
+        self._src_ = self._src
+        self.setSource( self._src_ )
+        return super().runSim()
     def runSimulator(self):
         """
         Run the simulator; that is, tell it that the parameters
         have changed.  This triggers an event which will be handled
         when the simulator is idle.
         """
+        print( "CosmoSim.runSimulator() [python]" )
         self.simEvent.set()
 
     def getApparentImage(self,reflines=True):
@@ -279,7 +345,7 @@ class CosmoSim(cs.CosmoSim):
         im = np.array(self.getDistorted(reflines,critical),copy=False)
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
-class RouletteSim(cs.RouletteSim):
+class RouletteSim:
     """
     Simulator for gravitational lensing.
     This wraps the CosmoSim library written in C++.  In particular,
@@ -289,73 +355,37 @@ class RouletteSim(cs.RouletteSim):
     def __init__(self,*a,maxm=50,**kw):
         super().__init__(*a,**kw)
 
-        self._continue = True
-        self.updateEvent = th.Event()
-        self.simEvent = th.Event()
-        self.simThread = th.Thread(target=self.simThread)
-        self.simThread.start()
         self.bgcolour = 0
-
-    def close(self):
-        """
-        Terminate the worker thread.
-        This should be called before terminating the program,
-        because stale threads would otherwise block.
-        """
-        self._continue = False
-        self.simEvent.set()
-        self.simThread.join()
-    def getUpdateEvent(self):
-        return self.updateEvent
-    def setSourceMode(self,s):
-        return super().setSourceMode( int( sourceDict[s] ) ) 
-    def maskImage(self,scale=1):
-        return super().maskImage( float(scale) )
 
     def setBGColour(self,s):
         self.bgcolour = s
-    def simThread(self):
-        """
-        This function repeatedly runs the simulator when the parameters
-        have changed.  It is intended to run in a dedicated thread.
-        """
-        while self._continue:
-            self.simEvent.wait()
-            if self._continue:
-               self.simEvent.clear()
-               self.runSim()
-               self.updateEvent.set()
-    def runSimulator(self):
-        """
-        Run the simulator; that is, tell it that the parameters
-        have changed.  This triggers an event which will be handled
-        when the simulator is idle.
-        """
-        self.simEvent.set()
 
     def getApparentImage(self,reflines=True):
         """
         Return the Apparent Image from the simulator as a numpy array.
         """
-        im = np.array(self.getApparent(reflines),copy=False)
+        im = np.array(self._rsim.getApparent(),copy=False)
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
     def getActualImage(self,reflines=True,caustics=False):
         """
         Return the Actual Image from the simulator as a numpy array.
         """
-        im = np.array(self.getActual(reflines,caustics),copy=False)
+        im = np.array(self._rsim.getActual(),copy=False)
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
+    def initSim(self,rsim):
+        self._rsim = rsim
+
     def getDistortedImage(self,reflines=False,mask=False,showmask=False):
         """
         Return the Distorted Image from the simulator as a numpy array.
         """
         try:
-            if mask: self.maskImage()
-            if showmask: self.showMask()
+            if mask: self._rsim.maskImage()
+            if showmask: self._rsim.showMask()
         except:
             print( "Masking not supported for this lens model." )
-        im = np.array(self.getDistorted(reflines),copy=False)
+        im = np.array(self._rsim.getDistorted(),copy=False)
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)

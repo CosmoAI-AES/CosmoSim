@@ -7,12 +7,12 @@ class CosmoParser(argparse.ArgumentParser):
     super().__init__(*a,**kw)
 
     # Model selection
-    self.add_argument('-l', '--lensmode',
+    self.add_argument('-l', '--lens',
             help="lens model")
     self.add_argument('--cluster', help="cluster lens")
-    self.add_argument('-L', '--modelmode',
+    self.add_argument('-L', '--model',
             help="simulation model")
-    self.add_argument('-S', '--sourcemode',
+    self.add_argument('-S', '--source',
             default="Spherical", help="source model")
     self.add_argument('-G', '--sampled', action='store_true',
             default=False, help="Sample the lens model")
@@ -34,7 +34,7 @@ class CosmoParser(argparse.ArgumentParser):
 
     # Other parameters
     self.add_argument('-n', '--nterms', help="Number of Roulettes terms", default=15)
-    self.add_argument('-Z', '--imagesize', default=400, help="image size for calculations")
+    self.add_argument('-Z', '--imagesize', default=512, help="image size for calculations")
     self.add_argument('-z', '--cropsize', help="Final image size")
 
     # Output configuration 
@@ -93,11 +93,6 @@ def setParameters(sim,row):
     elif row.get("phi",None) != None:
         print( "Polar", row["x"], row["phi"] )
         sim.setPolar( row["x"], row["phi"] )
-    if row.get("source",None) != None:
-        sim.setSourceMode( row["source"] )
-    if row.get("sigma",None) != None:
-        sim.setSourceParameters( row["sigma"],
-            row.get("sigma2",-1), row.get("theta",-1) )
     if row.get("lens",None) != None:
         sim.setModelMode( row["lens"] )
     if row.get("chi",None) != None:

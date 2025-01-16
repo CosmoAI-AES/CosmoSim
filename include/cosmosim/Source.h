@@ -1,3 +1,5 @@
+/* (C) 2024: Hans Georg Schaathun <georg@schaathun.net> */
+
 #ifndef COSMOSIM_SOURCE_H
 #define COSMOSIM_SOURCE_H
 
@@ -6,6 +8,8 @@
 #else
 #include "opencv2/opencv.hpp"
 #endif
+
+#define MAXCLUSTER 50
 
 class Source {
 
@@ -16,12 +20,29 @@ protected:
 
 public:
     Source(int) ;
+    Source() ;
     virtual ~Source();
     virtual cv::Mat getImage() ;
 
 protected:
     virtual void drawParallel(cv::Mat &img) ;
-    virtual void drawSource(int, int, cv::Mat &) = 0 ;
+    virtual void drawSource(int, int, cv::Mat &) ;
+};
+
+class SourceConstellation : public Source {
+
+   private:
+       Source  *src[MAXCLUSTER] ;
+       double xshift[MAXCLUSTER], yshift[MAXCLUSTER] ;
+       int nsrc = 0 ;
+
+   public:
+       using Source::Source ;
+       virtual ~SourceConstellation();
+       virtual void addSource( Source *, double, double ) ;
+
+   protected:
+       virtual void drawParallel(cv::Mat &img) ;
 };
 
 class SphericalSource : public Source {

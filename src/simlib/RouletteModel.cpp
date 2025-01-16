@@ -70,11 +70,3 @@ double RouletteModel::getMaskRadius() const {
 }
 */
 
-void RouletteModel::calculateAlphaBeta() {
-    cv::Point2d xi = getXi() ;
-
-    std::cout << "RouletteModel calculateAlphaBeta [" << xi << "] ... \n" ;
-    if ( lens == NULL ) throw NotSupported() ;
-
-    lens->calculateAlphaBeta( xi, nterms ) ;
-}

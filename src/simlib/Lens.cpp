@@ -1,6 +1,7 @@
 /* (C) 2024: Hans Georg Schaathun <georg@schaathun.net> */
 
 #include "cosmosim/Lens.h"
+#define DEBUG 1
 #include "simaux.h"
 
 cv::Point2d Lens::getXi( cv::Point2d chieta ) {

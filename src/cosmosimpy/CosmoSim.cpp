@@ -1,17 +1,17 @@
 /* (C) 2022-23: Hans Georg Schaathun <georg@schaathun.net> */
 
+
 #include "CosmoSim.h"
 
 #include <pybind11/pybind11.h>
 #include <opencv2/opencv.hpp>
 
 #ifndef DEBUG
-#define DEBUG 1
+#define DEBUG 0
 #endif
 
 #include <thread>
 
-namespace py = pybind11;
 
 CosmoSim::CosmoSim() {
    std::cout << "CosmoSim Constructor\n" ;
@@ -36,15 +36,11 @@ PsiFunctionLens *CosmoSim::getLens( int lensmode ) {
 double CosmoSim::getChi( ) { return chi ; } ;
 cv::Point2d CosmoSim::getRelativeEta( double x, double y ) {
    // Input (x,y) is the centre point $\nu$
-   cv::Point2d pt = sim->getRelativeEta( cv::Point2d( x,y )*chi ) ; 
-   if (DEBUG) std::cout << "[CosmoSim::getRelativeEta] " << pt << "\n" ;
-   return pt ;
+   return sim->getRelativeEta( cv::Point2d( x,y )*chi ) ; 
 } ;
 cv::Point2d CosmoSim::getOffset( double x, double y ) {
    // Input (x,y) is the centre point $\nu$ 
-   cv::Point2d pt = sim->getOffset( cv::Point2d( x,y )*chi ) ; 
-   if (DEBUG) std::cout << "[CosmoSim::getOffset] " << pt << "\n" ;
-   return pt ;
+   return sim->getOffset( cv::Point2d( x,y )*chi ) ; 
 } ;
 cv::Point2d CosmoSim::getNu( ) {
    return sim->getNu() ;
@@ -58,11 +54,6 @@ double CosmoSim::getAlphaXi( int m, int s ) {
    xi /= chi ;
    return getAlpha( xi.x, xi.y, m, s ) ;
 
-      if ( NULL != psilens )
-          return psilens->getAlphaXi( m, s ) ;
-      else if ( NULL != lens )
-          return lens->getAlphaXi( m, s ) ;
-      else throw NotSupported();
 }
 double CosmoSim::getBetaXi( int m, int s ) {
    // cv::Point2d xi = lens->getXi( sim->getEta() ) ;
@@ -70,11 +61,6 @@ double CosmoSim::getBetaXi( int m, int s ) {
    if (DEBUG) std::cout << "[getBetaXi] xi = " << xi << std::endl ;
    xi /= chi ;
    return getBeta( xi.x, xi.y, m, s ) ;
-      if ( NULL != psilens )
-          return psilens->getBetaXi( m, s ) ;
-      else if ( NULL != lens )
-          return lens->getBetaXi( m, s ) ;
-      else throw NotSupported();
 }
 double CosmoSim::getAlpha(
       double x, double y, int m, int s 
@@ -121,9 +107,6 @@ void CosmoSim::setFile( int key, std::string fn ) {
 std::string CosmoSim::getFile( int key ) {
     return filename[key] ;
 } 
-void CosmoSim::setSourceFile( std::string fn ) {
-    sourcefile = fn ;
-} 
 
 void CosmoSim::setCHI(double c) { chi = c/100.0 ; }
 void CosmoSim::setNterms(int c) { nterms = c ; }
@@ -162,13 +145,15 @@ void CosmoSim::setSampled(int m) {
       modelchanged = 1 ;
    }
 }
-void CosmoSim::setSourceMode(int m) { srcmode = m ; }
 void CosmoSim::setMaskMode(bool b) { maskmode = b ; }
 void CosmoSim::setBGColour(int b) { bgcolour = b ; }
 void CosmoSim::initLens() {
    if (DEBUG) std::cout << "[initLens] ellipseratio = " << ellipseratio << "\n" ;
    if ( ! modelchanged ) return ;
-   if ( sim ) delete sim ;
+   if ( sim ) {
+      std::cout << "[initLens] delete sim\n" ;
+      delete sim ;
+   }
    std::cout << "switch( lensmode )\n" ;
    switch ( lensmode ) {
        case CSIM_PSI_CLUSTER:
@@ -195,10 +180,8 @@ void CosmoSim::initLens() {
          std::cerr << "No such lens model!\n" ;
          throw NotImplemented();
    }
-   if ( sampledlens ) {
-     lens = new SampledPsiFunctionLens( psilens ) ;
-     psilens->setFile(filename[lensmode]) ;
-   }
+   std::cout << "[initLens] instantiated lens\n" ;
+
    std::cout << "switch( modelmode )\n" ;
    switch ( modelmode ) {
        case CSIM_MODEL_POINTMASS_ROULETTE:
@@ -210,7 +193,7 @@ void CosmoSim::initLens() {
        case CSIM_MODEL_POINTMASS_EXACT:
          if (DEBUG) std::cout << "Running Point Mass Lens (mode=" << modelmode << ")\n" ;
          sim = new PointMassExact( psilens ) ;
-          std::cout << "CSIM_MODEL_POINTMASS_EXACT\n" ;
+         std::cout << "CSIM_MODEL_POINTMASS_EXACT\n" ;
          break ;
        case CSIM_MODEL_RAYTRACE:
          if (DEBUG) std::cout << "Running Raytrace Lens (mode=" << modelmode << ")\n" ;
@@ -233,92 +216,80 @@ void CosmoSim::initLens() {
     std::cout  << "[initLens] returning \n" ;
     return ;
 }
+
+void CosmoSim::configLens() {
+   // Set lens parameters
+   if ( psilens != NULL  ) {
+      if ( CSIM_PSI_CLUSTER != lensmode ) {
+         psilens->setEinsteinR( einsteinR ) ;
+         psilens->setRatio( ellipseratio ) ;
+         psilens->setOrientation( orientation ) ;
+      }
+      if (DEBUG) std::cout << "[runSim] ready for initAlphasBetas\n" ;
+      psilens->initAlphasBetas() ;
+      if (DEBUG) std::cout << "[runSim] done initAlphasBetas\n" ;
+   }
+
+   std::cout << "[initLens] ready to sample lens\n" ;
+   if ( sampledlens ) {
+     lens = new SampledPsiFunctionLens( psilens ) ;
+     std::cout << "[initLens] lens sampled\n" ;
+     sim->setLens( lens ) ;
+   }
+}
 void CosmoSim::setEinsteinR(double r) { einsteinR = r ; }
 void CosmoSim::setRatio(double r) { 
    ellipseratio = r ; 
 }
 void CosmoSim::setOrientation(double r) { orientation = r ; }
 void CosmoSim::setImageSize(int sz ) { size = sz ; }
+int CosmoSim::getImageSize() { return size ; }
 void CosmoSim::setResolution(int sz ) { 
    basesize = sz ; 
 }
-void CosmoSim::setSourceParameters(double s1, double s2, double theta ) {
-   sourceSize = s1 ;
-   if ( s2 >= 0 ) sourceSize2 = s2 ;
-   if ( theta >= 0 ) sourceTheta = theta ;
-   // srcmode = mode ;
-}
-void CosmoSim::initSource( ) {
-   // Deleting the source object messes up the heap and causes
-   // subsequent instantiation to fail.  This is probably because
-   // the imgApparent (cv:;Mat) is not freed correctly.
-   // if ( src ) delete src ;
-   switch ( srcmode ) {
-       case CSIM_SOURCE_SPHERE:
-         src = new SphericalSource( size, sourceSize ) ;
-         break ;
-       case CSIM_SOURCE_ELLIPSE:
-         src = new EllipsoidSource( size, sourceSize,
-               sourceSize2, sourceTheta*PI/180 ) ;
-         break ;
-       case CSIM_SOURCE_IMAGE:
-         src = new ImageSource( size, sourcefile ) ;
-         break ;
-       case CSIM_SOURCE_TRIANGLE:
-         src = new TriangleSource( size, sourceSize, sourceTheta*PI/180 ) ;
-         break ;
-       default:
-         std::cerr << "No such source mode!\n" ;
-         throw NotImplemented();
-    }
-    if (sim) sim->setSource( src ) ;
+int CosmoSim::setSource( Source *src ) {
+    std::cout  << "[setSource]\n" ;
+    srcmode = CSIM_SOURCE_EXTERN ;
+    this->src = src ;
+    return 1 ; 
 }
 bool CosmoSim::runSim() { 
-   std::cout  << "[runLens] starting \n" ;
-   if ( running ) {
-      return false ;
-   }
-   std::cout << "[runSim]\n" ;
-   initLens() ;
+   std::cout  << "[runSim] starting \n" ;
+
+   // Configure the lens
+   initLens() ;   // initLens() implements changing lens and model modes
    if ( sim == NULL ) {
-      throw std::bad_function_call() ;
+      std::cout << "Simulator not initialised after initLens().\n" ;
+      throw std::logic_error("Simulator not initialised") ;
    }
-   initSource() ;
+   configLens() ; // configLens() implements parameter changes
+
+   // Set simulation parameters
+   sim->setCHI( chi ) ;
    sim->setBGColour( bgcolour ) ;
    sim->setNterms( nterms ) ;
    sim->setMaskRadius( maskRadius ) ;
-   std::cout << "[runSim] initialised\n" ;
    sim->setMaskMode( maskmode ) ;
-   std::cout << "[runSim] " << CSIM_PSI_CLUSTER << " - " << CSIM_MODEL_ROULETTE << "\n" ; 
-   std::cout << "[runSim] " << lensmode << " - " << modelmode << 
-      " (" << (psilens == NULL) << ")\n" ; 
-   if ( CSIM_NOPSI_ROULETTE != lensmode ) {
-      sim->setCHI( chi ) ;
-      if ( rPos < 0 ) {
+
+   // Set source position
+   if ( rPos < 0 ) {
          sim->setXY( xPos, yPos ) ;
-      } else {
+   } else {
          sim->setPolar( rPos, thetaPos ) ;
-      }
-      if ( psilens != NULL && CSIM_PSI_CLUSTER != lensmode ) {
-         psilens->setEinsteinR( einsteinR ) ;
-         psilens->setRatio( ellipseratio ) ;
-         psilens->setOrientation( orientation ) ;
-      }
-      if ( psilens != NULL ) {
-         std::cout << "[runSim] ready for initAlphasBetas\n" ;
-         psilens->initAlphasBetas() ;
-         std::cout << "[runSim] done initAlphasBetas\n" ;
-      }
    }
-   Py_BEGIN_ALLOW_THREADS
+   sim->setSource( src ) ;
+
+   // run the actal simulator
+   // Py_BEGIN_ALLOW_THREADS
    if (DEBUG) std::cout << "[runSim] thread section\n" ;
    if ( sim == NULL ) {
-      std::cout << "Simulator not initialised\n" ;
+      std::cout << "Simulator not initialised in thread section.\n" ;
       throw std::logic_error("Simulator not initialised") ;
    }
    sim->update() ;
-   if (DEBUG) std::cout << "[CosmoSim.cpp] end of thread section\n" ;
-   Py_END_ALLOW_THREADS
+   // Py_END_ALLOW_THREADS
+
+   std::cout << "[runSim] completes\n" ;
    return true ;
 }
 bool CosmoSim::moveSim( double rot, double scale ) { 
@@ -399,214 +370,3 @@ cv::Mat CosmoSim::getDistorted(bool refLinesMode, bool criticalCurvesMode ) {
    return im;
 }
 
-PYBIND11_MODULE(CosmoSimPy, m) {
-    m.doc() = "Wrapper for the CosmoSim simulator" ;
-
-    py::class_<CosmoSim>(m, "CosmoSim")
-        .def(py::init<>())
-        .def("getLens", &CosmoSim::getLens)
-        .def("setLensMode", &CosmoSim::setLensMode)
-        .def("setModelMode", &CosmoSim::setModelMode)
-        .def("setSampled", &CosmoSim::setSampled)
-        .def("setSourceMode", &CosmoSim::setSourceMode)
-        .def("setEinsteinR", &CosmoSim::setEinsteinR)
-        .def("setRatio", &CosmoSim::setRatio)
-        .def("setOrientation", &CosmoSim::setOrientation)
-        .def("setNterms", &CosmoSim::setNterms)
-        .def("setMaskRadius", &CosmoSim::setMaskRadius)
-        .def("setCHI", &CosmoSim::setCHI)
-        .def("setSourceParameters", &CosmoSim::setSourceParameters)
-        .def("setXY", &CosmoSim::setXY)
-        .def("setPolar", &CosmoSim::setPolar)
-        .def("getActual", &CosmoSim::getActual)
-        .def("getApparent", &CosmoSim::getSource)
-        .def("getDistorted", &CosmoSim::getDistorted)
-        .def("runSim", &CosmoSim::runSim)
-        .def("moveSim", &CosmoSim::moveSim)
-        .def("diagnostics", &CosmoSim::diagnostics)
-        .def("maskImage", &CosmoSim::maskImage)
-        .def("showMask", &CosmoSim::showMask)
-        .def("setMaskMode", &CosmoSim::setMaskMode)
-        .def("setImageSize", &CosmoSim::setImageSize)
-        .def("setResolution", &CosmoSim::setResolution)
-        .def("setBGColour", &CosmoSim::setBGColour)
-        .def("setFile", &CosmoSim::setFile)
-        .def("getFile", &CosmoSim::getFile)
-        .def("setSourceFile", &CosmoSim::setSourceFile)
-        .def("getAlpha", &CosmoSim::getAlpha)
-        .def("getBeta", &CosmoSim::getBeta)
-        .def("getAlphaXi", &CosmoSim::getAlphaXi)
-        .def("getBetaXi", &CosmoSim::getBetaXi)
-        .def("getChi", &CosmoSim::getChi)
-        .def("getOffset", &CosmoSim::getOffset)
-        .def("getNu", &CosmoSim::getNu)
-        .def("getRelativeEta", &CosmoSim::getRelativeEta)
-        .def("setLens", &CosmoSim::setLens)
-        ;
-
-    py::class_<Lens>(m, "Lens")
-        .def(py::init<>())
-        .def("calculateAlphaBeta", &Lens::calculateAlphaBeta)
-        .def("getAlphaXi", &Lens::getAlphaXi)
-        .def("getBetaXi", &Lens::getBetaXi)
-        .def("getAlpha", &Lens::getAlpha)
-        .def("getBeta", &Lens::getBeta)
-        .def("getXi", &Lens::getXi)
-        .def("psiValue", &Lens::psiValue)
-        .def("psiXvalue", &Lens::psiXvalue)
-        .def("psiYvalue", &Lens::psiYvalue)
-        .def("criticalXi", &Lens::criticalXi)
-        .def("caustic", &Lens::caustic)
-        ;
-    py::class_<PsiFunctionLens,Lens>(m, "PsiFunctionLens")
-        .def(py::init<>())
-        .def("calculateAlphaBeta", &PsiFunctionLens::calculateAlphaBeta)
-        .def("getAlphaXi", &PsiFunctionLens::getAlphaXi)
-        .def("getBetaXi", &PsiFunctionLens::getBetaXi)
-        .def("getAlpha", &PsiFunctionLens::getAlpha)
-        .def("getBeta", &PsiFunctionLens::getBeta)
-        .def("setEinsteinR", &PsiFunctionLens::setEinsteinR)
-        .def("setOrientation", &SIE::setOrientation)
-        .def("setRatio", &SIE::setRatio)
-        .def("setFile", &PsiFunctionLens::setFile)
-        ;
-    py::class_<SIS,PsiFunctionLens>(m, "SIS")
-        .def(py::init<>())
-        .def("psiValue", &SIS::psiValue)
-        .def("psiXvalue", &SIS::psiXvalue)
-        .def("psiYvalue", &SIS::psiYvalue)
-        .def("getXi", &ClusterLens::getXi)
-        ;
-    py::class_<SIE,PsiFunctionLens>(m, "SIE")
-        .def(py::init<>())
-        .def("psiValue", &SIE::psiValue)
-        .def("psiXvalue", &SIE::psiXvalue)
-        .def("psiYvalue", &SIE::psiYvalue)
-        .def("getXi", &ClusterLens::getXi)
-        ;
-    py::class_<PointMass,PsiFunctionLens>(m, "PointMass")
-        .def(py::init<>())
-        .def("psiValue", &PointMass::psiValue)
-        .def("psiXvalue", &PointMass::psiXvalue)
-        .def("psiYvalue", &PointMass::psiYvalue)
-        .def("getXi", &PointMass::getXi)
-        ;
-    py::class_<ClusterLens,PsiFunctionLens>(m, "ClusterLens")
-        .def(py::init<>())
-        .def("addLens", &ClusterLens::addLens)
-        .def("calculateAlphaBeta", &ClusterLens::calculateAlphaBeta)
-        .def("psiValue", &ClusterLens::psiValue)
-        .def("psiXvalue", &ClusterLens::psiXvalue)
-        .def("psiYvalue", &ClusterLens::psiYvalue)
-        ;
-
-    py::class_<RouletteSim>(m, "RouletteSim")
-        .def(py::init<>())
-        .def("setSourceMode", &RouletteSim::setSourceMode)
-        .def("setNterms", &RouletteSim::setNterms)
-        .def("setMaskRadius", &RouletteSim::setMaskRadius)
-        .def("setSourceParameters", &RouletteSim::setSourceParameters)
-        .def("getActual", &RouletteSim::getActual)
-        .def("getApparent", &RouletteSim::getSource)
-        .def("getDistorted", &RouletteSim::getDistorted)
-        .def("runSim", &RouletteSim::runSim)
-        .def("initSim", &RouletteSim::initSim)
-        .def("diagnostics", &RouletteSim::diagnostics)
-        .def("maskImage", &RouletteSim::maskImage)
-        .def("showMask", &RouletteSim::showMask)
-        .def("setMaskMode", &RouletteSim::setMaskMode)
-        .def("setImageSize", &RouletteSim::setImageSize)
-        .def("setResolution", &RouletteSim::setResolution)
-        .def("setBGColour", &RouletteSim::setBGColour)
-        .def("setAlphaXi", &RouletteSim::setAlphaXi)
-        .def("setBetaXi", &RouletteSim::setBetaXi) ;
-
-    pybind11::enum_<PsiSpec>(m, "PsiSpec") 
-       .value( "SIE", CSIM_PSI_SIE )
-       .value( "SIS", CSIM_PSI_SIS )
-       .value( "Cluster", CSIM_PSI_CLUSTER )
-       .value( "PM", CSIM_NOPSI_PM ) 
-       .value( "Roulette", CSIM_NOPSI_ROULETTE ) 
-       .value( "NoPsi", CSIM_NOPSI ) ;
-    pybind11::enum_<SourceSpec>(m, "SourceSpec") 
-       .value( "Sphere", CSIM_SOURCE_SPHERE )
-       .value( "Ellipse", CSIM_SOURCE_ELLIPSE )
-       .value( "Image", CSIM_SOURCE_IMAGE )
-       .value( "Triangle", CSIM_SOURCE_TRIANGLE ) ;
-    pybind11::enum_<ModelSpec>(m, "ModelSpec") 
-       .value( "Raytrace", CSIM_MODEL_RAYTRACE )
-       .value( "Roulette", CSIM_MODEL_ROULETTE  )
-       .value( "RouletteRegenerator", CSIM_MODEL_ROULETTE_REGEN  )
-       .value( "PointMassExact", CSIM_MODEL_POINTMASS_EXACT )
-       .value( "PointMassRoulettes", CSIM_MODEL_POINTMASS_ROULETTE ) 
-       .value( "NoModel", CSIM_NOMODEL  )  ;
-
-    // cv::Mat binding from https://alexsm.com/pybind11-buffer-protocol-opencv-to-numpy/
-    pybind11::class_<cv::Mat>(m, "Image", pybind11::buffer_protocol())
-        .def_buffer([](cv::Mat& im) -> pybind11::buffer_info {
-              int t = im.type() ;
-              if ( (t&CV_64F) == CV_64F ) {
-                if (DEBUG) std::cout << "[CosmoSimPy] CV_64F\n" ;
-                return pybind11::buffer_info(
-                    // Pointer to buffer
-                    im.data,
-                    // Size of one scalar
-                    sizeof(double),
-                    // Python struct-style format descriptor
-                    pybind11::format_descriptor<double>::format(),
-                    // Number of dimensions
-                    3,
-                        // Buffer dimensions
-                    { im.rows, im.cols, im.channels() },
-                    // Strides (in bytes) for each index
-                    {
-                        sizeof(double) * im.channels() * im.cols,
-                        sizeof(double) * im.channels(),
-                        sizeof(unsigned char)
-                    }
-                    );
-              } else { // default is 8bit integer
-                return pybind11::buffer_info(
-                    // Pointer to buffer
-                    im.data,
-                    // Size of one scalar
-                    sizeof(unsigned char),
-                    // Python struct-style format descriptor
-                    pybind11::format_descriptor<unsigned char>::format(),
-                    // Number of dimensions
-                    3,
-                        // Buffer dimensions
-                    { im.rows, im.cols, im.channels() },
-                    // Strides (in bytes) for each index
-                    {
-                        sizeof(unsigned char) * im.channels() * im.cols,
-                        sizeof(unsigned char) * im.channels(),
-                        sizeof(unsigned char)
-                    }
-                 );
-              } ;
-        });
-    // Note.  The cv::Mat object returned needs to by wrapped in python:
-    // `np.array(im, copy=False)` where `im` is the `Mat` object.
-
-    pybind11::class_<cv::Point2d>(m, "Point", pybind11::buffer_protocol())
-        .def_buffer([](cv::Point2d& pt) -> pybind11::buffer_info {
-                return pybind11::buffer_info(
-                    // Pointer to buffer
-                    & pt,
-                    // Size of one scalar
-                    sizeof(double),
-                    // Python struct-style format descriptor
-                    pybind11::format_descriptor<double>::format(),
-                    // Number of dimensions
-                    1,
-                        // Buffer dimensions
-                    { 2 },
-                    // Strides (in bytes) for each index
-                    {
-                        sizeof(double)
-                    }
-                 );
-        });
-
-}
