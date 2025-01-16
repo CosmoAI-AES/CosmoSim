@@ -53,7 +53,7 @@ def setParameters(sim,row):
     if row.get("nterms",None) != None:
         sim.setNterms( row["nterms"] )
 
-def makeSingle(sim,param,name=None,row=None,outstream=None):
+def makeSingle(sim,param,name=None,row=None,outstream=None,outcols=None):
     """Process a single parameter set, given either as a pandas row or
     just as args parsed from the command line.
     """
@@ -257,7 +257,7 @@ def main(args):
            headers += "\n"
            outstream.write(headers)
         for index,row in frame.iterrows():
-            makeSingle(sim,param,row=row,outstream=outstream)
+            makeSingle(sim,param,row=row,outstream=outstream,outcols=outcols)
     else:
         makeSingle(sim,param)
     print( "ready to close simulator" )

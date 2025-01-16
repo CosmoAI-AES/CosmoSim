@@ -5,6 +5,7 @@
 
 ### Fixed
 
++ Fixed roulette CSV output from datagen.py
 + Fixed bug in PointMass lens.  It now works correctly with Raytrace.
   (Minor visible discrepancy against PointMassExact, probably numerical error.)
 
