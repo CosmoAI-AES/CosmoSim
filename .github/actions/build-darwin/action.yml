@@ -21,7 +21,7 @@ runs:
       - name: Install prerequisites
         shell: bash
         run: |
-          pip3 install -r requirements.txt
+          pip3 install -r requirements-build.txt
           conan profile new default --detect
           conan profile update settings.compiler.version=${{ inputs.compiler-version }} default
           # brew install gettext
@@ -50,6 +50,6 @@ runs:
       - name: Test
         shell: bash
         run: |
-          pip3 install -r requirements.txt
+          pip3 install -r requirements-build.txt
           cp build/lib/CosmoSimPy.*.so CosmoSimPy/CosmoSim
           python3 CosmoSimPy/datagen.py
