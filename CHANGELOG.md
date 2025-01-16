@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+## [2.5.2] - 2025-01-16
+
 ### Fixed
 
 + Fixed roulette CSV output from datagen.py
