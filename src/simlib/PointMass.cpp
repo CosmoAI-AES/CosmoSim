@@ -7,16 +7,19 @@
 #include "simaux.h"
 
 double PointMass::psiValue( double x, double y ) const {
-   double r = sqrt( x*x + y*y ) ;
-   return (einsteinR*einsteinR)*log(r/einsteinR) ;
+   double s = einsteinR*einsteinR ;
+   s *= log( sqrt( x*x + y*y )/einsteinR ) ;
+   return s ;
 }
 double PointMass::psiXvalue( double x, double y ) const {
-   double r = sqrt( x*x + y*y ) ;
-   return (einsteinR*einsteinR)*(einsteinR/r)*(x/r) ;
+   double s = einsteinR*einsteinR ;
+   s /= x*x + y*y ;
+   return s*x ;
 }
 double PointMass::psiYvalue( double x, double y ) const {
-   double r = sqrt( x*x + y*y ) ;
-   return (einsteinR*einsteinR)*(einsteinR/r)*(y/r) ;
+   double s = einsteinR*einsteinR ;
+   s /= x*x + y*y ;
+   return s*y ;
 }
 
 cv::Point2d PointMass::getXi( cv::Point2d chieta ) {

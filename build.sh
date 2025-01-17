@@ -1,3 +1,4 @@
+#! /bin/sh
 # (C) 2022: Hans Georg Schaathun <georg@schaathun.net> 
 
 # Build script

@@ -3,6 +3,14 @@
 
 ## Unreleased
 
+## [2.5.2] - 2025-01-16
+
+### Fixed
+
++ Fixed roulette CSV output from datagen.py
++ Fixed bug in PointMass lens.  It now works correctly with Raytrace.
+  (Minor visible discrepancy against PointMassExact, probably numerical error.)
+
 ## [2.5.1] - 2024-10-27
 
 ### Added
