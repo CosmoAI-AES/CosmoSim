@@ -67,7 +67,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-12-large]
+        os: [macos-14]
         compiler-version: [ '15.0' ]
         python-version: [ '3.11','3.12' ]
     steps:
