@@ -462,3 +462,5 @@ log
 pythonenv
 
 *.raw
+*.ods
+/*.csv
