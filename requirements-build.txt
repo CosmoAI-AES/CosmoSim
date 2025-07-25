@@ -4,4 +4,4 @@ matplotlib
 opencv-python
 pandas 
 pybind11 
-conan==1.66
+conan
