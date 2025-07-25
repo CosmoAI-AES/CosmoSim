@@ -21,7 +21,7 @@ runs:
       - name: Install prerequisites
         shell: bash
         run: |
-          pip3 install conan==1.64
+          pip3 install -r requirements-build.txt
       - name: Run conan
         shell: bash
         run: |
