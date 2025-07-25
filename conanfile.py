@@ -6,7 +6,7 @@ class CosmoSimConan(ConanFile):
     license = "MIT"
 
     settings = "os", "compiler", "build_type", "arch"
-    generators = "CMakeTOolchain", "CMakeDeps"
+    generators = "CMakeToolchain", "CMakeDeps"
 
     def requirements(self):
         self.requires( "symengine/0.11.2" )
