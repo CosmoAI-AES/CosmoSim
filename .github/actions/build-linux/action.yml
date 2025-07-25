@@ -67,8 +67,6 @@ runs:
       - name: Config Conan
         shell: bash
         run: |
-          cp conanfile-github.py  conanfile.py
-          cp CMakeLists-github.txt  CMakeLists.txt
           ( cd src ; cp CMakeLists-github.txt  CMakeLists.txt )
           conan profile detect 
           conan profile update settings.compiler.libcxx=libstdc++11 default
