@@ -63,7 +63,7 @@ runs:
           libxcb-res0-dev \
           python3-opencv \
           libopencv-dev 
-          pip3 install -r requirements.txt
+          pip3 install -r requirements-build.txt
       - name: Config Conan
         shell: bash
         run: |
