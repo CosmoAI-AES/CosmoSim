@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04]
+        os: [ubuntu-22.04,ubuntu-latest]
         compiler-version: [10]
         python-version: ['3.11']
 
@@ -41,7 +41,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04]
+        os: [ubuntu-22.04,ubuntu-latest]
         test-dir: [ 'exactpm', 'raytrace', 'roulette', 'roulettepm',
           'new-roulette', 'new-raytrace',
           'sampled-roulette', 'sampled-raytrace',

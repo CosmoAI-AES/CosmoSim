@@ -464,3 +464,4 @@ pythonenv
 *.raw
 *.ods
 /*.csv
+/*.html

@@ -1,26 +1,17 @@
 
-from conans import ConanFile, CMake, tools
-from conans.tools import OSInfo
-
+from conan import ConanFile
 
 class CosmoSimConan(ConanFile):
     name = "CosmoSim"
     license = "MIT"
 
     settings = "os", "compiler", "build_type", "arch"
-    generators = "cmake"
-    requires = (
-        "symengine/0.11.2",
-        "opencv/4.5.5",
-        "xz_utils/5.4.0",
-        "zlib/1.2.13"
-    )
-    def configure(self):
-        super().configure()
-        self.options["opencv"].with_ffmpeg = False
-
+    generators = "CMakeTOolchain", "CMakeDeps"
 
     def requirements(self):
-        info = OSInfo()
-        if info.is_linux:
-            self.requires("wayland/1.21.0")
+        self.requires( "symengine/0.11.2" )
+        self.requires( "opencv/4.11.0" )
+        self.requires( "xz_utils/5.4.5" )
+        self.requires( "zlib/1.2.13" )
+        if self.settings.os == "Linux":
+            self.requires("wayland/1.22.0")

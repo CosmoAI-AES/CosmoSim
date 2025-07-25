@@ -3,7 +3,7 @@ name: Trial Build
 
 on: 
    push:
-     branches: [main, master, develop]
+     branches: [main, master, develop, build/conan2]
 
 jobs:
   linux:

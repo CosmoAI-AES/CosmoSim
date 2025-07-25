@@ -1,0 +1,5 @@
+```bash
+sudo apt-get install libxcb-glx0-dev libxcb-cursor-dev libxcb-dri2-0-dev libxcb-present-dev libxcb-composite0-dev libxcb-ewmh-dev libxcb-res0-dev
+```
+
+
