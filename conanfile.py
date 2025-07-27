@@ -1,5 +1,7 @@
 
 from conan import ConanFile
+from conan.tools.cmake import cmake_layout
+
 
 class CosmoSimConan(ConanFile):
     name = "CosmoSim"
@@ -15,3 +17,7 @@ class CosmoSimConan(ConanFile):
         self.requires( "zlib/1.2.13" )
         if self.settings.os == "Linux":
             self.requires("wayland/1.22.0")
+
+    def layout(self):
+        cmake_layout(self)
+

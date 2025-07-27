@@ -1,5 +1,5 @@
 #! /bin/sh
-# (C) 2022: Hans Georg Schaathun <georg@schaathun.net> 
+# (C) 2025: Hans Georg Schaathun <georg@schaathun.net> 
 
 # Build script
 
@@ -7,18 +7,13 @@
 
 rm -rf build
 
-## if /bin/true
-## then
-   conan install . -s build_type=Release -if build -b missing
-   # conan install . -if build
-   cmake . -B build -DCMAKE_BUILD_TYPE=Release
-## else
-##    cmake . -B build -DCMAKE_BUILD_TYPE=Release  \
-##        -DCMAKE_TOOLCHAIN_FILE="$HOME/git/cosmoai/vcpkg/scripts/buildsystems/vcpkg.cmake" \
-##        -DCOSMOSIM_USE_CONAN=OFF
-## fi
+conan install . --output-folder=build --build=missing
 
-cmake --build build || exit 2
 
-mkdir -p bin lib 
-cmake --install build --prefix .
+cd build
+cmake .. -DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
+
+cmake --build .
+
+# mkdir -p bin lib 
+# cmake --install build --prefix .

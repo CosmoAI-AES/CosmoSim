@@ -465,3 +465,4 @@ pythonenv
 *.ods
 /*.csv
 /*.html
+/CMakeUserPresets.json
