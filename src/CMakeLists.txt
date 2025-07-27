@@ -29,13 +29,8 @@ set(SimLibFiles
 
 add_library(SimLib ${SimLibFiles})
 set_target_properties(SimLib PROPERTIES POSITION_INDEPENDENT_CODE ON)
-target_include_directories(SimLib PUBLIC "${CMAKE_SOURCE_DIR}/include" ${pybind11_INCLUDE_DIRS})
-if (${host} MATCHES "idun.*")
-    target_link_libraries(SimLib PUBLIC ${OpenCV_LIBS} ${LLIBS})
-else ()
-    target_link_libraries(SimLib PUBLIC ${CONAN_LIBS})
-endif ()
-
+target_include_directories(SimLib PUBLIC BEFORE "${CMAKE_SOURCE_DIR}/include" ${pybind11_INCLUDE_DIRS})
+target_link_libraries(SimLib ZLIB::ZLIB ${OpenCV_LIBS} symengine)
 
 # Python Bindings
 pybind11_add_module(CosmoSimPy MODULE cosmosimpy/bindings.cpp cosmosimpy/CosmoSim.cpp )

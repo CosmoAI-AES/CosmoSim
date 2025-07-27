@@ -7,13 +7,11 @@ cmake_minimum_required(VERSION 3.23)
 project(CosmoAi LANGUAGES CXX VERSION 1.1.0)
 
 message("Using conan ")
-set(LLIBS "symengine;gmp;mpfr;pthread")
 
 find_package(symengine CONFIG REQUIRED)
 find_package(OpenCV CONFIG REQUIRED)
-find_package( Python COMPONENTS Development Interpreter )
+find_package(Python COMPONENTS Development Interpreter)
 
-message("LLIBS=${LLIBS}")
 message("OpenCV_LIBS=${OpenCV_LIBS}")
 
 option(COSMOSIM_USE_CONAN "Use conan" ON)
