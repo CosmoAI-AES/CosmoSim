@@ -72,7 +72,7 @@ runs:
       - name: Run conan
         shell: bash
         run: |
-          conan install . -s build_type=Release -if build -b missing
+          conan install . --output-folder=build --build=missing
       - name: Configure and build
         shell: bash
         run: |
