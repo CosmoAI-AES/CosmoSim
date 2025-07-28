@@ -12,11 +12,12 @@ cd /CosmoSim
 
 rm -rf build
 
-conan install . --output-folder=build --build=missing
+conan profile detect
+conan install . --output-folder=build --build=missing --profile:build=conan2/linux-profile
 
 
-( cd build ;
-  cmake .. -DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
+( cd build && \
+  cmake .. -DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release && \
   cmake --build .
 )
 

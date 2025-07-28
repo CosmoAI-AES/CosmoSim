@@ -58,52 +58,35 @@ The following instructions are Linux specific.
 
 ### Using conan
 
-To install using conan, you can use the build script included,
-We require version 1.64.  The setup is not compatible with conan 2.x.
-On some architectures version 1.59 works.
-You may also have to create a default profile.
-(See [Conan Tutorial](https://docs.conan.io/en/latest/getting_started.html)
-for further information.)
+To install using conan, you can use included `build.sh` script,
+which requires the setup of a virtual environment.
 ```sh
+python -m venv pythonenv
+. pythonenv/bin/activate
 pip3 install -r requirements-build.txt
-conan profile new default --detect
+conan profile detect
 sh build.sh
 ```
-During the process, it will tell you about any missing libraries that have to be installed on the system level.  
+Obviously, when rebuilding, only the last step has to be repeated.
 
-
-If you want to save time on trial and error, you may install the following first
-(Debian).
+Dependencies may vary between operating systems and distributions.
+To build on a clean Ubuntu 24.04 (docker), I required the following:
 ```sh
-sudo apt-get install libgtk2.0-dev libva-dev libx11-xcb-dev libfontenc-dev libxaw7-dev libxkbfile-dev libxmuu-dev libxpm-dev libxres-dev libxtst-dev libxvmc-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev libxcb-dri3-dev libxcb-util-dev libxcb-util0-dev libvdpau-dev
-sudo apt-get install libxcb-glx0-dev libxcb-cursor-dev libxcb-dri2-0-dev \
-                     libxcb-present-dev libxcb-composite0-dev libxcb-ewmh-dev \
-		     libxcb-res0-dev \
-		     libx11-dev libx11-xcb-dev libfontenc-dev libice-dev \
-		     libsm-dev libxau-dev libxaw7-dev
+RUN apt-get install -y build-essential cmake pkg-config \
+    libxcb-glx0-dev libxcb-cursor-dev libxcb-dri2-0-dev \
+    libxcb-present-dev libxcb-composite0-dev libxcb-ewmh-dev \
+    libxcb-res0-dev \
+    libx11-dev libx11-xcb-dev libfontenc-dev libice-dev \
+    libsm-dev libxau-dev libxaw7-dev \
+    libva-dev libvdpau-dev xkb-data \
+    libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev \
+    libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev \
+    libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmuu-dev \
+    libxrandr-dev libxrender-dev libxres-dev libxss-dev libxtst-dev libxv-dev \
+    libxxf86vm-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-keysyms1-dev \
+    libxcb-xinerama0-dev libxcb-dri3-dev uuid-dev libxcb-dri3-dev \
+    libxcb-util-dev
 ```
-
-The setup with conan currently works linux with superuser priviliges as of
-24-04-08.  Superuser privileges are required to install some dependencies
-using the standard package managers.
-
-### Using vcpkg
-
-As an alternative to conan, [vcpkg](https://vcpkg.io/en/index.html) may be used.
-To use vcpkg, pass
-```
--DCMAKE_TOOLCHAIN_FILE="[path to vcpkg]/scripts/buildsystems/vcpkg.cmake"
--DCOSMOSIM_USE_CONAN=OFF
-```
-to CMake, e.g.
-```
-cmake . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake  -DCOSMOSIM_USE_CONAN=OFF 
-```
-
-As of 24-04-08 this does not work on linux.  It seems to require a non-existent
-package.
-
-> Note: On Windows you need to copy all .dll files from `/lib` into `CosmoSimPy/CosmoSim` in order to get the Python code to work.
 
 ### Testing
 
