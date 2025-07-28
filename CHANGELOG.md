@@ -3,6 +3,12 @@
 
 ## Unreleased
 
+## [2.5.3] - 2025-08-XX
+
+### Added
+
++ PyPI packing for installation with pip.
+
 ## [2.5.2] - 2025-01-16
 
 ### Fixed

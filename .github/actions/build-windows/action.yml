@@ -27,7 +27,7 @@ runs:
         run: |
           conan profile detect --force
           conan profile show
-          conan install . --output-folder=build --build=missing --profile:build conan2/windows-profile --profile:host conan2/windows-profile
+          conan install . --output-folder=build --build=missing
       - name: Configure and build
         shell: bash
         run: |

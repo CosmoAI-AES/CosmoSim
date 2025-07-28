@@ -31,14 +31,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest]
-        compiler-version: [ 12 ]
         python-version: ['3.13']
     steps:
       - uses: actions/checkout@v4
       - name: Build Project
         uses: ./.github/actions/build-windows
         with:
-           compiler-version: ${{ matrix.compiler-version }}
            python-version: ${{ matrix.python-version }}
 
   macos:
