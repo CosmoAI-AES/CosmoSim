@@ -15,11 +15,45 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04,ubuntu-latest]
-        python-version: ['3.11','3.12','3.13']
+        os: [ubuntu-latest]
+        python-version: ['3.12','3.13']
+        compiler-version: [13]
     steps:
       - uses: actions/checkout@v4
       - name: Build Project
         uses: ./.github/actions/build-linux
         with:
            python-version: ${{ matrix.python-version }}
+  windows:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest]
+        compiler_version: [ 13 ]
+        python-version: ['3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Project
+        uses: ./.github/actions/build-windows
+        with:
+           compiler-version: ${{ matrix.compiler-version }}
+           python-version: ${{ matrix.python-version }}
+
+  macos:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-14]
+        compiler-version: [ '15.0' ]
+        python-version: [ '3.13' ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Project
+        uses: ./.github/actions/build-darwin
+        with:
+           python-version: ${{ matrix.python-version }}
+           compiler-version: ${{ matrix.compiler-version }}
