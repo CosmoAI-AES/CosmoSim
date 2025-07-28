@@ -1,2 +1,7 @@
-This directory is created to test the build on Ubuntu 24.04, which 
-we want to use with github workflows.
+This docker image was created to test the build on Ubuntu 24.04, 
+to prepare for running it in a github runner.
+
+It is retained as a build example FIW.
+
+In the end, it differs little from the regular build.sh script
+in the root of the repo.
