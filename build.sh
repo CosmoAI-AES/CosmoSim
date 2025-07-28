@@ -10,7 +10,7 @@
 
 rm -rf build
 
-conan install . --output-folder=build --build=missing --profile:build=conan2/linux-profile --profile:host=conan2/linux-profile
+conan install . --output-folder=build --build=missing 
 
 
 ( cd build ;
