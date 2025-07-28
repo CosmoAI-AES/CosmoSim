@@ -1,0 +1,2 @@
+This Dockerfile is old.  It is made to run the GUI through docker, but
+has not been updated to build with conan2.
