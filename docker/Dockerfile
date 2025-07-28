@@ -5,7 +5,7 @@ FROM ubuntu:24.04
 # Python and Pip
 RUN apt-get update && apt-get install -y \
     python3 python3-pip python3-venv python-is-python3 
-RUN apt-get install -y vim build-essential
+RUN apt-get install -y vim build-essential git
 RUN apt-get install -y \
     libxcb-glx0-dev libxcb-cursor-dev libxcb-dri2-0-dev \
     libxcb-present-dev libxcb-composite0-dev libxcb-ewmh-dev \
@@ -21,3 +21,8 @@ COPY ./venv.sh ./
 RUN sh venv.sh
 
 WORKDIR /
+RUN git clone -b develop https://github.com/CosmoAI-AES/CosmoSim.git
+
+WORKDIR /CosmoSim
+RUN sh setup/build.sh
+
