@@ -1,8 +1,9 @@
 These are conan profiles, used for testing and debugging of the
 build environments.  
 
-They are no longer used in the build scripts.  The default profile
-works fine on my own boxen, and other boxes may need other profiles.
-
-They are being tested with github workflows, and may or may not be needed
-in the end.
++ They are no longer used in the scripts.  The default profile
+  works fine on my own boxen, and other boxes may need other profiles.
++ They are no longer used for linux or macos targets in the github 
+  workflows.
++ The windows workflow does not currently work, and may require these
+  profiles.
