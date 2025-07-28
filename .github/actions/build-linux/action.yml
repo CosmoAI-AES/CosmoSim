@@ -67,7 +67,6 @@ runs:
       - name: Config Conan
         shell: bash
         run: |
-          ( cd src ; cp CMakeLists-github.txt  CMakeLists.txt )
           conan profile detect 
       - name: Run conan
         shell: bash
