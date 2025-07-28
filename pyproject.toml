@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "CosmoSimPy"
+version = "2.5.3"
+authors = [
+  { name='Hans Georg Schaathun', email="georg+github@schaathun.net" },
+]
+description = 'Simulator of Gravitational Lenses'
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: C++",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Researchers",
+    "Topic :: Physics :: Csomology",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+license = "MIT"
+license-files = ["LICENSE"]
+keywords=[ 'cosmology', 'gravitational lensing', "simulation" ]
+
+[project.urls]
+Homepage = "https://github.com/CosmoAI-AES/CosmoSim"
+Issues = "https://github.com/CosmoAI-AES/CosmoSim/issues"
