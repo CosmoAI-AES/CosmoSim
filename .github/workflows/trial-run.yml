@@ -10,8 +10,8 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     env:
-      CC: gcc-${{ matrix.compiler_version }}
-      CXX: g++-${{ matrix.compiler_version }}
+      CC: gcc-${{ matrix.compiler-version }}
+      CXX: g++-${{ matrix.compiler-version }}
     strategy:
       fail-fast: false
       matrix:
@@ -31,7 +31,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest]
-        compiler_version: [ 13 ]
+        compiler-version: [ 13 ]
         python-version: ['3.13']
     steps:
       - uses: actions/checkout@v4
