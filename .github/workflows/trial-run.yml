@@ -31,7 +31,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest]
-        compiler-version: [ 13 ]
+        compiler-version: [ 12 ]
         python-version: ['3.13']
     steps:
       - uses: actions/checkout@v4
