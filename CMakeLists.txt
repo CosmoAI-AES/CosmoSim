@@ -8,7 +8,7 @@ project(CosmoAi LANGUAGES CXX VERSION 1.1.0)
 
 message("Using conan ")
 
-find_package(symengine CONFIG REQUIRED)
+find_package(SymEngine CONFIG REQUIRED)
 find_package(OpenCV CONFIG REQUIRED)
 find_package(Python COMPONENTS Development Interpreter)
 
