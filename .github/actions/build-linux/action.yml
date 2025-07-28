@@ -40,15 +40,13 @@ runs:
                libxcb-xinerama0-dev libxcb-dri3-dev uuid-dev libxcb-dri3-dev \
                libxcb-util-dev
           pip3 install -r requirements-build.txt
-      - name: Config Conan
+      - name: Run conan
         shell: bash
         run: |
           conan profile detect --force
           conan profile show
-      - name: Run conan
-        shell: bash
-        run: |
-          conan install . --output-folder=build --build=missing --profile:build conan2/linux-profile --profile:host conan2/linux-profile
+          conan install . --output-folder=build --build=missing 
+          # conan install . --output-folder=build --build=missing --profile:build conan2/linux-profile --profile:host conan2/linux-profile
       - name: Configure and build
         shell: bash
         run: |
