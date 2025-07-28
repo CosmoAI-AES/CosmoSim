@@ -76,6 +76,11 @@ If you want to save time on trial and error, you may install the following first
 (Debian).
 ```sh
 sudo apt-get install libgtk2.0-dev libva-dev libx11-xcb-dev libfontenc-dev libxaw7-dev libxkbfile-dev libxmuu-dev libxpm-dev libxres-dev libxtst-dev libxvmc-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev libxcb-dri3-dev libxcb-util-dev libxcb-util0-dev libvdpau-dev
+sudo apt-get install libxcb-glx0-dev libxcb-cursor-dev libxcb-dri2-0-dev \
+                     libxcb-present-dev libxcb-composite0-dev libxcb-ewmh-dev \
+		     libxcb-res0-dev \
+		     libx11-dev libx11-xcb-dev libfontenc-dev libice-dev \
+		     libsm-dev libxau-dev libxaw7-dev
 ```
 
 The setup with conan currently works linux with superuser priviliges as of
