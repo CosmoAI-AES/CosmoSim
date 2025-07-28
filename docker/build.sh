@@ -13,7 +13,7 @@ cd /CosmoSim
 rm -rf build
 
 conan profile detect
-conan install . --output-folder=build --build=missing --profile:build=conan2/linux-profile
+conan install . --output-folder=build --build=missing --profile:build=conan2/linux-profile --profile:host=conan2/linux-profile
 
 
 ( cd build && \
