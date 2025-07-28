@@ -67,11 +67,12 @@ runs:
       - name: Config Conan
         shell: bash
         run: |
-          conan profile detect 
+          conan profile detect  --force
+          conan profile show
       - name: Run conan
         shell: bash
         run: |
-          conan install . --output-folder=build --build=missing
+          conan install . --output-folder=build --build=missing --profile conan2/linux-profile
       - name: Configure and build
         shell: bash
         run: |
