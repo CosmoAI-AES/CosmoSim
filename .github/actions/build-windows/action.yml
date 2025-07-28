@@ -3,9 +3,11 @@ name: 'Windows Build'
 description: Build the project on Windows
 
 inputs:
+  compiler-version:
+    default: 12
   python-version:
     required: false
-    default: '3.10'
+    default: '3.13'
 
 runs:
     using: "composite"
@@ -23,7 +25,9 @@ runs:
       - name: Run conan
         shell: bash
         run: |
-          conan install . --output-folder=build --build=missing 
+          conan profile detect --force
+          conan profile show
+          conan install . --output-folder=build --build=missing --profile:build conan2/windows-profile --profile:host conan2/windows-profile
       - name: Configure and build
         shell: bash
         run: |
