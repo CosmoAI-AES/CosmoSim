@@ -1,0 +1,23 @@
+FROM ubuntu:24.04
+
+# Update package manager (apt-get) 
+# and install (with the yes flag `-y`)
+# Python and Pip
+RUN apt-get update && apt-get install -y \
+    python3 python3-pip python3-venv python-is-python3 
+RUN apt-get install -y vim build-essential
+RUN apt-get install -y \
+    libxcb-glx0-dev libxcb-cursor-dev libxcb-dri2-0-dev \
+    libxcb-present-dev libxcb-composite0-dev libxcb-ewmh-dev \
+    libxcb-res0-dev \
+    libx11-dev libx11-xcb-dev libfontenc-dev libice-dev \
+    libsm-dev libxau-dev libxaw7-dev \
+    libva-dev
+
+RUN mkdir setup
+WORKDIR /setup
+COPY ./requirements-build.txt ./
+COPY ./venv.sh ./
+RUN sh venv.sh
+
+WORKDIR /
