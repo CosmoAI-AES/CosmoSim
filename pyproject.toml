@@ -1,9 +1,16 @@
 [build-system]
-requires = ["hatchling >= 1.26"]
-build-backend = "hatchling.build"
+requires = [
+    "conan>=2.0.0",
+    "setuptools",
+    "scikit-build>=0.17.3",
+    "skbuild-conan",
+    "cmake>=3.23",
+    "ninja",
+]
+build-backend = "setuptools.build_meta"
 
 [project]
-name = "CosmoSimPy"
+name = "CosmoSim"
 version = "2.5.3"
 authors = [
   { name='Hans Georg Schaathun', email="georg+github@schaathun.net" },
