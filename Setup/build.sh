@@ -20,3 +20,4 @@ conan install . --output-folder=build --build=missing
   cmake --build .
 )
 
+python CosmoSimPy/datagen.py
