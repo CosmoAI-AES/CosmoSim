@@ -8,8 +8,8 @@ project(CosmoAi LANGUAGES CXX VERSION 1.1.0)
 
 message("Using conan ")
 
-find_package(SymEngine CONFIG REQUIRED)
 find_package(OpenCV CONFIG REQUIRED)
+find_package(SymEngine CONFIG REQUIRED)
 find_package(Python COMPONENTS Development Interpreter)
 
 message("OpenCV_LIBS=${OpenCV_LIBS}")
@@ -42,7 +42,6 @@ add_subdirectory("${pybind11_SOURCE_DIR}")
 
 add_subdirectory(src)
 
-
 if(${UNIX})
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-z,stack-size=1000000")
 elseif(${MSVC})
@@ -53,3 +52,4 @@ endif()
 
 message("Cross-Compile Options: ${CROSS_COMPILE}")
 add_compile_options(${CROSS_COMPILE})
+
