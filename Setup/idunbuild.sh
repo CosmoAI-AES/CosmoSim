@@ -30,4 +30,4 @@ cmake --build build
 mkdir -p bin lib 
 cmake --install build --prefix .
 
-python CosmoSim/datagen.py
+python CosmoSimPy/datagen.py
