@@ -1,6 +1,6 @@
 # (C) 2022-24: Hans Georg Schaathun <georg@schaathun.net> 
 
-import .CosmoSimPy as cs
+from . import CosmoSimPy as cs
 import numpy as np
 import threading as th
 import os, sys
