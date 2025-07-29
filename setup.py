@@ -11,10 +11,10 @@ setup(  # https://scikit-build.readthedocs.io/en/latest/usage.html#setup-options
     python_requires=">=3.10",
     package_dir={"": "src"},  # The root for our python package is in `./src`.
     install_requires=["sympy>=1.13", "numpy", "matplotlib", "opencv-python", "pandas"],  # Python Dependencies
-    include_package_data=True,
     conan_requirements=["symengine/0.11.2", "opencv/4.11.0", "xz_utils/5.4.5", "zlib/1.2.13" ],  # C++ Dependencies
     cmake_minimum_required_version="3.23",
     cmake_install_dir="src/",
+    include_package_data=True,
     package_data={ "CosmoSim" : [ "*.txt", "*.png", "*.so", "*.pyd" ] },
 )
 

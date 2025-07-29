@@ -30,22 +30,18 @@ cmake_host_system_information(RESULT host QUERY HOSTNAME)
 message("Running on ${host}")
 
 
-include(FetchContent)
 if( ${host} MATCHES "idun.*")
+   include(FetchContent)
    FetchContent_Declare( pybind11
       GIT_REPOSITORY https://github.com/pybind/pybind11.git
       GIT_TAG        v2.10.3
       )
+   FetchContent_populate(pybind11)
+   add_subdirectory("${pybind11_SOURCE_DIR}")
 else ()
-   FetchContent_Declare( pybind11
-      GIT_REPOSITORY https://github.com/pybind/pybind11.git
-      GIT_TAG        v2.13.6
-      )
+   find_package(pybind11 CONFIG REQUIRED)
 endif ()
-FetchContent_populate(pybind11)
-add_subdirectory("${pybind11_SOURCE_DIR}")
 
-# find_package(pybind11 CONFIG REQUIRED)
 
 add_subdirectory(src)
 

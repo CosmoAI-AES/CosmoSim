@@ -49,6 +49,8 @@ else()
 endif()
 
 install( TARGETS CosmoSimPy DESTINATION CosmoSim/ )
+message( "end of src/CMakeLists.txt" )
+
 # copy CosmoSimPy.*.pyd into Python directory
 # add_custom_command(TARGET CosmoSimPy POST_BUILD
 # COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:CosmoSimPy> "${CMAKE_SOURCE_DIR}/CosmoSimPy/CosmoSim"

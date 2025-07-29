@@ -8,3 +8,5 @@ exclude test/
 exclude _skbuild/
 exclude build/
 exclude tmp/
+include src/CosmoSim/*.so 
+include src/CosmoSim/*.pyd 
