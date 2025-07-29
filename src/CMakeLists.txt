@@ -33,7 +33,7 @@ target_include_directories(SimLib PUBLIC BEFORE "${CMAKE_SOURCE_DIR}/include" ${
 target_link_libraries(SimLib ${OpenCV_LIBS} symengine)
 
 # Python Bindings
-pybind11_add_module(CosmoSimPy MODULE cosmosimpy/bindings.cpp cosmosimpy/CosmoSim.cpp )
+pybind11_add_module(CosmoSimPy MODULE CosmoSim/bindings.cpp CosmoSim/CosmoSim.cpp )
 target_link_libraries(CosmoSimPy PRIVATE SimLib)
 
 include(CheckIPOSupported)
