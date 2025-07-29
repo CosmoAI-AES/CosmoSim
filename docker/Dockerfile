@@ -26,13 +26,12 @@ RUN mkdir setup
 WORKDIR /setup
 COPY ./requirements-build.txt ./
 COPY ./venv.sh ./
-COPY ./build.sh ./
 RUN sh ./venv.sh
 
 WORKDIR /
-RUN git clone -b build/pypi https://github.com/CosmoAI-AES/CosmoSim.git
+RUN git clone -b develop https://github.com/CosmoAI-AES/CosmoSim.git
 
 
 WORKDIR /CosmoSim
-RUN sh /setup/build.sh
+RUN sh docker/build.sh
 
