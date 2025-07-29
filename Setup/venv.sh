@@ -2,5 +2,5 @@
 
 mkdir -p venv
 python -m venv venv/run
-. pythonenv/bin/activate
+. venv/run/bin/activate
 pip install -r requirements.txt
