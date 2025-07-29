@@ -39,7 +39,14 @@ if( ${host} MATCHES "idun.*")
    FetchContent_populate(pybind11)
    add_subdirectory("${pybind11_SOURCE_DIR}")
 else ()
-   find_package(pybind11 CONFIG REQUIRED)
+   include(FetchContent)
+   FetchContent_Declare( pybind11
+      GIT_REPOSITORY https://github.com/pybind/pybind11.git
+      GIT_TAG        v2.13.6
+      )
+   FetchContent_populate(pybind11)
+   add_subdirectory("${pybind11_SOURCE_DIR}")
+   # find_package(pybind11 CONFIG REQUIRED)
 endif ()
 
 
