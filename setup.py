@@ -15,6 +15,6 @@ setup(  # https://scikit-build.readthedocs.io/en/latest/usage.html#setup-options
     conan_requirements=["symengine/0.11.2", "opencv/4.11.0", "xz_utils/5.4.5", "zlib/1.2.13" ],  # C++ Dependencies
     cmake_minimum_required_version="3.23",
     cmake_install_dir="src/",
-    package_data={ "CosmoSim" : [ "*.txt", "*.png" ] },
+    package_data={ "CosmoSim" : [ "*.txt", "*.png", "*.pyd", "*.so" ] },
 )
 
