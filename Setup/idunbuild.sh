@@ -1,7 +1,9 @@
 #!/bin/sh
-# (C) 2022: Hans Georg Schaathun <georg@schaathun.net> 
+# (C) 2022,2025: Hans Georg Schaathun <georg@schaathun.net> 
 
 # Build scripts for NTNU's IDUN cluster.
+# This does not use conan, and relies on IDUN's module system for
+# dependencies.
 
 module purge
 # module load OpenCV/4.5.3-foss-2021a-contrib
