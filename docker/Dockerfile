@@ -30,7 +30,7 @@ COPY ./build.sh ./
 RUN sh ./venv.sh
 
 WORKDIR /
-RUN git clone -b develop https://github.com/CosmoAI-AES/CosmoSim.git
+RUN git clone -b build/pypi https://github.com/CosmoAI-AES/CosmoSim.git
 
 
 WORKDIR /CosmoSim
