@@ -6,7 +6,9 @@
 # It does not work on Ubuntu 24.04
 
 
-. pythonenv/bin/activate
+
+sh Setup/buildvenv.sh
+. venv/build/bin/activate
 
 rm -rf build
 
@@ -18,3 +20,4 @@ conan install . --output-folder=build --build=missing
   cmake --build .
 )
 
+python CosmoSimPy/datagen.py
