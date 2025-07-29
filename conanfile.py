@@ -15,8 +15,6 @@ class CosmoSimConan(ConanFile):
         self.requires( "opencv/4.11.0" )
         self.requires( "xz_utils/5.4.5" )
         self.requires( "zlib/1.2.13" )
-        if self.settings.os == "Linux":
-            self.requires("wayland/1.22.0")
 
     def layout(self):
         cmake_layout(self)
