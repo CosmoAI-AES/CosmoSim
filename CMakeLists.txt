@@ -43,7 +43,6 @@ add_subdirectory("${pybind11_SOURCE_DIR}")
 
 add_subdirectory(src)
 
-
 if(${UNIX})
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-z,stack-size=1000000")
 elseif(${MSVC})
