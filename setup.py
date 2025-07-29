@@ -5,7 +5,7 @@ setup(  # https://scikit-build.readthedocs.io/en/latest/usage.html#setup-options
     version="2.5.3",
     packages=find_packages("CosmoSimPy"),  # Include all packages in `./src`.
     description="Simulator of Gravitational Lenses",
-    author='Hans Georg Schaathun et al', email="hasc@ntnu.no" },
+    author='Hans Georg Schaathun et al',
     license="MIT",
     python_requires=">=3.10",
     package_dir={"": "CosmoSimPy"},  # The root for our python package is in `./src`.

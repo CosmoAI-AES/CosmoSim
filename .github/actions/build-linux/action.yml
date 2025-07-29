@@ -4,6 +4,7 @@ description: Build the project on Linux
 
 inputs:
   compiler-version:
+    required: false
     default: 13
   python-version:
     required: false
@@ -13,6 +14,9 @@ inputs:
 
 runs:
     using: "composite"
+    env:
+      CC: gcc-${{ compiler-version }}
+      CXX: g++-${{ compiler-version }}
 
     steps:
       - name: Setup Python 3.x
