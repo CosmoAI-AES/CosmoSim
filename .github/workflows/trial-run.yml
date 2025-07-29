@@ -14,6 +14,9 @@ jobs:
   linux:
 
     runs-on: ${{ matrix.os }}
+    env:
+      CC: gcc-${{ matrix.compiler-version }}
+      CXX: g++-${{ matrix.compiler-version }}
     strategy:
       fail-fast: false
       matrix:
@@ -25,6 +28,7 @@ jobs:
       - name: Build Project
         uses: ./.github/actions/build-linux
         with:
+           compiler-version: ${{ matrix.compiler-version }}
            python-version: ${{ matrix.python-version }}
 
   macos:
