@@ -19,7 +19,7 @@ RUN apt-get install -y \
     libxrandr-dev libxrender-dev libxres-dev libxss-dev libxtst-dev libxv-dev \
     libxxf86vm-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-keysyms1-dev \
     libxcb-xinerama0-dev libxcb-dri3-dev uuid-dev libxcb-dri3-dev \
-    libxcb-util-dev
+    libxcb-util-dev libglib2.0-0
 
 
 RUN mkdir setup
