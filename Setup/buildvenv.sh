@@ -1,5 +1,6 @@
 # (C) 2025: Hans Georg Schaathun <hg@schaathun.net>
 
-python -m venv pythonenv
-. pythonenv/bin/activate
+mkdir -p venv
+python -m venv venv/build
+. venv/build/bin/activate
 pip install -r requirements-build.txt
