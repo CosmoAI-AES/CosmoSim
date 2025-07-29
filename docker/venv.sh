@@ -1,0 +1,5 @@
+# (C) 2025: Hans Georg Schaathun <georg+github@schaathun.net>
+
+python -m venv /pythonenv
+. /pythonenv/bin/activate
+pip install -r requirements-build.txt
