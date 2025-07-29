@@ -8,8 +8,8 @@ project(CosmoAi LANGUAGES CXX VERSION 1.1.0)
 
 message("Using conan ")
 
-find_package(SymEngine CONFIG REQUIRED)
 find_package(OpenCV CONFIG REQUIRED)
+find_package(SymEngine CONFIG REQUIRED)
 find_package(Python COMPONENTS Development Interpreter)
 
 message("OpenCV_LIBS=${OpenCV_LIBS}")
@@ -30,20 +30,24 @@ cmake_host_system_information(RESULT host QUERY HOSTNAME)
 message("Running on ${host}")
 
 
-# include(FetchContent)
-# FetchContent_Declare(
-# pybind11
-# GIT_REPOSITORY https://github.com/pybind/pybind11.git
-# GIT_TAG        v2.10.3
-# )
-# FetchContent_populate(pybind11)
-# add_subdirectory("${pybind11_SOURCE_DIR}")
+include(FetchContent)
+if( ${host} MATCHES "idun.*")
+   FetchContent_Declare( pybind11
+      GIT_REPOSITORY https://github.com/pybind/pybind11.git
+      GIT_TAG        v2.10.3
+      )
+else ()
+   FetchContent_Declare( pybind11
+      GIT_REPOSITORY https://github.com/pybind/pybind11.git
+      GIT_TAG        v2.13.6
+      )
+endif ()
+FetchContent_populate(pybind11)
+add_subdirectory("${pybind11_SOURCE_DIR}")
 
-find_package(pybind11 CONFIG REQUIRED)
-
+# find_package(pybind11 CONFIG REQUIRED)
 
 add_subdirectory(src)
-
 
 if(${UNIX})
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-z,stack-size=1000000")
@@ -55,3 +59,4 @@ endif()
 
 message("Cross-Compile Options: ${CROSS_COMPILE}")
 add_compile_options(${CROSS_COMPILE})
+
