@@ -19,14 +19,13 @@ RUN apt-get install -y \
     libxrandr-dev libxrender-dev libxres-dev libxss-dev libxtst-dev libxv-dev \
     libxxf86vm-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-keysyms1-dev \
     libxcb-xinerama0-dev libxcb-dri3-dev uuid-dev libxcb-dri3-dev \
-    libxcb-util-dev
+    libxcb-util-dev libglib2.0-0
 
 
 RUN mkdir setup
 WORKDIR /setup
 COPY ./requirements-build.txt ./
 COPY ./venv.sh ./
-COPY ./build.sh ./
 RUN sh ./venv.sh
 
 WORKDIR /
@@ -34,5 +33,5 @@ RUN git clone -b develop https://github.com/CosmoAI-AES/CosmoSim.git
 
 
 WORKDIR /CosmoSim
-RUN sh /setup/build.sh
+RUN sh docker/build.sh
 

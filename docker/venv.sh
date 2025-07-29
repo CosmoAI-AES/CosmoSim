@@ -1,4 +1,4 @@
-# (C) 2025: Hans Georg Schaathun <georg+github@schaathun.net>
+# (C) 2025: Hans Georg Schaathun <hg@schaathun.net>
 
 python -m venv /pythonenv
 . /pythonenv/bin/activate
