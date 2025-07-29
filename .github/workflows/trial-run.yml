@@ -1,3 +1,8 @@
+# (C) 2025: Hans Georg Schaathun <hg@schaathun.net>
+#
+# As of July 2025 we are not able to build on Windows.
+# The Windows trial build is moved to trial-windows.yml, and
+# should only be reinstated here after debugging.
 
 name: Trial Build
 
@@ -22,20 +27,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build Project
         uses: ./.github/actions/build-linux
-        with:
-           python-version: ${{ matrix.python-version }}
-  windows:
-
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-2025]
-        python-version: ['3.13']
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build Project
-        uses: ./.github/actions/build-windows
         with:
            python-version: ${{ matrix.python-version }}
 

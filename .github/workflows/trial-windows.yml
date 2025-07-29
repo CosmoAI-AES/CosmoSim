@@ -1,0 +1,27 @@
+# (C) 2025: Hans Georg Schaathun <georg+github@schaathun.net>
+# 
+# This workflow currently does not work.
+# It was removed from trial-run.yml to debug it later.
+
+name: Trial Windows Build
+
+on: 
+   push:
+     branches: [build/windows]
+
+jobs:
+  windows:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025]
+        python-version: ['3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Project
+        uses: ./.github/actions/build-windows
+        with:
+           python-version: ${{ matrix.python-version }}
+
