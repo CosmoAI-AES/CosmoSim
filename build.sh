@@ -6,7 +6,9 @@
 # It does not work on Ubuntu 24.04
 
 
-. pythonenv/bin/activate
+
+sh Setup/buildvenv.sh
+. venv/build/bin/activate
 
 rm -rf build
 
