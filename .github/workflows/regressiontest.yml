@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: ['3.12','3.13']
+        python-version: ['3.11','3.12','3.13']
         compiler-version: [13]
     steps:
       - uses: actions/checkout@v4
@@ -47,7 +47,7 @@ jobs:
           'cluster-roulette', 'cluster-raytrace',
           'cluster-sampled-roulette', 'cluster-sampled-raytrace',
         ]
-        python-version: ['3.11']
+        python-version: ['3.11','3.12','3.13']
     steps:
       - uses: actions/checkout@v4
       - name: Setup Python 3.x
