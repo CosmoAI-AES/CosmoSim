@@ -11,7 +11,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "CosmoSim"
-version = "2.5.3"
+version = "2.5.3pre2"
 authors = [
   { name='Hans Georg Schaathun', email="georg+github@schaathun.net" },
 ]
@@ -22,8 +22,8 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: C++",
     "Development Status :: 4 - Beta",
-    "Intended Audience :: Researchers",
-    "Topic :: Physics :: Csomology",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Physics",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 license = "MIT"
