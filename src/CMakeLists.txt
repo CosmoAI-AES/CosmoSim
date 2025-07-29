@@ -33,7 +33,7 @@ target_include_directories(SimLib PUBLIC BEFORE "${CMAKE_SOURCE_DIR}/include" ${
 target_link_libraries(SimLib ${OpenCV_LIBS} symengine)
 
 # Python Bindings
-pybind11_add_module(CosmoSimPy MODULE CosmoSim/CosmoSimPy/bindings.cpp CosmoSim/CosmoSimPy/CosmoSim.cpp )
+pybind11_add_module(CosmoSimPy MODULE CosmoSim/bindings.cpp CosmoSim/CosmoSim.cpp )
 target_link_libraries(CosmoSimPy PRIVATE SimLib)
 
 include(CheckIPOSupported)
@@ -48,7 +48,7 @@ else()
     message(STATUS "IPO / LTO not supported: <${error}>")
 endif()
 
-install( TARGETS CosmoSimPy DESTINATION CosmoSimPy/ )
+install( TARGETS CosmoSimPy DESTINATION CosmoSim/ )
 # copy CosmoSimPy.*.pyd into Python directory
 # add_custom_command(TARGET CosmoSimPy POST_BUILD
 # COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:CosmoSimPy> "${CMAKE_SOURCE_DIR}/CosmoSimPy/CosmoSim"

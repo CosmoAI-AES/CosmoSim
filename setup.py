@@ -4,6 +4,7 @@ setup(  # https://scikit-build.readthedocs.io/en/latest/usage.html#setup-options
     name="CosmoSim",
     version="2.5.3",
     packages=find_packages("src"),  # Include all packages in `./src`.
+    # packages=[ "CosmoSim", "CosmoSim/CosmoSimPy" ],
     description="Simulator of Gravitational Lenses",
     author='Hans Georg Schaathun et al',
     license="MIT",
@@ -13,7 +14,7 @@ setup(  # https://scikit-build.readthedocs.io/en/latest/usage.html#setup-options
     include_package_data=True,
     conan_requirements=["symengine/0.11.2", "opencv/4.11.0", "xz_utils/5.4.5", "zlib/1.2.13" ],  # C++ Dependencies
     cmake_minimum_required_version="3.23",
-    cmake_install_dir="src/CosmoSim/",
+    cmake_install_dir="src/",
     package_data={ "CosmoSim" : [ "*.txt", "*.png" ] },
 )
 
