@@ -33,3 +33,6 @@ keywords=[ 'cosmology', 'gravitational lensing', "simulation" ]
 [project.urls]
 Homepage = "https://github.com/CosmoAI-AES/CosmoSim"
 Issues = "https://github.com/CosmoAI-AES/CosmoSim/issues"
+
+[tool.cibuildwheel]
+before-all = "uname -a"
