@@ -48,7 +48,8 @@ else()
     message(STATUS "IPO / LTO not supported: <${error}>")
 endif()
 
+install( TARGETS CosmoSimPy DESTINATION lib )
 # copy CosmoSimPy.*.pyd into Python directory
-add_custom_command(TARGET CosmoSimPy POST_BUILD
-   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:CosmoSimPy> "${CMAKE_SOURCE_DIR}/CosmoSimPy/CosmoSim"
-        )
+# add_custom_command(TARGET CosmoSimPy POST_BUILD
+# COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:CosmoSimPy> "${CMAKE_SOURCE_DIR}/CosmoSimPy/CosmoSim"
+# )
