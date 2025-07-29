@@ -1,4 +1,4 @@
-# (C) 2023: Hans Georg Schaathun <georg@schaathun.net> 
+# (C) 2023,2025: Hans Georg Schaathun <georg@schaathun.net> 
 
 name: "Regression Test (Modular)"
 
@@ -20,10 +20,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04]
-        compiler-version: [10]
-        python-version: ['3.11']
-
+        os: [ubuntu-latest]
+        python-version: ['3.11','3.12','3.13']
+        compiler-version: [13]
     steps:
       - uses: actions/checkout@v4
       - name: Build Project
@@ -41,14 +40,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04]
+        os: [ubuntu-latest]
         test-dir: [ 'exactpm', 'raytrace', 'roulette', 'roulettepm',
           'new-roulette', 'new-raytrace',
           'sampled-roulette', 'sampled-raytrace',
           'cluster-roulette', 'cluster-raytrace',
           'cluster-sampled-roulette', 'cluster-sampled-raytrace',
         ]
-        python-version: ['3.11']
+        python-version: ['3.11','3.12','3.13']
     steps:
       - uses: actions/checkout@v4
       - name: Setup Python 3.x

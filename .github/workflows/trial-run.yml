@@ -1,23 +1,28 @@
+# (C) 2025: Hans Georg Schaathun <hg@schaathun.net>
+#
+# As of July 2025 we are not able to build on Windows.
+# The Windows trial build is moved to trial-windows.yml, and
+# should only be reinstated here after debugging.
 
 name: Trial Build
 
 on: 
    push:
-     branches: [main, master, develop]
+     branches: [main, master, develop, build/conan2]
 
 jobs:
   linux:
 
     runs-on: ${{ matrix.os }}
     env:
-      CC: gcc-${{ matrix.compiler_version }}
-      CXX: g++-${{ matrix.compiler_version }}
+      CC: gcc-${{ matrix.compiler-version }}
+      CXX: g++-${{ matrix.compiler-version }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04]
-        compiler_version: [10]
-        python-version: ['3.11','3.12']
+        os: [ubuntu-latest]
+        python-version: ['3.12','3.13']
+        compiler-version: [13]
     steps:
       - uses: actions/checkout@v4
       - name: Build Project
@@ -25,3 +30,20 @@ jobs:
         with:
            compiler-version: ${{ matrix.compiler-version }}
            python-version: ${{ matrix.python-version }}
+
+  macos:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-14]
+        compiler-version: [ '15.0' ]
+        python-version: [ '3.13' ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Project
+        uses: ./.github/actions/build-darwin
+        with:
+           python-version: ${{ matrix.python-version }}
+           compiler-version: ${{ matrix.compiler-version }}
