@@ -1,0 +1,10 @@
+exclude *.pyc
+exclude *.log
+exclude __pycache__/
+exclude .github/
+exclude Legacy/
+exclude Notes/
+exclude test/
+exclude _skbuild/
+exclude build/
+exclude tmp/
