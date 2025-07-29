@@ -31,7 +31,7 @@ message("Running on ${host}")
 
 
 include(FetchContent)
--if( ${host} MATCHES "idun.*")
+if( ${host} MATCHES "idun.*")
    FetchContent_Declare( pybind11
       GIT_REPOSITORY https://github.com/pybind/pybind11.git
       GIT_TAG        v2.10.3
