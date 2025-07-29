@@ -5,3 +5,5 @@ opencv-python
 pandas 
 pybind11 
 conan
+twine
+build
