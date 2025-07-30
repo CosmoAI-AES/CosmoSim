@@ -1,0 +1,18 @@
+exclude *.pyc
+exclude *.log
+exclude __pycache__/
+exclude .github/
+exclude Legacy/
+exclude Notes/
+exclude test/
+exclude _skbuild/
+exclude build/
+exclude tmp/
+include src/CosmoSim/*.so 
+include src/CosmoSim/*.pyd 
+include-recursive src *
+include-recursive CosmoSimPy *
+include setup.py
+include *.toml
+include CMakeLists.txt
+include requirements*.txt
