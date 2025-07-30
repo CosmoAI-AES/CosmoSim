@@ -1,3 +1,6 @@
-export CIBW_BEFORE_ALL="yum install libva-devel"
+export CIBW_BEFORE_ALL="yum -y install libva-devel libvdpau-devel xkeyboard-config-devel libfontenc-devel libXaw-devel libXcomposite-devel libXcursor-devel libXdmcp-devel libXtst-devel libXinerama-devel libxkbfile-devel libXrandr-devel libXres-devel libXScrnSaver-devel xcb-util-wm-devel xcb-util-image-devel xcb-util-keysyms-devel xcb-util-renderutil-devel libXdamage-devel libXxf86vm-devel libXv-devel xcb-util-devel libuuid-devel xcb-util-cursor-devel ; echo "yum complete" ; uname -a"
+
+        
+
 cibuildwheel --platform linux
 
