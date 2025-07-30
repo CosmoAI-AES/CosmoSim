@@ -467,5 +467,4 @@ pythonenv
 /*.html
 /CMakeUserPresets.json
 _skbuild
-MANIFEST.in
 *.egg-info

@@ -10,8 +10,9 @@ recursive-exclude build/ *
 recursive-exclude tmp/ *
 include src/CosmoSim/*.so 
 include src/CosmoSim/*.pyd 
-include-recursive src *
-include-recursive CosmoSimPy *
+recursive-include src *
+recursive-include include *
+recursive-include CosmoSimPy *
 include setup.py
 include *.toml
 include CMakeLists.txt
