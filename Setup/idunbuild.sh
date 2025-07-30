@@ -28,6 +28,6 @@ cmake . -B build
 cmake --build build
 
 mkdir -p bin lib 
-cmake --install build --prefix .
+cmake --install build --prefix src
 
 python CosmoSimPy/datagen.py
