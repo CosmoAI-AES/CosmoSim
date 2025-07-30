@@ -16,6 +16,5 @@ setup(  # https://scikit-build.readthedocs.io/en/latest/usage.html#setup-options
     cmake_minimum_required_version="3.23",
     cmake_install_dir="src/",
     package_data={ "CosmoSim" : [ "*.txt", "*.png", "*.so", "*.pyd" ] },
-    conan_profile_settings={ "tools.system.package_manager" : "mode=install" }
 )
 
