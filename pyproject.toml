@@ -34,5 +34,7 @@ keywords=[ 'cosmology', 'gravitational lensing', "simulation" ]
 Homepage = "https://github.com/CosmoAI-AES/CosmoSim"
 Issues = "https://github.com/CosmoAI-AES/CosmoSim/issues"
 
-[tool.cibuildwheel]
+[tool.cibuildwheel.linux]
 before-all = "uname -a"
+environment = { CC="gcc", CXX="g++" }
+
