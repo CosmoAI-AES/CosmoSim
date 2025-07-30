@@ -1,13 +1,13 @@
 exclude *.pyc
 exclude *.log
-exclude __pycache__/
-exclude .github/
-exclude Legacy/
-exclude Notes/
-exclude test/
-exclude _skbuild/
-exclude build/
-exclude tmp/
+exclude __pycache__
+recursive-exclude .github/ *
+recursive-exclude Legacy/ *
+recursive-exclude Notes/ *
+recursive-exclude test/ *
+recursive-exclude _skbuild/ *
+recursive-exclude build/ *
+recursive-exclude tmp/ *
 include src/CosmoSim/*.so 
 include src/CosmoSim/*.pyd 
 include-recursive src *
