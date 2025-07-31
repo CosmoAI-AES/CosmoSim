@@ -27,6 +27,7 @@ WORKDIR /setup
 COPY ./requirements-build.txt ./
 COPY ./venv.sh ./
 RUN sh ./venv.sh
+RUN echo 3
 
 WORKDIR /
 RUN git clone -b develop https://github.com/CosmoAI-AES/CosmoSim.git

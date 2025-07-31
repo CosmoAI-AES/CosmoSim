@@ -13,6 +13,7 @@ cd /CosmoSim
 rm -rf build
 
 conan profile detect
+conan update
 conan install . --output-folder=build  --build=missing
 # --profile:build=conan2/linux-profile --profile:host=conan2/linux-profile
 

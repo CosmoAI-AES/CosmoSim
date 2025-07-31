@@ -1,6 +1,5 @@
-# export CIBW_BEFORE_ALL="yum install libva-devel"
 
-# export CIBW_ENVIRONMENT="CC=gcc;CXX=g++"
+# export CIBW_ENVIRONMENT="CC=gcc CXX=g++"
 . ~/etc/python/cibuildwheel/bin/activate
 
 cibuildwheel --platform linux
