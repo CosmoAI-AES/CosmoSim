@@ -8,6 +8,21 @@ project(CosmoAi LANGUAGES CXX VERSION 1.1.0)
 
 message("Using conan ")
 
+include(FetchContent)
+FetchContent_Declare( pybind11
+      GIT_REPOSITORY https://github.com/pybind/pybind11.git
+      GIT_TAG        v2.13.6
+      )
+FetchContent_populate(pybind11)
+add_subdirectory("${pybind11_SOURCE_DIR}")
+
+FetchContent_Declare( pybind11
+      GIT_REPOSITORY https://github.com/symengine/symengine.git
+      GIT_TAG        v0.11.2
+      )
+FetchContent_populate(symengine)
+add_subdirectory("${symengine_SOURCE_DIR}")
+
 find_package(OpenCV CONFIG REQUIRED)
 find_package(SymEngine CONFIG REQUIRED)
 find_package(Python COMPONENTS Development Interpreter)
@@ -28,28 +43,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 cmake_host_system_information(RESULT host QUERY HOSTNAME)
 message("Running on ${host}")
-
-
-if( ${host} MATCHES "idun.*")
-   include(FetchContent)
-   FetchContent_Declare( pybind11
-      GIT_REPOSITORY https://github.com/pybind/pybind11.git
-      GIT_TAG        v2.10.3
-      )
-   FetchContent_populate(pybind11)
-   add_subdirectory("${pybind11_SOURCE_DIR}")
-else ()
-   include(FetchContent)
-   FetchContent_Declare( pybind11
-      GIT_REPOSITORY https://github.com/pybind/pybind11.git
-      GIT_TAG        v2.13.6
-      )
-   FetchContent_populate(pybind11)
-   add_subdirectory("${pybind11_SOURCE_DIR}")
-   # find_package(pybind11 CONFIG REQUIRED)
-endif ()
-
-# find_package(pybind11 CONFIG REQUIRED)
 
 add_subdirectory(src)
 
