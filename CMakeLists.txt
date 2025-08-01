@@ -6,25 +6,27 @@ message("CMakeLists.txt - CosmoSim - Starting ...")
 cmake_minimum_required(VERSION 3.23)
 project(CosmoAi LANGUAGES CXX VERSION 1.1.0)
 
+set(CMAKE_POLICY_VERSION_MINIMUM 3.10)
+
 include(FetchContent)
-FetchContent_Declare( pybind11
-      GIT_REPOSITORY https://github.com/pybind/pybind11.git
-      GIT_TAG        v3.0.0
-      )
-FetchContent_MakeAvailable(pybind11)
-add_subdirectory("${pybind11_SOURCE_DIR}")
+### FetchContent_Declare( pybind11
+###       GIT_REPOSITORY https://github.com/pybind/pybind11.git
+###       GIT_TAG        v2.13.6
+###       )
+### FetchContent_MakeAvailable(pybind11)
+### add_subdirectory("${pybind11_SOURCE_DIR}")
 
 FetchContent_Declare( symengine
       GIT_REPOSITORY https://github.com/symengine/symengine.git
-      GIT_TAG        v0.14.0
+      GIT_TAG        v0.11.2
       )
 FetchContent_MakeAvailable(symengine)
 add_subdirectory("${symengine_SOURCE_DIR}")
 
 find_library(gmp gmp)
 find_package(OpenCV CONFIG REQUIRED)
-find_package(SymEngine CONFIG REQUIRED)
 find_package(Python COMPONENTS Development Interpreter)
+find_package(pybind11 CONFIG REQUIRED)
 
 message("OpenCV_LIBS=${OpenCV_LIBS}")
 

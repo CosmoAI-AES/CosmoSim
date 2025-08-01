@@ -8,6 +8,7 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
+dynamic = [ "dependencies" ]
 name = "CosmoSim"
 version = "2.5.3rc3"
 authors = [
