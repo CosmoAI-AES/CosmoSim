@@ -6,30 +6,28 @@ message("CMakeLists.txt - CosmoSim - Starting ...")
 cmake_minimum_required(VERSION 3.23)
 project(CosmoAi LANGUAGES CXX VERSION 1.1.0)
 
-message("Using conan ")
-
 include(FetchContent)
 FetchContent_Declare( pybind11
       GIT_REPOSITORY https://github.com/pybind/pybind11.git
-      GIT_TAG        v2.13.6
+      GIT_TAG        v3.0.0
       )
-FetchContent_populate(pybind11)
+FetchContent_MakeAvailable(pybind11)
 add_subdirectory("${pybind11_SOURCE_DIR}")
 
-FetchContent_Declare( pybind11
+FetchContent_Declare( symengine
       GIT_REPOSITORY https://github.com/symengine/symengine.git
-      GIT_TAG        v0.11.2
+      GIT_TAG        v0.14.0
       )
-FetchContent_populate(symengine)
+FetchContent_MakeAvailable(symengine)
 add_subdirectory("${symengine_SOURCE_DIR}")
 
+find_library(gmp gmp)
 find_package(OpenCV CONFIG REQUIRED)
 find_package(SymEngine CONFIG REQUIRED)
 find_package(Python COMPONENTS Development Interpreter)
 
 message("OpenCV_LIBS=${OpenCV_LIBS}")
 
-option(COSMOSIM_USE_CONAN "Use conan" ON)
 option(COSMOSIM_BUILD_SIMULATOR "Build native cosmosim simulator executable" OFF)
 option(COSMOSIM_BUILD_MAKEIMAGE "Build native cosmosim makeimage executable" OFF)
 

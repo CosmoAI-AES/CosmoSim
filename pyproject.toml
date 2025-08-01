@@ -1,9 +1,7 @@
 [build-system]
 requires = [
-    "conan>=2.0.0",
     "setuptools",
     "scikit-build>=0.17.3",
-    "skbuild-conan",
     "cmake>=3.23",
     "ninja",
 ]
@@ -35,5 +33,5 @@ Homepage = "https://github.com/CosmoAI-AES/CosmoSim"
 Issues = "https://github.com/CosmoAI-AES/CosmoSim/issues"
 
 [tool.cibuildwheel.linux]
-before-all = "yum -y install libva-devel libvdpau-devel xkeyboard-config-devel libfontenc-devel libXaw-devel libXcomposite-devel libXcursor-devel libXdmcp-devel libXtst-devel libXinerama-devel libxkbfile-devel libXrandr-devel libXres-devel libXScrnSaver-devel xcb-util-wm-devel xcb-util-image-devel xcb-util-keysyms-devel xcb-util-renderutil-devel libXdamage-devel libXxf86vm-devel libXv-devel xcb-util-devel libuuid-devel xcb-util-cursor-devel opencv-devel ; echo 'yum complete' ; uname -a"
+before-all = "yum -y install libva-devel libvdpau-devel xkeyboard-config-devel libfontenc-devel libXaw-devel libXcomposite-devel libXcursor-devel libXdmcp-devel libXtst-devel libXinerama-devel libxkbfile-devel libXrandr-devel libXres-devel libXScrnSaver-devel xcb-util-wm-devel xcb-util-image-devel xcb-util-keysyms-devel xcb-util-renderutil-devel libXdamage-devel libXxf86vm-devel libXv-devel xcb-util-devel libuuid-devel xcb-util-cursor-devel opencv-devel gmp-devel ; echo 'yum complete' ; uname -a"
 environment = { CC="gcc", CXX="g++" }
