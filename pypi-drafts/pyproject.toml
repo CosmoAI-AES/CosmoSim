@@ -1,0 +1,49 @@
+[build-system]
+requires = [
+    "conan>=2.0.0",
+    "setuptools",
+    "scikit-build>=0.17.3",
+    "skbuild-conan",
+    "cmake>=3.23",
+    "ninja",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "CosmoSim"
+version = "2.5.3rc3"
+authors = [
+  { name='Hans Georg Schaathun', email="georg+github@schaathun.net" },
+]
+description = 'Simulator of Gravitational Lenses'
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: C++",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+license = "MIT"
+license-files = ["LICENSE"]
+keywords=[ 'cosmology', 'gravitational lensing', "simulation" ]
+
+[project.urls]
+Homepage = "https://github.com/CosmoAI-AES/CosmoSim"
+Issues = "https://github.com/CosmoAI-AES/CosmoSim/issues"
+
+[tool.cibuildwheel]
+# build = "*manylinux_x86_64"
+# manylinux-x86_64-image = "pypa/manylinux_2_31_x86_64"
+# manylinux-i686-image = "manylinux_2_31"
+# manylinux-pypy_x86_64-image = "manylinux_2_31"
+# manylinux-pypy_i686-image = "manylinux_2_31"
+
+
+[tool.cibuildwheel.linux]
+before-all = "apt-get install -y libxcb-glx0-dev libxcb-cursor-dev libxcb-dri2-0-dev libxcb-present-dev libxcb-composite0-dev libxcb-ewmh-dev libxcb-res0-dev libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libva-dev libvdpau-dev xkb-data libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmuu-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxtst-dev libxv-dev libxxf86vm-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-keysyms1-dev libxcb-xinerama0-dev libxcb-dri3-dev uuid-dev libxcb-dri3-dev libxcb-util-dev libglib2.0-0 ; echo 'yum complete' ; uname -a"
+
+
+environment = { CC="gcc", CXX="g++", BUILD_CC="gcc" }
