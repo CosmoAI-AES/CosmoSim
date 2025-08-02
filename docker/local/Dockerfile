@@ -34,5 +34,5 @@ RUN git clone -b develop https://github.com/CosmoAI-AES/CosmoSim.git
 
 
 WORKDIR /CosmoSim
-RUN sh docker/build.sh
+RUN sh docker/local/build.sh
 
