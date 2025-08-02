@@ -1,3 +1,7 @@
+Docker images have been created for different purposes.
+
+# local (Summer 2025)
+
 This docker image was created to test the build on Ubuntu 24.04, 
 to prepare for running it in a github runner.
 
@@ -5,3 +9,13 @@ It is retained as a build example FIW.
 
 In the end, it differs little from the regular build.sh script
 in the root of the repo.
+
+# manylinux (August 2025) 
+
+This is created to test the build in the same environment
+as cibuildwheel.
+
+# sim (old) 
+
+This is one of many attempts to make CosmoSim available on 
+different platforms.  It has not been tested for years.
