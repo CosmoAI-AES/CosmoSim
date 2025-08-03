@@ -1,6 +1,0 @@
-
-# export CIBW_ENVIRONMENT="CC=gcc CXX=g++"
-. ~/etc/python/cibuildwheel/bin/activate
-
-cibuildwheel --platform linux
-
