@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 from CosmoSim.Image import centreImage, drawAxes
 from CosmoSim import CosmoSim,getMSheaders
 
-from Arguments import CosmoParser
+from .Arguments import CosmoParser
 from CosmoSim.Parameters import Parameters
 import pandas as pd
 

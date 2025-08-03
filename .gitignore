@@ -471,3 +471,4 @@ _skbuild
 *.err
 wheelhouse
 venv-*
+test
