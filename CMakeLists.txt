@@ -3,7 +3,7 @@
 
 message("CMakeLists.txt - CosmoSim - Starting ...")
 
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.15)
 project(CosmoAi LANGUAGES CXX VERSION 1.1.0)
 
 message("Using conan ")

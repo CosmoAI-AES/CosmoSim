@@ -4,7 +4,7 @@ requires = [
     "setuptools",
     "scikit-build>=0.17.3",
     "skbuild-conan",
-    "cmake>=3.23",
+    "cmake>=3.15",
     "ninja",
 ]
 build-backend = "setuptools.build_meta"
@@ -35,5 +35,7 @@ Homepage = "https://github.com/CosmoAI-AES/CosmoSim"
 Issues = "https://github.com/CosmoAI-AES/CosmoSim/issues"
 
 [tool.cibuildwheel.linux]
-before-all = "yum -y install libva-devel libvdpau-devel xkeyboard-config-devel libfontenc-devel libXaw-devel libXcomposite-devel libXcursor-devel libXdmcp-devel libXtst-devel libXinerama-devel libxkbfile-devel libXrandr-devel libXres-devel libXScrnSaver-devel xcb-util-wm-devel xcb-util-image-devel xcb-util-keysyms-devel xcb-util-renderutil-devel libXdamage-devel libXxf86vm-devel libXv-devel xcb-util-devel libuuid-devel xcb-util-cursor-devel libcap-devel ; echo 'yum complete' ; uname -a"
+before-all = "yum -y install libva-devel libvdpau-devel xkeyboard-config-devel libfontenc-devel libXaw-devel libXcomposite-devel libXcursor-devel libXdmcp-devel libXtst-devel libXinerama-devel libxkbfile-devel libXrandr-devel libXres-devel libXScrnSaver-devel xcb-util-wm-devel xcb-util-image-devel xcb-util-keysyms-devel xcb-util-renderutil-devel libXdamage-devel libXxf86vm-devel libXv-devel xcb-util-devel libuuid-devel xcb-util-cursor-devel perl perl-IPC-Cmd perl-Digest-SHA && pipx install conan && conan profile detect --name skbuild_conan_py &&  echo 'CONAN START' && conan install --profile:all=skbuild_conan_py --requires=libcap/2.69 '--build=*' && conan install --profile:all=skbuild_conan_py --requires=libx264/cci.20240224 '--build=*' && conan install --profile:all=skbuild_conan_py --requires=openssl/3.5.1 '--build=*' && echo 'yum complete' && uname -a"
 environment = { CC="gcc", CXX="g++" }
+manylinux-x86_64-image = "manylinux_2_34"
+manylinux-i686-image = "manylinux_2_34"
