@@ -1,5 +1,10 @@
 # (C) 2022-24: Hans Georg Schaathun <georg@schaathun.net> 
 
+"""
+The CosmoSim package comprises several components, including scripts,
+a wrapper around the C++ CosmoSim library, and GUI components.
+"""
+
 import CosmoSim.CosmoSimPy as cs
 import numpy as np
 import threading as th

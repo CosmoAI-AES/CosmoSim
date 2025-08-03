@@ -14,7 +14,7 @@ from CosmoSim.Image import drawAxes
 from CosmoSim.Parameters import Parameters
 import CosmoSim as cs
 
-from Arguments import CosmoParser
+from .Arguments import CosmoParser
 import pandas as pd
 
 from RouletteAmplitudes import RouletteAmplitudes 

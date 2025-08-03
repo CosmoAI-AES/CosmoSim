@@ -14,12 +14,13 @@ import matplotlib.pyplot as plt
 from CosmoSim.Image import centreImage, drawAxes
 from CosmoSim import CosmoSim,getMSheaders
 
-from Arguments import CosmoParser
+from .Arguments import CosmoParser
 from CosmoSim.Parameters import Parameters
 import pandas as pd
 
 defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "x", "y" ]
 relcols = [ "centreX", "centreY", "reletaX", "reletaY", "offsetX", "offsetY", "xiX", "xiY" ]
+
 def setParameters(sim,row):
     print( row ) 
     if row.get("y",None) != None:
