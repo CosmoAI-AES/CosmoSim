@@ -7,7 +7,8 @@ RUN yum -y install libva-devel libvdpau-devel xkeyboard-config-devel libfontenc-
 
 RUN yum install -y perl perl-IPC-Cmd perl-Digest-SHA
 
-RUN python3.12 -m pipx install conan
+RUN pipx install conan
+RUN conan profile detect --name skbuild_conan_py
 
 RUN conan install --profile:all=skbuild_conan_py --requires=libcap/2.69 '--build=*'
 RUN conan install --profile:all=skbuild_conan_py --requires=libx264/cci.20240224 '--build=*'

@@ -13,7 +13,7 @@ setup(  # https://scikit-build.readthedocs.io/en/latest/usage.html#setup-options
     install_requires=["sympy>=1.13", "numpy", "matplotlib", "opencv-python", "pandas"],  # Python Dependencies
     include_package_data=True,
     conan_requirements=[ "symengine/0.14.0", "opencv/4.12.0" ],  # C++ Dependencies
-    cmake_minimum_required_version="3.23",
+    cmake_minimum_required_version="3.15",
     cmake_install_dir="src/",
     package_data={ "CosmoSim" : [ "*.txt", "*.png", "*.so", "*.pyd" ] },
 )
