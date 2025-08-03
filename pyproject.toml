@@ -43,3 +43,6 @@ before-all = "yum -y install libva-devel libvdpau-devel xkeyboard-config-devel l
 environment = { CC="gcc", CXX="g++" }
 manylinux-x86_64-image = "manylinux_2_34"
 manylinux-i686-image = "manylinux_2_34"
+
+[tool.cibuildwheel.macos]
+before-all = "pipx install conan && conan profile detect --name skbuild_conan_py &&  echo 'CONAN START' && conan install --profile:all=skbuild_conan_py --requires=libcap/2.69 '--build=*' && conan install --profile:all=skbuild_conan_py --requires=libx264/cci.20240224 '--build=*' && conan install --profile:all=skbuild_conan_py --requires=openssl/3.5.1 '--build=*' && echo 'CONAN DONE' && uname -a"
