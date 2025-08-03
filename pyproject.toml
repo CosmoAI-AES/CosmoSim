@@ -35,7 +35,7 @@ Homepage = "https://github.com/CosmoAI-AES/CosmoSim"
 Issues = "https://github.com/CosmoAI-AES/CosmoSim/issues"
 
 [tool.cibuildwhee]
-build = [ "*-manylinux_x86_64", "*-manylinux_i686" ]
+build = [ "*-manylinux_x86_64", "*-manylinux_i686", "*-macosx_*" ]
 
 [tool.cibuildwheel.linux]
 before-all = "yum -y install libva-devel libvdpau-devel xkeyboard-config-devel libfontenc-devel libXaw-devel libXcomposite-devel libXcursor-devel libXdmcp-devel libXtst-devel libXinerama-devel libxkbfile-devel libXrandr-devel libXres-devel libXScrnSaver-devel xcb-util-wm-devel xcb-util-image-devel xcb-util-keysyms-devel xcb-util-renderutil-devel libXdamage-devel libXxf86vm-devel libXv-devel xcb-util-devel libuuid-devel xcb-util-cursor-devel perl perl-IPC-Cmd perl-Digest-SHA && pipx install conan && conan profile detect --name skbuild_conan_py &&  echo 'CONAN START' && conan install --profile:all=skbuild_conan_py --requires=libcap/2.69 '--build=*' && conan install --profile:all=skbuild_conan_py --requires=libx264/cci.20240224 '--build=*' && conan install --profile:all=skbuild_conan_py --requires=openssl/3.5.1 '--build=*' && echo 'CONAN DONE' && uname -a"
