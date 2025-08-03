@@ -1,5 +1,10 @@
 # (C) 2023: Hans Georg Schaathun <georg@schaathun.net> 
 
+"""
+This defines the `ArgumentParser` for the CosmoSim scripts.
+Several scripts use the same arguments, and thus share this module.
+"""
+
 import argparse
 
 class CosmoParser(argparse.ArgumentParser):

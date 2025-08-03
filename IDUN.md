@@ -5,13 +5,28 @@ title: Running CosmoSim on IDUN
 IDUN is the shared HPC cluster at NTNU, and these notes are thus
 only intended for NTNU users.
 
-+ See `idunbuild.sh` for current recipe.
-
 The base system has been set up to use conan to manage dependencies,
 but some conan packages depend on system libraries which cannot be
-installed at IDUN.  Therefore conan should not be used, and 
-`CMakeLists.txt` has been set up with a conditional on the host
-name, with a specific setup for IDUN.
+installed at IDUN.  
+
+You can build with
+```
+sh Setup/idunbuild.sh
+```
+
+Assuming that the working directory is at `%HOME/git/CosmoSim`
+the following gives a working runtime environment:
+```
+. Setup/idun.sh
+```
+
+This puts the module in the `PYTHONPATH`, so that you can run, e.g.
+```
+python -m CosmoSim.datagen
+```
+
+This approach does not make the module pip installable.
+
 
 # Notes
 
