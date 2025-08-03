@@ -10,3 +10,4 @@ module list
 
 . venv/build/bin/activate
 
+export PYTHONPATH=$HOME/git/CosmoSim/src:$PYTHONPATH
