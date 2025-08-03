@@ -35,7 +35,6 @@ dependencies=["sympy>=1.13", "numpy", "matplotlib", "opencv-python", "pandas"]
 Homepage = "https://github.com/CosmoAI-AES/CosmoSim"
 Issues = "https://github.com/CosmoAI-AES/CosmoSim/issues"
 
-<<<<<<< HEAD
 [tool.cibuildwheel]
 build = [ "*-manylinux_x86_64", "*-manylinux_i686", "*-macosx_*" ]
 
