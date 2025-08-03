@@ -33,11 +33,10 @@ jobs:
     runs-on:  ${{ matrix.os }}
     needs: 
       - build-on-windows
-      - build-on-linux
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2019]
+        os: [windows-latest]
         test-dir: [ 'exactpm', 'raytrace', 'roulette', 'roulettepm',
           'new-roulette', 'new-raytrace',
           'sampled-roulette', 'sampled-raytrace',
