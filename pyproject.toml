@@ -34,7 +34,7 @@ keywords=[ 'cosmology', 'gravitational lensing', "simulation" ]
 Homepage = "https://github.com/CosmoAI-AES/CosmoSim"
 Issues = "https://github.com/CosmoAI-AES/CosmoSim/issues"
 
-[tool.cibuildwhee]
+[tool.cibuildwheel]
 build = [ "*-manylinux_x86_64", "*-manylinux_i686" ]
 
 [tool.cibuildwheel.linux]

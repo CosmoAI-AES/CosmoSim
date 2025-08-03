@@ -9,6 +9,10 @@
 
 + PyPI packing for installation with pip.
 
+### Changed
+
++ Most scripts are moved inside the module, to be run via `python -m`
+
 ## [2.5.2] - 2025-01-16
 
 ### Fixed
