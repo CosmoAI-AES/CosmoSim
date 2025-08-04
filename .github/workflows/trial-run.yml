@@ -24,7 +24,7 @@ jobs:
       matrix:
         os: [ubuntu-latest,macos-latest]
         python-version: ['3.12','3.13']
-        compiler-version: [13]
+        compiler-version: [13,14]
     steps:
       - uses: actions/checkout@v4
       - name: Build Project
