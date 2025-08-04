@@ -4,8 +4,6 @@ name: Debugging MacOS
 
 on:
   workflow_dispatch:
-  push:
-     branches: [workflow-debug]
 
 jobs:
 

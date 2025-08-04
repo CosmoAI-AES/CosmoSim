@@ -4,7 +4,6 @@ name: Make Python Distribution
 
 on:
    push:
-     branches: [ test-dist ]
    workflow_dispatch:
    workflow_call:
 
