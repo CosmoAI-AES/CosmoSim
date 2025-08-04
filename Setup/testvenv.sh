@@ -2,5 +2,4 @@
 
 mkdir -p venv
 python -m venv venv/test
-. venv/build/bin/activate
-pip install .
+. venv/test/bin/activate
