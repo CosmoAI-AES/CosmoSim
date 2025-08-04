@@ -34,24 +34,21 @@ runs:
       - name: Configure and build
         shell: bash
         run: |
-           cd build/
-           cmake .. -DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
-           cmake --build .
-      - name: Make Python Distribution
-        shell: bash
-        run: |
-           mkdir -p dist/CosmoSimPy/CosmoSim
-           cp build/lib/CosmoSimPy.*.so dist/CosmoSimPy/CosmoSim/
+           cd build 
+           cmake .. -DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release && \
+           cmake --build . 
+           cmake --install . --prefix=../src
       - uses: kenchan0130/actions-system-info@master
         id: system-info
       - name: Archive Python link library
         uses: actions/upload-artifact@v4
         with:
           name: CosmoSimPy-macos-${{ steps.system-info.outputs.release }}-python${{ inputs.python-version }}
-          path: build/lib/CosmoSimPy.*.so
+          path: src/CosmoSim/CosmoSimPy.*.so
       - name: Test
         shell: bash
         run: |
-          pip3 install -r requirements.txt
-          cp build/lib/CosmoSimPy.*.so CosmoSimPy/CosmoSim
+          ls -l src/CosmoSim
+          date
+          python3 --version
           PYTHONPATH=src/:$PYTHONPATH python3 -m CosmoSim.datagen
