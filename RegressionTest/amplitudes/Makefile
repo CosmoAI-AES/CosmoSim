@@ -12,10 +12,10 @@ P=../../python
 	sort $< > $@
 %.new: %.txt
 	sort $< > $@
-sis%.new:
+sis%.txt:
 	echo $*
 	python3 $P/amplitudes.py --output $@ --lens SIS $* 
-sie%.new:
+sie%.txt:
 	python3 $P/sieamplitudes.py --output $@ --lens SIE $* 
 %.status: %.new %.baseline
 	diff $^ && echo Regression test passes > $@
