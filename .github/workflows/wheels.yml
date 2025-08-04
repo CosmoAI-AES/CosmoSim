@@ -15,6 +15,8 @@ jobs:
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    with:
+           python-version: '3.13'
     strategy:
       fail-fast: false
       matrix:
@@ -26,8 +28,6 @@ jobs:
 
       # Used to host cibuildwheel
       - uses: actions/setup-python@v5
-        with:
-           python-version: '3.13'
 
       - name: Upgrade pip
         run: |
@@ -54,6 +54,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Build Project
+        uses: ./.github/actions/build-linux
+        with:
+           compiler-version: 13
 
       - name: Build sdist
         run: pipx run build --sdist
