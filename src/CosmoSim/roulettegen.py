@@ -9,15 +9,14 @@ import cv2 as cv
 import sys
 import os
 import numpy as np
-
-from CosmoSim.Image import drawAxes
-from CosmoSim.Parameters import Parameters
-import CosmoSim as cs
-
-from .Arguments import CosmoParser
 import pandas as pd
 
-from RouletteAmplitudes import RouletteAmplitudes 
+from .Image import drawAxes
+from .Parameters import Parameters
+
+from .Arguments import CosmoParser
+
+from .RouletteAmplitudes import RouletteAmplitudes 
 
 def makeSingle(sim,args,name=None,row=None):
     print( "makeSingle" )

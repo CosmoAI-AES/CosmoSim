@@ -1,5 +1,5 @@
-#! /usr/bin/env python2
-# (C) 2023: Hans Georg Schaathun <georg@schaathun.net>
+#! /usr/bin/env python3
+# (C) 2025: Hans Georg Schaathun <georg@schaathun.net>
 # Generate a set of lens/source parameters
 
 import numpy as np

@@ -4,7 +4,7 @@
 import pandas as pd
 import argparse
 
-from RouletteAmplitudes import RouletteAmplitudes 
+from .RouletteAmplitudes import RouletteAmplitudes 
 
 
 
