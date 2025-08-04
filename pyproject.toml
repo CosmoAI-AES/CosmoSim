@@ -11,7 +11,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "CosmoSim"
-version = "2.5.3rc3"
+version = "2.5.3rc4"
 authors = [
   { name='Hans Georg Schaathun', email="georg+github@schaathun.net" },
 ]
