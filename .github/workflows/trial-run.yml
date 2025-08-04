@@ -10,7 +10,7 @@ description: |
 
 on: 
    push:
-     branches: [ develop ]
+     branches: [ develop, refactor/workflows ]
 
 jobs:
   linux:
@@ -22,30 +22,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest,macos-latest]
         python-version: ['3.12','3.13']
         compiler-version: [13]
     steps:
       - uses: actions/checkout@v4
       - name: Build Project
-        uses: ./.github/actions/build-linux
+        uses: ./.github/actions/build
         with:
            compiler-version: ${{ matrix.compiler-version }}
            python-version: ${{ matrix.python-version }}
 
-  macos:
-
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-14]
-        compiler-version: [ '15.0' ]
-        python-version: [ '3.13' ]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build Project
-        uses: ./.github/actions/build-darwin
-        with:
-           python-version: ${{ matrix.python-version }}
-           compiler-version: ${{ matrix.compiler-version }}

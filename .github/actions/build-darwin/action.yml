@@ -35,7 +35,7 @@ runs:
         shell: bash
         run: |
            cd build 
-           cmake .. -DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release && \
+           cmake .. -DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release 
            cmake --build . 
            cmake --install . --prefix=../src
       - uses: kenchan0130/actions-system-info@master
