@@ -1,0 +1,26 @@
+[simulator]
+configs = ["p", "r", "ss", "pss", "fs", "rs"]
+size = 10000
+nterms = 16
+
+[lens]
+chi = 50
+einstein-min = 10
+einstein-max = 50
+
+[source]
+mode = "e"
+sigma-min = 1
+sigma-max = 60
+sigma2-min = 1
+sigma2-max = 40
+theta-min = 0
+theta-max = 179
+position = "polar"
+
+[position]
+phi-min = 0
+phi-max = 359
+r-min = "einsteinR"
+r-max = 100
+

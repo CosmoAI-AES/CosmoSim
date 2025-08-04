@@ -126,15 +126,15 @@ Alternatively, you can parse in a csv file to bulk generate images. Parameters w
 command line instead of the CSV file.
 
 ```sh
-python3 CosmoSimPy/datagen.py --csvfile Datasets/debug.csv --mask -R -C
+python3 -m CosmoSim.datagen --csvfile Datasets/debug.csv --mask -R -C
 ```
 
 
 The following script creates a CSV file of random parameter sets to use with the `--csvfile` option above.
-
 ```
-python3 CosmoSimPy/datasetgen.py
+python3 -m CosmoSim.dataset input.toml output.csv
 ```
+Use `Datasets/dataset.toml` as an example of how to write the input file.
 
 It should be tweaked to get the desired distribution.
 

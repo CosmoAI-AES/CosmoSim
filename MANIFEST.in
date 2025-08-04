@@ -15,6 +15,7 @@ recursive-include src *
 recursive-include include *
 recursive-include python *
 recursive-include Setup *
+recursive-include Datasets *
 include setup.py
 include *.toml
 include CMakeLists.txt
