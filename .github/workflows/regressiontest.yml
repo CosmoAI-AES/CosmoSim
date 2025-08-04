@@ -3,7 +3,8 @@
 name: "Regression Test (Modular)"
 
 description: |
-  This runs the regression tests on a few linux configurations.
+  This makes a trial build and runs runs the regression tests
+  on a few configurations.
 
   The regression tests often fail inexplicably, presumably because
   minor variations in the dependencies and/or machine architecture
@@ -15,50 +16,52 @@ description: |
 
 on: 
    push:
-       branches: [ feature/regressiontests, develop ]
+       branches: [ feature/regressiontests, refactor/workflow*, develop ]
    release:
    workflow_dispatch:
    workflow_call:
 
 jobs:
-  build-on-linux:
+  build:
 
-    name: Build on Linux
     runs-on: ${{ matrix.os }}
-    env:
-      CC: gcc-${{ matrix.compiler-version }}
-      CXX: g++-${{ matrix.compiler-version }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
-        python-version: ['3.11','3.12','3.13']
-        compiler-version: [13]
+        python-version: ['3.12','3.13']
+        os: [ ubuntu-latest, macos-13, macos-15 ]
+        include:
+          - compiler-version: 14
+          - os: ubuntu-latest
+            compiler-version: 13
     steps:
       - uses: actions/checkout@v4
       - name: Build Project
-        uses: ./.github/actions/build-linux
+        uses: ./.github/actions/build
         with:
            compiler-version: ${{ matrix.compiler-version }}
            python-version: ${{ matrix.python-version }}
-
 
   regression-test:
 
     runs-on:  ${{ matrix.os }}
     needs: 
-      - build-on-linux
+      - build
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
+        python-version: ['3.12','3.13']
+        os: [ ubuntu-latest, macos-13, macos-15 ]
+        include:
+          - compiler-version: 14
+          - os: ubuntu-latest
+            compiler-version: 13
         test-dir: [ 'exactpm', 'raytrace', 'roulette', 'roulettepm',
           'new-roulette', 'new-raytrace',
           'sampled-roulette', 'sampled-raytrace',
           'cluster-roulette', 'cluster-raytrace',
           'cluster-sampled-roulette', 'cluster-sampled-raytrace',
         ]
-        python-version: ['3.11','3.12','3.13']
     steps:
       - name: apt-installations
         run: |

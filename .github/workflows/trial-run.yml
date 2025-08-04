@@ -9,8 +9,7 @@ description: |
   The Windows trial build is moved to the Legacy directory.
 
 on: 
-   push:
-     branches: [ develop, refactor/workflows ]
+   workflow_call:
 
 jobs:
   build:
