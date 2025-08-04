@@ -1,12 +1,12 @@
-# Python 
+# Python scripts
 
-## Scripts
+These scripts do not depend on the CosmoSim package or other
+C++ code.
 
-+ amplitudes.py
-    + Generate the 50.txt file with formulæ for alpha and beta.
-+ compare.py
-    + Quantitatively compare two images, intended for regression testing.
-+ datasetgen.py 
-    + random generation of parameters for data sets
-    + the output is a CSV file to be read by `datagen.py`
+Most of the scripts, including amplitudes.py are used to compute
+the roulette amplitudes and produce the *.txt files included
+in the package distribution (under src/CosmoSim).
 
+The compare.py scripts quantitatively compares two images.
+This is used by the regression tests, but may have other
+uses for evaluation of experiments.
