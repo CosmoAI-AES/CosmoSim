@@ -17,6 +17,7 @@ from .Parameters import Parameters
 from .Arguments import CosmoParser
 
 from .RouletteAmplitudes import RouletteAmplitudes 
+from . import RouletteSim,RouletteRegenerator,makeSource
 
 def makeSingle(sim,args,name=None,row=None):
     print( "makeSingle" )
@@ -62,7 +63,7 @@ def main(args):
         raise Exception( "No CSV file given; the --csvfile option is mandatory." )
 
     print( "Instantiate RouletteSim object ... " )
-    sim = cs.RouletteSim()
+    sim = RouletteSim()
 
     print( "Load CSV file:", args.csvfile )
     frame = pd.read_csv(args.csvfile)
@@ -78,7 +79,7 @@ def main(args):
     else:
         maxcount = int(args.maxcount)
 
-    rsim = cs.RouletteRegenerator()
+    rsim = RouletteRegenerator()
     rsim.setMaskMode( args.mask )
     if not args.maskradius is None:
         rsim.setMaskRadius( float(args.maskradius) )
@@ -107,7 +108,7 @@ def main(args):
             sys.stdout.flush()
                     
             param.setRow( row )
-            src = cs.makeSource( param )
+            src = makeSource( param )
             rsim.setSource( src )
 
             fn = row.get("filename",None)

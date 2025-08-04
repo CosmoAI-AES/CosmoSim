@@ -6,14 +6,17 @@ sie05.new sis50.new:
 sie05.baseline:
 sis50.baseline:
 
-%.baseline: ../../CosmoSimPy/CosmoSim/%.txt
+P=../../python
+
+%.baseline: ../../src/CosmoSim/%.txt
 	sort $< > $@
 %.new: %.txt
 	sort $< > $@
 sis%.txt:
-	python3 ../../CosmoSimPy/amplitudes.py --output $@ --lens SIS $* 16
+	echo $*
+	python3 $P/amplitudes.py --output $@ --lens SIS $* 
 sie%.txt:
-	python3 ../../CosmoSimPy/sieamplitudes.py --output $@ --lens SIE $* 16
+	python3 $P/sieamplitudes.py --output $@ --lens SIE $* 
 %.status: %.new %.baseline
 	diff $^ && echo Regression test passes > $@
 
