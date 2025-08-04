@@ -45,7 +45,7 @@ before-all = [
     "conan profile detect --name skbuild_conan_py ",
     "echo 'CONAN START' ",
     "conan install --profile:all=skbuild_conan_py --requires=libaom-av1/3.6.1",
-    "conan install --profile:all=skbuild_conan_py --requires=ffmpeg/7.1.1",
+    "conan install --profile:all=skbuild_conan_py --requires=ffmpeg/7.1.1 --build=missing",
     "echo 'CONAN DONE' "
     ]
 [tool.cibuildwheel.linux]
