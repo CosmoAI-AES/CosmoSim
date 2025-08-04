@@ -1,6 +1,8 @@
 name: 'Macos Build'
 
-description: Build the project on Macos
+description: |
+  Build the project locally on MacOS.  Not maintained from Summer'25.
+  Build wheels for PyPI/pip instead.
 
 inputs:
   compiler-version:
