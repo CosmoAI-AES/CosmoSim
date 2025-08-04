@@ -67,13 +67,6 @@ jobs:
           python-version: ${{ matrix.python-version }}
           architecture: 'x64'
           cache: "pip"
-      - name: Install prerequisites
-        shell: bash
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-          python3-opencv \
-          libopencv-dev 
       - name: pip-installations
         run: |
           pip install -r requirements.txt
@@ -87,10 +80,11 @@ jobs:
             git status
             python3 --version
             ls -l
+            ls -lR CosmoSimPy-*
       - name: move artifacts in place
         shell: bash
         run: |
-          mv CosmoSimPy-*-python*/CosmoSimPy.*.so  CosmoSimPy/CosmoSim
+          mv CosmoSimPy-*-python*/CosmoSimPy.*.so  src/CosmoSim
       - name: makeimages
         run: |
           cd RegressionTest/${{ matrix.test-dir }}
