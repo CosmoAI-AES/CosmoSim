@@ -20,7 +20,6 @@ runs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ inputs.python-version }}
-          architecture: 'x64'
 
       - name: Install prerequisites on Linux
         shell: bash
