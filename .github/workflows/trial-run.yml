@@ -13,18 +13,20 @@ on:
      branches: [ develop, refactor/workflows ]
 
 jobs:
-  linux:
+  build:
 
     runs-on: ${{ matrix.os }}
-    env:
-      CC: gcc-${{ matrix.compiler-version }}
-      CXX: g++-${{ matrix.compiler-version }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest,macos-14,macos-15,macos-14-large]
         python-version: ['3.12','3.13']
-        compiler-version: [13]
+        include:
+          - os: ubuntu-latest
+            compiler-version: 13
+          - os: macos-14
+            compiler-version: 14
+          - os: macos-15
+            compiler-version: 14
     steps:
       - uses: actions/checkout@v4
       - name: Build Project
