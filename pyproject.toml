@@ -9,9 +9,10 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
+
 [project]
+dynamic = [ "version" ]
 name = "CosmoSim"
-version = "2.5.3rc4"
 authors = [
   { name='Hans Georg Schaathun', email="georg+github@schaathun.net" },
 ]
@@ -30,6 +31,9 @@ license = "MIT"
 license-files = ["LICENSE"]
 keywords=[ 'cosmology', 'gravitational lensing', "simulation" ]
 dependencies=["sympy>=1.13", "numpy", "matplotlib", "opencv-python", "pandas"]
+
+[tool.setuptools.dynamic]
+version = {attr = "CosmoSim.__version__"}
 
 [project.urls]
 Homepage = "https://github.com/CosmoAI-AES/CosmoSim"
