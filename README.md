@@ -22,8 +22,33 @@ but it still incomplete and fragmented.
 
 ## Installation Guide
 
-**TODO**
+**TODO**  CosmoSim is not yet deployed to the PyPI servers.
 
+```sh
+pip install CosmoSim
+```
+
+We successfully build CosmoSim for the following configurations.
+
++ Linux/x86_64, python 3.11 trought 3.14, and 3.14.t
++ MacOS/arm, python 3.11 trought 3.14, and 3.14.t
++ Windows/amd64, python 3.11 trough 3.14
+
+To build locally from source, you can run (from the root of
+the repo),
+```
+pip install build
+python -m build
+```
+This is highly dependent on the local configuration, and may fail
+for a number of reasons.  If it succeeds, the binary file for the
+python module appears under src/CosmoSim.
+
+If you can build, pip can also install the package from the working
+directory.  Again, from the root of the repo,
+```
+pip install .
+```
 
 For non-standard building, see [BUILD.md](BUILD.md).
 

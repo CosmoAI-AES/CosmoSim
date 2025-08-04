@@ -1,7 +1,6 @@
 #! /bin/sh
 
-. ../../pythonenv/bin/activate
-
+. ../../venv/test/bin/activate
 
 opt=$*
 
