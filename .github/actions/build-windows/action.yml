@@ -1,6 +1,9 @@
 name: 'Windows Build'
 
-description: Build the project on Windows
+description: |
+  Build the project on Windows.
+  From Summer 2025, this is not maintained, and we rely instead
+  on python wheels biult by cibuildwheel.
 
 inputs:
   compiler-version:

@@ -1,6 +1,6 @@
 name: 'Hello World'
 
-description: 'Greet someone'
+description: 'Hello World' - simply testing basic workflow principles
 
 inputs:
   who-to-greet:  # id of input

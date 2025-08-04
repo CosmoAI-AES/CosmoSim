@@ -2,6 +2,10 @@
 
 name: "Regression Test on Windows"
 
+description: |
+  Run regression tests specifically on windows.
+  As of August 2025, this does not work.
+
 on: 
    push:
        branches: [ feature/regressiontests ]

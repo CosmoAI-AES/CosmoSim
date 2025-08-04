@@ -1,10 +1,12 @@
 # (C) 2025: Hans Georg Schaathun <hg@schaathun.net>
-#
-# As of July 2025 we are not able to build on Windows.
-# The Windows trial build is moved to trial-windows.yml, and
-# should only be reinstated here after debugging.
 
 name: Trial Build
+
+description: |
+  Test the local build of the project (not building python wheels).
+
+  As of July 2025 we are not able to build on Windows.
+  The Windows trial build is moved to the Legacy directory.
 
 on: 
    push:

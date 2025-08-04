@@ -1,4 +1,11 @@
+# (C) 2025: Hans Georg Schaathun <georg+professor@schaathun.net> 
+
 name: cibuildwheel
+
+description: |
+  Build python wheels for deployment to the PyPI server.
+  This is the most critical workflow in the project.
+  As of August 2025 it works with the architectures present.
 
 on: 
    push:

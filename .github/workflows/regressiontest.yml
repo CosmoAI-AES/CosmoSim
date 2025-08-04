@@ -2,6 +2,17 @@
 
 name: "Regression Test (Modular)"
 
+description: |
+  This runs the regression tests on a few linux configurations.
+
+  The regression tests often fail inexplicably, presumably because
+  minor variations in the dependencies and/or machine architecture
+  cause slightly different numerical errors.  For instance, the
+  same release may fail on one OS and succeed on another.
+
+  For this reason, the regression tests cannot be automated for 
+  release validation, and rely on manual evaluation.
+
 on: 
    push:
        branches: [ feature/regressiontests, develop ]

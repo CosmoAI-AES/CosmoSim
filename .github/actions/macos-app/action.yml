@@ -1,6 +1,9 @@
 name: 'Macos Build'
 
-description: Build the project on Macos
+description: |
+  This builds a MacOS desktop application.
+  From Summer 2025, this is not maintained, and we rely instead on
+  building python wheels with cibuildwheel.
 
 inputs:
   compiler-version:
