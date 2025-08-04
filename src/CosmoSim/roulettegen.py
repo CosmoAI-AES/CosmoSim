@@ -17,6 +17,7 @@ from .Parameters import Parameters
 from .Arguments import CosmoParser
 
 from .RouletteAmplitudes import RouletteAmplitudes 
+from . import RouletteSim 
 
 def makeSingle(sim,args,name=None,row=None):
     print( "makeSingle" )
@@ -62,7 +63,7 @@ def main(args):
         raise Exception( "No CSV file given; the --csvfile option is mandatory." )
 
     print( "Instantiate RouletteSim object ... " )
-    sim = cs.RouletteSim()
+    sim = RouletteSim()
 
     print( "Load CSV file:", args.csvfile )
     frame = pd.read_csv(args.csvfile)
