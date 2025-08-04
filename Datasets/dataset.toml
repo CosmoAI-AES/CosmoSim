@@ -1,6 +1,6 @@
 [simulator]
 configs = ["p", "r", "ss", "pss", "fs", "rs"]
-size = 10000
+size = 10
 nterms = 16
 
 [lens]

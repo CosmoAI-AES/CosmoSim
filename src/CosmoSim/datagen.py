@@ -10,6 +10,7 @@ import sys
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+from .dataset import datasetgen
 
 from .Image import centreImage, drawAxes
 from . import getMSheaders,CosmoSim
@@ -247,6 +248,10 @@ def main(args):
     sim.setMaskMode( args.mask )
 
     param = Parameters( args )
+    if args.toml:
+        if not args.csvfile:
+            raise Exception("The --toml option also requires --csvfile")
+        datasetgen(args.toml,args.csvfile)
     if args.csvfile:
         print( "Load CSV file:", args.csvfile )
         frame = pd.read_csv(args.csvfile)

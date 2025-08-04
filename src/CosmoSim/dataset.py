@@ -67,6 +67,22 @@ header = ( "index,filename,source,config,chi,"
          + "R,phi,einsteinR,sigma,sigma2,theta,nterms,x,y\n"
          )
 
+def datasetgen(infile,outfile):
+    with open(infile, 'rb') as f:
+        toml = tl.load(f)
+    tomldefaults(toml)
+    print(toml)
+    print(configs(toml))
+    print(srcmode(toml))
+
+    with open(outfile, 'w') as f:
+      f.write(header)
+      n = toml["simulator"].get( "size", 10000 )
+      for i in range(n):
+        l = getline(i+1,toml)
+        f.write(l)
+        f.write("\n")
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
           prog = 'Dataset generator for CosmoSim',
@@ -75,18 +91,5 @@ if __name__ == "__main__":
     parser.add_argument('infile',help="Input file")
     parser.add_argument('outfile',help="Output file")
     args = parser.parse_args()
+    datasetgen(args.infile,args.outfile)
 
-    with open(args.infile, 'rb') as f:
-        toml = tl.load(f)
-    tomldefaults(toml)
-    print(toml)
-    print(configs(toml))
-    print(srcmode(toml))
-
-    with open(args.outfile, 'w') as f:
-      f.write(header)
-      n = toml["simulator"].get( "size", 10000 )
-      for i in range(n):
-        l = getline(i+1,toml)
-        f.write(l)
-        f.write("\n")

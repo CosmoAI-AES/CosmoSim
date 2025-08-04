@@ -84,6 +84,8 @@ class CosmoParser(argparse.ArgumentParser):
             help="Output CSV file")
     self.add_argument('-i', '--csvfile',
             help="Dataset to generate (CSV file)")
+    self.add_argument('--toml',
+            help="TOML file defining a random dataset to generate.")
 
     self.add_argument('--maxcount',
             help="Maximum number of images to process")
