@@ -12,7 +12,7 @@ description: |
 
 on: 
    push:
-       branches: [ "build/pypi*" ]
+       branches: [ "develop", "build/pypi*" ]
    workflow_call:
 
 jobs:
