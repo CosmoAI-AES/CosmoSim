@@ -7,6 +7,9 @@ description: |
   This is the most critical workflow in the project.
   As of August 2025 it works with the architectures present.
 
+  Building on Windows is erratic.  It succeeded once on 4 Aug'25,
+  but subsequent runs of the same version on the same day failed.
+
 on: 
    push:
      branches: [ "build/pypi*" ]
@@ -18,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        os: [ ubuntu-latest, macos-latest ]
           # os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm, macos-13, macos-latest]
 
     steps:
