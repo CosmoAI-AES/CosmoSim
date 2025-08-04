@@ -2,7 +2,7 @@ name: cibuildwheel
 
 on: 
    push:
-     branches: [build/pypi,build/pypi2]
+     branches: [ "build/pypi*" ]
 
 jobs:
   build_wheels:
