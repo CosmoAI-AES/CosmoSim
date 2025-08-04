@@ -60,6 +60,10 @@ jobs:
         ]
         python-version: ['3.11','3.12','3.13']
     steps:
+      - name: apt-installations
+        run: |
+          apt-get update
+          apt-get install -y imagemagick
       - uses: actions/checkout@v4
       - name: Setup Python 3.x
         uses: actions/setup-python@v4
@@ -70,9 +74,6 @@ jobs:
       - name: pip-installations
         run: |
           pip install -r requirements.txt
-      - name: apt-installations
-        run: |
-          apt-get install -y imagemagick
       - name: artifact
         uses: actions/download-artifact@v4
         with:
