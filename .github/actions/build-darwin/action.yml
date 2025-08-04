@@ -54,4 +54,4 @@ runs:
         run: |
           pip3 install -r requirements.txt
           cp build/lib/CosmoSimPy.*.so CosmoSimPy/CosmoSim
-          python3 CosmoSimPy/datagen.py
+          PYTHONPATH=src/:$PYTHONPATH python3 -m CosmoSim.datagen

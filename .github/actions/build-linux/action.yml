@@ -65,4 +65,4 @@ runs:
           ls -l src/CosmoSim
           date
           python3 --version
-          PYTHONPATH=src/:$PYTHONPATH python3 -p CosmoSim.datagen
+          PYTHONPATH=src/:$PYTHONPATH python3 -m CosmoSim.datagen
