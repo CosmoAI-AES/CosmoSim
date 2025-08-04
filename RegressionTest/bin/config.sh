@@ -4,6 +4,7 @@ echo $1
 
 rootdir=`( while test ! -d .git ; do cd .. ; done ; pwd )`
 export PATH=$rootdir/CosmoSimPy:$PATH
+export PYTHONPATH=$rootdir/src:$PYTHONPATH
 
 echo rootdir: $rootdir
 
