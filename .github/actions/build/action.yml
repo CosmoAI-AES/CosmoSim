@@ -48,7 +48,7 @@ runs:
       - name: Install and run conan
         shell: bash
         run: |
-          conan profile detect --force
+          conan profile detect 
           conan profile show
           conan install . --output-folder=build --build=missing 
       - name: Configure and build
