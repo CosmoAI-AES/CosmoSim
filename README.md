@@ -24,15 +24,20 @@ but it still incomplete and fragmented.
 
 **TODO**  CosmoSim is not yet deployed to the PyPI servers.
 
+CosmoSim is set up to build python packages (wheels) that
+can be installed with pip.  
+
 ```sh
 pip install CosmoSim
 ```
 
 We successfully build CosmoSim for the following configurations.
 
-+ Linux/x86_64, python 3.11 trought 3.14, and 3.14.t
-+ MacOS/arm, python 3.11 trought 3.14, and 3.14.t
-+ Windows/amd64, python 3.11 trough 3.14
++ Linux/x86_64, python 3.11 trough 3.14, and 3.14.t
++ MacOS/arm, python 3.11 trough 3.14, and 3.14.t
+
+Building on Windows (amd64, python 3.11-3.14) sometimes works,
+but currently not.
 
 To build locally from source, you can run (from the root of
 the repo),
