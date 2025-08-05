@@ -4,7 +4,7 @@
 #
 # **Note** The filename must match the record on the upload server.
 
-name: PyPI test deployment
+name: PyPI deployment
 
 on:
    push:
