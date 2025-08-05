@@ -1,6 +1,8 @@
 # (C) 2025: Hans Georg Schaathun <georg@schaathun.net> 
 #
 # Based on https://github.com/pypa/cibuildwheel/blob/main/examples/github-deploy.yml
+#
+# **Note** The filename must match the record on the upload server.
 
 name: PyPI test deployment
 
