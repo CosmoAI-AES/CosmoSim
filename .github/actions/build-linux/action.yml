@@ -62,8 +62,9 @@ runs:
           libxcb-ewmh-dev \
           libxcb-res0-dev \
           python3-opencv \
-          libopencv-dev 
-          pip3 install -r requirements.txt
+          libopencv-dev  \
+          build-essential
+          pip3 install -r requirements-build.txt
       - name: Config Conan
         shell: bash
         run: |
