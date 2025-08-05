@@ -1,0 +1,44 @@
+# (C) 2025: Hans Georg Schaathun <georg@schaathun.net> 
+#
+# Based on https://github.com/pypa/cibuildwheel/blob/main/examples/github-deploy.yml
+#
+# **Note** The filename must match the record on the upload server.
+
+name: PyPI test deployment
+
+on:
+   push:
+      branches: [ "release/*" ]
+   workflow_dispatch:
+
+jobs:
+
+  build:
+    uses: ./.github/workflows/wheels.yml
+
+  upload:
+    name: Upload 
+    runs-on: ubuntu-latest
+    strategy:
+       fail-fast: false
+
+    needs:
+      - build
+
+    environment:
+      name: pypitest
+      url: https://test.pypi.org/p/CosmoSim
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          # unpacks all CIBW artifacts into dist/
+          pattern: cibw-*
+          path: dist
+          merge-multiple: true
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+
