@@ -8,7 +8,7 @@ name: PyPI test deployment
 
 on:
    push:
-      branch: [ "pypitest" ]
+      branches: [ "pypitest" ]
    workflow_dispatch:
 
 jobs:
