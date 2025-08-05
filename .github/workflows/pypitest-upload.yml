@@ -14,9 +14,8 @@ jobs:
   build:
     uses: ./.github/workflows/wheels.yml
 
-  release:
-    permissions: write-all
-    name: Release and Upload Assets
+  upload:
+    name: Upload 
     runs-on: ubuntu-latest
     strategy:
        fail-fast: false
