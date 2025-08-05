@@ -64,9 +64,15 @@ jobs:
         ]
     steps:
       - name: apt-installations
+        if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install -y imagemagick
+      - name: brew-installations
+        if: runner.os == 'macOS'
+        run: |
+          brew update
+          brew install imagemagick
       - uses: actions/checkout@v4
       - name: Setup Python 3.x
         uses: actions/setup-python@v4
@@ -77,10 +83,14 @@ jobs:
       - name: pip-installations
         run: |
           pip install -r requirements.txt
+      - uses: kenchan0130/actions-system-info@master
+        id: system-info
       - name: artifact
         uses: actions/download-artifact@v4
         with:
           path: .
+          name: CosmoSimPy-${{ runner.os }}-${{ steps.system-info.outputs.release }}-python${{ inputs.python-version }}
+          path: src/CosmoSim/CosmoSimPy.*.so
       - name: diagnostic
         shell: bash
         run: |
