@@ -27,7 +27,7 @@ runs:
       - name: Install prerequisites
         shell: bash
         run: |
-          pip3 install -r requirements.txt
+          pip3 install -r requirements-build.txt
           conan profile new default --detect
           conan profile update settings.compiler.version=${{ inputs.compiler-version }} default
           pip3 install pyinstaller

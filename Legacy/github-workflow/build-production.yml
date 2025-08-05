@@ -45,7 +45,7 @@ jobs:
            python-version: ${{ matrix.python-version }}
 
 
-  macos-x86:
+  macos-intel:
 
     runs-on: ${{ matrix.os }}
     strategy:
@@ -62,7 +62,7 @@ jobs:
            python-version: ${{ matrix.python-version }}
            compiler-version: ${{ matrix.compiler-version }}
 
-  macos:
+  macos-arm:
 
     runs-on: ${{ matrix.os }}
     strategy:
@@ -79,7 +79,7 @@ jobs:
            python-version: ${{ matrix.python-version }}
            compiler-version: ${{ matrix.compiler-version }}
 
-  app:
+  app-intel:
 
     runs-on: ${{ matrix.os }}
     strategy:
@@ -97,7 +97,7 @@ jobs:
            compiler-version: ${{ matrix.compiler-version }}
 
 
-  app-14:
+  app-arm:
 
     runs-on: ${{ matrix.os }}
     strategy:
