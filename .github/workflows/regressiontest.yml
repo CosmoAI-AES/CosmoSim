@@ -89,7 +89,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: .
-          name: CosmoSimPy-${{ runner.os }}-${{ steps.system-info.outputs.release }}-python${{ inputs.python-version }}
+          name: CosmoSimPy-${{ runner.os }}-${{ steps.system-info.outputs.release }}-python${{ matrix.python-version }}
       - name: diagnostic
         shell: bash
         run: |
