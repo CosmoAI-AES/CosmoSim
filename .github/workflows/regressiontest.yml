@@ -96,11 +96,11 @@ jobs:
             git status
             python3 --version
             ls -l
-            ls -lR CosmoSimPy-*
+            ls -lR CosmoSimPy-* || echo 'No directory CosmoSimPy-\*'
       - name: move artifacts in place
         shell: bash
         run: |
-          mv CosmoSimPy-*-python*/CosmoSimPy.*.so  src/CosmoSim
+          mv CosmoSim*.so  src/CosmoSim
       - name: makeimages
         run: |
           cd RegressionTest/${{ matrix.test-dir }}
