@@ -22,17 +22,16 @@ RUN apt-get install -y \
     libxcb-util-dev libglib2.0-0
 
 
-RUN mkdir setup
-WORKDIR /setup
+RUN mkdir -p /home 
+WORKDIR /home
+RUN ls -l
+RUN chown 1000:1000 .
+USER 1000:1000
+
 COPY ./requirements-build.txt ./
 COPY ./venv.sh ./
 RUN sh ./venv.sh
-RUN echo 3
 
-WORKDIR /
 RUN git clone -b develop https://github.com/CosmoAI-AES/CosmoSim.git
 
-
-WORKDIR /CosmoSim
-RUN sh docker/local/build.sh
 
