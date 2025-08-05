@@ -22,11 +22,14 @@ but it still incomplete and fragmented.
 
 ## Installation Guide
 
-**TODO**  CosmoSim is not yet deployed to the PyPI servers.
-
 CosmoSim is set up to build python packages (wheels) that
 can be installed with pip.  
-
+```sh
+pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ CosmoSim
+```
+The current distribution is only available on the PyPI test server.
+Starting with the next release, it will be available on the regular server
+and installable by
 ```sh
 pip install CosmoSim
 ```
@@ -38,6 +41,7 @@ We successfully build CosmoSim for the following configurations.
 
 Building on Windows (amd64, python 3.11-3.14) sometimes works,
 but currently not.
+Buiilding for python 3.10 is impossible because tomllib is required.
 
 To build locally from source, you can run (from the root of
 the repo),
@@ -97,12 +101,46 @@ The flags may be changed; `-C` centres det distorted image in the centre
 of the image (being debugged); `-Z` sets the image size; `-R` prints an
 axes cross.
 
+### Dataset generation
 
-### Data Generation
+The basic use case is bulk generation of images.
+The parameter distribution can be specified in a TOML file,
+see `Datasets/dataset.toml` for an example.
+
+The following command generates a dataset.
+```sh
+python3 -m CosmoSim.datagen --toml dataset.toml --csvfile dataset.csv --outfile roulette.csv --directory images -C
+```
+Note the following
++ `dataset.csv` - contains the dataset with all the lens and source parameters.
++ The `images` directory contains the images generated from the dataset.
++ `roulette.csv` gives the dataset with roulette amplitudes.
++ `-C` centres the images on the centre of mass (luminence).  This is necessary
+  to avoid leaking information to a machine learning model. 
+Most of the options are optional, and further options are available.  See below.
+
+### Two-step generation
+
+It is possible two generate the dataset and the images in two separate steps.
+```
+python3 -m CosmoSim.dataset input.toml output.csv
+python3 -m CosmoSim.datagen --csvfile output.csv --outfile roulette.csv --directory images -C
+```
+
+### Roulette Resimulation
+
+**TODO**
+
+```sh
+python3 -m CosmoSim.roulettegen 
+```
+
+
+### Generating individual images
 
 To generate images from specified parameters, you can use
 ```sh
-python3 CosmoSimPy/datagen.py -S sourcemodel -L lensmodel -x x -y y -s sigma -X chi -E einsteinR -n n -I imageSize -N name -R -C
+python3 -m CosmoSim.datagen -S sourcemodel -L lensmodel -x x -y y -s sigma -X chi -E einsteinR -n n -I imageSize -N name -R -C
 ```
 Here are the options specified:
 + `lensmodel` is `p` for point mass (exact), `r` for Roulette (point mass),
@@ -122,30 +160,6 @@ Here are the options specified:
 + `name` is the name of the simulation, and used to generate filenames.
 + `--help` for a complete list of options.
 
-Alternatively, you can parse in a csv file to bulk generate images. Parameters which are constant for all images may be given on the 
-command line instead of the CSV file.
-
-```sh
-python3 -m CosmoSim.datagen --csvfile Datasets/debug.csv --mask -R -C
-```
-
-
-The following script creates a CSV file of random parameter sets to use with the `--csvfile` option above.
-```
-python3 -m CosmoSim.dataset input.toml output.csv
-```
-Use `Datasets/dataset.toml` as an example of how to write the input file.
-
-It should be tweaked to get the desired distribution.
-
-
-## Roulette Resimulation
-
-**TODO**
-
-```sh
-python3 -m CosmoSim.roulettegen 
-```
 
 ## Use cases
 
@@ -165,7 +179,7 @@ with the image, as follows:
 
 ```sh
 mkdir images
-python3 CosmoSimPy/datagen.py -C -Z 400 --csvfile Datasets/debug.csv \
+python3 -m CosmoSim.datagen -C -Z 400 --csvfile Datasets/debug.csv \
         --directory images --outfile images.csv --nterms 5
 ```
 
@@ -196,8 +210,6 @@ the roulette model with SIS and functionally equivalent to «Roulette SIS«
 The `python/` directory contains scripts which do not depend on
 C++ code.
 
-+ `datasetgen.py` generate datasets as CSV files which can be parsed
-  by `CosmoSim.datagen`
 + `compare.py` is used to compare images in the Regression Tests.
 + Several scripts used to calculate roulette amplitudes.
 
