@@ -90,7 +90,6 @@ jobs:
         with:
           path: .
           name: CosmoSimPy-${{ runner.os }}-${{ steps.system-info.outputs.release }}-python${{ inputs.python-version }}
-          path: src/CosmoSim/CosmoSimPy.*.so
       - name: diagnostic
         shell: bash
         run: |
