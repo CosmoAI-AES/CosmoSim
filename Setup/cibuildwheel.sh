@@ -1,6 +1,7 @@
 
-python -m venv venv-cibuildwheel
-. venv-cibuildwheel/bin/activate
+mkdir -p venv
+python -m venv venv/cibuildwheel
+. venv/cibuildwheel/bin/activate
 pip install cibuildwheel
 
 cibuildwheel --platform linux
