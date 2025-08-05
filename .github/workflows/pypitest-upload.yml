@@ -1,0 +1,41 @@
+# (C) 2025: Hans Georg Schaathun <georg@schaathun.net> 
+#
+# Based on https://github.com/pypa/cibuildwheel/blob/main/examples/github-deploy.yml
+
+name: PyPI test deployment
+
+on:
+   push:
+      branch: [ "pypitest" ]
+   workflow_dispatch:
+
+jobs:
+
+  build:
+    uses: ./.github/workflows/wheels.yml
+
+  release:
+    permissions: write-all
+    name: Release and Upload Assets
+    runs-on: ubuntu-latest
+    strategy:
+       fail-fast: false
+
+    needs:
+      - build
+
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          # unpacks all CIBW artifacts into dist/
+          pattern: cibw-*
+          path: dist
+          merge-multiple: true
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+
