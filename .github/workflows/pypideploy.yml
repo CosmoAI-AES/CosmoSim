@@ -26,8 +26,8 @@ jobs:
       - build
 
     environment:
-      name: pypitest
-      url: https://test.pypi.org/p/CosmoSim
+      name: pypi-release
+        # url: https://test.pypi.org/p/CosmoSim
     permissions:
       id-token: write
     steps:
@@ -39,6 +39,4 @@ jobs:
           merge-multiple: true
 
       - uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://test.pypi.org/legacy/
 
