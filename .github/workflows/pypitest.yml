@@ -25,9 +25,12 @@ jobs:
     needs:
       - build
 
-    environment: pypi
+    environment:
+      name: pypitest
     permissions:
       id-token: write
+      url: https://test.pypi.org/p/CosmoSim
+
     steps:
       - uses: actions/download-artifact@v4
         with:
