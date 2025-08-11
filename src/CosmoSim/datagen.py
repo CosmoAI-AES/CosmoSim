@@ -10,7 +10,7 @@ import sys
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from .dataset import datasetgen
+from .dataset import datasetgen,tomlRead
 
 from .Image import centreImage, drawAxes
 from . import getMSheaders,CosmoSim
@@ -55,7 +55,7 @@ def setParameters(sim,row):
     if row.get("nterms",None) != None:
         sim.setNterms( row["nterms"] )
 
-def makeSingle(sim,param,name=None,row=None,outstream=None,outcols=None):
+def makeSingle(sim,param,name=None,row=None,outstream=None,outcols=None,args):
     """Process a single parameter set, given either as a pandas row or
     just as args parsed from the command line.
     """
@@ -198,6 +198,23 @@ def makeOutput(sim,args,name=None,rot=0,scale=1,
     return (cx,cy)
 
 
+def processCSV(sim,csvfile,param,nterms,outfile,args):
+        print( "Load CSV file:", csvfile )
+        frame = pd.read_csv(csvfile)
+        cols = frame.columns
+        print( "columns:", cols )
+        outcols = list(frame.columns)
+        if outfile:
+           outstream = open(outfile,"wt")
+           headers = ",".join( outcols + relcols + getMSheaders(int(nterms)) )
+           headers += "\n"
+           outstream.write(headers)
+        else:
+           outstream = None
+        for index,row in frame.iterrows():
+            makeSingle(sim,param,row=row,outstream=outstream,outcols=outcols,args)
+        if outstream != None: outstream.close()
+        print( "simulator closed" )
 def main(args):
     print( "[datagen.py] Instantiate Simulator ... " )
     sys.stdout.flush()
@@ -240,36 +257,30 @@ def main(args):
         sim.setResolution( int(args.imagesize) )
     if args.nterms:
         sim.setNterms( int(args.nterms) )
-    if args.outfile:
-        outstream = open(args.outfile,"wt")
-    else:
-        outstream = None
+
 
     sim.setMaskMode( args.mask )
 
     param = Parameters( args )
     if args.toml:
-        if not args.csvfile:
-            raise Exception("The --toml option also requires --csvfile")
-        datasetgen(args.toml,args.csvfile)
-    if args.csvfile:
-        print( "Load CSV file:", args.csvfile )
-        frame = pd.read_csv(args.csvfile)
-        cols = frame.columns
-        print( "columns:", cols )
-        outcols = list(frame.columns)
-        if outstream != None:
-           headers = ",".join( outcols + relcols + getMSheaders(int(args.nterms)) )
-           headers += "\n"
-           outstream.write(headers)
-        for index,row in frame.iterrows():
-            makeSingle(sim,param,row=row,outstream=outstream,outcols=outcols)
+        toml = tomlRead(args.toml)
+        datasetgen(toml,args.csvfile)
+        sets = toml["simulator"].get( "datasets" )
+        if sets:
+            for s in sets:
+                csvfile = toml[s].get( "filename" )
+                outfile = toml[s].get( "roulette" )
+                processCSV(sim,csvfile,param,args.nterms,outfile,args)
+        elif args.csvfile:
+            processCSV(sim,args.csvfile,param,args.nterms,args.outfile,args)
+        else:
+            raise Exception("No csvfile given for the dataset output.")
+    elif args.csvfile:
+        processCSV(sim,args.csvfile,param,args.nterms,args.outfile,args)
     else:
-        makeSingle(sim,param)
+        makeSingle(sim,param,args)
     print( "ready to close simulator" )
     sim.close()
-    print( "simulator closed" )
-    if outstream != None: outstream.close()
 
 if __name__ == "__main__":
     parser = CosmoParser(

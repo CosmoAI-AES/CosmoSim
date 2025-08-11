@@ -2,22 +2,22 @@
 configs = ["p", "r", "ss", "pss", "fs", "rs"]
 datasets = [ "training", "testing", "validation" ]
 nterms = 16
-image-directory = "images"
+image-directory = "Dataset/images"
 
 [training]
 size = 10000
-filename = "training-lens.csv"
-roulette = "training.csv"
+filename = "Dataset/training-lens.csv"
+roulette = "Dataset/training.csv"
 
 [testing]
 size = 10000
-filename = "testing-lens.csv"
-roulette = "testing.csv"
+filename = "Dataset/testing-lens.csv"
+roulette = "Dataset/testing.csv"
 
 [validation]
 size = 10000
-filename = "validation-lens.csv"
-roulette = "validation.csv"
+filename = "Dataset/validation-lens.csv"
+roulette = "Dataset/validation.csv"
 
 [lens]
 chi = 50

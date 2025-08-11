@@ -67,22 +67,41 @@ header = ( "index,filename,source,config,chi,"
          + "R,phi,einsteinR,sigma,sigma2,theta,nterms,x,y\n"
          )
 
-def datasetgen(infile,outfile):
+def tomlReaad(infile):
     with open(infile, 'rb') as f:
         toml = tl.load(f)
     tomldefaults(toml)
     print(toml)
     print(configs(toml))
     print(srcmode(toml))
+    return(toml)
+def datasetgen(infile=None,toml=None,outfile=None):
+    if toml is None:
+        toml = tomlRead(infile)
+    elif: not infile is None
+        raise Exception("Conflicting arguments, both toml object and input file given.")
+    n = toml["simulator"].get( "size", 10000 )
+    sets = toml["simulator"].get( "datasets" )
+    if sets:
+        for s in sets:
+            n1 = set[s].get( "size", n )
+            outfile = set[s].get( "filename", outfile )
+            datasetgen1(toml,outfile,n1)
+    elif outfile:
+        return datasetgen1(toml,outfile,n)
+    else: 
+        raise Exception("No output file given.")
 
+def datasetgen1(toml,outfile,n,start=1):
     with open(outfile, 'w') as f:
       f.write(header)
-      n = toml["simulator"].get( "size", 10000 )
+      idx = start
       for i in range(n):
-        l = getline(i+1,toml)
+        l = getline(idx+1,toml)
         f.write(l)
         f.write("\n")
-
+        idx += 1
+      return idx
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
           prog = 'Dataset generator for CosmoSim',
