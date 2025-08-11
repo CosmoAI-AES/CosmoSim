@@ -89,7 +89,7 @@ if __name__ == "__main__":
           description = 'Generate CSV files for the datagen image generator',
           epilog = '')
     parser.add_argument('infile',help="Input file")
-    parser.add_argument('outfile',help="Output file")
+    parser.add_argument('outfile',nargs="?",help="Output file")
     args = parser.parse_args()
     datasetgen(args.infile,args.outfile)
 

@@ -1,6 +1,8 @@
 [simulator]
 configs = ["p", "r", "ss", "pss", "fs", "rs"]
-size = 10
+datasets = [ { "training.csv", 10000, "images" },
+             { "testing.csv", 10000, "images" },
+             { "validation.csv", 10000, "images" } ]
 nterms = 16
 
 [lens]
