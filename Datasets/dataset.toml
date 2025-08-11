@@ -1,9 +1,23 @@
 [simulator]
 configs = ["p", "r", "ss", "pss", "fs", "rs"]
-datasets = [ { "training.csv", 10000, "images" },
-             { "testing.csv", 10000, "images" },
-             { "validation.csv", 10000, "images" } ]
+datasets = [ "training", "testing", "validation" ]
 nterms = 16
+image-directory = "images"
+
+[training]
+size = 10000
+filename = "training-lens.csv"
+roulette = "training.csv"
+
+[testing]
+size = 10000
+filename = "testing-lens.csv"
+roulette = "testing.csv"
+
+[validation]
+size = 10000
+filename = "validation-lens.csv"
+roulette = "validation.csv"
 
 [lens]
 chi = 50
