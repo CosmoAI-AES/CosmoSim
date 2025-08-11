@@ -288,6 +288,6 @@ if __name__ == "__main__":
           description = 'Generaet an image for given lens and source parameters',
           epilog = '')
 
-    args = parser.parse_args()
-    main(args)
+    _args = parser.parse_args()
+    main(_args)
     print( "[datagen.py] the end" )
