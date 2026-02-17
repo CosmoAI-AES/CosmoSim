@@ -41,22 +41,32 @@ def getline(idx,toml):
     sigma = uniform( toml["source"], "sigma", (1,60) )
     sigma2 = uniform( toml["source"], "sigma2", (1,40) )
     theta = uniform( toml["source"], "theta", (0,179) )
+    coor = toml["source"].get( "position", "cartesian" )
 
     # Lens
     einsteinR = uniform( toml["lens"], "einstein", (10,50) )
 
-    # Polar Source Co-ordinates
-    phi = uniform( toml["position"], "phi", (0,359) )
-    rmin = toml["position"].get( "r-min" )
-    rmax = toml["position"].get( "r-max" )
-    if not isnumeric(rmin): rmin = einsteinR
-    if not isnumeric(rmax): rmax = 2.5*rmin
+    if coor == "polar":
+        # Polar Source Co-ordinates
+        phi = uniform( toml["position"], "phi", (0,359) )
+        rmin = toml["position"].get( "r-min" )
+        rmax = toml["position"].get( "r-max" )
+        if not isnumeric(rmin): rmin = einsteinR
+        if not isnumeric(rmax): rmax = 2.5*rmin
 
-    R =  random.randint(rmin,rmax)
+        R =  random.randint(rmin,rmax)
 
-    # Cartesian Co-ordinates
-    x = R*np.cos(np.pi*phi/180)
-    y = R*np.sin(np.pi*phi/180)
+        # Cartesian Co-ordinates
+        x = R*np.cos(np.pi*phi/180)
+        y = R*np.sin(np.pi*phi/180)
+    else:
+        # Cartesian Co-ordinates
+        (x,y) = (0,0)
+        while (x,y) == (0,0):
+            x = uniform( toml["position"], "x", (-100,+100) )
+            y = uniform( toml["position"], "y", (-100,+100) )
+        R = np.sqrt( x*x + y*y )
+        phi = np.atan2(x,y)
 
     src = random.choice( srcmode(toml) )
     cfg = random.choice( configs(toml) )
