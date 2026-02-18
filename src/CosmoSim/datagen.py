@@ -20,7 +20,6 @@ from .Parameters import Parameters
 import pandas as pd
 
 defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "x", "y" ]
-relcols = [ "centreX", "centreY", "reletaX", "reletaY", "offsetX", "offsetY", "xiX", "xiY" ]
 
 def setParameters(sim,row):
     print( row ) 
@@ -55,104 +54,124 @@ def setParameters(sim,row):
     if row.get("nterms",None) != None:
         sim.setNterms( row["nterms"] )
 
-def makeSingle(sim,param,name=None,row=None,outstream=None,outcols=None):
-    """Process a single parameter set, given either as a pandas row or
-    just as args parsed from the command line.
-    """
-    if not row is None:
-       setParameters( sim, row )
-       print( "index", row["index"] )
-       param.setRow( row )
-       name = row["filename"].split(".")[0]
-    elif name == None:
-        name = param.get( "name" )
-    sim.makeSource( param )
-    print ( "[datagen.py] ready for runSim()\n" ) ;
-    sim.runSim()
-    print ( "[datagen.py] runSim() completed\n" ) ;
-    centrepoint = makeOutput(sim,args,name,actual=args.actual,
-                             apparent=args.apparent,original=args.original,
-                             reflines=args.reflines,critical=args.criticalcurves)
-    print( "[datagen.py] Centre Point", centrepoint,
-          "(Centre of Luminence in Planar Co-ordinates)" )
-    if args.join:
-        # sim.setMaskMode(False)
+
+class SimImage:
+    def __init__(self,sim,param,name=None,row=None,outcols=None):
+        print( "[SimImage] init ..." )
+        if not row is None:
+            setParameters( sim, row )
+            print( "index", row["index"] )
+            param.setRow( row )
+            name = row["filename"].split(".")[0]
+            self.row = row
+        elif name == None:
+            name = param.get( "name" )
+        sim.makeSource( param )
+        print ( "[datagen.py] ready for runSim()\n" ) ;
         sim.runSim()
         print ( "[datagen.py] runSim() completed\n" ) ;
-        sim.maskImage(float(args.maskscale))
-        joinim = sim.getDistortedImage(critical=args.criticalcurves)
-        nc = int(args.components)
-        for i in range(1,nc):
-           sim.moveSim(rot=2*i*np.pi/nc,scale=1)
-           sim.maskImage(float(args.maskscale))
-           im = sim.getDistortedImage(critical=args.criticalcurves)
-           joinim = np.maximum(joinim,im)
-        fn = os.path.join(args.directory,"join-" + str(name) + ".png" ) 
-        if args.reflines:
-            drawAxes(joinim)
-        cv.imwrite(fn,joinim)
-    if args.family:
-        sim.moveSim(rot=-np.pi/4,scale=1)
-        makeOutput(sim,args,name=f"{name}-45+1")
-        sim.moveSim(rot=+np.pi/4,scale=1)
-        makeOutput(sim,args,name=f"{name}+45+1")
-        sim.moveSim(rot=0,scale=-1)
-        makeOutput(sim,args,name=f"{name}+0-1")
-        sim.moveSim(rot=0,scale=2)
-        makeOutput(sim,args,name=f"{name}+0+2")
-    if args.psiplot:
-        a = sim.getPsiMap()
-        print(a.shape, a.dtype)
-        print(a)
-        sys.stdout.flush()
-        nx,ny = a.shape
-        X, Y = np.meshgrid( range(nx), range(ny) )
-        hf = plt.figure()
-        ha = hf.add_subplot(111, projection='3d')
-        ha.plot_surface(X, Y, a)
-        fn = os.path.join(args.directory,"psi-" + str(name) + ".svg" ) 
-        plt.savefig( fn )
-        plt.close()
-    if args.kappaplot:
-        a = sim.getMassMap()
-        print(a.shape, a.dtype)
-        print(a)
-        nx,ny = a.shape
-        X, Y = np.meshgrid( range(nx), range(ny) )
-        hf = plt.figure()
-        ha = hf.add_subplot(111, projection='3d')
-        ha.plot_surface(X, Y, a)
-        fn = os.path.join(args.directory,"kappa-" + str(name) + ".svg" ) 
-        plt.savefig( fn )
-        plt.close()
-    print( "ready for outstream" )
-    if outstream:
-        maxm = int(args.nterms)
+        centrepoint = makeOutput(sim,args,name,actual=args.actual,
+                             apparent=args.apparent,original=args.original,
+                             reflines=args.reflines,critical=args.criticalcurves)
+        print( "[datagen.py] Centre Point", centrepoint,
+              "(Centre of Luminence in Planar Co-ordinates)" )
+        self.sim = sim
+        self.centrepoint = centrepoint
+        self.name = name
+        self.param = param
+        self.directory = self.param.get( "directory" )
+        self.outcols = outcols
+    def getData(self):
+        sim = self.sim
+        centrepoint = self.centrepoint
+        maxm = self.param.get( "nterms" )
+        xireference = self.param.get( "xireference" )
         print( "[datagen.py] Finding Alpha/beta; centrepoint=", centrepoint )
-        sys.stdout.flush()
-        r = [ row[x] for x in outcols ]
+        # r = pd.Series([ row[x] for x in self.outcols ], index=self.outcols )
         releta = sim.getRelativeEta(centrepoint=centrepoint)
         offset = sim.getOffset(centrepoint=centrepoint)
         xioffset = sim.getXiOffset(centrepoint)
-        if args.xireference:
+        if xireference:
             ab = sim.getAlphaBetas(maxm)
         else:
             ab = sim.getAlphaBetas(maxm,pt=centrepoint)
-        print(r)
-        r.append( centrepoint[0] )
-        r.append( centrepoint[1] )
-        r.append( releta[0] )
-        r.append( releta[1] )
-        r.append( offset[0] )
-        r.append( offset[1] )
-        r.append( xioffset[0] )
-        r.append( xioffset[1] )
-        print(ab)
-        r += ab
-        line = ",".join( [ str(x) for x in r ] )
-        line += "\n"
-        outstream.write( line )
+        relcols = [ "centreX", "centreY",
+                   "reletaX", "reletaY",
+                   "offsetX", "offsetY",
+                   "xiX", "xiY" ]
+        r2 = pd.Series(
+              [ centrepoint[0], centrepoint[1], releta[0], releta[1],
+               offset[0], offset[1], xioffset[0], xioffset[1] ],
+              index=relcols ) 
+        r3 = pd.Series( ab, index=getMSheaders(maxm)) 
+        r1 = pd.concat( [ self.row, r2, r3 ] )
+        print( "New row:", r1 )
+        return r1
+    def join(self):
+        # sim.setMaskMode(False)
+        sim = self.sim
+        maskscale = float(self.param.get( "maskscale" ))
+        criticalcurves = self.param.get( "criticalcurves" )
+        nc = int(self.param.get( "components" ))
+        sim.runSim()
+        print ( "[datagen.py] runSim() completed\n" ) ;
+        sim.maskImage(maskscale)
+        joinim = sim.getDistortedImage(critical=criticalcurves)
+        for i in range(1,nc):
+           sim.moveSim(rot=2*i*np.pi/nc,scale=1)
+           sim.maskImage(maskscale)
+           im = sim.getDistortedImage(critical=criticalcurves)
+           joinim = np.maximum(joinim,im)
+        fn = os.path.join(self.directory,"join-" + str(self.name) + ".png" ) 
+        if self.param.get( "reflines" ):
+            drawAxes(joinim)
+        cv.imwrite(fn,joinim)
+    def family(self):
+        sim = self.sim
+        sim.moveSim(rot=-np.pi/4,scale=1)
+        makeOutput(sim,args,name=f"{self.name}-45+1")
+        sim.moveSim(rot=+np.pi/4,scale=1)
+        makeOutput(sim,args,name=f"{self.name}+45+1")
+        sim.moveSim(rot=0,scale=-1)
+        makeOutput(sim,args,name=f"{self.name}+0-1")
+        sim.moveSim(rot=0,scale=2)
+        makeOutput(sim,args,name=f"{self.name}+0+2")
+    def psiplot(self):
+        a = self.sim.getPsiMap()
+        print(a.shape, a.dtype)
+        print(a)
+        sys.stdout.flush()
+        nx,ny = a.shape
+        X, Y = np.meshgrid( range(nx), range(ny) )
+        hf = plt.figure()
+        ha = hf.add_subplot(111, projection='3d')
+        ha.plot_surface(X, Y, a)
+        fn = os.path.join(self.directory,"psi-" + str(self.name) + ".svg" ) 
+        plt.savefig( fn )
+        plt.close()
+    def kappaplot(self):
+        a = self.sim.getMassMap()
+        print(a.shape, a.dtype)
+        print(a)
+        nx,ny = a.shape
+        X, Y = np.meshgrid( range(nx), range(ny) )
+        hf = plt.figure()
+        ha = hf.add_subplot(111, projection='3d')
+        ha.plot_surface(X, Y, a)
+        fn = os.path.join(self.directory,"kappa-" + str(self.name) + ".svg" ) 
+        plt.savefig( fn )
+        plt.close()
+def makeSingle(sim,param,name=None,row=None,outcols=None):
+    """Process a single parameter set, given either as a pandas row or
+    just as args parsed from the command line.
+    """
+    imsim = SimImage(sim,param,name,row,outcols)
+    if args.join: imsim.join()
+    if args.family: imsim.family()
+    if args.psiplot: imsim.psiplot()
+    if args.kappaplot: imsim.psiplot()
     print( "makeSingle() returns" )
+    return imsim
 
 
 def makeOutput(sim,args,name=None,rot=0,scale=1,
@@ -240,12 +259,8 @@ def main(args):
         sim.setResolution( int(args.imagesize) )
     if args.nterms:
         sim.setNterms( int(args.nterms) )
-    if args.outfile:
-        outstream = open(args.outfile,"wt")
     if args.lightprofile:
         sim.setLightProfile(args.lightprofile)
-    else:
-        outstream = None
 
     sim.setMaskMode( args.mask )
 
@@ -257,26 +272,36 @@ def main(args):
     if args.csvfile:
         print( "Load CSV file:", args.csvfile )
         frame = pd.read_csv(args.csvfile)
-        cols = frame.columns
-        print( "columns:", cols )
         outcols = list(frame.columns)
-        if outstream != None:
-           headers = ",".join( outcols + relcols + getMSheaders(int(args.nterms)) )
-           headers += "\n"
-           outstream.write(headers)
+        print( "columns:", outcols )
+        dfs = []
         for index,row in frame.iterrows():
-            makeSingle(sim,param,row=row,outstream=outstream,outcols=outcols)
+            imsim = makeSingle(sim,param,row=row,outcols=outcols)
+            if args.outfile:
+                dfs.append( imsim.getData() )
+        df = pd.DataFrame( dfs )
+        if args.outfile:
+           if args.mldata:
+               dropcol = [ "index", "source", "config", "nterms",
+                         "centreX", "centreY", "reletaX", "reletaY",
+                         "offsetX", "offsetY" ]
+               print( df.columns )
+               for c in dropcol:
+                   try:
+                       df.drop( columns=c, inplace=True )
+                   except:
+                       print( "No column", c )
+           df.to_csv(args.outfile, sep=",", index=False)
     else:
         makeSingle(sim,param)
     print( "ready to close simulator" )
     sim.close()
     print( "simulator closed" )
-    if outstream != None: outstream.close()
 
 if __name__ == "__main__":
     parser = CosmoParser(
           prog = 'CosmoSim makeimage',
-          description = 'Generaet an image for given lens and source parameters',
+          description = 'Generate an image for given lens and source parameters',
           epilog = '')
 
     args = parser.parse_args()

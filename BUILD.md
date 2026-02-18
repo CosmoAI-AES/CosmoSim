@@ -1,24 +1,33 @@
 # Building CosmoSim
 
-This has to be revised.
-The preferred approach is to build as a python package
-and install via pip, but this is not yet documented.
+A number of approaches have been attempted for building.
+Some work, and others may serve as inspiration if you have
+other needs. It is easiest to look at the various scriopts 
+and workflows that are included.
 
-## Running from Precompiled Version in Python
+The currently working approaches (on MacOS and Linux) are 
++ github workflow `wheels.yml`, building python wheels (pip installable)
+  using `cibuildwheel`
++ `python -m build` building the python library locally using `skbuild-conan`
++ `Setup/build.sh` building locally, including both python and C++ libraries,
+  working on MacOS and Linux (Debian&Ubuntu)
+    + github workflow `regressiontest.yml` demonstrate the same build.
+    + It depends on many preinstalled packages, but it (conan) will usually
+      tell you which
++ If OpenCV and symengine (C++ libraries) are preinstalled, it should
+  be possible to build with cmake, not using conan.
+    + `Setup/idunbuild.sh` does this for the NTNU HPC cluster.
+      It can be used as an example, but as written, it depends on their
+      module system for preinstalled libraries.
+At presernt, nothing works on Windows.  Under `.github/actions` there
+is a `build-windows` action that used to work, but it currently does
+not.
 
-The libraries are built using Github Workflows and packed
-as complete Python modules with lirbraries or scripts.
-Currently, we build for Python 3,9, 3.10, 3.11, and 3.12 on Linux,
-Python 3.10, 3.11, and 3.12 on Windows, Python 3.11 and 3.12 on
-MacOS for arm64, and Python 3.10 for MacOS for Intel.
-We only test it on linux, and it may or may not work on other platforms.
-
-1.  Make sure you have one of the supported Python versions
-2.  Download and unpack `CosmoSimPy.zip` from 
-    [the latest release](https://github.com/CosmoAI-AES/CosmoSim/releases/latest).
-3.  Run `CosmoSimPy/CosmoGUI.py` in python.  This is the GUI tool.
-4.  The `CosmoSimPy/datagen.py` is the CLI tool and should be run
-    on the command line; see below.
+For broken or otherwise non-supported approaches, see
++ directory `Legacy/github-workflows`
+    + including a workflow for a MacOS desktop application (GUI)
++ directory `docker`
++ directory `Setup`
 
 ## MacOS Desktop Application
 

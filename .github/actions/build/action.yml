@@ -11,7 +11,7 @@ inputs:
     default: 13
   python-version:
     required: false
-    default: '3.12'
+    default: '3.13'
 
 runs:
     using: "composite"
