@@ -3,6 +3,11 @@
 
 ## Unreleased
 
+### Added
+
++ `CosmoSim.datagen` takes the --mldata option which drops superfluous columns
+  from the roulette CSV output.
+
 ## [2.5.3] - 2025-08-05
 
 ### Added

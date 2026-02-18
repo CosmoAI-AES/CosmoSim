@@ -279,7 +279,17 @@ def main(args):
                 dfs.append( imsim.getData() )
         df = pd.DataFrame( dfs )
         if args.outfile:
-            df.to_csv(args.outfile, sep=",", index=False)
+           if args.mldata:
+               dropcol = [ "index", "source", "config", "nterms",
+                         "centreX", "centreY", "reletaX", "reletaY",
+                         "offsetX", "offsetY" ]
+               print( df.columns )
+               for c in dropcol:
+                   try:
+                       df.drop( columns=c, inplace=True )
+                   except:
+                       print( "No column", c )
+           df.to_csv(args.outfile, sep=",", index=False)
     else:
         makeSingle(sim,param)
     print( "ready to close simulator" )
