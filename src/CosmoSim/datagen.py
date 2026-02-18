@@ -63,6 +63,7 @@ class SimImage:
             print( "index", row["index"] )
             param.setRow( row )
             name = row["filename"].split(".")[0]
+            self.row = row
         elif name == None:
             name = param.get( "name" )
         sim.makeSource( param )
@@ -82,10 +83,11 @@ class SimImage:
         self.outcols = outcols
     def getData(self):
         sim = self.sim
+        centrepoint = self.centrepoint
         maxm = self.param.get( "nterms" )
         xireference = self.param.get( "xireference" )
         print( "[datagen.py] Finding Alpha/beta; centrepoint=", centrepoint )
-        r = pd.Series([ row[x] for x in outcols ], index=outcols )
+        # r = pd.Series([ row[x] for x in self.outcols ], index=self.outcols )
         releta = sim.getRelativeEta(centrepoint=centrepoint)
         offset = sim.getOffset(centrepoint=centrepoint)
         xioffset = sim.getXiOffset(centrepoint)
@@ -93,7 +95,6 @@ class SimImage:
             ab = sim.getAlphaBetas(maxm)
         else:
             ab = sim.getAlphaBetas(maxm,pt=centrepoint)
-        print(r1)
         relcols = [ "centreX", "centreY",
                    "reletaX", "reletaY",
                    "offsetX", "offsetY",
@@ -101,11 +102,10 @@ class SimImage:
         r2 = pd.Series(
               [ centrepoint[0], centrepoint[1], releta[0], releta[1],
                offset[0], offset[1], xioffset[0], xioffset[1] ],
-              index=relcols )
-        print(r2)
-        r3 = pd.Series( ab, index=getMSheaders(maxm))
-        print(r3)
-        r1.append( [ r2, r3 ] )
+              index=relcols ) 
+        r3 = pd.Series( ab, index=getMSheaders(maxm)) 
+        r1 = pd.concat( [ self.row, r2, r3 ] )
+        print( "New row:", r1 )
         return r1
     def join(self):
         # sim.setMaskMode(False)
@@ -277,9 +277,9 @@ def main(args):
             imsim = makeSingle(sim,param,row=row,outcols=outcols)
             if args.outfile:
                 dfs.append( imsim.getData() )
+        df = pd.DataFrame( dfs )
         if args.outfile:
             df.to_csv(args.outfile, sep=",", index=False)
-        df = pd.DataFrame( dfs )
     else:
         makeSingle(sim,param)
     print( "ready to close simulator" )
