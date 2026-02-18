@@ -75,6 +75,7 @@ class SimImage:
         print( "[datagen.py] Centre Point", centrepoint,
               "(Centre of Luminence in Planar Co-ordinates)" )
         self.sim = sim
+        self.centrepoint = centrepoint
         self.name = name
         self.param = param
         self.directory = self.param.get( "directory" )
