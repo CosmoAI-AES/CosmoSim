@@ -7,6 +7,7 @@
 
 + `CosmoSim.datagen` takes the --mldata option which drops superfluous columns
   from the roulette CSV output.
++ Sersic light profiles for source models
 
 ## [2.5.3] - 2025-08-05
 
