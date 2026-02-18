@@ -25,6 +25,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setCHI", &CosmoSim::setCHI)
         .def("setXY", &CosmoSim::setXY)
         .def("setPolar", &CosmoSim::setPolar)
+        // .def("setLightProfile", &CosmoSim::setLightProfile)
         .def("getActual", &CosmoSim::getActual)
         .def("getApparent", &CosmoSim::getSource)
         .def("getDistorted", &CosmoSim::getDistorted)
@@ -57,10 +58,10 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("getImage", &Source::getImage)
         ;
     py::class_<SphericalSource,Source>(m, "SphericalSource")
-        .def(py::init<int,double>())
+        .def(py::init<int,double,LightProfileSpec>())
         ;
     py::class_<EllipsoidSource,Source>(m, "EllipsoidSource")
-        .def(py::init<int,double,double,double>())
+        .def(py::init<int,double,double,LightProfileSpec,double>())
         ;
     py::class_<SourceConstellation,Source>(m, "SourceConstellation")
         .def(py::init<int>())
@@ -168,6 +169,9 @@ PYBIND11_MODULE(CosmoSimPy, m) {
        .value( "PointMassExact", CSIM_MODEL_POINTMASS_EXACT )
        .value( "PointMassRoulettes", CSIM_MODEL_POINTMASS_ROULETTE ) 
        .value( "NoModel", CSIM_NOMODEL  )  ;
+    pybind11::enum_<LightProfileSpec>(m, "LightProfileSpec") 
+       .value( "Gaussian", CSIM_LIGHT_GAUSSIAN )
+       .value( "Sersic", CSIM_LIGHT_SERSIC );
 
     // cv::Mat binding from https://alexsm.com/pybind11-buffer-protocol-opencv-to-numpy/
     pybind11::class_<cv::Mat>(m, "Image", pybind11::buffer_protocol())

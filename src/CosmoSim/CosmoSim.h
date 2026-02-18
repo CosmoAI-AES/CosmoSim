@@ -46,6 +46,7 @@ private:
     SimulatorModel *sim = NULL ;
     Source *src = NULL ;
     bool maskmode ;
+    // LightProfileSpec lightprf = LightProfileSpec::CSIM_LIGHT_GAUSSIAN ;
 
     void initLens() ;
     void configLens() ;
@@ -78,6 +79,7 @@ public:
     void setEinsteinR(double);
     void setRatio(double);
     void setOrientation(double);
+    // void setLightProfile(LightProfileSpec);
 
     int setSource( Source *src ) ;
 

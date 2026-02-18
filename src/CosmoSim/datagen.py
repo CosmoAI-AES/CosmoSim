@@ -242,6 +242,8 @@ def main(args):
         sim.setNterms( int(args.nterms) )
     if args.outfile:
         outstream = open(args.outfile,"wt")
+    if args.lightprofile:
+        sim.setLightProfile(args.lightprofile)
     else:
         outstream = None
 

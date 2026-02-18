@@ -138,7 +138,16 @@ class SourcePane(ttk.Frame):
                 values=self.sourceValues ) # [ "Spherical", "Ellipsoid", "Triangle" ] )
         sourceLabel.grid(column=0, row=1, sticky=E )
         self.sourceSelector.grid(column=1, row=1)
-
+        lightVar = StringVar()
+        self.lightprfVar = lightVar
+        lightVar.set( "Sersic" )
+        lightProfileLabel = ttk.Label( self,
+            text="Light Profile", style="Std.TLabel" )
+        self.lightProfileSelector = ttk.Combobox( self,
+                textvariable=lightVar,
+                values=[ "Gaussian", "Sersic" ] )
+        lightProfileLabel.grid(column=0, row=5, sticky=E )
+        self.lightProfileSelector.grid(column=1, row=5)
         self.sigmaSlider = IntSlider( self,
                 text="Source Size", row=2,
                 default=20 )
@@ -153,12 +162,14 @@ class SourcePane(ttk.Frame):
         self.thetaSlider.var.trace_add( "write", self.push)
         self.push(runsim=False)
         modeVar.trace_add("write", self.push) 
+        lightVar.trace_add( "write", self.push)
     def push(self,*a,runsim=True):
         p = {
            "source": self.sourceVar.get(),
            "sigma":  self.sigmaSlider.get(),
            "sigma2":  self.sigma2Slider.get(),
            "theta":  self.thetaSlider.get(),
+           "lightprofile": self.lightprfVar.get(),
            }
         print( "[Controller.py] Push source parameters", p )
         self.sim.makeSource(p)

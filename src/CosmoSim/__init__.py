@@ -17,6 +17,7 @@ __version__ = "2.5.3"
 ModelSpec = cs.ModelSpec
 SourceSpec = cs.SourceSpec
 PsiSpec = cs.PsiSpec
+LightProfileSpec = cs.LightProfileSpec
 
 RouletteRegenerator = cs.RouletteRegenerator 
 Point = cs.Point 
@@ -24,14 +25,15 @@ Point = cs.Point
 def makeSourceConstellation(src,size):
     ss = src.split(";")
     sl = [ x.split("/") for x in ss ]
+    print( "makeSourceConstellation: src=", src, "size=", size, "sl=", sl )
     constellation = SourceConstellation(size)
     for s in sl:
         mode = sourceDict[s[0]]
         if mode == sourceDict.get( "Spherical" ):
-            constituent = cs.SphericalSource( size, float(s[3]) )
+            constituent = cs.SphericalSource( size, float(s[3]), LightProfileSpec(s[6]) )
         elif mode == sourceDict.get( "Ellipsoid" ):
             constituent = cs.EllipsoidSource( size, float(s[3]),
-                    float(s[4]), float(s[5])*np.pi/180 )
+                    float(s[4]), LightProfileSpec(s[6]), float(s[5])*np.pi/180)
         elif mode == sourceDict.get( "Triangle" ):
             constituent = cs.TriangleSource( size, float(s[3]), float(s[4])*np.pi/180 )
         elif mode == sourceDict.get( "Iamge (Einstein)" ):
@@ -49,14 +51,17 @@ def makeSource(param):
     """
     size = int( param.get( "imagesize" ) )
     src = param.get("source")
+    prf = param.get("lightprofile")
+    print(prf)
     print( "makeSource", src )
     if src.find("/") < 0:
        mode = sourceDict[src]
+       lightProfile = LightProfileDict[prf]
        if mode == sourceDict.get( "Spherical" ):
-           r = cs.SphericalSource( size, float(param.get( "sigma" )) )
+           r = cs.SphericalSource( size, float(param.get( "sigma" )), lightProfile)
        elif mode == sourceDict.get( "Ellipsoid" ):
            r = cs.EllipsoidSource( size, float(param.get( "sigma" )),
-                   float(param.get( "sigma2" )), float(param.get( "theta" ))*np.pi/180 )
+                   float(param.get( "sigma2" )), float(param.get( "theta" ))*np.pi/180, lightProfile)
        elif mode == sourceDict.get( "Triangle" ):
            r = cs.TriangleSource( size, float(param.get( "sigma" )),
                    float(param.get( "theta" ))*np.pi/180 )
@@ -126,6 +131,12 @@ sourceValues = {
         "Ellipsoid" : SourceSpec.Ellipse,
         "Image (Einstein)" : SourceSpec.Image,
         "Triangle" : SourceSpec.Triangle,
+        }
+LightProfileDict = {
+        "Gaussian" : LightProfileSpec.Gaussian,
+        "Sersic" : LightProfileSpec.Sersic,
+        "g" : LightProfileSpec.Gaussian,
+        "s" : LightProfileSpec.Sersic,
         }
 
 def getMS(maxm): return [ (m,s) for m in range(maxm+1)

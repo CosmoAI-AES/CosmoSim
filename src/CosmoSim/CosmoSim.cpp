@@ -113,6 +113,7 @@ void CosmoSim::setNterms(int c) { nterms = c ; }
 void CosmoSim::setMaskRadius(double c) { maskRadius = c ; }
 void CosmoSim::setXY( double x, double y) { xPos = x ; yPos = y ; rPos = -1 ; }
 void CosmoSim::setPolar(int r, int theta) { rPos = r ; thetaPos = theta ; }
+// void CosmoSim::setLightProfile( LightProfileSpec p ) { lightprf = p ; }
 void CosmoSim::setModelMode(int m) { 
    if ( modelmode != m ) {
       if (DEBUG) std::cout << "[CosmoSim.cpp] setModelMode(" << modelmode 
@@ -270,6 +271,7 @@ bool CosmoSim::runSim() {
    sim->setNterms( nterms ) ;
    sim->setMaskRadius( maskRadius ) ;
    sim->setMaskMode( maskmode ) ;
+   // sim->setLightProfile( lightprf ) ;
 
    // Set source position
    if ( rPos < 0 ) {

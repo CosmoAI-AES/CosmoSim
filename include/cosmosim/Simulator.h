@@ -85,6 +85,7 @@ public:
     void setCHI(double) ;
     void setNterms(int);
     void setSource(Source*) ;
+    // void setLightProfile( LightProfileSpec );
 
     void setCentred( bool ) ;
     void setMaskMode( bool ) ;

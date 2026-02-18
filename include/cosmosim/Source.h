@@ -11,6 +11,9 @@
 
 #define MAXCLUSTER 50
 
+enum LightProfileSpec { CSIM_LIGHT_SERSIC,
+                        CSIM_LIGHT_GAUSSIAN };
+
 class Source {
 
 protected:
@@ -49,9 +52,10 @@ class SphericalSource : public Source {
 
 private:
     double sigma ;
+    LightProfileSpec lightprofile;
 
 public:
-    SphericalSource(int,double) ;
+    SphericalSource(int,double,LightProfileSpec) ;
 
 protected:
     virtual void drawSource(int, int, cv::Mat &) ;
@@ -61,10 +65,11 @@ class EllipsoidSource : public Source {
 
 private:
     double sigma1, sigma2, theta ;
+    LightProfileSpec lightprofile ;
 
 public:
-    EllipsoidSource(int,double,double) ;
-    EllipsoidSource(int,double,double,double) ;
+    EllipsoidSource(int,double,double,LightProfileSpec) ;
+    EllipsoidSource(int,double,double,LightProfileSpec,double) ;
 
 protected:
     virtual void drawSource(int, int, cv::Mat &) ;

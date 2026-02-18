@@ -3,25 +3,40 @@
 #include "cosmosim/Simulator.h"
 #include <thread>
 
-EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2, double thet ) :
+EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2, LightProfileSpec lightprf, double thet) :
         sigma1(sig1),
         sigma2(sig2),
         theta(thet),
+        lightprofile(lightprf),
         Source::Source(sz)
 { }
-EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2 ) :
-        EllipsoidSource(sz,sig1,sig2,0)
+EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2, LightProfileSpec lightprf) :
+        EllipsoidSource(sz,sig1,sig2,lightprf,0)
 { }
 
 
-/* Draw the source image.  The sourceSize is interpreted as the standard deviation in a Gaussian distribution */
+/* Draw the source image.  The sourceSize is interpreted as the standard deviation in a Sersic or Gaussian distribution */
 void EllipsoidSource::drawSource(int begin, int end, cv::Mat& dst) {
     for (int row = begin; row < end; row++) {
         for (int col = 0; col < dst.cols; col++) {
             int x = col - dst.cols/2;
             int y = row - dst.rows/2;
+            if (lightprofile == LightProfileSpec::CSIM_LIGHT_GAUSSIAN) {
             auto value = (uchar)round(255 * exp( 0.5*(-(x*x)/(sigma1*sigma1) - (y*y)/(sigma2*sigma2) ) ));
             dst.at<uchar>(row, col) = value;
+            }
+            else if (lightprofile == LightProfileSpec::CSIM_LIGHT_SERSIC) {
+                auto q = sigma2/sigma1;
+                int n = 4;  // Sersic index
+                auto re = 10*sigma1; // effective radius
+                auto r = std::sqrt(std::pow(x/q, 2)+std::pow(y, 2));
+                auto bn = 1.992*n - 0.3271;
+                auto value = round(std::exp(-bn*((std::pow(r/re, 1.0/n))-1.0)));
+                if (value > 255) {
+                    value = 255;
+                }
+                dst.at<uchar>(row, col) = (uchar)value;
+            }  
         }
     }
 }

@@ -415,6 +415,10 @@ void SimulatorModel::setLens( Lens *l ) {
    lens = l ;
 }
 
+// void SimulatorModel::setLightProfile(LightProfileSpec p) {
+//    lightprf = p ;
+// }
+
 cv::Point2d SimulatorModel::getRelativeEta( cv::Point2d xi1 ) {
    // returns $\vec\eta''$
    cv::Point2d releta ;

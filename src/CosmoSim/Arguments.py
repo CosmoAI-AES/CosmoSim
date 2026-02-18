@@ -41,6 +41,7 @@ class CosmoParser(argparse.ArgumentParser):
     self.add_argument('-n', '--nterms', help="Number of Roulettes terms", default=15)
     self.add_argument('-Z', '--imagesize', default=512, help="image size for calculations")
     self.add_argument('-z', '--cropsize', help="Final image size")
+    self.add_argument('-l', '--lightprofile', default="Gaussian", help="light profile (sersic or gaussian)")
 
     # Output configuration 
     self.add_argument('-R', '--reflines',action='store_true',
@@ -115,3 +116,5 @@ def setParameters(sim,row):
         sim.setResolution( row["imagesize"] )
     if row.get("nterms",None) != None:
         sim.setNterms( row["nterms"] )
+    if row.get("lightprofile",None) != None:
+        sim.setLightProfile( row["lightprofile"] )
