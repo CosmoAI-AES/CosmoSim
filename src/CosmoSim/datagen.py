@@ -20,7 +20,6 @@ from .Parameters import Parameters
 import pandas as pd
 
 defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "x", "y" ]
-relcols = [ "centreX", "centreY", "reletaX", "reletaY", "offsetX", "offsetY", "xiX", "xiY" ]
 
 def setParameters(sim,row):
     print( row ) 
@@ -94,6 +93,10 @@ class SimImage:
         else:
             ab = sim.getAlphaBetas(maxm,pt=centrepoint)
         print(r1)
+        relcols = [ "centreX", "centreY",
+                   "reletaX", "reletaY",
+                   "offsetX", "offsetY",
+                   "xiX", "xiY" ]
         r2 = pd.Series(
               [ centrepoint[0], centrepoint[1], releta[0], releta[1],
                offset[0], offset[1], xioffset[0], xioffset[1] ],
