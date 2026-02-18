@@ -64,6 +64,7 @@ class CosmoParser(argparse.ArgumentParser):
             help="Several images moving the viewpoint")
     self.add_argument('-F', '--amplitudes',help="Amplitudes file")
     self.add_argument('-A', '--apparent',action='store_true',help="write apparent image")
+    self.add_argument('--mldata',action='store_true',help="Make roulette output for ML without redundant colums")
     self.add_argument('-a', '--actual',action='store_true',help="write actual image")
     self.add_argument('-U', '--original',action='store_true',help="write original image before centring")
 

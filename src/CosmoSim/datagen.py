@@ -58,6 +58,7 @@ def setParameters(sim,row):
 
 class SimImage:
     def __init__(self,sim,param,name=None,row=None,outcols=None):
+        print( "[SimImage] init ..." )
         if not row is None:
             setParameters( sim, row )
             print( "index", row["index"] )
@@ -160,7 +161,7 @@ def makeSingle(sim,param,name=None,row=None,outcols=None):
     """Process a single parameter set, given either as a pandas row or
     just as args parsed from the command line.
     """
-    imsim = ImageSim(sim,param,name,row,outcols)
+    imsim = SimImage(sim,param,name,row,outcols)
     if args.join: imsim.join()
     if args.family: imsim.family()
     if args.psiplot: imsim.psiplot()

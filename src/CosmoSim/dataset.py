@@ -1,6 +1,13 @@
 #! /usr/bin/env python3
 # (C) 2025: Hans Georg Schaathun <georg@schaathun.net>
-# Generate a set of lens/source parameters
+
+"""
+Generate random sets of lens/source parameters.
+The module can be run as a script, taking a TOML file as input
+and producing a CSV file as output.
+Alternatively, the datasetgen() function can be imported and
+used from other modules.
+"""
 
 import numpy as np
 import tomllib as tl
