@@ -5,11 +5,10 @@ Some work, and others may serve as inspiration if you have
 other needs. It is easiest to look at the various scriopts 
 and workflows that are included.
 
-
 The currently working approaches (on MacOS and Linux) are 
 + github workflow `wheels.yml`, building python wheels (pip installable)
   using `cibuildwheel`
-+ `python -m build` buulding the python library locally using `skbuild-conan`
++ `python -m build` building the python library locally using `skbuild-conan`
 + `Setup/build.sh` building locally, including both python and C++ libraries,
   working on MacOS and Linux (Debian&Ubuntu)
     + github workflow `regressiontest.yml` demonstrate the same build.
