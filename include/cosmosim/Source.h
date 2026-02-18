@@ -68,8 +68,8 @@ private:
     LightProfileSpec lightprofile ;
 
 public:
-    EllipsoidSource(int,double,double,LightProfileSpec) ;
-    EllipsoidSource(int,double,double,LightProfileSpec,double) ;
+    EllipsoidSource(int,double,double) ;
+    EllipsoidSource(int,double,double,double,LightProfileSpec) ;
 
 protected:
     virtual void drawSource(int, int, cv::Mat &) ;

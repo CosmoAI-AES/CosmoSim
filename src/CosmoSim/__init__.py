@@ -30,10 +30,11 @@ def makeSourceConstellation(src,size):
     for s in sl:
         mode = sourceDict[s[0]]
         if mode == sourceDict.get( "Spherical" ):
-            constituent = cs.SphericalSource( size, float(s[3]), LightProfileSpec(s[6]) )
+            constituent = cs.SphericalSource( size, float(s[3]), LightProfileDict.get(s[6]) )
         elif mode == sourceDict.get( "Ellipsoid" ):
             constituent = cs.EllipsoidSource( size, float(s[3]),
-                    float(s[4]), LightProfileSpec(s[6]), float(s[5])*np.pi/180)
+                    float(s[4]), float(s[5])*np.pi/180,
+                    LightProfileDict.get(s[6]))
         elif mode == sourceDict.get( "Triangle" ):
             constituent = cs.TriangleSource( size, float(s[3]), float(s[4])*np.pi/180 )
         elif mode == sourceDict.get( "Iamge (Einstein)" ):
@@ -135,8 +136,8 @@ sourceValues = {
 LightProfileDict = {
         "Gaussian" : LightProfileSpec.Gaussian,
         "Sersic" : LightProfileSpec.Sersic,
-        "g" : LightProfileSpec.Gaussian,
-        "s" : LightProfileSpec.Sersic,
+        # "g" : LightProfileSpec.Gaussian,
+        # "s" : LightProfileSpec.Sersic,
         }
 
 def getMS(maxm): return [ (m,s) for m in range(maxm+1)

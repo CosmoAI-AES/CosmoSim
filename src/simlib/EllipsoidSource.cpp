@@ -3,15 +3,15 @@
 #include "cosmosim/Simulator.h"
 #include <thread>
 
-EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2, LightProfileSpec lightprf, double thet) :
+EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2, double thet, LightProfileSpec lightprf) :
         sigma1(sig1),
         sigma2(sig2),
         theta(thet),
         lightprofile(lightprf),
         Source::Source(sz)
 { }
-EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2, LightProfileSpec lightprf) :
-        EllipsoidSource(sz,sig1,sig2,lightprf,0)
+EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2 ) :
+        EllipsoidSource(sz,sig1,sig2,0,CSIM_LIGHT_GAUSSIAN)
 { }
 
 
