@@ -29,12 +29,12 @@ def makeSourceConstellation(src,size):
     constellation = SourceConstellation(size)
     for s in sl:
         mode = sourceDict[s[0]]
+        ltprf = lightProfileDict.get( s[0], LightProfileSpec.Gaussian ) 
         if mode == sourceDict.get( "Spherical" ):
-            constituent = cs.SphericalSource( size, float(s[3]), LightProfileDict.get(s[6]) )
+            constituent = cs.SphericalSource( size, float(s[3]), ltprf )
         elif mode == sourceDict.get( "Ellipsoid" ):
             constituent = cs.EllipsoidSource( size, float(s[3]),
-                    float(s[4]), float(s[5])*np.pi/180,
-                    LightProfileDict.get(s[6]))
+                    float(s[4]), float(s[5])*np.pi/180, ltprf)
         elif mode == sourceDict.get( "Triangle" ):
             constituent = cs.TriangleSource( size, float(s[3]), float(s[4])*np.pi/180 )
         elif mode == sourceDict.get( "Iamge (Einstein)" ):
@@ -57,12 +57,12 @@ def makeSource(param):
     print( "makeSource", src )
     if src.find("/") < 0:
        mode = sourceDict[src]
-       lightProfile = LightProfileDict[prf]
+       ltprf = lightProfileDict.get( prf, LightProfileSpec.Gaussian ) 
        if mode == sourceDict.get( "Spherical" ):
-           r = cs.SphericalSource( size, float(param.get( "sigma" )), lightProfile)
+           r = cs.SphericalSource( size, float(param.get( "sigma" )), ltprf)
        elif mode == sourceDict.get( "Ellipsoid" ):
            r = cs.EllipsoidSource( size, float(param.get( "sigma" )),
-                   float(param.get( "sigma2" )), float(param.get( "theta" ))*np.pi/180, lightProfile)
+                   float(param.get( "sigma2" )), float(param.get( "theta" ))*np.pi/180, ltprf)
        elif mode == sourceDict.get( "Triangle" ):
            r = cs.TriangleSource( size, float(param.get( "sigma" )),
                    float(param.get( "theta" ))*np.pi/180 )
@@ -121,6 +121,8 @@ configDict["raysie"] = configDict["Raytrace SIE"]
 sourceDict = {
         "Spherical" : SourceSpec.Sphere,
         "Ellipsoid" : SourceSpec.Ellipse,
+        "SersicSphere" : SourceSpec.Sphere,
+        "SersicEllipsoid" : SourceSpec.Ellipse,
         "Image (Einstein)" : SourceSpec.Image,
         "Triangle" : SourceSpec.Triangle,
         "s" : SourceSpec.Sphere,
@@ -133,9 +135,13 @@ sourceValues = {
         "Image (Einstein)" : SourceSpec.Image,
         "Triangle" : SourceSpec.Triangle,
         }
-LightProfileDict = {
+lightProfileDict = {
         "Gaussian" : LightProfileSpec.Gaussian,
         "Sersic" : LightProfileSpec.Sersic,
+        "Spherical" : LightProfileSpec.Gaussian,
+        "Ellipsoid" : LightProfileSpec.Gaussian,
+        "SersicSphere" : LightProfileSpec.Sersic,
+        "SersicEllipsoid" : LightProfileSpec.Sersic,
         # "g" : LightProfileSpec.Gaussian,
         # "s" : LightProfileSpec.Sersic,
         }
