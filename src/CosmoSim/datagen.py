@@ -55,6 +55,50 @@ def setParameters(sim,row):
     if row.get("nterms",None) != None:
         sim.setNterms( row["nterms"] )
 
+
+class SimImage:
+    def __init__(self,sim,param,name=None,row=None,outstream=None,outcols=None):
+        if not row is None:
+            setParameters( sim, row )
+            print( "index", row["index"] )
+            param.setRow( row )
+            name = row["filename"].split(".")[0]
+        elif name == None:
+            name = param.get( "name" )
+        sim.makeSource( param )
+        print ( "[datagen.py] ready for runSim()\n" ) ;
+        sim.runSim()
+        print ( "[datagen.py] runSim() completed\n" ) ;
+        centrepoint = makeOutput(sim,args,name,actual=args.actual,
+                             apparent=args.apparent,original=args.original,
+                             reflines=args.reflines,critical=args.criticalcurves)
+        print( "[datagen.py] Centre Point", centrepoint,
+              "(Centre of Luminence in Planar Co-ordinates)" )
+        self.sim = sim
+    def getData(self):
+    # if outstream:
+        sim = self.sim
+        maxm = self.param.get( "nterms" )
+        xireference = self.param.get( "xireference" )
+        print( "[datagen.py] Finding Alpha/beta; centrepoint=", centrepoint )
+        r = pd.Series([ row[x] for x in outcols ], index=outcols )
+        releta = sim.getRelativeEta(centrepoint=centrepoint)
+        offset = sim.getOffset(centrepoint=centrepoint)
+        xioffset = sim.getXiOffset(centrepoint)
+        if xireference:
+            ab = sim.getAlphaBetas(maxm)
+        else:
+            ab = sim.getAlphaBetas(maxm,pt=centrepoint)
+        print(r1)
+        r2 = pd.Series(
+              [ centrepoint[0], centrepoint[1], releta[0], releta[1],
+               offset[0], offset[1], xioffset[0], xioffset[1] ],
+              index=relcols )
+        print(r2)
+        r3 = pd.Series( ab, index=getMSheaders(maxm))
+        print(r3)
+        r1.append( [ r2, r3 ] )
+        return r1
 def makeSingle(sim,param,name=None,row=None,outstream=None,outcols=None):
     """Process a single parameter set, given either as a pandas row or
     just as args parsed from the command line.
@@ -274,7 +318,7 @@ def main(args):
 if __name__ == "__main__":
     parser = CosmoParser(
           prog = 'CosmoSim makeimage',
-          description = 'Generaet an image for given lens and source parameters',
+          description = 'Generate an image for given lens and source parameters',
           epilog = '')
 
     args = parser.parse_args()
