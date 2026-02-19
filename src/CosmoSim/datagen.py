@@ -259,8 +259,6 @@ def main(args):
         sim.setResolution( int(args.imagesize) )
     if args.nterms:
         sim.setNterms( int(args.nterms) )
-    if args.lightprofile:
-        sim.setLightProfile(args.lightprofile)
 
     sim.setMaskMode( args.mask )
 
