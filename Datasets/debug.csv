@@ -71,3 +71,9 @@ index,filename,source,config,chi,x,y,einsteinR,sigma,sigma2,theta,nterms
 "f024",raytrace-sis-t024.png,t,rs,50,-60,-50,25, 5,0,0,16
 "f025",raytrace-sis-t025.png,t,rs,50,-20, -3,48,27,0,0,16
 "f026",raytrace-sis-t026.png,t,rs,50,-30,-25,20,20,0,0,16
+"srs01",srs-s01.png,SersicSphere,fs,50, 24,-68,48,21,0,0,16
+"srs02",srs-s02.png,SersicEllipsoid,fs,50, 24,-68,48,21,0,0,16
+"srs03",srs-s03.png,SersicSphere,raysie,50, 24,-68,48,21,0,0,16
+"srs04",srs-s04.png,SersicEllipsoid,raysie,50, 24,-68,48,21,0,0,16
+"srs05",srs-s05.png,SersicSphere,rs,50, 24,-68,48,21,0,0,16
+"srs06",srs-s06.png,SersicEllipsoid,rs,50, 24,-68,48,21,0,0,16

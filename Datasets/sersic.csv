@@ -1,0 +1,13 @@
+index,filename,source,config,chi,x,y,einsteinR,sigma,sigma2,theta,nterms
+"g01",g01.png,Spherical,fs,50, 24,-68,48,21,0,0,16
+"s01",s01.png,SersicSphere,fs,50, 24,-68,48,21,0,0,16
+"g02",g02.png,Ellipsoid,fs,50, 24,-68,48,21,10,0,16
+"s02",s02.png,SersicEllipsoid,fs,50, 24,-68,48,21,10,0,16
+"g03",g03.png,Spherical,raysie,50, 24,-68,48,21,0,0,16
+"s03",s03.png,SersicSphere,raysie,50, 24,-68,48,21,0,0,16
+"g04",g04.png,Ellipsoid,raysie,50, 24,-68,48,21,10,0,16
+"s04",s04.png,SersicEllipsoid,raysie,50, 24,-68,48,21,10,0,16
+"g05",g05.png,Spherical,rs,50, 24,-68,48,21,0,0,16
+"s05",s05.png,SersicSphere,rs,50, 24,-68,48,21,0,0,16
+"g06",g06.png,Ellipsoid,rs,50, 24,-68,48,21,10,0,16
+"s06",s06.png,SersicEllipsoid,rs,50, 24,-68,48,21,10,0,16

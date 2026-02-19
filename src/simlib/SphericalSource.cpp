@@ -8,7 +8,13 @@ SphericalSource::SphericalSource(int sz, double sig, LightProfileSpec lightprf) 
         Source::Source(sz),
         sigma(sig),
         lightprofile(lightprf)
-{ }
+{ 
+        if (lightprofile == LightProfileSpec::CSIM_LIGHT_GAUSSIAN) {
+	   std::cout << "[SphericalSource] GAUSS\n" ;
+        } else if (lightprofile == LightProfileSpec::CSIM_LIGHT_SERSIC) {
+	   std::cout << "[SphericalSource] SERSIC\n" ;
+	}
+}
 
 /* Draw the source image.  The sourceSize is interpreted as the standard deviation in a Gaussian distribution */
 void SphericalSource::drawSource(int begin, int end, cv::Mat& dst) {
