@@ -52,10 +52,14 @@ def makeSource(param):
     """
     size = int( param.get( "imagesize" ) )
     src = param.get("source")
+    ltprf0 = param.get( "lightprofile", None )
     print( "makeSource", src )
     if src.find("/") < 0:
        mode = sourceDict[src]
-       ltprf = lightProfileDict.get( src, LightProfileSpec.Gaussian ) 
+       if ltprf0 is None:
+           ltprf = lightProfileDict.get( src, LightProfileSpec.Gaussian ) 
+       else:
+           ltprf = lightProfileDict.get( ltprf0, LightProfileSpec.Gaussian ) 
        if mode == sourceDict.get( "Spherical" ):
            r = cs.SphericalSource( size, float(param.get( "sigma" )), ltprf)
        elif mode == sourceDict.get( "Ellipsoid" ):

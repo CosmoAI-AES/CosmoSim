@@ -3,4 +3,4 @@
 mkdir -p venv
 python -m venv venv/build
 . venv/build/bin/activate
-pip install -r requirements-build.txt
+pip install -r requirements.txt
