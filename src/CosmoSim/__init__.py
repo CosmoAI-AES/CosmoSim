@@ -12,7 +12,7 @@ import os, sys
 
 import traceback
 
-__version__ = "2.5.3"
+__version__ = "2.6.0"
 
 ModelSpec = cs.ModelSpec
 SourceSpec = cs.SourceSpec
