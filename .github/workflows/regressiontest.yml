@@ -16,7 +16,7 @@ description: |
 
 on: 
    push:
-       branches: [ feature/regressiontests, refactor/workflow*, develop ]
+       branches: [ feature/regressiontests ]
    release:
    workflow_dispatch:
    workflow_call:
