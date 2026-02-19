@@ -118,6 +118,8 @@ configDict["sraysie"] = configDict["Sampled Raytrace SIE"]
 configDict["rousie"] = configDict["Roulette SIE"]
 configDict["raysie"] = configDict["Raytrace SIE"]
 
+# Note that the source names are looked up in two dictionaries,
+# both the `sourceDict` and the `lightProfileDict`.
 sourceDict = {
         "Spherical" : SourceSpec.Sphere,
         "Ellipsoid" : SourceSpec.Ellipse,
