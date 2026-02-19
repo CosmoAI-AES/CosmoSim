@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+## [2.6.0] - 2026-02-19
+
 ### Added
 
 + `CosmoSim.datagen` takes the --mldata option which drops superfluous columns
