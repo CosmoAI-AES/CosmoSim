@@ -12,7 +12,7 @@ import os, sys
 
 import traceback
 
-__version__ = "2.5.3"
+__version__ = "2.6.0"
 
 ModelSpec = cs.ModelSpec
 SourceSpec = cs.SourceSpec
@@ -150,7 +150,11 @@ lightProfileDict = {
         # "s" : LightProfileSpec.Sersic,
         }
 
-def getMS(maxm): return [ (m,s) for m in range(maxm+1)
+def getMS(minm,maxm=None):
+    if maxm is None:
+        maxm = minm
+        minm = 0
+    return [ (m,s) for m in range(minm,maxm+1)
                                     for s in range(1-m%2,m+2,2) ]
 def getMSheaders(maxm): 
     r = [ ( f"alpha[{m}][{s}]", f"beta[{m}][{s}]") for (m,s) in getMS(maxm) ]
