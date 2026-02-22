@@ -3,6 +3,16 @@
 
 ## Unreleased
 
+## [2.6.1] - 2026-02-22
+
+### Added
+
++ Extended getMSheaders() to take both a minm and maxm parameter 
+
+### Fixed
+
++ Fixed bug which made every source elliptical and Gaussian. 
+
 ## [2.6.0] - 2026-02-19
 
 ### Added
