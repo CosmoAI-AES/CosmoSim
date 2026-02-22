@@ -30,7 +30,7 @@ def configs(toml):
     if isinstance(r, str): r = [ r ] 
     return r
 def srcmode(toml):
-    r = toml["lens"].get( "mode", [ "e" ] )
+    r = toml["source"].get( "mode", [ "e" ] )
     if isinstance(r, str): r = [ r ] 
     return r
 def uniform(toml,key,rng=(0,50)):

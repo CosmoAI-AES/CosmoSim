@@ -9,7 +9,7 @@ einstein-min = 10
 einstein-max = 50
 
 [source]
-mode = "e"
+mode = "SersicSphere"
 sigma-min = 1
 sigma-max = 60
 sigma2-min = 1
