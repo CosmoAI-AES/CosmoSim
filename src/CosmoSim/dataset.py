@@ -40,15 +40,12 @@ def uniform(toml,key,rng=(0,50)):
     if rng:
         mn = toml.get( f"{key}-min", rng[0] )
         mx = toml.get( f"{key}-max", rng[1] )
-        print( "rng", key, mn, mx )
         return random.uniform(mn,mx)
     try:
         mn = toml.get( f"{key}-min" )
         mx = toml.get( f"{key}-max" )
-        print( "try", key, mn, mx )
         return random.uniform(mn,mx)
     except:
-        print( "except", key )
         return None
 
 def getline(idx,toml):
