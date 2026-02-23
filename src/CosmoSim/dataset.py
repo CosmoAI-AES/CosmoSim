@@ -35,10 +35,21 @@ def srcmode(toml):
     if isinstance(r, str): r = [ r ] 
     return r
 def uniform(toml,key,rng=(0,50)):
-    if key in toml: return toml[key]
-    mn = toml.get( f"{key}-min", rng[0] )
-    mx = toml.get( f"{key}-max", rng[1] )
-    return random.uniform(mn,mx)
+    if key in toml:
+        return toml[key]
+    if rng:
+        mn = toml.get( f"{key}-min", rng[0] )
+        mx = toml.get( f"{key}-max", rng[1] )
+        print( "rng", key, mn, mx )
+        return random.uniform(mn,mx)
+    try:
+        mn = toml.get( f"{key}-min" )
+        mx = toml.get( f"{key}-max" )
+        print( "try", key, mn, mx )
+        return random.uniform(mn,mx)
+    except:
+        print( "except", key )
+        return None
 
 def getline(idx,toml):
 
@@ -53,6 +64,8 @@ def getline(idx,toml):
 
     # Lens
     einsteinR = uniform( toml["lens"], "einstein", (10,50) )
+    orientation = uniform( toml["lens"], "orientation", rng=None )
+    ellipseratio = uniform( toml["lens"], "ellipseratio", rng=None )
 
     if coor == "polar":
         # Polar Source Co-ordinates
@@ -80,9 +93,11 @@ def getline(idx,toml):
     cfg = random.choice( configs(toml) )
     return pd.Series(
         data=[ idx,f"image-{idx:04}.png", src, cfg, chi, R, phi,
-               einsteinR, sigma, sigma2, theta, nterms, x, y ],
+               einsteinR, ellipseratio, orientation, 
+               sigma, sigma2, theta, nterms, x, y ],
         index=[ "index", "filename", "source", "config", "chi", 
-          "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "nterms", "x", "y" ]
+               "R", "phi", "einsteinR", "ellipseratio", "orientation",
+               "sigma", "sigma2", "theta", "nterms", "x", "y" ]
         )
     # return f'"{idx:04}","image-{idx:04}.png",{src},{cfg},{chi},' \
     #      + f'{R},{phi},{einsteinR},{sigma},{sigma2},{theta},{nterms},{x},{y}'

@@ -8,6 +8,7 @@ nterms = 5
 chi = 50
 einstein-min = 10
 einstein-max = 50
+# orientation and ellipseratio are used for SIE lenses
 orientation-min = 0
 orientation-max = 179
 ellipseratio-min = 0.1
