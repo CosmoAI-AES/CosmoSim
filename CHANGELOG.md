@@ -3,6 +3,11 @@
 
 ## Unreleased
 
+### Changed
+
++ Use continuous uniform distribution in dataset generation, instead of 
+  integers.
+
 ## [2.6.1] - 2026-02-22
 
 ### Added

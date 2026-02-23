@@ -15,6 +15,7 @@ import numbers
 
 import random 
 import argparse
+import pandas as pd
 
 def isnumeric(x): return isinstance(x, numbers.Number )
 
@@ -37,12 +38,12 @@ def uniform(toml,key,rng=(0,50)):
     if key in toml: return toml[key]
     mn = toml.get( f"{key}-min", rng[0] )
     mx = toml.get( f"{key}-max", rng[1] )
-    return random.randint(mn,mx)
+    return random.uniform(mn,mx)
 
 def getline(idx,toml):
 
     nterms = toml["simulator"].get( "nterms", 16 )
-    chi = toml["lens"].get( "chi", random.randint(30,70) )
+    chi = toml["lens"].get( "chi", random.uniform(30,70) )
 
     # Source
     sigma = uniform( toml["source"], "sigma", (1,60) )
@@ -61,7 +62,7 @@ def getline(idx,toml):
         if not isnumeric(rmin): rmin = einsteinR
         if not isnumeric(rmax): rmax = 2.5*rmin
 
-        R =  random.randint(rmin,rmax)
+        R =  random.uniform(rmin,rmax)
 
         # Cartesian Co-ordinates
         x = R*np.cos(np.pi*phi/180)
@@ -77,14 +78,20 @@ def getline(idx,toml):
 
     src = random.choice( srcmode(toml) )
     cfg = random.choice( configs(toml) )
-    return f'"{idx:04}","image-{idx:04}.png",{src},{cfg},{chi},' \
-         + f'{R},{phi},{einsteinR},{sigma},{sigma2},{theta},{nterms},{x},{y}'
+    return pd.Series(
+        data=[ idx,f"image-{idx:04}.png", src, cfg, chi, R, phi,
+               einsteinR, sigma, sigma2, theta, nterms, x, y ],
+        index=[ "index", "filename", "source", "config", "chi", 
+          "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "nterms", "x", "y" ]
+        )
+    # return f'"{idx:04}","image-{idx:04}.png",{src},{cfg},{chi},' \
+    #      + f'{R},{phi},{einsteinR},{sigma},{sigma2},{theta},{nterms},{x},{y}'
 
 header = ( "index,filename,source,config,chi,"
          + "R,phi,einsteinR,sigma,sigma2,theta,nterms,x,y\n"
          )
 
-def datasetgen(infile,outfile):
+def datasetgen(infile,outfile=None):
     with open(infile, 'rb') as f:
         toml = tl.load(f)
     tomldefaults(toml)
@@ -92,13 +99,11 @@ def datasetgen(infile,outfile):
     print(configs(toml))
     print(srcmode(toml))
 
-    with open(outfile, 'w') as f:
-      f.write(header)
-      n = toml["simulator"].get( "size", 10000 )
-      for i in range(n):
-        l = getline(i+1,toml)
-        f.write(l)
-        f.write("\n")
+    n = toml["simulator"].get( "size", 10000 )
+    df = pd.DataFrame( [ getline(i+1,toml) for i in range(n) ] )
+    if outfile:
+        df.to_csv( outfile, float_format="%.4f", index=False )
+    return df
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
