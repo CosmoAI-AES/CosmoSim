@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+## [2.6.2] - 2026-02-23
+
 ### Changed
 
 + Use continuous uniform distribution in dataset generation, instead of 
