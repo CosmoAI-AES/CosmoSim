@@ -8,6 +8,10 @@
 + Use continuous uniform distribution in dataset generation, instead of 
   integers.
 
+### Addedt
+
++ `datasetgen()` now returns a dataframe and filename is optional.
+
 ## [2.6.1] - 2026-02-22
 
 ### Added
