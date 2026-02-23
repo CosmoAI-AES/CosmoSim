@@ -2,33 +2,33 @@
 [simulator]
 configs = [ "raysie" ]
 size = 10
-nterms = 5
+nterms = 4
 
 [lens]
 chi = 50
-einstein-min = 10
-einstein-max = 50
+einstein-min = 1
+einstein-max = 39
 # orientation and ellipseratio are used for SIE lenses
 orientation-min = 0
-orientation-max = 179
+orientation-max = 180
 ellipseratio-min = 0.1
 ellipseratio-max = 1.0
 
 [source]
 mode = "SersicSphere"
 sigma-min = 1
-sigma-max = 60
+sigma-max = 10
 sigma2-min = 1
-sigma2-max = 40
+sigma2-max = 10
 # source.theta is the rotation of the source (relevant for non-spherical sources)
 theta-min = 0
-theta-max = 179
+theta-max = 180
 position = "polar"
 
 [position]
 # (phi,r) is the source position in polar co-ordinates, angle in degrees
 phi-min = 0
-phi-max = 359
-r-min = "einsteinR"
-r-max = 100
+phi-max = 360
+r-min = 1
+r-max = 10
 
