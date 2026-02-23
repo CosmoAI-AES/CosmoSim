@@ -244,5 +244,7 @@ and a command line interface for batch generation of datasets.
 + **Mathematical Models** Ben David Normann
 + **Initial Prototype** Simon Ingebrigtsen, Sondre Westbø Remøy,
   Einar Leite Austnes, and Simon Nedreberg Runde
++ **Other Contributors** Oda Hjemli
+
 
 
