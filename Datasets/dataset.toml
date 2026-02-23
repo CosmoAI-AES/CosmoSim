@@ -1,5 +1,6 @@
+# (C) 2026: Hans Georg Schaathun <georg@schaathun.net> 
 [simulator]
-configs = ["p", "r", "ss", "pss", "fs", "rs"]
+configs = [ "raysie" ]
 size = 10
 nterms = 5
 
@@ -7,6 +8,10 @@ nterms = 5
 chi = 50
 einstein-min = 10
 einstein-max = 50
+orientation-min = 0
+orientation-max = 179
+ellipseratio-min = 0.1
+ellipseratio-max = 1.0
 
 [source]
 mode = "SersicSphere"
@@ -14,11 +19,13 @@ sigma-min = 1
 sigma-max = 60
 sigma2-min = 1
 sigma2-max = 40
+# source.theta is the rotation of the source (relevant for non-spherical sources)
 theta-min = 0
 theta-max = 179
 position = "polar"
 
 [position]
+# (phi,r) is the source position in polar co-ordinates, angle in degrees
 phi-min = 0
 phi-max = 359
 r-min = "einsteinR"
