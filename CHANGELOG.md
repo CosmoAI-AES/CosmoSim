@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+### Added
+
++ Support for SIE in dataset module.
+
 ## [2.6.3] - 2026-02-23
 
 ### Fixed
