@@ -3,6 +3,13 @@
 
 ## Unreleased
 
+## [2.6.3] - 2026-02-23
+
+### Fixed
+
++ Removed `--lightprofile` option, whose default was overriding other
+  settings.
+
 ## [2.6.2] - 2026-02-23
 
 ### Changed
@@ -10,7 +17,7 @@
 + Use continuous uniform distribution in dataset generation, instead of 
   integers.
 
-### Addedt
+### Added
 
 + `datasetgen()` now returns a dataframe and filename is optional.
 
