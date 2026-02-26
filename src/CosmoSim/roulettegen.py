@@ -130,4 +130,6 @@ if __name__ == "__main__":
           epilog = '')
 
     args = parser.parse_args()
+    if args.directory:
+        os.makedirs( args.directory, exist_ok=True )
     main(args)

@@ -80,6 +80,8 @@ class SimImage:
         self.name = name
         self.param = param
         self.directory = self.param.get( "directory" )
+        if self.directory:
+            os.makedirs( self.directory, exist_ok=True )
         self.outcols = outcols
     def getData(self):
         sim = self.sim
