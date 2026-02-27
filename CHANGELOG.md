@@ -7,6 +7,12 @@
 
 + Support for SIE in dataset module.
 
+### Fixed
+
++ Allow missing amplitudes in roulettegen, using zero as default.
+  This is because some amplitudes are always zero and may be
+  ommitted from ML output.
+
 ## [2.6.3] - 2026-02-23
 
 ### Fixed

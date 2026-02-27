@@ -51,8 +51,10 @@ def setAmplitudes( rsim, row, coefs ):
     maxm = coefs.getNterms()
     for m in range(maxm+1):
         for s in range((m+1)%2, m+2, 2):
-            alpha = row[f"alpha[{m}][{s}]"]
-            beta = row[f"beta[{m}][{s}]"]
+            print( "row is",  type( row ) )
+            alpha = row.get( f"alpha[{m}][{s}]", 0.0 )
+            beta = row.get( f"beta[{m}][{s}]", 0.0 )
+            print( "alpha/beta are",  type( alpha ), type( beta ) )
             print( f"alpha[{m}][{s}] = {alpha}\t\tbeta[{m}][{s}] = {beta}." )
             rsim.setAlphaXi( m, s, alpha )
             rsim.setBetaXi( m, s, beta )
@@ -104,7 +106,7 @@ def main(args):
             sys.stdout.flush()
 
             setAmplitudes( rsim, row, coefs )
-            print( "index", row["index"] )
+            print( "filename", row["filename"] )
             sys.stdout.flush()
                     
             param.setRow( row )
