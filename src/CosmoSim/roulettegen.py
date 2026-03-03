@@ -19,31 +19,28 @@ from .Arguments import CosmoParser
 from .RouletteAmplitudes import RouletteAmplitudes 
 from . import RouletteSim,RouletteRegenerator,makeSource
 
-def makeSingle(sim,args,name=None,row=None):
+def makeSingle(sim,fn,row,reflines=False,xireference=True,showmask=False,
+                       actual=None,apparent=None)
     print( "makeSingle" )
 
-    if name == None: name = args.name
     sim._rsim.update()
 
-    im = sim.getDistortedImage( showmask=args.showmask ) 
+    im = sim.getDistortedImage( showmask=showmask ) 
     print( "Distorted image", type(im), im.shape )
-    if args.xireference:
+    if xireference:
           R = np.float32( [ [ 1, 0, row["xiX"] ], [ 0, 1, -row["xiY"] ] ] )
           m,n = im.shape
           im = cv.warpAffine(im,R,(n,m))
-    if args.reflines:
+    if reflines:
         drawAxes(im)
 
-    fn = os.path.join(args.directory, str(name) + ".png" ) 
     cv.imwrite(fn,im)
 
-    if args.actual:
-       fn = os.path.join(args.directory,"actual-" + str(name) + ".png" ) 
-       im = sim.getActualImage( reflines=args.reflines )
+    if actual:
+       im = sim.getActualImage( reflines=reflines )
        cv.imwrite(fn,im)
-    if args.apparent:
-       fn = os.path.join(args.directory,"apparent-" + str(name) + ".png" ) 
-       im = sim.getApparentImage( reflines=args.reflines )
+    if apparent:
+       im = sim.getApparentImage( reflines=reflines )
        cv.imwrite(fn,im)
     return None
 
@@ -106,19 +103,30 @@ def main(args):
             sys.stdout.flush()
 
             setAmplitudes( rsim, row, coefs )
-            print( "filename", row["filename"] )
-            sys.stdout.flush()
                     
             param.setRow( row )
             src = makeSource( param )
             rsim.setSource( src )
 
             fn = row.get("filename",None)
+            print( "filename", fn )
             if fn is None:
                 namestem = f"image-{int(row['index']):05}" 
             else:
                 namestem = fn.split(".")[0]
-            makeSingle(sim,args,name=namestem,row=row)
+            if args.actual:
+               fn1 = os.path.join(args.directory,"actual-" + str(name) + ".png" ) 
+            else:
+                fn1 = None
+            if args.apparent:
+                fn2 = os.path.join(args.directory,"apparent-" + str(name) + ".png" ) 
+            else:
+                fn2 = None
+            fn0 = os.path.join(args.directory, filename ) 
+            makeSingle(sim,fn=fn0,row=row,
+                       reflines=args.reflines,xireference=args.xireference,
+                       showmask=args.showmask,
+                       actual=fn1,apparent=fn2)
             count += 1
             if count > maxcount: break
 
