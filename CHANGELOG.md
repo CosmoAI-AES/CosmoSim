@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+### Added
+
+- New API for roulette resimulation from other programs.
+
 ## [2.6.4] - 2026-03-01
 
 ### Added
