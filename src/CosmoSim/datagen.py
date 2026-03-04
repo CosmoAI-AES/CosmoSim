@@ -175,7 +175,17 @@ def makeSingle(sim,param,name=None,row=None,outcols=None):
     print( "makeSingle() returns" )
     return imsim
 
-
+def crop(im,cropsize=256):
+    (m,n) = im.shape
+    if cropsize < min(m,n):
+            assert m == n
+            c = (m-cropsize)/2
+            c1 = int(np.floor(c))
+            c2 = int(np.ceil(c))
+            im = im[c1:-c2,c1:-c2]
+            assert cropsize == im.shape[0]
+            assert cropsize == im.shape[1]
+    return im
 def makeOutput(sim,args,name=None,rot=0,scale=1,
                actual=False,apparent=False,original=False,
                reflines=False,critical=False):
@@ -192,16 +202,7 @@ def makeOutput(sim,args,name=None,rot=0,scale=1,
            cv.imwrite(fn,im)
         im = centreIm
     if args.cropsize:
-        csize = int(args.cropsize)
-        (m,n) = im.shape
-        if csize < min(m,n):
-            assert m == n
-            c = (m-csize)/2
-            c1 = int(np.floor(c))
-            c2 = int(np.ceil(c))
-            im = im[c1:-c2,c1:-c2]
-            assert csize == im.shape[0]
-            assert csize == im.shape[1]
+        im = crop(im,int(args.cropsize))
     if args.reflines:
         drawAxes(im)
 
