@@ -175,7 +175,7 @@ class Resim:
         im = sim.getApparentImage( reflines=reflines )
         cv.imwrite(fn,im)
 
-def main2(args):
+def main(args):
     """
     This is the main procedure of the script, simulating a dataset of
     roulette amplitudes based on a CLI args argument.
@@ -196,18 +196,19 @@ def main2(args):
     if not args.maskradius is None:
         resim.rsim.setMaskRadius( float(args.maskradius) )
         
-    param = Parameters( args )
-    for index,row in frame.iterrows():
+    for index,row in resim.frame.iterrows():
             print( "[roulettegen.py] Processing", index )
 
             resim.param.setRow( row )
-            src = makeSource( param )
-            rsim.setSource( src )
 
             fn = row.get("filename",None)
             print( "filename", fn )
             if fn is None:
-                namestem = f"image-{int(row['index']):05}" 
+                try:
+                   namestem = f"image-{int(row['index']):05}" 
+                except ValueError:
+                   namestem = f"image-{row['index']}" 
+                fn = namestem + ".png"
             else:
                 namestem = fn.split(".")[0]
             if args.actual:
@@ -216,8 +217,14 @@ def main2(args):
             if args.apparent:
                fn2 = os.path.join(args.directory,"apparent-" + str(name) + ".png" ) 
                resim.makeApparent( fn2, args.reflines )
-            fn0 = os.path.join(args.directory, fn ) 
-            resim.makeSingle(sim,fn=fn0,row=row,showmask=args.showmask)
+            try:
+                fn0 = os.path.join(args.directory, fn ) 
+            except Exception as e:
+                print( "dir", args.directory )
+                print( "file", fn )
+                raise e
+
+            resim.makeSingle(fn=fn0,row=row,showmask=args.showmask)
             count += 1
             if count > maxcount: break
 
