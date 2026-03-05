@@ -89,7 +89,7 @@ def getline(idx,toml):
     src = random.choice( srcmode(toml) )
     cfg = random.choice( configs(toml) )
     return pd.Series(
-        data=[ idx,f"image-{idx:04}.png", src, cfg, chi, R, phi,
+        data=[ idx,f"image-{idx:06}.png", src, cfg, chi, R, phi,
                einsteinR, ellipseratio, orientation, 
                sigma, sigma2, theta, nterms, x, y ],
         index=[ "index", "filename", "source", "config", "chi", 
