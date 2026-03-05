@@ -22,5 +22,6 @@ sie%.txt:
 
 clean:
 	rm -f 50.* *.txt *.new
+	rm -f *.status
 
 alltests: all

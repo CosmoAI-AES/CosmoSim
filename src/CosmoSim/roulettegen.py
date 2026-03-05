@@ -20,57 +20,6 @@ from .Arguments import CosmoParser
 from .RouletteAmplitudes import RouletteAmplitudes 
 from . import RouletteSim,RouletteRegenerator,makeSource
 
-def makeSingle(sim,fn,row,reflines=False,xireference=True,showmask=False,
-               actual=None,apparent=None):
-    """
-    Simulate a single image from roulette amplitudes.
-
-    This is used by `main()` and thus by the script.
-    For all other uses, the `Resim` class and its `makeSingle()`
-    method should be used.
-    """
-    print( "makeSingle" )
-
-    sim._rsim.update()
-
-    im = sim.getDistortedImage( showmask=showmask ) 
-    print( "Distorted image", type(im), im.shape )
-    if xireference:
-          R = np.float32( [ [ 1, 0, row["xiX"] ], [ 0, 1, -row["xiY"] ] ] )
-          m,n = im.shape
-          im = cv.warpAffine(im,R,(n,m))
-    if reflines:
-        drawAxes(im)
-
-    cv.imwrite(fn,im)
-
-    if actual:
-       im = sim.getActualImage( reflines=reflines )
-       cv.imwrite(fn,im)
-    if apparent:
-       im = sim.getApparentImage( reflines=reflines )
-       cv.imwrite(fn,im)
-    return None
-
-def setAmplitudes( rsim, row, coefs ):
-    """
-    Set the roulette amplitudes in the simulator.
-
-    This is used by `main()` and thus by the script.
-    For all other uses, the `Resim` class and its `setAmplitudes()`
-    method should be used.
-    """
-    maxm = coefs.getNterms()
-    for m in range(maxm+1):
-        for s in range((m+1)%2, m+2, 2):
-            print( "row is",  type( row ) )
-            alpha = row.get( f"alpha[{m}][{s}]", 0.0 )
-            beta = row.get( f"beta[{m}][{s}]", 0.0 )
-            print( "alpha/beta are",  type( alpha ), type( beta ) )
-            print( f"alpha[{m}][{s}] = {alpha}\t\tbeta[{m}][{s}] = {beta}." )
-            rsim.setAlphaXi( m, s, alpha )
-            rsim.setBetaXi( m, s, beta )
-
 class Resim:
     """
     Infrastructure to resimulate from roulette amplitudes.
