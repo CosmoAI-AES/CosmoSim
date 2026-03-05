@@ -21,18 +21,20 @@ import pandas as pd
 
 defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "x", "y" ]
 
-def setParameters(sim,row):
-    print( row ) 
+def setParameters(sim,row,verbose=1):
+    if verbose > 2:
+       print( "[datagen.py] setParameters()" )
+       print( row ) 
     if row.get("y",None) != None:
-        print( "XY", row["x"], row["y"] )
+        if verbose > 1: print( "XY", row["x"], row["y"] )
         sim.setXY( row["x"], row["y"] )
     elif row.get("phi",None) != None:
-        print( "Polar", row["x"], row["phi"] )
+        if verbose > 1: print( "Polar", row["x"], row["phi"] )
         sim.setPolar( row["x"], row["phi"] )
     if row.get("config",None) != None:
         sim.setConfigMode( row["config"] )
     elif row.get("cluster",None) != None:
-        print( "setCluster from CSV" )
+        if verbose > 1: print( "setCluster from CSV" )
         sim.setCluster( row["cluster"] )
     elif row.get("lens",None) != None:
         sim.setLensMode( row["lens"] )
@@ -56,8 +58,8 @@ def setParameters(sim,row):
 
 
 class SimImage:
-    def __init__(self,sim,param,name=None,row=None,outcols=None):
-        print( "[SimImage] init ..." )
+    def __init__(self,sim,param,name=None,row=None,outcols=None,verbose=1):
+        if verbose > 0: print( "[SimImage] init ..." )
         if not row is None:
             setParameters( sim, row )
             print( "index", row["index"] )
