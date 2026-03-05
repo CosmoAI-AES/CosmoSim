@@ -79,6 +79,9 @@ class Resim:
     run the simulator for each iaage on a CSV file.
     """
     def __init__(self,directory,args=None,cfg=None,nterms=None,xireference=True,reflines=False):
+        """
+        Note that `args` overrides Boolean parameters.
+        """
         self.sim = RouletteSim()
         self.directory = directory
         self.rsim = RouletteRegenerator()
@@ -129,7 +132,6 @@ class Resim:
     def makeSingle(self,fn,row,showmask=False):
         print( "makeSingle" )
 
-
         if self.xireference:
             print( "xi", row["xiX"], row["xiY"], row["sigma"] )
             pt = (0,0)
@@ -147,7 +149,6 @@ class Resim:
         self.sim._rsim.update()
     
         im = self.sim.getDistortedImage( showmask=showmask ) 
-        cropsize = self.param.get( "cropsize" )
         if self.xireference:
               R = np.float32( [ [ 1, 0, row["xiX"] ], [ 0, 1, -row["xiY"] ] ] )
               m,n = im.shape
@@ -155,6 +156,7 @@ class Resim:
         if self.reflines:
             drawAxes(im)
     
+        cropsize = self.param.get( "cropsize" )
         if cropsize:
             print( "Cropping; cropsize =", cropsize )
             im = crop( im, cropsize )
@@ -216,7 +218,7 @@ def main(args):
                 namestem = fn.split(".")[0]
             fn0 = os.path.join(args.directory, fn ) 
 
-            resim.makeSingle( fn, row, showmask=args.showmask )
+            resim.makeSingle( fn0, row, showmask=args.showmask )
 
             if args.actual:
                fn1 = os.path.join(args.directory,"actual-" + str(name) + ".png" ) 
