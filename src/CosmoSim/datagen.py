@@ -60,6 +60,7 @@ def setParameters(sim,row,verbose=1):
 class SimImage:
     def __init__(self,sim,param,name=None,row=None,outcols=None,verbose=1):
         if verbose > 0: print( "[SimImage] init ..." )
+        self.verbose = verbose
         if not row is None:
             setParameters( sim, row )
             print( "index", row["index"] )
@@ -109,7 +110,8 @@ class SimImage:
               index=relcols ) 
         r3 = pd.Series( ab, index=getMSheaders(maxm)) 
         r1 = pd.concat( [ self.row, r2, r3 ] )
-        print( "New row:", r1 )
+        if self.verbose > 1:
+            print( "New row:", r1 )
         return r1
     def join(self):
         # sim.setMaskMode(False)
