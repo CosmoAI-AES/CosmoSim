@@ -87,9 +87,10 @@ class Resim:
         self.xireference = xireference
         self.reflines = reflines
         if args is not None:
-            self.loadData( args.csvfile )
             if nterms is None and args.nterms:
+                print( "[Resim] Set nterms from args", int(args.nterms) )
                 self.nterms = int(args.nterms)
+            self.loadData( args.csvfile )
 
     def setAmplitudes( self, row ):
         maxm = self.coefs.getNterms()
@@ -116,8 +117,10 @@ class Resim:
         coefs = RouletteAmplitudes(cols)
         print( "Number of roulette terms: ", coefs.getNterms() )
         if self.nterms:
+            print( "[Resim.loadData()] Set nterms from self", int(self.nterms) )
             self.rsim.setNterms( int(self.nterms) )
         else:
+            print( "[Resim.loadData()] Set nterms from coefs", int(self.nterms) )
             self.rsim.setNterms( coefs.getNterms() )
         self.coefs = coefs
         self.cols = cols
@@ -200,10 +203,6 @@ def main(args):
     rsim.setMaskMode( args.mask )
     if not args.maskradius is None:
         rsim.setMaskRadius( float(args.maskradius) )
-    if args.nterms:
-        rsim.setNterms( int(args.nterms) )
-    else:
-        rsim.setNterms( coefs.getNterms() )
         
     param = Parameters( args )
     for index,row in frame.iterrows():
