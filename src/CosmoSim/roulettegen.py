@@ -87,7 +87,7 @@ class Resim:
         self.xireference = xireference
         self.reflines = reflines
         if args is not None:
-            self.setFile( args.csvfile )
+            self.loadData( args.csvfile )
             if nterms is None and args.nterms:
                 self.nterms = int(args.nterms)
 
