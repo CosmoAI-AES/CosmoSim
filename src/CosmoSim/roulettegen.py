@@ -182,16 +182,13 @@ def main(args):
     if not args.csvfile:
         raise Exception( "No CSV file given; the --csvfile option is mandatory." )
 
-    print( "Instantiate RouletteSim object ... " )
-    sim = RouletteSim()
+    resim = Resim( args.directory, args )
+    sim = resim.sim
 
-    print( "Load CSV file:", args.csvfile )
-    frame = pd.read_csv(args.csvfile)
-    cols = frame.columns
-    print( "columns:", cols )
+    frame = resim.frame
+    cols = resim.cols
     
-    coefs = RouletteAmplitudes(cols)
-    print( "Number of roulette terms: ", coefs.getNterms() )
+    coefs = resim.coefs
 
     count = 1
     if args.maxcount is None:
@@ -199,7 +196,7 @@ def main(args):
     else:
         maxcount = int(args.maxcount)
 
-    rsim = RouletteRegenerator()
+    rsim = resim.rsim
     rsim.setMaskMode( args.mask )
     if not args.maskradius is None:
         rsim.setMaskRadius( float(args.maskradius) )
@@ -232,7 +229,11 @@ def main(args):
             fn = row.get("filename",None)
             print( "filename", fn )
             if fn is None:
-                namestem = f"image-{int(row['index']):05}" 
+                try:
+                    namestem = f"image-{int(row['index']):05}" 
+                except:
+                    namestem = f"image-{row['index']}" 
+                fn = namestem + ".png"
             else:
                 namestem = fn.split(".")[0]
             if args.actual:
