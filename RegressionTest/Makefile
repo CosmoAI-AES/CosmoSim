@@ -18,7 +18,7 @@ clean alltests:
 	cd cluster-sampled-roulette ; $(MAKE) $@
 	cd cluster-sampled-raytrace ; $(MAKE) $@
 	cd roulettegen-old ; $(MAKE) $@
-	# cd roulettegen ; $(MAKE) $@
+	cd roulettegen ; $(MAKE) $@
 	cd amplitudes ; $(MAKE) $@
 
 cpptests:
