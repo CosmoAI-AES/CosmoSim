@@ -204,7 +204,7 @@ def main(args):
     if not args.maskradius is None:
         rsim.setMaskRadius( float(args.maskradius) )
         
-    param = Parameters( args )
+    param = resim.param
     for index,row in frame.iterrows():
             print( "[roulettegen.py] Processing", index )
 
