@@ -131,11 +131,11 @@ class Resim:
 
 
         if self.xireference:
-                print( "xi", row["xiX"], row["xiY"], row["sigma"] )
-                pt = (0,0)
+            print( "xi", row["xiX"], row["xiY"], row["sigma"] )
+            pt = (0,0)
         else:
-                print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
-                pt = ( row["offsetX"], row["offsetY"] )
+            print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
+            pt = ( row["offsetX"], row["offsetY"] )
         self.rsim.setCentrePy( *pt )
         self.sim.initSim( self.rsim )
         print( "Initialised simulator at point", pt )
