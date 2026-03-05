@@ -22,6 +22,13 @@ from . import RouletteSim,RouletteRegenerator,makeSource
 
 def makeSingle(sim,fn,row,reflines=False,xireference=True,showmask=False,
                actual=None,apparent=None):
+    """
+    Simulate a single image from roulette amplitudes.
+
+    This is used by `main()` and thus by the script.
+    For all other uses, the `Resim` class and its `makeSingle()`
+    method should be used.
+    """
     print( "makeSingle" )
 
     sim._rsim.update()
@@ -46,6 +53,13 @@ def makeSingle(sim,fn,row,reflines=False,xireference=True,showmask=False,
     return None
 
 def setAmplitudes( rsim, row, coefs ):
+    """
+    Set the roulette amplitudes in the simulator.
+
+    This is used by `main()` and thus by the script.
+    For all other uses, the `Resim` class and its `setAmplitudes()`
+    method should be used.
+    """
     maxm = coefs.getNterms()
     for m in range(maxm+1):
         for s in range((m+1)%2, m+2, 2):
@@ -56,6 +70,7 @@ def setAmplitudes( rsim, row, coefs ):
             print( f"alpha[{m}][{s}] = {alpha}\t\tbeta[{m}][{s}] = {beta}." )
             rsim.setAlphaXi( m, s, alpha )
             rsim.setBetaXi( m, s, beta )
+
 
 class Resim:
     """
@@ -73,7 +88,7 @@ class Resim:
         self.xireference = xireference
         self.reflines = reflines
         if args is not None:
-            self.setFile( args.csvfile )
+            self.loadData( args.csvfile )
 
     def setAmplitudes( self, row ):
         maxm = self.coefs.getNterms()
@@ -158,20 +173,16 @@ class Resim:
         im = sim.getApparentImage( reflines=reflines )
         cv.imwrite(fn,im)
 
-def main(args):
+def main2(args):
+    """
+    This is the main procedure of the script, simulating a dataset of
+    roulette amplitudes based on a CLI args argument.
+    """
     if not args.csvfile:
         raise Exception( "No CSV file given; the --csvfile option is mandatory." )
 
     print( "Instantiate RouletteSim object ... " )
-    sim = RouletteSim()
-
-    print( "Load CSV file:", args.csvfile )
-    frame = pd.read_csv(args.csvfile)
-    cols = frame.columns
-    print( "columns:", cols )
-    
-    coefs = RouletteAmplitudes(cols)
-    print( "Number of roulette terms: ", coefs.getNterms() )
+    resim = Resim(args.directory,args,xireference=args.xireference)
 
     count = 1
     if args.maxcount is None:
@@ -179,33 +190,15 @@ def main(args):
     else:
         maxcount = int(args.maxcount)
 
-    rsim = RouletteRegenerator()
-    rsim.setMaskMode( args.mask )
+    resim.rsim.setMaskMode( args.mask )
     if not args.maskradius is None:
-        rsim.setMaskRadius( float(args.maskradius) )
-    if args.nterms:
-        rsim.setNterms( int(args.nterms) )
-    else:
-        rsim.setNterms( coefs.getNterms() )
+        resim.rsim.setMaskRadius( float(args.maskradius) )
         
     param = Parameters( args )
     for index,row in frame.iterrows():
             print( "[roulettegen.py] Processing", index )
 
-            if args.xireference:
-                print( "xi", row["xiX"], row["xiY"], row["sigma"] )
-                pt = (0,0)
-            else:
-                print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
-                pt = ( row["offsetX"], row["offsetY"] )
-            rsim.setCentrePy( *pt )
-            sim.initSim( rsim )
-            print( "Initialised simulator at point", pt )
-            sys.stdout.flush()
-
-            setAmplitudes( rsim, row, coefs )
-                    
-            param.setRow( row )
+            resim.param.setRow( row )
             src = makeSource( param )
             rsim.setSource( src )
 
@@ -217,17 +210,12 @@ def main(args):
                 namestem = fn.split(".")[0]
             if args.actual:
                fn1 = os.path.join(args.directory,"actual-" + str(name) + ".png" ) 
-            else:
-                fn1 = None
+               resim.makeActual( fn1, args.reflines )
             if args.apparent:
-                fn2 = os.path.join(args.directory,"apparent-" + str(name) + ".png" ) 
-            else:
-                fn2 = None
+               fn2 = os.path.join(args.directory,"apparent-" + str(name) + ".png" ) 
+               resim.makeApparent( fn2, args.reflines )
             fn0 = os.path.join(args.directory, fn ) 
-            makeSingle(sim,fn=fn0,row=row,
-                       reflines=args.reflines,xireference=args.xireference,
-                       showmask=args.showmask,
-                       actual=fn1,apparent=fn2)
+            resim.makeSingle(sim,fn=fn0,row=row,showmask=args.showmask)
             count += 1
             if count > maxcount: break
 
