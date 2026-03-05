@@ -22,6 +22,13 @@ from . import RouletteSim,RouletteRegenerator,makeSource
 
 def makeSingle(sim,fn,row,reflines=False,xireference=True,showmask=False,
                actual=None,apparent=None):
+    """
+    Simulate a single image from roulette amplitudes.
+
+    This is used by `main()` and thus by the script.
+    For all other uses, the `Resim` class and its `makeSingle()`
+    method should be used.
+    """
     print( "makeSingle" )
 
     sim._rsim.update()
@@ -46,6 +53,13 @@ def makeSingle(sim,fn,row,reflines=False,xireference=True,showmask=False,
     return None
 
 def setAmplitudes( rsim, row, coefs ):
+    """
+    Set the roulette amplitudes in the simulator.
+
+    This is used by `main()` and thus by the script.
+    For all other uses, the `Resim` class and its `setAmplitudes()`
+    method should be used.
+    """
     maxm = coefs.getNterms()
     for m in range(maxm+1):
         for s in range((m+1)%2, m+2, 2):
@@ -161,6 +175,10 @@ class Resim:
         cv.imwrite(fn,im)
 
 def main(args):
+    """
+    This is the main procedure of the script, simulating a dataset of
+    roulette amplitudes based on a CLI args argument.
+    """
     if not args.csvfile:
         raise Exception( "No CSV file given; the --csvfile option is mandatory." )
 
