@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from .dataset import datasetgen
 
 from .Image import centreImage, drawAxes
-from . import getMSheaders,CosmoSim
+from . import getMSheaders,CosmoSim,__version__
 
 from .Arguments import CosmoParser
 from .Parameters import Parameters
@@ -70,9 +70,9 @@ class SimImage:
         elif name == None:
             name = param.get( "name" )
         sim.makeSource( param )
-        print ( "[datagen.py] ready for runSim()\n" ) ;
+        if verbose > 0: print ( "[datagen.py] ready for runSim()\n" ) ;
         sim.runSim()
-        print ( "[datagen.py] runSim() completed\n" ) ;
+        if verbose > 0: print ( "[datagen.py] runSim() completed\n" ) ;
         centrepoint = makeOutput(sim,args,name,actual=args.actual,
                              apparent=args.apparent,original=args.original,
                              reflines=args.reflines,critical=args.criticalcurves)
@@ -91,7 +91,8 @@ class SimImage:
         centrepoint = self.centrepoint
         maxm = self.param.get( "nterms" )
         xireference = self.param.get( "xireference" )
-        print( "[datagen.py] Finding Alpha/beta; centrepoint=", centrepoint )
+        if self.verbose > 0:
+            print( "[datagen.py] Finding Alpha/beta; centrepoint=", centrepoint )
         # r = pd.Series([ row[x] for x in self.outcols ], index=self.outcols )
         releta = sim.getRelativeEta(centrepoint=centrepoint)
         offset = sim.getOffset(centrepoint=centrepoint)
@@ -111,7 +112,8 @@ class SimImage:
         r3 = pd.Series( ab, index=getMSheaders(maxm)) 
         r1 = pd.concat( [ self.row, r2, r3 ] )
         if self.verbose > 1:
-            print( "New row:", r1 )
+            print( f"New row (verbosity={self.verbose})" )
+            print( r1 )
         return r1
     def join(self):
         # sim.setMaskMode(False)
@@ -304,6 +306,7 @@ def main(args):
     print( "simulator closed" )
 
 if __name__ == "__main__":
+    print( "[CosmoSim] datagen", __version__ )
     parser = CosmoParser(
           prog = 'CosmoSim makeimage',
           description = 'Generate an image for given lens and source parameters',
