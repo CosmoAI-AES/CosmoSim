@@ -186,13 +186,9 @@ def main(args):
         raise Exception( "No CSV file given; the --csvfile option is mandatory." )
 
     resim = Resim( args.directory, args )
-    sim = resim.sim
 
     frame = resim.frame
-    cols = resim.cols
     
-    coefs = resim.coefs
-
     count = 1
     if args.maxcount is None:
         maxcount = 2**30
@@ -204,26 +200,8 @@ def main(args):
     if not args.maskradius is None:
         rsim.setMaskRadius( float(args.maskradius) )
         
-    param = resim.param
     for index,row in frame.iterrows():
             print( "[roulettegen.py] Processing", index )
-
-            if args.xireference:
-                print( "xi", row["xiX"], row["xiY"], row["sigma"] )
-                pt = (0,0)
-            else:
-                print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
-                pt = ( row["offsetX"], row["offsetY"] )
-            rsim.setCentrePy( *pt )
-            sim.initSim( rsim )
-            print( "Initialised simulator at point", pt )
-            sys.stdout.flush()
-
-            setAmplitudes( rsim, row, coefs )
-                    
-            param.setRow( row )
-            src = makeSource( param )
-            rsim.setSource( src )
 
             fn = row.get("filename",None)
             print( "filename", fn )
@@ -235,19 +213,17 @@ def main(args):
                 fn = namestem + ".png"
             else:
                 namestem = fn.split(".")[0]
+            fn0 = os.path.join(args.directory, fn ) 
+
+            resim.makeSingle( fn, row, showmask=args.showmask )
+
             if args.actual:
                fn1 = os.path.join(args.directory,"actual-" + str(name) + ".png" ) 
-            else:
-                fn1 = None
+               resim.makeActual( fn1, args.reflines )
             if args.apparent:
                 fn2 = os.path.join(args.directory,"apparent-" + str(name) + ".png" ) 
-            else:
-                fn2 = None
-            fn0 = os.path.join(args.directory, fn ) 
-            makeSingle(sim,fn=fn0,row=row,
-                       reflines=args.reflines,xireference=args.xireference,
-                       showmask=args.showmask,
-                       actual=fn1,apparent=fn2)
+                resim.makeApparent( fn2, args.reflines )
+
             count += 1
             if count > maxcount: break
 
