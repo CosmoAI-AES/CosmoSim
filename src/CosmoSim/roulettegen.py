@@ -87,6 +87,7 @@ class Resim:
         self.xireference = xireference
         self.reflines = reflines
         if args is not None:
+            self.xireference = args.xireference
             if nterms is None and args.nterms:
                 print( "[Resim] Set nterms from args", int(args.nterms) )
                 self.nterms = int(args.nterms)
@@ -147,9 +148,6 @@ class Resim:
     
         im = self.sim.getDistortedImage( showmask=showmask ) 
         cropsize = self.param.get( "cropsize" )
-        if cropsize:
-            im = crop( im, cropsize )
-        print( "Distorted image", type(im), im.shape )
         if self.xireference:
               R = np.float32( [ [ 1, 0, row["xiX"] ], [ 0, 1, -row["xiY"] ] ] )
               m,n = im.shape
@@ -157,6 +155,10 @@ class Resim:
         if self.reflines:
             drawAxes(im)
     
+        if cropsize:
+            print( "Cropping; cropsize =", cropsize )
+            im = crop( im, cropsize )
+        print( "Distorted image", type(im), im.shape )
         cv.imwrite(fn,im)
     
     def processFile(self,maxcount=None):
@@ -187,20 +189,19 @@ def main(args):
 
     resim = Resim( args.directory, args )
 
-    frame = resim.frame
-    
     count = 1
     if args.maxcount is None:
         maxcount = 2**30
     else:
         maxcount = int(args.maxcount)
 
+    # Masking is not implemented in the Resim class.
     rsim = resim.rsim
     rsim.setMaskMode( args.mask )
     if not args.maskradius is None:
         rsim.setMaskRadius( float(args.maskradius) )
         
-    for index,row in frame.iterrows():
+    for index,row in resim.frame.iterrows():
             print( "[roulettegen.py] Processing", index )
 
             fn = row.get("filename",None)
