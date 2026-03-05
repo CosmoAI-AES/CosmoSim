@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from .dataset import datasetgen
 
 from .Image import centreImage, drawAxes
-from . import getMSheaders,CosmoSim
+from . import getMSheaders,CosmoSim,__version__
 
 from .Arguments import CosmoParser
 from .Parameters import Parameters
@@ -21,18 +21,20 @@ import pandas as pd
 
 defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "x", "y" ]
 
-def setParameters(sim,row):
-    print( row ) 
+def setParameters(sim,row,verbose=1):
+    if verbose > 2:
+       print( "[datagen.py] setParameters()" )
+       print( row ) 
     if row.get("y",None) != None:
-        print( "XY", row["x"], row["y"] )
+        if verbose > 1: print( "XY", row["x"], row["y"] )
         sim.setXY( row["x"], row["y"] )
     elif row.get("phi",None) != None:
-        print( "Polar", row["x"], row["phi"] )
+        if verbose > 1: print( "Polar", row["x"], row["phi"] )
         sim.setPolar( row["x"], row["phi"] )
     if row.get("config",None) != None:
         sim.setConfigMode( row["config"] )
     elif row.get("cluster",None) != None:
-        print( "setCluster from CSV" )
+        if verbose > 1: print( "setCluster from CSV" )
         sim.setCluster( row["cluster"] )
     elif row.get("lens",None) != None:
         sim.setLensMode( row["lens"] )
@@ -56,8 +58,9 @@ def setParameters(sim,row):
 
 
 class SimImage:
-    def __init__(self,sim,param,name=None,row=None,outcols=None):
-        print( "[SimImage] init ..." )
+    def __init__(self,sim,param,name=None,row=None,outcols=None,verbose=1):
+        if verbose > 0: print( "[SimImage] init ..." )
+        self.verbose = verbose
         if not row is None:
             setParameters( sim, row )
             print( "index", row["index"] )
@@ -67,9 +70,9 @@ class SimImage:
         elif name == None:
             name = param.get( "name" )
         sim.makeSource( param )
-        print ( "[datagen.py] ready for runSim()\n" ) ;
+        if verbose > 0: print ( "[datagen.py] ready for runSim()\n" ) ;
         sim.runSim()
-        print ( "[datagen.py] runSim() completed\n" ) ;
+        if verbose > 0: print ( "[datagen.py] runSim() completed\n" ) ;
         centrepoint = makeOutput(sim,args,name,actual=args.actual,
                              apparent=args.apparent,original=args.original,
                              reflines=args.reflines,critical=args.criticalcurves)
@@ -88,7 +91,8 @@ class SimImage:
         centrepoint = self.centrepoint
         maxm = self.param.get( "nterms" )
         xireference = self.param.get( "xireference" )
-        print( "[datagen.py] Finding Alpha/beta; centrepoint=", centrepoint )
+        if self.verbose > 0:
+            print( "[datagen.py] Finding Alpha/beta; centrepoint=", centrepoint )
         # r = pd.Series([ row[x] for x in self.outcols ], index=self.outcols )
         releta = sim.getRelativeEta(centrepoint=centrepoint)
         offset = sim.getOffset(centrepoint=centrepoint)
@@ -107,7 +111,9 @@ class SimImage:
               index=relcols ) 
         r3 = pd.Series( ab, index=getMSheaders(maxm)) 
         r1 = pd.concat( [ self.row, r2, r3 ] )
-        print( "New row:", r1 )
+        if self.verbose > 1:
+            print( f"New row (verbosity={self.verbose})" )
+            print( r1 )
         return r1
     def join(self):
         # sim.setMaskMode(False)
@@ -300,6 +306,7 @@ def main(args):
     print( "simulator closed" )
 
 if __name__ == "__main__":
+    print( "[CosmoSim] datagen", __version__ )
     parser = CosmoParser(
           prog = 'CosmoSim makeimage',
           description = 'Generate an image for given lens and source parameters',
