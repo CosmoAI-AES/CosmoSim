@@ -73,8 +73,9 @@ class Resim:
             print( "[Resim.loadData()] Set nterms from self", int(self.nterms) )
             self.rsim.setNterms( int(self.nterms) )
         else:
-            print( "[Resim.loadData()] Set nterms from coefs", int(self.nterms) )
-            self.rsim.setNterms( coefs.getNterms() )
+            nterms = coefs.getNterms() 
+            print( "[Resim.loadData()] Set nterms from coefs", nterms )
+            self.rsim.setNterms( nterms )
         self.coefs = coefs
         self.cols = cols
         self.frame = frame
