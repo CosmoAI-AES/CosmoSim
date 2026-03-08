@@ -42,8 +42,14 @@ jobs:
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==3.1.2
 
+      - name: Sleep (1)
+        run: sleep 60
+
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
+
+      - name: Sleep (2)
+        run: sleep 60
 
       - uses: actions/upload-artifact@v4
         with:
