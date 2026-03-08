@@ -3,6 +3,12 @@
 
 ## Unreleased
 
+## [2.6.6] - 2026-03-08
+
+### Fixed
+
++ Undefined reference in roulettegent is fixed.
+
 ## [2.6.5] - 2026-03-05
 
 ### Added
