@@ -5,6 +5,8 @@
 Generate an image for given parameters.
 """
 
+import tomllib as tl
+
 import cv2 as cv
 import sys
 import os
@@ -276,6 +278,12 @@ def main(args):
         if not args.csvfile:
             raise Exception("The --toml option also requires --csvfile")
         datasetgen(args.toml,args.csvfile)
+        with open(args.toml, 'rb') as f:
+            toml = tl.load(f)
+        if "cropsize" in toml["simulator"]:
+            args.cropsize = int( toml["simulator"]["cropsize"] )
+        if "imagesize" in toml["simulator"]:
+            args.imagesize = int( toml["simulator"]["imagesize"] )
     if args.csvfile:
         print( "Load CSV file:", args.csvfile )
         frame = pd.read_csv(args.csvfile)
