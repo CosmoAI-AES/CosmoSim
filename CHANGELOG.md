@@ -3,6 +3,12 @@
 
 ## Unreleased
 
+## [2.6.7] - 2026-03-15
+
+### Fixed
+
++ `datagen` takes image size from TOML file
+
 ## [2.6.6] - 2026-03-08
 
 ### Fixed
