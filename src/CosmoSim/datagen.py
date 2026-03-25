@@ -175,6 +175,19 @@ class SimImage:
         fn = os.path.join(self.directory,"kappa-" + str(self.name) + ".svg" ) 
         plt.savefig( fn )
         plt.close()
+    def getActual(self):
+        param = self.param
+        name = self.name
+        fn = os.path.join(param.get("directory"),"actual-" + str(name) + ".png" ) 
+        im = sim.getActualImage( reflines=param.get( "reflines" ) )
+        cv.imwrite(fn,im)
+    def getApparent(self):
+        param = self.param
+        name = self.name
+        fn = os.path.join(param.get("directory"),"apparent-" + str(name) + ".png" ) 
+        im = sim.getApparentImage( reflines=param.get( "reflines" ) )
+        cv.imwrite(fn,im)
+
 def makeSingle(sim,param=None,name=None,row=None,outcols=None):
     """Process a single parameter set, given either as a pandas row or
     just as args parsed from the command line.
@@ -185,6 +198,8 @@ def makeSingle(sim,param=None,name=None,row=None,outcols=None):
     if param.get( "family" ): imsim.family()
     if param.get( "psiplot" ): imsim.psiplot()
     if param.get( "kappaplot" ): imsim.psiplot()
+    if param.get( "apparent" ): imsim.getApparent()
+    if param.get( "actual" ): imsim.getActual()
     print( "makeSingle() returns" )
     return imsim
 
@@ -199,10 +214,10 @@ def crop(im,cropsize=256):
             assert cropsize == im.shape[0]
             assert cropsize == im.shape[1]
     return im
-def makeOutput( sim,param,name=None,rot=0,scale=1 ):
+def makeOutput( sim, param, name=None, rot=0, scale=1 ):
 
     im = sim.getDistortedImage( critical=param.get( "criticalcurves" ), showmask=param.get( "showmask" ) ) 
-    print( "getDistortedImage() has returned" )
+    print( "getDistortedImage() has returned", type(im) )
 
     (cx,cy) = 0,0
     if param.get( "centred" ):
@@ -220,14 +235,6 @@ def makeOutput( sim,param,name=None,rot=0,scale=1 ):
     fn = os.path.join(param.get("directory"), str(name) + ".png" ) 
     cv.imwrite(fn,im)
 
-    if param.get( "actual" ):
-       fn = os.path.join(param.get("directory"),"actual-" + str(name) + ".png" ) 
-       im = sim.getActualImage( reflines=param.get( "reflines" ) )
-       cv.imwrite(fn,im)
-    if param.get( "apparent" ):
-       fn = os.path.join(param.get("directory"),"apparent-" + str(name) + ".png" ) 
-       im = sim.getApparentImage( reflines=param.get( "reflines" ) )
-       cv.imwrite(fn,im)
     return (cx,cy)
 
 
@@ -309,6 +316,8 @@ def main(args):
                        df.drop( columns=c, inplace=True )
                    except:
                        print( "No column", c )
+        param = self.param
+        name = self.name
            df.to_csv(args.outfile, sep=",", index=False)
     else:
         makeSingle(sim,param)
