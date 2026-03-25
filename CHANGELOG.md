@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+### Changed
+
++ Refactoring of datagen.py - avoid global variable `args`
+
 ## [2.6.7] - 2026-03-15
 
 ### Fixed

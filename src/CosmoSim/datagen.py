@@ -194,14 +194,14 @@ def crop(im,cropsize=256):
     return im
 def makeOutput( sim,param,name=None,rot=0,scale=1 ):
 
-    im = sim.getDistortedImage( critical=param.get( "critical" ), showmask=param( "showmask" ) ) 
+    im = sim.getDistortedImage( critical=param.get( "critical" ), showmask=param.get( "showmask" ) ) 
     print( "getDistortedImage() has returned" )
 
     (cx,cy) = 0,0
-    if param( "centred" ):
+    if param.get( "centred" ):
         (centreIm,(cx,cy)) = centreImage(im)
         if param.get( "original" ):
-           fn = os.path.join(param( "directory","original-" + str(name) + ".png" ) 
+           fn = os.path.join(param.get( "directory","original-" + str(name) + ".png" ))
            if param.get( "reflines" ): drawAxes(im)
            cv.imwrite(fn,im)
         im = centreIm
