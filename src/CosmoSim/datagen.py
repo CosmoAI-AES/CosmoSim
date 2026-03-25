@@ -316,8 +316,6 @@ def main(args):
                        df.drop( columns=c, inplace=True )
                    except:
                        print( "No column", c )
-        param = self.param
-        name = self.name
            df.to_csv(args.outfile, sep=",", index=False)
     else:
         makeSingle(sim,param)
