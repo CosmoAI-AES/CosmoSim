@@ -196,7 +196,7 @@ def crop(im,cropsize=256):
     return im
 def makeOutput( sim,param,name=None,rot=0,scale=1 ):
 
-    im = sim.getDistortedImage( critical=param.get( "critical" ), showmask=param.get( "showmask" ) ) 
+    im = sim.getDistortedImage( critical=param.get( "criticalcurves" ), showmask=param.get( "showmask" ) ) 
     print( "getDistortedImage() has returned" )
 
     (cx,cy) = 0,0
