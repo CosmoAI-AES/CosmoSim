@@ -75,9 +75,7 @@ class SimImage:
         if verbose > 0: print ( "[datagen.py] ready for runSim()\n" ) ;
         sim.runSim()
         if verbose > 0: print ( "[datagen.py] runSim() completed\n" ) ;
-        centrepoint = makeOutput(sim,args,name,actual=args.actual,
-                             apparent=args.apparent,original=args.original,
-                             reflines=args.reflines,critical=args.criticalcurves)
+        centrepoint = makeOutput(sim,param,name)
         print( "[datagen.py] Centre Point", centrepoint,
               "(Centre of Luminence in Planar Co-ordinates)" )
         self.sim = sim
@@ -139,13 +137,13 @@ class SimImage:
     def family(self):
         sim = self.sim
         sim.moveSim(rot=-np.pi/4,scale=1)
-        makeOutput(sim,args,name=f"{self.name}-45+1")
+        makeOutput(sim,self.param,name=f"{self.name}-45+1")
         sim.moveSim(rot=+np.pi/4,scale=1)
-        makeOutput(sim,args,name=f"{self.name}+45+1")
+        makeOutput(sim,self.param,name=f"{self.name}+45+1")
         sim.moveSim(rot=0,scale=-1)
-        makeOutput(sim,args,name=f"{self.name}+0-1")
+        makeOutput(sim,self.param,name=f"{self.name}+0-1")
         sim.moveSim(rot=0,scale=2)
-        makeOutput(sim,args,name=f"{self.name}+0+2")
+        makeOutput(sim,self.param,name=f"{self.name}+0+2")
     def psiplot(self):
         a = self.sim.getPsiMap()
         print(a.shape, a.dtype)
@@ -176,10 +174,10 @@ def makeSingle(sim,param,name=None,row=None,outcols=None):
     just as args parsed from the command line.
     """
     imsim = SimImage(sim,param,name,row,outcols)
-    if args.join: imsim.join()
-    if args.family: imsim.family()
-    if args.psiplot: imsim.psiplot()
-    if args.kappaplot: imsim.psiplot()
+    if param.get( "join" ): imsim.join()
+    if param.get( "family" ): imsim.family()
+    if param.get( "psiplot" ): imsim.psiplot()
+    if param.get( "kappaplot" ): imsim.psiplot()
     print( "makeSingle() returns" )
     return imsim
 
@@ -194,36 +192,34 @@ def crop(im,cropsize=256):
             assert cropsize == im.shape[0]
             assert cropsize == im.shape[1]
     return im
-def makeOutput(sim,args,name=None,rot=0,scale=1,
-               actual=False,apparent=False,original=False,
-               reflines=False,critical=False):
+def makeOutput( sim,param,name=None,rot=0,scale=1 ):
 
-    im = sim.getDistortedImage( critical=critical, showmask=args.showmask ) 
+    im = sim.getDistortedImage( critical=param.get( "critical" ), showmask=param( "showmask" ) ) 
     print( "getDistortedImage() has returned" )
 
     (cx,cy) = 0,0
-    if args.centred:
+    if param( "centred" ):
         (centreIm,(cx,cy)) = centreImage(im)
-        if original:
-           fn = os.path.join(args.directory,"original-" + str(name) + ".png" ) 
-           if reflines: drawAxes(im)
+        if param.get( "original" ):
+           fn = os.path.join(param( "directory","original-" + str(name) + ".png" ) 
+           if param.get( "reflines" ): drawAxes(im)
            cv.imwrite(fn,im)
         im = centreIm
-    if args.cropsize:
-        im = crop(im,int(args.cropsize))
-    if args.reflines:
+    if param.get( "cropsize" ):
+        im = crop(im,int( param.get( "cropsize" ) ))
+    if param.get( "reflines" ):
         drawAxes(im)
 
-    fn = os.path.join(args.directory, str(name) + ".png" ) 
+    fn = os.path.join(param.get("directory"), str(name) + ".png" ) 
     cv.imwrite(fn,im)
 
-    if actual:
-       fn = os.path.join(args.directory,"actual-" + str(name) + ".png" ) 
-       im = sim.getActualImage( reflines=args.reflines )
+    if param.get( "actual" ):
+       fn = os.path.join(param.get("directory"),"actual-" + str(name) + ".png" ) 
+       im = sim.getActualImage( reflines=param.get( "reflines" ) )
        cv.imwrite(fn,im)
-    if apparent:
-       fn = os.path.join(args.directory,"apparent-" + str(name) + ".png" ) 
-       im = sim.getApparentImage( reflines=args.reflines )
+    if param.get( "apparent" ):
+       fn = os.path.join(param.get("directory"),"apparent-" + str(name) + ".png" ) 
+       im = sim.getApparentImage( reflines=param.get( "reflines" ) )
        cv.imwrite(fn,im)
     return (cx,cy)
 
