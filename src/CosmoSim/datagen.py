@@ -62,6 +62,7 @@ def setParameters(sim,row,verbose=1):
 class SimImage:
     def __init__(self,sim,param,name=None,row=None,outcols=None,verbose=1):
         if verbose > 0: print( "[SimImage] init ..." )
+        if param is None: param = Parameters()
         self.verbose = verbose
         if not row is None:
             setParameters( sim, row )
@@ -169,10 +170,11 @@ class SimImage:
         fn = os.path.join(self.directory,"kappa-" + str(self.name) + ".svg" ) 
         plt.savefig( fn )
         plt.close()
-def makeSingle(sim,param,name=None,row=None,outcols=None):
+def makeSingle(sim,param=None,name=None,row=None,outcols=None):
     """Process a single parameter set, given either as a pandas row or
     just as args parsed from the command line.
     """
+    if param is None: param = Parameters()
     imsim = SimImage(sim,param,name,row,outcols)
     if param.get( "join" ): imsim.join()
     if param.get( "family" ): imsim.family()

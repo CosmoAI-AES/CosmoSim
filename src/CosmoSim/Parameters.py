@@ -1,14 +1,12 @@
 # (C) 2024: Hans Georg Schaathun <georg@schaathun.net> 
 
 from CosmoSim import sourceDict
+from .Arguments import CosmoParser
 import numpy as np
 
 class Args:
     def __init__(self):
         self.__dict__ = {}
-
-class Arg:
-    pass
 
 class Parameters:
     """
@@ -19,7 +17,7 @@ class Parameters:
         if args:
             self._args = args
         else:
-            self._args = Arg()
+            self._args = CosmoParser().parse_args()
         self._row = {}
         if cfg:
             cfg1 = cfg["simulator"]
