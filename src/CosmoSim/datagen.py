@@ -14,7 +14,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from .dataset import datasetgen
 
-from .Image import centreImage, drawAxes
+from .Image import centreImage, drawAxes, crop
 from . import getMSheaders,CosmoSim,__version__
 
 from .Arguments import CosmoParser
@@ -88,12 +88,19 @@ class SimImage:
         if self.directory:
             os.makedirs( self.directory, exist_ok=True )
         self.outcols = outcols
-        self.centrepoint = makeOutput(sim,param,name)
+
+        self.image = sim.getDistortedImage( 
+                         critical=param.get( "criticalcurves" ),
+                         showmask=param.get( "showmask" ) ) 
+        (self.centreimage,self.centrepoint) = centreImage(self.image)
         print( "[datagen.py] Centre Point", self.centrepoint,
               "(Centre of Luminence in Planar Co-ordinates)" )
     def getData(self):
         sim = self.sim
-        centrepoint = self.centrepoint
+        if self.param( "centred" ):
+            centrepoint = self.centrepoint
+        else:
+            centrepoint = (0,0)
         maxm = self.param.get( "nterms" )
         xireference = self.param.get( "xireference" )
         if self.verbose > 0:
@@ -151,14 +158,35 @@ class SimImage:
         work where we tried to get accurate simulations using roulette. 
         """
         sim = self.sim
-        sim.moveSim(rot=-np.pi/4,scale=1)
-        makeOutput(sim,self.param,name=f"{self.name}-45+1")
-        sim.moveSim(rot=+np.pi/4,scale=1)
-        makeOutput(sim,self.param,name=f"{self.name}+45+1")
-        sim.moveSim(rot=0,scale=-1)
-        makeOutput(sim,self.param,name=f"{self.name}+0-1")
-        sim.moveSim(rot=0,scale=2)
-        makeOutput(sim,self.param,name=f"{self.name}+0+2")
+        self.moveImage(rot=-np.pi/4,scale=1,name=f"{self.name}-45+1")
+        self.moveImage(rot=+np.pi/4,scale=1,name=f"{self.name}+45+1")
+        self.moveImage(rot=0,scale=-1,name=f"{self.name}+0-1")
+        self.moveImage(rot=0,scale=2,self.param,name=f"{self.name}+0+2")
+    def moveImage(self,rot,scale,name):
+        """
+        Simulate with a different reference point.  This only makes
+        sense for roulette models.
+        """
+        sim = self.sim
+        param = self.param
+        sim.moveSim(rot,scale)
+        im = sim.getDistortedImage( 
+                 critical=param.get( "criticalcurves" ),
+                 showmask=param.get( "showmask" ) ) 
+        print( "getDistortedImage() has returned", type(im) )
+
+        if param.get( "centred" ):
+            (im,(cx,cy)) = centreImage(im)
+        if param.get( "cropsize" ):
+            im = crop(im,int( param.get( "cropsize" ) ))
+        if param.get( "reflines" ):
+            drawAxes(im)
+
+        fn = os.path.join(param.get("directory"), str(name) + ".png" ) 
+        cv.imwrite(fn,im)
+        return im
+
+
     def psiplot(self):
         a = self.sim.getPsiMap()
         print(a.shape, a.dtype)
@@ -196,6 +224,20 @@ class SimImage:
         fn = os.path.join(param.get("directory"),"apparent-" + str(name) + ".png" ) 
         im = sim.getApparentImage( reflines=param.get( "reflines" ) )
         cv.imwrite(fn,im)
+    def saveImage(self,name=None):
+        if name is None:
+            name = self.name
+        if param.get( "centred" ):
+            im = self.centreimage
+        else:
+            im = self.image
+        if param.get( "cropsize" ):
+            im = crop(im,int( param.get( "cropsize" ) ))
+        if param.get( "reflines" ):
+            drawAxes(im)
+
+        fn = os.path.join(param.get("directory"), str(name) + ".png" ) 
+        cv.imwrite(fn,im)
 
 def makeSingle(sim,param=None,name=None,row=None,outcols=None):
     """Process a single parameter set, given either as a pandas row or
@@ -203,6 +245,7 @@ def makeSingle(sim,param=None,name=None,row=None,outcols=None):
     """
     if param is None: param = Parameters()
     imsim = SimImage(sim,param,name,row,outcols)
+    imsim.saveImage()
     if param.get( "join" ): imsim.join()
     if param.get( "family" ): imsim.family()
     if param.get( "psiplot" ): imsim.psiplot()
@@ -211,41 +254,6 @@ def makeSingle(sim,param=None,name=None,row=None,outcols=None):
     if param.get( "actual" ): imsim.getActual()
     print( "makeSingle() returns" )
     return imsim
-
-def crop(im,cropsize=256):
-    (m,n) = im.shape
-    if cropsize < min(m,n):
-            assert m == n
-            c = (m-cropsize)/2
-            c1 = int(np.floor(c))
-            c2 = int(np.ceil(c))
-            im = im[c1:-c2,c1:-c2]
-            assert cropsize == im.shape[0]
-            assert cropsize == im.shape[1]
-    return im
-
-def makeOutput( sim, param, name=None, rot=0, scale=1 ):
-
-    im = sim.getDistortedImage( critical=param.get( "criticalcurves" ), showmask=param.get( "showmask" ) ) 
-    print( "getDistortedImage() has returned", type(im) )
-
-    (cx,cy) = 0,0
-    if param.get( "centred" ):
-        (centreIm,(cx,cy)) = centreImage(im)
-        if param.get( "original" ):
-           fn = os.path.join(param.get( "directory" ),"original-" + str(name) + ".png" )
-           if param.get( "reflines" ): drawAxes(im)
-           cv.imwrite(fn,im)
-        im = centreIm
-    if param.get( "cropsize" ):
-        im = crop(im,int( param.get( "cropsize" ) ))
-    if param.get( "reflines" ):
-        drawAxes(im)
-
-    fn = os.path.join(param.get("directory"), str(name) + ".png" ) 
-    cv.imwrite(fn,im)
-
-    return (cx,cy)
 
 
 def main(args):

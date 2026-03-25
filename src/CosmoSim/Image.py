@@ -68,6 +68,18 @@ def centreImage(im,newbehaviour=True):
        + f"Range ({centred.min()},{centred.max()})" )
   return (centred,(ym,-xm))
 
+def crop(im,cropsize=256):
+    (m,n) = im.shape
+    if cropsize < min(m,n):
+            assert m == n
+            c = (m-cropsize)/2
+            c1 = int(np.floor(c))
+            c2 = int(np.ceil(c))
+            im = im[c1:-c2,c1:-c2]
+            assert cropsize == im.shape[0]
+            assert cropsize == im.shape[1]
+    return im
+
 def drawAxes(im):
   m,n = im.shape[:2]
   if m == 0:
