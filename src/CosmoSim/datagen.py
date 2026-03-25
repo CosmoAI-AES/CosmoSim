@@ -224,7 +224,7 @@ class SimImage:
         fn = os.path.join(param.get("directory"),"apparent-" + str(name) + ".png" ) 
         im = sim.getApparentImage( reflines=param.get( "reflines" ) )
         cv.imwrite(fn,im)
-    def saveImage(self,name=None):
+    def getImage(self):
         param = self.param
         if name is None:
             name = self.name
@@ -236,8 +236,9 @@ class SimImage:
             im = crop(im,int( param.get( "cropsize" ) ))
         if param.get( "reflines" ):
             drawAxes(im)
-
-        fn = os.path.join(param.get("directory"), str(name) + ".png" ) 
+        return im
+    def saveImage(self,name=None):
+        im = self.getImage()
         cv.imwrite(fn,im)
 
 def makeSingle(sim,param=None,name=None,row=None,outcols=None):
