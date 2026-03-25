@@ -10,6 +10,10 @@
 + `CosmoSim.datagen.makeSingle()` can now be used as a library function to 
   generate images
 
+### Fixed
+
++ refactored to avoid global parameter `args` in datagen.py
+
 ## [2.6.7] - 2026-03-15
 
 ### Fixed
