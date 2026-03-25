@@ -60,6 +60,11 @@ def setParameters(sim,row,verbose=1):
 
 
 class SimImage:
+    """
+    This class simulates a single image.
+    Once the simulation has been run, various kinds of image and metadata can be
+    retrieved from the object.
+    """
     def __init__(self,sim,param,name=None,row=None,outcols=None,verbose=1):
         if verbose > 0: print( "[SimImage] init ..." )
         if param is None: param = Parameters()
