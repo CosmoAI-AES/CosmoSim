@@ -161,7 +161,7 @@ class SimImage:
         self.moveImage(rot=-np.pi/4,scale=1,name=f"{self.name}-45+1")
         self.moveImage(rot=+np.pi/4,scale=1,name=f"{self.name}+45+1")
         self.moveImage(rot=0,scale=-1,name=f"{self.name}+0-1")
-        self.moveImage(rot=0,scale=2,self.param,name=f"{self.name}+0+2")
+        self.moveImage(rot=0,scale=2,name=f"{self.name}+0+2")
     def moveImage(self,rot,scale,name):
         """
         Simulate with a different reference point.  This only makes
@@ -225,6 +225,7 @@ class SimImage:
         im = sim.getApparentImage( reflines=param.get( "reflines" ) )
         cv.imwrite(fn,im)
     def saveImage(self,name=None):
+        param = self.param
         if name is None:
             name = self.name
         if param.get( "centred" ):
