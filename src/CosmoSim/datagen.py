@@ -81,17 +81,16 @@ class SimImage:
         if verbose > 0: print ( "[datagen.py] ready for runSim()\n" ) ;
         sim.runSim()
         if verbose > 0: print ( "[datagen.py] runSim() completed\n" ) ;
-        centrepoint = makeOutput(sim,param,name)
-        print( "[datagen.py] Centre Point", centrepoint,
-              "(Centre of Luminence in Planar Co-ordinates)" )
         self.sim = sim
-        self.centrepoint = centrepoint
         self.name = name
         self.param = param
         self.directory = self.param.get( "directory" )
         if self.directory:
             os.makedirs( self.directory, exist_ok=True )
         self.outcols = outcols
+        self.centrepoint = makeOutput(sim,param,name)
+        print( "[datagen.py] Centre Point", self.centrepoint,
+              "(Centre of Luminence in Planar Co-ordinates)" )
     def getData(self):
         sim = self.sim
         centrepoint = self.centrepoint
@@ -122,6 +121,11 @@ class SimImage:
             print( r1 )
         return r1
     def join(self):
+        """
+        Merge images simulated different reference points for
+        the roulette expansion.  This has not been tested since the early
+        work where we tried to get accurate simulations using roulette. 
+        """
         # sim.setMaskMode(False)
         sim = self.sim
         maskscale = float(self.param.get( "maskscale" ))
@@ -141,6 +145,11 @@ class SimImage:
             drawAxes(joinim)
         cv.imwrite(fn,joinim)
     def family(self):
+        """
+        Run a family of simulations with different reference points for
+        the roulette expansion.  This has not been tested since the early
+        work where we tried to get accurate simulations using roulette. 
+        """
         sim = self.sim
         sim.moveSim(rot=-np.pi/4,scale=1)
         makeOutput(sim,self.param,name=f"{self.name}-45+1")
@@ -214,6 +223,7 @@ def crop(im,cropsize=256):
             assert cropsize == im.shape[0]
             assert cropsize == im.shape[1]
     return im
+
 def makeOutput( sim, param, name=None, rot=0, scale=1 ):
 
     im = sim.getDistortedImage( critical=param.get( "criticalcurves" ), showmask=param.get( "showmask" ) ) 
@@ -223,7 +233,7 @@ def makeOutput( sim, param, name=None, rot=0, scale=1 ):
     if param.get( "centred" ):
         (centreIm,(cx,cy)) = centreImage(im)
         if param.get( "original" ):
-           fn = os.path.join(param.get( "directory","original-" + str(name) + ".png" ))
+           fn = os.path.join(param.get( "directory" ),"original-" + str(name) + ".png" )
            if param.get( "reflines" ): drawAxes(im)
            cv.imwrite(fn,im)
         im = centreIm
