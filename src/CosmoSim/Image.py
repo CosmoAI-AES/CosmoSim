@@ -9,6 +9,17 @@ import numpy as np
 import cv2
 import argparse
 
+def annotatePoint(im,pt,colour=(0,0,255)):
+    """
+    Mark a point on an image.
+    This is crude and should be extended with different shapes as
+    well as text.
+    """
+    r = 3
+    cv2.circle(im,pt,r,radius, 0.5)
+    cv2.circle(im,pt,1,radius, -1)
+    return im
+
 def centreImage(im,newbehaviour=True):
   """
   Shift an image so that the centre of luminence is the centre of the image.
