@@ -226,8 +226,6 @@ class SimImage:
         cv.imwrite(fn,im)
     def getImage(self):
         param = self.param
-        if name is None:
-            name = self.name
         if param.get( "centred" ):
             im = self.centreimage
         else:
@@ -239,6 +237,9 @@ class SimImage:
         return im
     def saveImage(self,name=None):
         im = self.getImage()
+        if name is None:
+            name = self.name
+        fn = os.path.join(args.directory, str(name) + ".png" )
         cv.imwrite(fn,im)
 
 def makeSingle(sim,param=None,name=None,row=None,outcols=None):
