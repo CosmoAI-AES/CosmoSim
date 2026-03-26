@@ -20,7 +20,7 @@ def annotatePoint(im,pt,colour=(0,0,255)):
     cv2.circle(im,pt,1,radius, -1)
     return im
 
-def centreImage(im,newbehaviour=True):
+def centreImage(im):
   """
   Shift an image so that the centre of luminence is the centre of the image.
 
@@ -42,7 +42,7 @@ def centreImage(im,newbehaviour=True):
 
   if s == 0: 
       centred = im
-      (xm,ym) = (0,0)
+      pt = (0,0)
   else:
       xcol = np.array(range(m))[:,np.newaxis]
       yrow = np.array(range(n))[np.newaxis,:]
@@ -50,34 +50,19 @@ def centreImage(im,newbehaviour=True):
       ys = yrow*grey
       xm = xs.sum()/s - m/2
       ym = ys.sum()/s - n/2
-      print( "Translation", (xm,ym) )
+      pt = (ym,-xm)
+      centred = translateImage(im,pt)
 
-      if newbehaviour:
-          R = np.float32( [ [ 1, 0, -ym ], [ 0, 1, -xm ] ] )
-          centred = cv2.warpAffine(im,R,(n,m))
-      else:
-          xm = int(round(xm))
-          ym = int(round(ym))
-          print( "Integer Translation", (xm,ym) )
-          centred = np.zeros( im.shape )
-          c1 = np.zeros( im.shape )
-   
-          if xm > 0:
-             c1[:-xm,:] = im[xm:,:]
-          elif xm < 0:
-             c1[-xm:,:] = im[:xm,:]
-          else:
-             c1 = im
-          if ym > 0:
-             centred[:,:-ym] = c1[:,ym:]
-          elif ym < 0:
-             centred[:,-ym:] = c1[:,:ym]
-          else:
-             centred = c1
+  return (centred,pt)
 
-  print( f"Centre: ({xm},{ym}) ;  " 
-       + f"Range ({centred.min()},{centred.max()})" )
-  return (centred,(ym,-xm))
+def translateImage(im,pt):
+    (ym,xm) = pt
+    R = np.float32( [ [ 1, 0, -ym ], [ 0, 1, xm ] ] )
+    if len(im.shape) > 2:
+        m,n,_ = im.shape
+    else:
+        m,n = im.shape
+    return cv2.warpAffine(im,R,(n,m))
 
 def crop(im,cropsize=256):
     (m,n) = im.shape
