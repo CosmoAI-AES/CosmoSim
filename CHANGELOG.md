@@ -3,6 +3,12 @@
 
 ## Unreleased
 
+## [2.7.0] - 2026-XX-XX
+
+### Added
+
++ `CosmoSim.datagen.SimImage()` is now intended to be used as an API feature.
+
 ## [2.6.8] - 2026-03-25
 
 ### Added

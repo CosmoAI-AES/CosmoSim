@@ -224,13 +224,15 @@ class SimImage:
         fn = os.path.join(param.get("directory"),"apparent-" + str(name) + ".png" ) 
         im = sim.getApparentImage( reflines=param.get( "reflines" ) )
         cv.imwrite(fn,im)
-    def getImage(self):
+    def getImage(self,centred=None,cropsize=None):
         param = self.param
-        if param.get( "centred" ):
+        if centred is None: centred = param.get( "centred" )
+        if centred:
             im = self.centreimage
         else:
             im = self.image
-        if param.get( "cropsize" ):
+        if cropsize is None: cropsize = param.get( "cropsize" )
+        if cropsize:
             im = crop(im,int( param.get( "cropsize" ) ))
         if param.get( "reflines" ):
             drawAxes(im)
@@ -257,7 +259,6 @@ def makeSingle(sim,param=None,name=None,row=None,outcols=None):
     if param.get( "actual" ): imsim.getActual()
     print( "makeSingle() returns" )
     return imsim
-
 
 def main(args):
     print( "[datagen.py] Instantiate Simulator ... " )
