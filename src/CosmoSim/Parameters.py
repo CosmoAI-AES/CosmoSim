@@ -17,7 +17,7 @@ class Parameters:
         if args:
             self._args = args
         else:
-            self._args = CosmoParser().parse_args()
+            self._args = Args()
         self._row = {}
         if cfg:
             cfg1 = cfg["simulator"]
@@ -32,14 +32,14 @@ class Parameters:
                     self._args.source = None
     def setRow(self,row):
         self._row = row
-    def get(self,key,default=None):
+    def get(self,key,default=None,verbose=0):
         if self._args is None:
             r = default
         else:
             try:
                 r = self._args.__dict__[key]
             except KeyError:
-                print( self._args )
+                if verbose > 1: print( self._args )
                 r = default
         r = self._row.get(key,r)
         return r

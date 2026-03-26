@@ -1,5 +1,5 @@
 #! /usr/bin/env python3
-# (C) 2022: Hans Georg Schaathun <georg@schaathun.net> 
+# (C) 2022-26: Hans Georg Schaathun <georg@schaathun.net> 
 
 """
 Post-processing functions for images.
@@ -9,15 +9,25 @@ import numpy as np
 import cv2
 import argparse
 
+
+def imageCoordinate( pt, im ):
+    nrows, ncols = im.shape[:2]
+    (x,y) = pt
+    return (  round(x + ncols/2), round(nrows/2 - y) )
+
 def annotatePoint(im,pt,colour=(0,0,255)):
     """
     Mark a point on an image.
     This is crude and should be extended with different shapes as
     well as text.
     """
-    r = 3
-    cv2.circle(im,pt,r,radius, 0.5)
-    cv2.circle(im,pt,1,radius, -1)
+    if len(im.shape) == 2:
+        im = cv2.cvtColor(im, cv2.COLOR_GRAY2BGR)
+    r = 4
+    pt = imageCoordinate( pt, im )
+    print( "Annotation at", pt, "colour", colour )
+    im = cv2.circle(im,center=pt,radius=r,color=colour, thickness=1)
+    im = cv2.circle(im,center=pt,radius=1,color=colour, thickness=-1)
     return im
 
 def centreImage(im):
@@ -65,15 +75,18 @@ def translateImage(im,pt):
     return cv2.warpAffine(im,R,(n,m))
 
 def crop(im,cropsize=256):
-    (m,n) = im.shape
+    (m,n) = im.shape[:2]
     if cropsize < min(m,n):
-            assert m == n
-            c = (m-cropsize)/2
-            c1 = int(np.floor(c))
-            c2 = int(np.ceil(c))
+        assert m == n
+        c = (m-cropsize)/2
+        c1 = int(np.floor(c))
+        c2 = int(np.ceil(c))
+        if len(im.shape) == 2:
             im = im[c1:-c2,c1:-c2]
-            assert cropsize == im.shape[0]
-            assert cropsize == im.shape[1]
+        else:
+            im = im[c1:-c2,c1:-c2,:]
+        assert cropsize == im.shape[0]
+        assert cropsize == im.shape[1]
     return im
 
 def drawAxes(im):

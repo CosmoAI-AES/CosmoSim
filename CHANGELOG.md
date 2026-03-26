@@ -7,7 +7,8 @@
 
 ### Added
 
-+ `CosmoSim.datagen.SimImage()` is now intended to be used as an API feature.
++ `CosmoSim.datagen.SimImage()` is now intended to be used as an API feature, including
+  new API methods to add annotations to the image.
 
 ## [2.6.8] - 2026-03-25
 

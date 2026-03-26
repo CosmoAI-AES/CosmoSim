@@ -27,7 +27,7 @@ def setParameters(sim,row,verbose=1):
     if verbose > 2:
        print( "[datagen.py] setParameters()" )
        print( row ) 
-    if row.get("y",None) != None:
+    if row.get("y") is not None:
         if verbose > 1: print( "XY", row["x"], row["y"] )
         sim.setXY( row["x"], row["y"] )
     elif row.get("phi",None) != None:
@@ -71,7 +71,7 @@ class SimImage:
         self.verbose = verbose
         if not row is None:
             setParameters( sim, row )
-            print( "index", row["index"] )
+            if verbose: print( "index", row.get( "index", None ) )
             param.setRow( row )
             name = row["filename"].split(".")[0]
             self.row = row
@@ -228,9 +228,10 @@ class SimImage:
         """
         Stub for a future function to get an image with annotations.
         """
-        im = self.image.copy()
-        self.image = sim.getDistortedImage( critical=True )
-        annotateImage( im, centrepoint, colour=( 0, 255, 0 ) )
+        im = self.sim.getDistortedImage( critical=True )
+        im = annotatePoint( im, self.centrepoint, colour=( 64, 255, 64 ) )
+        pt = self.sim.getXiOffset( (0,0) )
+        im = annotatePoint( im, pt, colour=( 64, 64, 255 ) )
         return im
     def getImage(self,centred=None,cropsize=None):
         param = self.param
