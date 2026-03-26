@@ -224,6 +224,12 @@ class SimImage:
         fn = os.path.join(param.get("directory"),"apparent-" + str(name) + ".png" ) 
         im = sim.getApparentImage( reflines=param.get( "reflines" ) )
         cv.imwrite(fn,im)
+    def getAnnotated(self,centred=None,cropsize=None):
+        """
+        Stub for a future function to get an image with annotations.
+        """
+        im = self.image.copy()
+        return im
     def getImage(self,centred=None,cropsize=None):
         param = self.param
         if centred is None: centred = param.get( "centred" )
