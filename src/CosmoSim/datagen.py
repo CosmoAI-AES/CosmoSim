@@ -232,6 +232,9 @@ class SimImage:
         im = annotatePoint( im, self.centrepoint, colour=( 64, 255, 64 ) )
         pt = self.sim.getXiOffset( (0,0) )
         im = annotatePoint( im, pt, colour=( 64, 64, 255 ) )
+        x, y = pt
+        convradius = np.sqrt( x*x, y*y )
+        im = annotateCircle( im, pt, radius=convradius, colour=( 64, 64, 255 ) )
         return im
     def getImage(self,centred=None,cropsize=None):
         param = self.param

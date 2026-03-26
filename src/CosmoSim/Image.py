@@ -15,6 +15,18 @@ def imageCoordinate( pt, im ):
     (x,y) = pt
     return (  round(x + ncols/2), round(nrows/2 - y) )
 
+def annotateCircle(im,pt,radius,colour=(0,0,255)):
+    """
+    Mark a point on an image.
+    This is crude and should be extended with different shapes as
+    well as text.
+    """
+    if len(im.shape) == 2:
+        im = cv2.cvtColor(im, cv2.COLOR_GRAY2BGR)
+    pt = imageCoordinate( pt, im )
+    print( "Annotation at", pt, "colour", colour )
+    im = cv2.circle(im,center=pt,radius=radius,color=colour, thickness=1)
+    return im
 def annotatePoint(im,pt,colour=(0,0,255)):
     """
     Mark a point on an image.
