@@ -25,7 +25,7 @@ def annotateCircle(im,pt,radius,colour=(0,0,255)):
         im = cv2.cvtColor(im, cv2.COLOR_GRAY2BGR)
     pt = imageCoordinate( pt, im )
     print( "Annotation at", pt, "colour", colour )
-    im = cv2.circle(im,center=pt,radius=radius,color=colour, thickness=1)
+    im = cv2.circle(im,center=pt,radius=round(radius),color=colour, thickness=1)
     return im
 def annotatePoint(im,pt,colour=(0,0,255)):
     """

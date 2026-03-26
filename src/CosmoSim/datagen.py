@@ -14,7 +14,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from .dataset import datasetgen
 
-from .Image import centreImage, drawAxes, crop, annotatePoint, translateImage
+from .Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
 from . import getMSheaders,CosmoSim,__version__
 
 from .Arguments import CosmoParser
@@ -233,7 +233,7 @@ class SimImage:
         pt = self.sim.getXiOffset( (0,0) )
         im = annotatePoint( im, pt, colour=( 64, 64, 255 ) )
         x, y = pt
-        convradius = np.sqrt( x*x, y*y )
+        convradius = np.sqrt( x*x + y*y )
         im = annotateCircle( im, pt, radius=convradius, colour=( 64, 64, 255 ) )
         return im
     def getImage(self,centred=None,cropsize=None):
