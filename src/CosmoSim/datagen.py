@@ -14,7 +14,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from .dataset import datasetgen
 
-from .Image import centreImage, drawAxes, crop
+from .Image import centreImage, drawAxes, crop, annotatePoint, translateImage
 from . import getMSheaders,CosmoSim,__version__
 
 from .Arguments import CosmoParser
@@ -229,6 +229,8 @@ class SimImage:
         Stub for a future function to get an image with annotations.
         """
         im = self.image.copy()
+        self.image = sim.getDistortedImage( critical=True )
+        annotateImage( im, centrepoint, colour=( 0, 255, 0 ) )
         return im
     def getImage(self,centred=None,cropsize=None):
         param = self.param
