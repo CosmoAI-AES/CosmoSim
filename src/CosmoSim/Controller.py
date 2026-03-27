@@ -147,7 +147,7 @@ class SourcePane(ttk.Frame):
                 textvariable=lightVar,
                 values=[ "Gaussian", "Sersic" ] )
         lightProfileLabel.grid(column=0, row=5, sticky=E )
-        self.lightProfileSelector.grid(column=1, row=5)
+        self.lightProfileSelector.grid(column=1, row=6)
         self.sigmaSlider = IntSlider( self,
                 text="Source Size", row=2,
                 default=20 )
@@ -157,9 +157,13 @@ class SourcePane(ttk.Frame):
         self.thetaSlider = IntSlider( self, 
                 toval=360,
                 text="Source Rotation", row=4, default=45 )
+        self.nslider = FloatSlider( self,
+                toval=10,
+                text="Sersic Index", row=5, default=4 )
         self.sigmaSlider.var.trace_add( "write", self.push)
         self.sigma2Slider.var.trace_add( "write", self.push)
         self.thetaSlider.var.trace_add( "write", self.push)
+        self.nslider.var.trace_add("write", self.push)
         self.push(runsim=False)
         modeVar.trace_add("write", self.push) 
         lightVar.trace_add( "write", self.push)
@@ -170,6 +174,7 @@ class SourcePane(ttk.Frame):
            "sigma2":  self.sigma2Slider.get(),
            "theta":  self.thetaSlider.get(),
            "lightprofile": self.lightprfVar.get(),
+           "n_sersic": self.nslider.get()
            }
         print( "[Controller.py] Push source parameters", p )
         self.sim.makeSource(p)

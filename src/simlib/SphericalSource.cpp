@@ -4,9 +4,10 @@
 
 #include "cosmosim/Source.h"
 
-SphericalSource::SphericalSource(int sz, double sig, LightProfileSpec lightprf) :
+SphericalSource::SphericalSource(int sz, double sig, double idx, LightProfileSpec lightprf) :
         Source::Source(sz),
         sigma(sig),
+        n_sersic(idx),
         lightprofile(lightprf)
 { 
         if (lightprofile == LightProfileSpec::CSIM_LIGHT_GAUSSIAN) {
@@ -27,11 +28,12 @@ void SphericalSource::drawSource(int begin, int end, cv::Mat& dst) {
                 dst.at<uchar>(row, col) = (uchar)value;
             } 
             else if (lightprofile == LightProfileSpec::CSIM_LIGHT_SERSIC) {
-                int n = 4;  // Sersic index
-                auto re = 10*sigma; // effective radius
+//              auto I_e = std::log10(sigma) - 0.1*std::log10(n_sersic);
+                auto re = sigma; // effective radius
                 auto r = std::sqrt(std::pow(x, 2)+std::pow(y, 2));
-                auto bn = 1.992*n - 0.3271;
-                auto value = round(std::exp(-bn*((std::pow(r/re, 1.0/n))-1.0)));
+                auto bn = 1.992*n_sersic - 0.3271;
+                auto I_e = 10*(std::pow(bn, 2.0 * n_sersic)/(std::exp(bn) * std::tgamma(2.0 * n_sersic)));
+                auto value = round(I_e*std::exp(-bn*((std::pow(r/re, 1.0/n_sersic))-1.0)));
                 if (value > 255) {
                     value = 255;
                 }
