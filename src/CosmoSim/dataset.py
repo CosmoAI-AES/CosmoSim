@@ -51,13 +51,14 @@ def uniform(toml,key,rng=(0,50)):
 def getline(idx,toml):
 
     nterms = toml["simulator"].get( "nterms", 16 )
-    chi = toml["lens"].get( "chi", random.uniform(30,70) )
+    chi = uniform(toml["lens"], "chi", (30,70) )
 
     # Source
     sigma = uniform( toml["source"], "sigma", (1,60) )
     sigma2 = uniform( toml["source"], "sigma2", (1,40) )
     theta = uniform( toml["source"], "theta", (0,179) )
     coor = toml["source"].get( "position", "cartesian" )
+    n_sersic = uniform(toml["source"], "n_sersic", (1,5))
 
     # Lens
     einsteinR = uniform( toml["lens"], "einstein", (10,50) )
@@ -91,10 +92,10 @@ def getline(idx,toml):
     return pd.Series(
         data=[ idx,f"image-{idx:06}.png", src, cfg, chi, R, phi,
                einsteinR, ellipseratio, orientation, 
-               sigma, sigma2, theta, nterms, x, y ],
+               sigma, sigma2, theta, n_sersic, nterms, x, y ],
         index=[ "index", "filename", "source", "config", "chi", 
                "R", "phi", "einsteinR", "ellipseratio", "orientation",
-               "sigma", "sigma2", "theta", "nterms", "x", "y" ]
+               "sigma", "sigma2", "theta", "n_sersic", "nterms", "x", "y" ]
         )
     # return f'"{idx:04}","image-{idx:04}.png",{src},{cfg},{chi},' \
     #      + f'{R},{phi},{einsteinR},{sigma},{sigma2},{theta},{nterms},{x},{y}'

@@ -51,11 +51,11 @@ class SourceConstellation : public Source {
 class SphericalSource : public Source {
 
 private:
-    double sigma ;
+    double sigma, n_sersic;
     LightProfileSpec lightprofile;
 
 public:
-    SphericalSource(int,double,LightProfileSpec) ;
+    SphericalSource(int,double,double,LightProfileSpec) ;
 
 protected:
     virtual void drawSource(int, int, cv::Mat &) ;
