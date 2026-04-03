@@ -44,8 +44,8 @@ def setParameters(sim,row,verbose=1):
         sim.setModelMode( row["model"] )
     if row.get("sampled",None) != None:
         sim.setSampled( row["sampled"] )
-    if row.get("chi",None) != None:
-        sim.setCHI( row["chi"] )
+#    if row.get("chi",None) != None:
+#        sim.setCHI( row["chi"] )
     if row.get("einsteinR",None) != None:
         sim.setEinsteinR( row["einsteinR"] )
     if row.get("ellipseratio",None) != None:
@@ -301,8 +301,8 @@ def main(args):
 
     if args.model:
         sim.setModelMode( args.model)
-    if args.chi:
-        sim.setCHI( float(args.chi) )
+#    if args.chi:
+#        sim.setCHI( float(args.chi) )
     if args.einsteinradius:
         sim.setEinsteinR( float(args.einsteinradius) )
     if args.ratio:

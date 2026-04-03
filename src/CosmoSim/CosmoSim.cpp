@@ -33,14 +33,14 @@ PsiFunctionLens *CosmoSim::getLens( int lensmode ) {
    }
 } ;
 
-double CosmoSim::getChi( ) { return chi ; } ;
+//double CosmoSim::getChi( ) { return chi ; } ;
 cv::Point2d CosmoSim::getRelativeEta( double x, double y ) {
    // Input (x,y) is the centre point $\nu$
-   return sim->getRelativeEta( cv::Point2d( x,y )*chi ) ; 
+   return sim->getRelativeEta( cv::Point2d( x,y ) ) ; 
 } ;
 cv::Point2d CosmoSim::getOffset( double x, double y ) {
    // Input (x,y) is the centre point $\nu$ 
-   return sim->getOffset( cv::Point2d( x,y )*chi ) ; 
+   return sim->getOffset( cv::Point2d( x,y ) ) ; 
 } ;
 cv::Point2d CosmoSim::getNu( ) {
    return sim->getNu() ;
@@ -51,7 +51,7 @@ double CosmoSim::getAlphaXi( int m, int s ) {
    // cv::Point2d xi = lens->getXi( sim->getEta() ) ;
    cv::Point2d xi = sim->getXi() ;
    if (DEBUG) std::cout << "[getAlphaXi] xi = " << xi << std::endl ;
-   xi /= chi ;
+//   xi /= chi ;
    return getAlpha( xi.x, xi.y, m, s ) ;
 
 }
@@ -59,14 +59,14 @@ double CosmoSim::getBetaXi( int m, int s ) {
    // cv::Point2d xi = lens->getXi( sim->getEta() ) ;
    cv::Point2d xi = sim->getXi( ) ;
    if (DEBUG) std::cout << "[getBetaXi] xi = " << xi << std::endl ;
-   xi /= chi ;
+//   xi /= chi ;
    return getBeta( xi.x, xi.y, m, s ) ;
 }
 double CosmoSim::getAlpha(
       double x, double y, int m, int s 
  ) {
       double r ;
-      cv::Point2d xi = cv::Point2d( x, y )*chi ;
+      cv::Point2d xi = cv::Point2d( x, y ) ;
       if ( NULL != psilens )
           r = psilens->getAlpha( xi, m, s ) ;
       else if ( NULL != lens )
@@ -78,7 +78,7 @@ double CosmoSim::getBeta(
       double x, double y, int m, int s 
 ) {
       double r ;
-      cv::Point2d xi = cv::Point2d( x, y )*chi ;
+      cv::Point2d xi = cv::Point2d( x, y ) ;
       if ( NULL != psilens )
           r = psilens->getBeta( xi, m, s ) ;
       else if ( NULL != lens )
@@ -108,7 +108,7 @@ std::string CosmoSim::getFile( int key ) {
     return filename[key] ;
 } 
 
-void CosmoSim::setCHI(double c) { chi = c/100.0 ; }
+//void CosmoSim::setCHI(double c) { chi = c/100.0 ; }
 void CosmoSim::setNterms(int c) { nterms = c ; }
 void CosmoSim::setMaskRadius(double c) { maskRadius = c ; }
 void CosmoSim::setXY( double x, double y) { xPos = x ; yPos = y ; rPos = -1 ; }
@@ -266,7 +266,7 @@ bool CosmoSim::runSim() {
    configLens() ; // configLens() implements parameter changes
 
    // Set simulation parameters
-   sim->setCHI( chi ) ;
+//   sim->setCHI( chi ) ;
    sim->setBGColour( bgcolour ) ;
    sim->setNterms( nterms ) ;
    sim->setMaskRadius( maskRadius ) ;

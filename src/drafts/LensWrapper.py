@@ -17,14 +17,14 @@ LensWrapper::LensWrapper() {
 }
 
 
-double LensWrapper::getChi( ) { return chi ; } ;
+#double LensWrapper::getChi( ) { return chi ; } ;
 
 double LensWrapper::getAlphaXi( int m, int s ) {
 
    // cv::Point2d xi = lens->getXi( sim->getEta() ) ;
    cv::Point2d xi = sim->getXi() ;
    if (DEBUG) std::cout << "[getAlphaXi] xi = " << xi << std::endl ;
-   xi /= chi ;
+#   xi /= chi ;
    return getAlpha( xi.x, xi.y, m, s ) ;
 
 }
@@ -32,14 +32,14 @@ double LensWrapper::getBetaXi( int m, int s ) {
    // cv::Point2d xi = lens->getXi( sim->getEta() ) ;
    cv::Point2d xi = sim->getXi( ) ;
    if (DEBUG) std::cout << "[getBetaXi] xi = " << xi << std::endl ;
-   xi /= chi ;
+#   xi /= chi ;
    return getBeta( xi.x, xi.y, m, s ) ;
 }
 double LensWrapper::getAlpha(
       double x, double y, int m, int s 
  ) {
       double r ;
-      cv::Point2d xi = cv::Point2d( x, y )*chi ;
+      cv::Point2d xi = cv::Point2d( x, y ) ;
       if ( NULL != psilens )
           r = psilens->getAlpha( xi, m, s ) ;
       else if ( NULL != lens )
@@ -51,7 +51,7 @@ double LensWrapper::getAlpha(
       double x, double y, int m, int s 
 ) {
       double r ;
-      cv::Point2d xi = cv::Point2d( x, y )*chi ;
+      cv::Point2d xi = cv::Point2d( x, y ) ;
       if ( NULL != psilens )
           r = psilens->getBeta( xi, m, s ) ;
       else if ( NULL != lens )
@@ -216,7 +216,7 @@ bool LensWrapper::runSim() {
    if ( lens != NULL ) lens->setNterms( nterms ) ;
    sim->setMaskMode( maskmode ) ;
    if ( CSIM_NOPSI_ROULETTE != lensmode ) {
-      sim->setCHI( chi ) ;
+#      sim->setCHI( chi ) ;
       if ( rPos < 0 ) {
          sim->setXY( xPos, yPos ) ;
       } else {
@@ -266,7 +266,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setOrientation", &LensWrapper::setOrientation)
         .def("setNterms", &LensWrapper::setNterms)
         .def("setMaskRadius", &LensWrapper::setMaskRadius)
-        .def("setCHI", &LensWrapper::setCHI)
+#        .def("setCHI", &LensWrapper::setCHI)
         .def("setSourceParameters", &LensWrapper::setSourceParameters)
         .def("setXY", &LensWrapper::setXY)
         .def("setPolar", &LensWrapper::setPolar)
@@ -290,7 +290,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("getBeta", &LensWrapper::getBeta)
         .def("getAlphaXi", &LensWrapper::getAlphaXi)
         .def("getBetaXi", &LensWrapper::getBetaXi)
-        .def("getChi", &LensWrapper::getChi)
+#        .def("getChi", &LensWrapper::getChi)
         .def("getOffset", &LensWrapper::getOffset)
         .def("getNu", &LensWrapper::getNu)
         .def("getRelativeEta", &LensWrapper::getRelativeEta)

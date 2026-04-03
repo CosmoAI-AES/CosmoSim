@@ -80,7 +80,7 @@ void SimulatorModel::drawCaustics( cv::Mat img ) {
    try {
       for ( int i=0 ; i < 360*5 ; ++i ) {
          double phi = i*PI/(180*5) ;
-         cv::Point2d xy = lens->caustic( phi )/CHI ;
+         cv::Point2d xy = lens->caustic( phi ) ;
          cv::Point2d ij = imageCoordinate( xy, img ) ;
          cv::Vec3b red = (0,0,255) ;
          if ( 3 == img.channels() ) {
@@ -101,7 +101,7 @@ void SimulatorModel::drawCritical( cv::Mat img ) {
    try {
       for ( int i=0 ; i < 360*5 ; ++i ) {
          double phi = i*PI/(180*5) ;
-         double xi = lens->criticalXi( phi )/CHI ;
+         double xi = lens->criticalXi( phi ) ;
          double x = cos(phi)*xi ;
          double y = sin(phi)*xi ;
          cv::Point2d xy = cv::Point( x, y ) ;
@@ -187,7 +187,7 @@ void SimulatorModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
 void SimulatorModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) {
     // Iterate over the pixels in the image distorted image.
     // (row,col) are pixel co-ordinates
-    double maskRadius = getMaskRadius()*CHI ;
+    double maskRadius = getMaskRadius() ;
     cv::Point2d xi = getXi() ;
     if (DEBUG) std::cout << "[SimulatorModel::distort] begin=" << begin << "; end=" << end
             << std::endl ;
@@ -198,8 +198,8 @@ void SimulatorModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& ds
 
             // Set coordinate system with origin at the centre of mass
             // in the distorted image in the lens plane.
-            double x = (col - dst.cols / 2.0 ) * CHI - xi.x;
-            double y = (dst.rows / 2.0 - row ) * CHI - xi.y;
+            double x = (col - dst.cols / 2.0 ) - xi.x;
+            double y = (dst.rows / 2.0 - row ) - xi.y;
             // (x,y) are coordinates in the lens plane, and hence the
             // multiplication by CHI
 
@@ -241,8 +241,8 @@ void SimulatorModel::undistort(const cv::Mat& src, cv::Mat& dst) {
 
             // Set coordinate system with origin at the centre of mass
             // in the distorted image in the lens plane.
-            double x = (col - dst.cols / 2.0 ) * CHI - xi.x;
-            double y = (dst.rows / 2.0 - row ) * CHI - xi.y;
+            double x = (col - dst.cols / 2.0 ) - xi.x;
+            double y = (dst.rows / 2.0 - row ) - xi.y;
             // (x,y) are coordinates in the lens plane, and hence the
             // multiplication by CHI
 
@@ -306,9 +306,9 @@ void SimulatorModel::setSource(Source *src) {
 void SimulatorModel::setNterms(int n) {
    nterms = n ;
 }
-void SimulatorModel::setCHI(double chi) {
-   CHI = chi ;
-}
+//void SimulatorModel::setCHI(double chi) {
+//   CHI = chi ;
+//}
 
 /* D. Position (eta) setters */
 
@@ -361,7 +361,7 @@ void SimulatorModel::markMask( cv::InputOutputArray imgD ) {
 
 /* Getters */
 cv::Point2d SimulatorModel::getCentre( ) const {
-   cv::Point2d xichi =  getXi()/CHI ;
+   cv::Point2d xichi =  getXi() ;
    return xichi ;
 }
 cv::Point2d SimulatorModel::getXi() const { 
@@ -372,7 +372,7 @@ double SimulatorModel::getXiAbs() const {
    return sqrt( xi.x*xi.x + xi.y*xi.y ) ;
 }
 cv::Point2d SimulatorModel::getTrueXi() const { 
-   return CHI*nu ;
+   return nu ;
 }
 cv::Point2d SimulatorModel::getNu() const { 
    return nu ;
@@ -394,12 +394,12 @@ double SimulatorModel::getMaskRadius() const {
    if ( maskRadius > 0 ) {
       return maskRadius ;
    } else {
-      return getXiAbs()/CHI ; 
+      return getXiAbs() ; 
    }
 }
 void SimulatorModel::setNu( cv::Point2d n ) {
    nu = n ;
-   referenceXi = nu*CHI ;
+   referenceXi = nu ;
    etaOffset = cv::Point2d( 0, 0 ) ;
    if (DEBUG) std::cout << "[setNu] etaOffset set to zero.\n" ;
 }
@@ -422,7 +422,7 @@ void SimulatorModel::setLens( Lens *l ) {
 cv::Point2d SimulatorModel::getRelativeEta( cv::Point2d xi1 ) {
    // returns $\vec\eta''$
    cv::Point2d releta ;
-   releta = getEta() - xi1/CHI ;
+   releta = getEta() - xi1 ;
    return releta ;
 }
 
@@ -432,7 +432,7 @@ cv::Point2d SimulatorModel::getOffset( cv::Point2d xi1 ) {
    releta = xi1 - cv::Point2d( lens->psiXvalue( xi1.x, xi1.y ),
                        lens->psiYvalue( xi1.x, xi1.y ) ) ;
    eta = getEta() ;
-   r = releta/CHI - eta ;
+   r = releta - eta ;
 
    if (DEBUG) {
      std::cout << "[getOffset] eta=" << eta << "; xi1=" << xi1
@@ -447,9 +447,9 @@ cv::Point2d SimulatorModel::getOffset( cv::Point2d xi1 ) {
 
 void SimulatorModel::updateApparentAbs( ) {
     cv::Mat im = getActual() ;
-    cv::Point2d chieta = CHI*getEta() ;
+    cv::Point2d chieta = getEta() ;
     cv::Point2d xi1 = lens->getXi( chieta ) ;
-    setNu( xi1/CHI ) ;
+    setNu( xi1 ) ;
 }
 
 void SimulatorModel::setMaskRadius( double r ) {

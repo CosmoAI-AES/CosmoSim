@@ -31,7 +31,7 @@ class CosmoParser(argparse.ArgumentParser):
     self.add_argument('-2', '--sigma2', default=10, help="secondary source size (sigma2)")
     self.add_argument('-t', '--theta', default=45, help="source rotation angle (theta)")
 
-    self.add_argument('-X', '--chi', default=50, help="lens distance ratio (chi)")
+#    self.add_argument('-X', '--chi', default=50, help="lens distance ratio (chi)")
     self.add_argument('-E', '--einsteinradius', default=20, help="Einstein radius")
     self.add_argument('-r', '--ratio', help="Ratio (usually Elliptic eccentricity)")
     self.add_argument('--orientation', default=0, help="Orientation of the lens")
@@ -106,8 +106,8 @@ def setParameters(sim,row):
         sim.setPolar( row["x"], row["phi"] )
     if row.get("lens",None) != None:
         sim.setModelMode( row["lens"] )
-    if row.get("chi",None) != None:
-        sim.setCHI( row["chi"] )
+#if row.get("chi",None) != None:
+#        sim.setCHI( row["chi"] )
     if row.get("ellipseratio",None) != None:
         sim.setRatio( row["ellipseratio"] )
     if row.get("orientation",None) != None:

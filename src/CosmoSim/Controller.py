@@ -249,6 +249,8 @@ class LensPane(ttk.Frame):
 
         self.einsteinSlider = IntSlider( self,
             text="Einstein Radius", row=2,
+            fromval=1,
+            toval=150,
             default=20 )
         self.ratioSlider = FloatSlider( self,
             text="Ellipticity", row=3,
@@ -258,9 +260,9 @@ class LensPane(ttk.Frame):
         self.orientationSlider = IntSlider( self, 
                 toval=360,
                 text="Lens Orientation", row=4, default=45 )
-        self.chiSlider = IntSlider( self,
-            text="Distance Ratio (chi)", row=5,
-            default=50 )
+#        self.chiSlider = IntSlider( self,
+#            text="Distance Ratio (chi)", row=5,
+#            default=50 )
         self.ntermsSlider = IntSlider( self, 
             text="Number of Terms (Roulettes only)", row=6,
             toval=50,
@@ -268,7 +270,7 @@ class LensPane(ttk.Frame):
         self.einsteinSlider.var.trace_add( "write", self.push ) 
         self.ratioSlider.var.trace_add( "write", self.push ) 
         self.orientationSlider.var.trace_add( "write", self.push ) 
-        self.chiSlider.var.trace_add( "write", self.push ) 
+#        self.chiSlider.var.trace_add( "write", self.push ) 
         self.ntermsSlider.var.trace_add( "write", self.push ) 
 
         self.maskModeVar = BooleanVar()
@@ -286,7 +288,7 @@ class LensPane(ttk.Frame):
         print( "[CosmoGUI] Push lens parameters" )
         self.sim.setConfigMode(self.lensVar.get())
         self.sim.setNterms( self.ntermsSlider.get() )
-        self.sim.setCHI( self.chiSlider.get() )
+#        self.sim.setCHI( self.chiSlider.get() )
         self.sim.setEinsteinR( self.einsteinSlider.get())
         self.sim.setRatio( self.ratioSlider.get())
         self.sim.setOrientation( self.orientationSlider.get())
