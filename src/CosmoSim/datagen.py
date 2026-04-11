@@ -220,13 +220,13 @@ class SimImage:
         param = self.param
         name = self.name
         fn = os.path.join(param.get("directory"),"actual-" + str(name) + ".png" ) 
-        im = sim.getActualImage( reflines=param.get( "reflines" ) )
+        im = self.sim.getActualImage( reflines=param.get( "reflines" ) )
         cv.imwrite(fn,im)
     def getApparent(self):
         param = self.param
         name = self.name
         fn = os.path.join(param.get("directory"),"apparent-" + str(name) + ".png" ) 
-        im = sim.getApparentImage( reflines=param.get( "reflines" ) )
+        im = self.sim.getApparentImage( reflines=param.get( "reflines" ) )
         cv.imwrite(fn,im)
     def getAnnotated(self,centred=None,cropsize=None):
         """
