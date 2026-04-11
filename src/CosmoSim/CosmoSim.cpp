@@ -226,9 +226,9 @@ void CosmoSim::configLens() {
          psilens->setRatio( ellipseratio ) ;
          psilens->setOrientation( orientation ) ;
       }
-      if (DEBUG) std::cout << "[runSim] ready for initAlphasBetas\n" ;
+      if (DEBUG) std::cout << "[configLens] ready for initAlphasBetas\n" ;
       psilens->initAlphasBetas() ;
-      if (DEBUG) std::cout << "[runSim] done initAlphasBetas\n" ;
+      if (DEBUG) std::cout << "[configLens] done initAlphasBetas\n" ;
    }
 
    std::cout << "[initLens] ready to sample lens\n" ;

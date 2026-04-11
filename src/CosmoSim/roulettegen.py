@@ -18,22 +18,26 @@ from .datagen import crop
 from .Arguments import CosmoParser
 
 from .RouletteAmplitudes import RouletteAmplitudes 
+from .Simulator import GenericSim 
 from . import RouletteSim,RouletteRegenerator,makeSource
 
-class Resim:
+
+class Resim(GenericSim):
     """
     Infrastructure to resimulate from roulette amplitudes.
 
     The class sets up the infrastructure, and provides the methods to
     run the simulator for each iaage on a CSV file.
     """
-    def __init__(self,directory,args=None,cfg=None,nterms=None,xireference=True,reflines=False):
+    def __init__(self,directory,sim=None,args=None,cfg=None,nterms=None,xireference=True,reflines=False):
         """
         Note that `args` overrides Boolean parameters.
         """
-        self.sim = RouletteSim()
+        super().__init__(param,verbose)
+        # self.sim = RouletteSim()
         self.directory = directory
-        self.rsim = RouletteRegenerator()
+        if sim is None: sim = RouletteRegenerator()
+
         self.nterms = nterms 
         self.param = Parameters( args, cfg=cfg )
         self.xireference = xireference
@@ -47,7 +51,7 @@ class Resim:
 
     def setAmplitudes( self, row ):
         maxm = self.coefs.getNterms()
-        rsim = self.rsim
+        rsim = self.sim
         for m in range(maxm+1):
             for s in range((m+1)%2, m+2, 2):
                 print( "row is",  type( row ) )
@@ -71,11 +75,11 @@ class Resim:
         print( "Number of roulette terms: ", coefs.getNterms() )
         if self.nterms:
             print( "[Resim.loadData()] Set nterms from self", int(self.nterms) )
-            self.rsim.setNterms( int(self.nterms) )
+            self.sim.setNterms( int(self.nterms) )
         else:
             nterms = coefs.getNterms() 
             print( "[Resim.loadData()] Set nterms from coefs", nterms )
-            self.rsim.setNterms( nterms )
+            self.sim.setNterms( nterms )
         self.coefs = coefs
         self.cols = cols
         self.frame = frame
@@ -88,8 +92,8 @@ class Resim:
         else:
             print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
             pt = ( row["offsetX"], row["offsetY"] )
-        self.rsim.setCentrePy( *pt )
-        self.sim.initSim( self.rsim )
+        self.sim.setCentrePy( *pt )
+        self.initSim( self.sim )
         print( "Initialised simulator at point", pt )
         self.setAmplitudes( row )
         self.param.setRow( row )
@@ -124,12 +128,6 @@ class Resim:
             count += 1
             if maxcount is not None and count > maxcount: break
         return count
-    def makeActual(self,fn,reflines=False):
-        im = self.sim.getActualImage( reflines=reflines )
-        cv.imwrite(fn,im)
-    def makeApparent(self,fn,reflines=False):
-        im = sim.getApparentImage( reflines=reflines )
-        cv.imwrite(fn,im)
 
 def main(args):
     """
@@ -170,12 +168,8 @@ def main(args):
 
         resim.makeSingle( fn0, row, showmask=args.showmask )
 
-        if args.actual:
-               fn1 = os.path.join(args.directory,"actual-" + str(name) + ".png" ) 
-               resim.makeActual( fn1, args.reflines )
-        if args.apparent:
-                fn2 = os.path.join(args.directory,"apparent-" + str(name) + ".png" ) 
-                resim.makeApparent( fn2, args.reflines )
+        if args.actual: resim.getActual()
+        if args.apparent: resim.getApparent()
 
         count += 1
         if count > maxcount: break

@@ -68,7 +68,6 @@ class SimImage(GenericSim):
     """
     def __init__(self,sim=None,param=None,name=None,row=None,outcols=None,verbose=1):
         super().__init__(param,verbose)
-        if sim is None: sim = CosmoSim()
 
         if not row is None:
             setParameters( sim, row )
@@ -81,13 +80,12 @@ class SimImage(GenericSim):
             self.row = row
         elif name == None:
             name = param.get( "name" )
-        sim.makeSource( param )
-        if verbose > 0: print ( "[datagen.py] ready for runSim()\n" ) ;
-        sim.runSim()
-        if verbose > 0: print ( "[datagen.py] runSim() completed\n" ) ;
-        self.sim = sim
         self.name = name
-        self.param = param
+
+        if sim is None: sim = CosmoSim()
+        self.initSim(sim)
+
+        param = self.param
         self.directory = self.param.get( "directory" )
         if self.directory:
             os.makedirs( self.directory, exist_ok=True )

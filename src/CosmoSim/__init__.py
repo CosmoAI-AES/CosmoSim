@@ -379,6 +379,7 @@ class CosmoSim(cs.CosmoSim):
         im = np.array(self.getDistorted(reflines,critical),copy=False)
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
+
 class RouletteSim:
     """
     Simulator for gravitational lensing.
