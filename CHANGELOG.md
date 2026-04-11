@@ -3,6 +3,11 @@
 
 ## Unreleased
 
+### Fixed
+
++ the `row` passed to `CosmoSim.SimImage` can now be a pandas Series where
+  the filename is used as row index, or Series name.
+
 ## [2.7.0] - 2026-XX-XX
 
 ### Added

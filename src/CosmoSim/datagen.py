@@ -65,7 +65,8 @@ class SimImage:
     Once the simulation has been run, various kinds of image and metadata can be
     retrieved from the object.
     """
-    def __init__(self,sim,param,name=None,row=None,outcols=None,verbose=1):
+    def __init__(self,sim=None,param=None,name=None,row=None,outcols=None,verbose=1):
+        if sim is None: sim = CosmoSim()
         if verbose > 0: print( "[SimImage] init ..." )
         if param is None: param = Parameters()
         self.verbose = verbose
@@ -73,7 +74,10 @@ class SimImage:
             setParameters( sim, row )
             if verbose: print( "index", row.get( "index", None ) )
             param.setRow( row )
-            name = row["filename"].split(".")[0]
+            try:
+                name = row.name.split(".")[0]
+            except:
+                name = row["filename"].split(".")[0]
             self.row = row
         elif name == None:
             name = param.get( "name" )
@@ -253,7 +257,10 @@ class SimImage:
         im = self.getImage()
         if name is None:
             name = self.name
-        fn = os.path.join(args.directory, str(name) + ".png" )
+        if self.directory is None:
+            fn = str(name) + ".png"
+        else:
+            fn = os.path.join(self.directory, str(name) + ".png" )
         cv.imwrite(fn,im)
 
 def makeSingle(sim,param=None,name=None,row=None,outcols=None):
