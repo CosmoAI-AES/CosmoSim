@@ -154,31 +154,31 @@ def main(args):
         rsim.setMaskRadius( float(args.maskradius) )
         
     for index,row in resim.frame.iterrows():
-            print( "[roulettegen.py] Processing", index )
+        print( "[roulettegen.py] Processing", index )
 
-            fn = row.get("filename",None)
-            print( "filename", fn )
-            if fn is None:
+        fn = row.get("filename",None)
+        print( "filename", fn )
+        if fn is None:
                 try:
                     namestem = f"image-{int(row['index']):05}" 
                 except:
                     namestem = f"image-{row['index']}" 
                 fn = namestem + ".png"
-            else:
+        else:
                 namestem = fn.split(".")[0]
-            fn0 = os.path.join(args.directory, fn ) 
+        fn0 = os.path.join(args.directory, fn ) 
 
-            resim.makeSingle( fn0, row, showmask=args.showmask )
+        resim.makeSingle( fn0, row, showmask=args.showmask )
 
-            if args.actual:
+        if args.actual:
                fn1 = os.path.join(args.directory,"actual-" + str(name) + ".png" ) 
                resim.makeActual( fn1, args.reflines )
-            if args.apparent:
+        if args.apparent:
                 fn2 = os.path.join(args.directory,"apparent-" + str(name) + ".png" ) 
                 resim.makeApparent( fn2, args.reflines )
 
-            count += 1
-            if count > maxcount: break
+        count += 1
+        if count > maxcount: break
 
     print( "[roulettegen.py] Done" )
 
