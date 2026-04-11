@@ -13,6 +13,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from .dataset import datasetgen
+from .Simulator import GenericSim
 
 from .Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
 from . import getMSheaders,CosmoSim,__version__
@@ -59,17 +60,16 @@ def setParameters(sim,row,verbose=1):
         sim.setNterms( row["nterms"] )
 
 
-class SimImage:
+class SimImage(GenericSim):
     """
     This class simulates a single image.
     Once the simulation has been run, various kinds of image and metadata can be
     retrieved from the object.
     """
     def __init__(self,sim=None,param=None,name=None,row=None,outcols=None,verbose=1):
+        super().__init__(param,verbose)
         if sim is None: sim = CosmoSim()
-        if verbose > 0: print( "[SimImage] init ..." )
-        if param is None: param = Parameters()
-        self.verbose = verbose
+
         if not row is None:
             setParameters( sim, row )
             if verbose: print( "index", row.get( "index", None ) )
@@ -216,52 +216,6 @@ class SimImage:
         fn = os.path.join(self.directory,"kappa-" + str(self.name) + ".svg" ) 
         plt.savefig( fn )
         plt.close()
-    def getActual(self):
-        param = self.param
-        name = self.name
-        fn = os.path.join(param.get("directory"),"actual-" + str(name) + ".png" ) 
-        im = self.sim.getActualImage( reflines=param.get( "reflines" ) )
-        cv.imwrite(fn,im)
-    def getApparent(self):
-        param = self.param
-        name = self.name
-        fn = os.path.join(param.get("directory"),"apparent-" + str(name) + ".png" ) 
-        im = self.sim.getApparentImage( reflines=param.get( "reflines" ) )
-        cv.imwrite(fn,im)
-    def getAnnotated(self,centred=None,cropsize=None):
-        """
-        Stub for a future function to get an image with annotations.
-        """
-        im = self.sim.getDistortedImage( critical=True )
-        im = annotatePoint( im, self.centrepoint, colour=( 64, 255, 64 ) )
-        pt = self.sim.getXiOffset( (0,0) )
-        im = annotatePoint( im, pt, colour=( 64, 64, 255 ) )
-        x, y = pt
-        convradius = np.sqrt( x*x + y*y )
-        im = annotateCircle( im, pt, radius=convradius, colour=( 64, 64, 255 ) )
-        return im
-    def getImage(self,centred=None,cropsize=None):
-        param = self.param
-        if centred is None: centred = param.get( "centred" )
-        if centred:
-            im = self.centreimage
-        else:
-            im = self.image
-        if cropsize is None: cropsize = param.get( "cropsize" )
-        if cropsize:
-            im = crop(im,int( param.get( "cropsize" ) ))
-        if param.get( "reflines" ):
-            drawAxes(im)
-        return im
-    def saveImage(self,name=None):
-        im = self.getImage()
-        if name is None:
-            name = self.name
-        if self.directory is None:
-            fn = str(name) + ".png"
-        else:
-            fn = os.path.join(self.directory, str(name) + ".png" )
-        cv.imwrite(fn,im)
 
 def makeSingle(sim,param=None,name=None,row=None,outcols=None):
     """Process a single parameter set, given either as a pandas row or
