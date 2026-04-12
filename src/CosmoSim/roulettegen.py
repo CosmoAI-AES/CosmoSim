@@ -29,17 +29,15 @@ class Resim(GenericSim):
     The class sets up the infrastructure, and provides the methods to
     run the simulator for each iaage on a CSV file.
     """
-    def __init__(self,directory,sim=None,args=None,cfg=None,nterms=None,xireference=True,reflines=False):
+    def __init__(self,sim=None,param=None,nterms=None,xireference=True,reflines=False):
         """
         Note that `args` overrides Boolean parameters.
         """
-        super().__init__(param,verbose)
-        # self.sim = RouletteSim()
-        self.directory = directory
+        super().__init__(param,oucols,verbose)
         if sim is None: sim = RouletteRegenerator()
+        self.sim = sim
 
         self.nterms = nterms 
-        self.param = Parameters( args, cfg=cfg )
         self.xireference = xireference
         self.reflines = reflines
         if args is not None:
@@ -133,7 +131,6 @@ def main(args):
     if not args.csvfile:
         raise Exception( "No CSV file given; the --csvfile option is mandatory." )
 
-    resim = Resim( args.directory, args )
 
     count = 1
     if args.maxcount is None:
@@ -148,6 +145,9 @@ def main(args):
     if not args.maskradius is None:
         rsim.setMaskRadius( float(args.maskradius) )
         
+    param = Parameters( args, cfg=cfg )
+    resim = Resim( sim, param )
+
     for index,row in resim.frame.iterrows():
         print( "[roulettegen.py] Processing", index )
 

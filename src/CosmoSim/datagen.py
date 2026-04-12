@@ -67,36 +67,12 @@ class SimImage(GenericSim):
     retrieved from the object.
     """
     def __init__(self,sim=None,param=None,name=None,row=None,outcols=None,verbose=1):
-        super().__init__(param,verbose)
-
-        if not row is None:
-            self.setParameters( row )
-            if verbose: print( "index", row.get( "index", None ) )
-            param.setRow( row )
-            try:
-                name = row.name.split(".")[0]
-            except:
-                name = row["filename"].split(".")[0]
-            self.row = row
-        elif name == None:
-            name = param.get( "name" )
-        self.name = name
+        super().__init__(param,outcols,verbose)
 
         if sim is None: sim = CosmoSim()
-        self.initSim(sim)
+        self.sim = sim
+        self.initSim(row)
 
-        param = self.param
-        self.directory = self.param.get( "directory" )
-        if self.directory:
-            os.makedirs( self.directory, exist_ok=True )
-        self.outcols = outcols
-
-        self.image = sim.getDistortedImage( 
-                         critical=param.get( "criticalcurves" ),
-                         showmask=param.get( "showmask" ) ) 
-        (self.centreimage,self.centrepoint) = centreImage(self.image)
-        print( "[datagen.py] Centre Point", self.centrepoint,
-              "(Centre of Luminence in Planar Co-ordinates)" )
     def setParameters(self,row):
         return setParameters(self.sim,row)
     def getData(self):

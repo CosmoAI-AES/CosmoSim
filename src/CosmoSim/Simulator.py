@@ -26,18 +26,45 @@ class GenericSim:
     """
     This is a generic superclass for shared methods.
     """
-    def __init__(self,param=None,verbose=1):
+    def __init__(self,param=None,row=None,outcols=None,verbose=1):
         if verbose > 0: print( "[GenericSim] init ..." )
-        if param is None: param = Parameters()
         self.verbose = verbose
+
+        self.outcols = outcols
+
+        if param is None: param = Parameters()
+        self.param = param
+        self.directory = param.get( "directory" )
+        if self.directory:
+            os.makedirs( self.directory, exist_ok=True )
+
+    def initSim(self,row):
+        if not row is None:
+            self.setParameters( row )
+            if self.verbose: print( "index", row.get( "index", None ) )
+            self.param.setRow( row )
+            try:
+                name = row.name.split(".")[0]
+            except:
+                name = row["filename"].split(".")[0]
+            self.row = row
+        elif name == None:
+            name = self.param.get( "name" )
+        self.name = name
+
+        self.image = self.sim.getDistortedImage( 
+                         critical=self.param.get( "criticalcurves" ),
+                         showmask=self.param.get( "showmask" ) ) 
+        (self.centreimage,self.centrepoint) = centreImage(self.image)
+        print( "[datagen.py] Centre Point", self.centrepoint,
+              "(Centre of Luminence in Planar Co-ordinates)" )
     def setParameters(self):
         raise Exception("Not implemented")
-    def initSim(self,sim):
-        sim.makeSource( self.param )
+    def runSim(self):
+        self.sim.makeSource( self.param )
         if verbose > 0: print ( "[initSim] ready for runSim()\n" ) ;
-        sim.runSim()
-        if verbose > 0: print ( "[initSim] runSim() completed\n" ) ;
-        self.sim = sim
+        self.sim.runSim()
+        if self.verbose > 0: print ( "[initSim] runSim() completed\n" ) ;
     def getActual(self):
         param = self.param
         name = self.name
