@@ -30,6 +30,8 @@ class GenericSim:
         if verbose > 0: print( "[GenericSim] init ..." )
         if param is None: param = Parameters()
         self.verbose = verbose
+    def setParameters(self):
+        raise Exception("Not implemented")
     def initSim(self,sim):
         sim.makeSource( self.param )
         if verbose > 0: print ( "[initSim] ready for runSim()\n" ) ;

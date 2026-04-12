@@ -97,6 +97,8 @@ class SimImage(GenericSim):
         (self.centreimage,self.centrepoint) = centreImage(self.image)
         print( "[datagen.py] Centre Point", self.centrepoint,
               "(Centre of Luminence in Planar Co-ordinates)" )
+    def setParameters(self,row):
+        return setParameters(self.sim,row)
     def getData(self):
         sim = self.sim
         if self.param( "centred" ):

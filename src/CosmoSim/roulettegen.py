@@ -49,7 +49,11 @@ class Resim(GenericSim):
                 self.nterms = int(args.nterms)
             self.loadData( args.csvfile )
 
-    def setAmplitudes( self, row ):
+    def setParameters( self, row ):
+        """
+        Reset the parameters in the backend simulator, using the
+        give data row.
+        """
         maxm = self.coefs.getNterms()
         rsim = self.sim
         for m in range(maxm+1):
@@ -93,29 +97,21 @@ class Resim(GenericSim):
             print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
             pt = ( row["offsetX"], row["offsetY"] )
         self.sim.setCentrePy( *pt )
-        self.initSim( self.sim )
         print( "Initialised simulator at point", pt )
-        self.setAmplitudes( row )
+        self.setParameters( row )
         self.param.setRow( row )
         src = makeSource( self.param )
         self.rsim.setSource( src )
     
-        self.sim._rsim.update()
+        self.initSim( self.sim )
     
         im = self.sim.getDistortedImage( showmask=showmask ) 
         if self.xireference:
               R = np.float32( [ [ 1, 0, row["xiX"] ], [ 0, 1, -row["xiY"] ] ] )
               m,n = im.shape
               im = cv.warpAffine(im,R,(n,m))
-        if self.reflines:
-            drawAxes(im)
-    
-        cropsize = self.param.get( "cropsize" )
-        if cropsize:
-            print( "Cropping; cropsize =", cropsize )
-            im = crop( im, cropsize )
-        print( "Distorted image", type(im), im.shape )
-        cv.imwrite(fn,im)
+        self.image = im 
+
     
     def processFile(self,maxcount=None):
 
@@ -144,9 +140,10 @@ def main(args):
         maxcount = 2**30
     else:
         maxcount = int(args.maxcount)
+    param = Parameters(args)
 
     # Masking is not implemented in the Resim class.
-    rsim = resim.rsim
+    rsim = RouletteRegenerator()
     rsim.setMaskMode( args.mask )
     if not args.maskradius is None:
         rsim.setMaskRadius( float(args.maskradius) )
@@ -154,19 +151,8 @@ def main(args):
     for index,row in resim.frame.iterrows():
         print( "[roulettegen.py] Processing", index )
 
-        fn = row.get("filename",None)
-        print( "filename", fn )
-        if fn is None:
-                try:
-                    namestem = f"image-{int(row['index']):05}" 
-                except:
-                    namestem = f"image-{row['index']}" 
-                fn = namestem + ".png"
-        else:
-                namestem = fn.split(".")[0]
-        fn0 = os.path.join(args.directory, fn ) 
-
-        resim.makeSingle( fn0, row, showmask=args.showmask )
+        imsim = Resim( rsim, row=row )
+        imsim.saveImage()
 
         if args.actual: resim.getActual()
         if args.apparent: resim.getApparent()
