@@ -19,7 +19,13 @@ SourceSpec = cs.SourceSpec
 PsiSpec = cs.PsiSpec
 LightProfileSpec = cs.LightProfileSpec
 
-RouletteRegenerator = cs.RouletteRegenerator 
+class RouletteRegenerator(cs.RouletteRegenerator):
+    def makeSource(self,param):
+        if param.get( "imagesize" ) is None:
+           param.__setitem__( "imagesize", 192 )
+        self._src = makeSource(param)
+        self.setSource( self._src )
+        print( "RouletteSim.makeSource() returns" )
 Point = cs.Point 
 
 def makeSourceConstellation(src,size):
@@ -418,6 +424,12 @@ class RouletteSim:
         return np.maximum(im,self.bgcolour)
     def initSim(self,rsim):
         self._rsim = rsim
+
+    def makeSource(self,param):
+        if param.get( "imagesize" ) == None:
+           param.__setitem__( "imagesize", self.getImageSize() )
+        self._src = makeSource(param)
+        print( "RouletteSim.makeSource() returns" )
 
     def getDistortedImage(self,reflines=False,mask=False,showmask=False):
         """

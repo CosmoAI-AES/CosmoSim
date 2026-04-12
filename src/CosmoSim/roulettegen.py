@@ -19,7 +19,7 @@ from .Arguments import CosmoParser
 
 from .RouletteAmplitudes import RouletteAmplitudes 
 from .Simulator import GenericSim 
-from . import RouletteSim,RouletteRegenerator,makeSource
+from . import RouletteRegenerator,makeSource
 
 
 class Resim(GenericSim):
@@ -29,24 +29,22 @@ class Resim(GenericSim):
     The class sets up the infrastructure, and provides the methods to
     run the simulator for each iaage on a CSV file.
     """
-    def __init__(self,sim=None,row=None,nterms=None,xireference=True,reflines=False,**kw):
+    def __init__(self,sim=None,df=None,row=None,**kw):
         """
         Note that `args` overrides Boolean parameters.
         """
-        super().__init__(param,verbose=verbose)
+        super().__init__(**kw)
         if sim is None: sim = RouletteRegenerator()
         self.sim = sim
         self.initSim(row)
 
-        self.nterms = nterms 
-        self.xireference = xireference
-        self.reflines = reflines
-        if args is not None:
-            self.xireference = args.xireference
-            if nterms is None and args.nterms:
-                print( "[Resim] Set nterms from args", int(args.nterms) )
-                self.nterms = int(args.nterms)
-            self.loadData( args.csvfile )
+        self.xireference = self.param.get( "xireference" )
+        self.nterms = self.param.get( "nterms" )
+        if df is None:
+             self.loadData( self.param.get( "csvfile" ) )
+        else:
+             self.loadData( df )
+
 
     def setParameters( self, row ):
         """

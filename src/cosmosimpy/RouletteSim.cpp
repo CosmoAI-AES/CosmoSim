@@ -17,6 +17,7 @@ void RouletteSim::initSim( RouletteRegenerator *rsim ) {
    return ;
 }
 void RouletteSim::setImageSize(int sz ) { size = sz ; }
+
 void RouletteSim::setResolution(int sz ) { 
    basesize = sz ; 
    std::cout << "[setResolution] basesize=" << basesize << "; size=" << size << "\n" ;
