@@ -70,7 +70,7 @@ class SimImage(GenericSim):
         super().__init__(param,verbose)
 
         if not row is None:
-            setParameters( sim, row )
+            self.setParameters( row )
             if verbose: print( "index", row.get( "index", None ) )
             param.setRow( row )
             try:
