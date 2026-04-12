@@ -66,14 +66,18 @@ class SimImage(GenericSim):
     Once the simulation has been run, various kinds of image and metadata can be
     retrieved from the object.
     """
-    def __init__(self,sim=None,param=None,name=None,row=None,outcols=None,verbose=1):
-        super().__init__(param,outcols,verbose)
+    def __init__(self,sim=None,row=None,**kw):
+        super().__init__(**kw)
 
         if sim is None: sim = CosmoSim()
         self.sim = sim
         self.initSim(row)
 
     def setParameters(self,row):
+        """
+        Reset parameters in the underlying `CosmoSim` simulator, using the
+        given data row.
+        """
         return setParameters(self.sim,row)
     def getData(self):
         sim = self.sim

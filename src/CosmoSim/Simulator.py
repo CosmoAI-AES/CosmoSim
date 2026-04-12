@@ -28,19 +28,29 @@ class GenericSim:
     """
     This is a generic superclass for shared methods.
     """
-    def __init__(self,param=None,row=None,outcols=None,verbose=1):
+    def __init__(self,param=None,row=None,name=None,outcols=None,verbose=1):
         if verbose > 0: print( "[GenericSim] init ..." )
         self.verbose = verbose
 
         self.outcols = outcols
 
+        self.name = name
         if param is None: param = Parameters()
         self.param = param
         self.directory = param.get( "directory" )
         if self.directory:
             os.makedirs( self.directory, exist_ok=True )
 
+    def setParameters(self,row):
+        """
+        Reset parameters in the underlying simulator, using the given data row.
+        This is an auxiliary for `initSim()` and will normally have to be 
+        overridden depending on the class of the underlying simulator.
+        """
     def initSim(self,row):
+        """
+        Run the simulator with the given data row.
+        """
         if not row is None:
             self.setParameters( row )
             if self.verbose: print( "index", row.get( "index", None ) )
@@ -50,9 +60,8 @@ class GenericSim:
             except:
                 name = row["filename"].split(".")[0]
             self.row = row
-        elif name == None:
-            name = self.param.get( "name" )
-        self.name = name
+        if self.name is None
+            self.name = self.param.get( "name" )
 
         self.runSim()
 

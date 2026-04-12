@@ -29,13 +29,14 @@ class Resim(GenericSim):
     The class sets up the infrastructure, and provides the methods to
     run the simulator for each iaage on a CSV file.
     """
-    def __init__(self,sim=None,param=None,nterms=None,xireference=True,reflines=False):
+    def __init__(self,sim=None,row=None,nterms=None,xireference=True,reflines=False,**kw):
         """
         Note that `args` overrides Boolean parameters.
         """
-        super().__init__(param,oucols,verbose)
+        super().__init__(param,verbose=verbose)
         if sim is None: sim = RouletteRegenerator()
         self.sim = sim
+        self.initSim(row)
 
         self.nterms = nterms 
         self.xireference = xireference
@@ -54,6 +55,25 @@ class Resim(GenericSim):
         """
         maxm = self.coefs.getNterms()
         rsim = self.sim
+
+        if self.xireference:
+            print( "xi", row["xiX"], row["xiY"], row["sigma"] )
+            pt = (0,0)
+        else:
+            print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
+            pt = ( row["offsetX"], row["offsetY"] )
+        rsim.setCentrePy( *pt )
+        print( "Initialised simulator at point", pt )
+
+        self.initSim( self.sim )
+    
+        im = self.sim.getDistortedImage( showmask=showmask ) 
+        if self.xireference:
+              R = np.float32( [ [ 1, 0, row["xiX"] ], [ 0, 1, -row["xiY"] ] ] )
+              m,n = im.shape
+              im = cv.warpAffine(im,R,(n,m))
+        self.image = im 
+
         for m in range(maxm+1):
             for s in range((m+1)%2, m+2, 2):
                 print( "row is",  type( row ) )
@@ -85,44 +105,9 @@ class Resim(GenericSim):
         self.coefs = coefs
         self.cols = cols
         self.frame = frame
-    def makeSingle(self,fn,row,showmask=False):
-        print( "makeSingle" )
 
-        if self.xireference:
-            print( "xi", row["xiX"], row["xiY"], row["sigma"] )
-            pt = (0,0)
-        else:
-            print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
-            pt = ( row["offsetX"], row["offsetY"] )
-        self.sim.setCentrePy( *pt )
-        print( "Initialised simulator at point", pt )
-        self.setParameters( row )
-        self.param.setRow( row )
-        src = makeSource( self.param )
-        self.rsim.setSource( src )
-    
-        self.initSim( self.sim )
-    
-        im = self.sim.getDistortedImage( showmask=showmask ) 
-        if self.xireference:
-              R = np.float32( [ [ 1, 0, row["xiX"] ], [ 0, 1, -row["xiY"] ] ] )
-              m,n = im.shape
-              im = cv.warpAffine(im,R,(n,m))
-        self.image = im 
 
     
-    def processFile(self,maxcount=None):
-
-        count = 0
-        for fn,row in self.frame.iterrows():
-            print( "[roulettegen.py] Processing", fn )
-
-            fn0 = os.path.join(self.directory, fn ) 
-            self.makeSingle(fn=fn0,row=row)
-            count += 1
-            if maxcount is not None and count > maxcount: break
-        return count
-
 def main(args):
     """
     This is the main procedure of the script, simulating a dataset of
@@ -140,18 +125,18 @@ def main(args):
     param = Parameters(args)
 
     # Masking is not implemented in the Resim class.
-    rsim = RouletteRegenerator()
-    rsim.setMaskMode( args.mask )
+    sim = RouletteRegenerator()
+    sim.setMaskMode( args.mask )
     if not args.maskradius is None:
-        rsim.setMaskRadius( float(args.maskradius) )
+        sim.setMaskRadius( float(args.maskradius) )
         
-    param = Parameters( args, cfg=cfg )
+    param = Parameters( args )
     resim = Resim( sim, param )
 
     for index,row in resim.frame.iterrows():
         print( "[roulettegen.py] Processing", index )
 
-        imsim = Resim( rsim, row=row )
+        imsim = Resim( sim, row=row )
         imsim.saveImage()
 
         if args.actual: resim.getActual()
