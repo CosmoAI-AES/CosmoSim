@@ -1,4 +1,4 @@
-# (C) 2022-24: Hans Georg Schaathun <georg@schaathun.net> 
+# (C) 2022-26: Hans Georg Schaathun <georg@schaathun.net> 
 
 """
 The CosmoSim package comprises several components, including scripts,
@@ -18,6 +18,7 @@ ModelSpec = cs.ModelSpec
 SourceSpec = cs.SourceSpec
 PsiSpec = cs.PsiSpec
 LightProfileSpec = cs.LightProfileSpec
+Point = cs.Point 
 
 class RouletteRegenerator(cs.RouletteRegenerator):
     def __init__(self,*a,**kw):
@@ -48,7 +49,6 @@ class RouletteRegenerator(cs.RouletteRegenerator):
             raise e
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
-Point = cs.Point 
 
 def makeSourceConstellation(src,size):
     ss = src.split(";")
