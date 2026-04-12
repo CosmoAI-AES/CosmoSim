@@ -25,10 +25,10 @@ class RouletteRegenerator(cs.RouletteRegenerator):
         self.bgcolour = 0
     def makeSource(self,param):
         if param.get( "imagesize" ) is None:
-           param.__setitem__( "imagesize", 192 )
+            raise Exception( "Image size not specified" )
         self._src = makeSource(param)
         self.setSource( self._src )
-        print( "RouletteSim.makeSource() returns" )
+        print( "RouletteRegenerator.makeSource() returns" )
     def getDistortedImage(self,reflines=False,critical=False,mask=False,showmask=False):
         """
         Return the Distorted Image from the simulator as a numpy array.

@@ -47,7 +47,9 @@ class GenericSim:
         self.outcols = outcols
 
         self.name = name
-        if param is None: param = Parameters()
+        if param is None: 
+            print( "[GenericSim] No parameters give. Using defaults" )
+            param = Parameters()
         self.param = param
         self.directory = param.get( "directory" )
         if self.directory:

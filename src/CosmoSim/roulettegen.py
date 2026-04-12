@@ -33,6 +33,7 @@ class Resim(GenericSim):
         """
         Note that `args` overrides Boolean parameters.
         """
+        print( "[Resim]", kw.get( "param" )  )
         super().__init__(**kw)
         if self.verbose: print( "[Resim.__init__]" )
         if sim is None: sim = RouletteRegenerator()
@@ -138,16 +139,19 @@ def main(args):
         sim.setMaskRadius( float(args.maskradius) )
         
     param = Parameters( args )
+    if param.get( "imagesize" ) is None:
+        print( "args", param.args )
+        raise Exception( "Image size not specified" )
+
 
     for index,row in frame.iterrows():
         print( "[roulettegen.py] Processing", index )
-        resim = Resim( sim, param, row=row )
 
         imsim = Resim( sim, param=param, row=row )
         imsim.saveImage()
 
-        if args.actual: resim.getActual()
-        if args.apparent: resim.getApparent()
+        if args.actual: imsim.getActual()
+        if args.apparent: imsim.getApparent()
 
         count += 1
         if count > maxcount: break
