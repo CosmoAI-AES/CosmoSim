@@ -3,6 +3,11 @@
 
 ## Unreleased
 
+### Added
+
++ `CosmoSim.roulettegen.Resimm()` is now intended to be used as an API feature
+  in the same way as `CosmoSim.datagen.SimImage()`.
+
 ### Fixed
 
 + the `row` passed to `CosmoSim.SimImage` can now be a pandas Series where
