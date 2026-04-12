@@ -1,5 +1,5 @@
 #! /usr/bin/env python3
-# (C) 2023: Hans Georg Schaathun <georg@schaathun.net>
+# (C) 2023,2026: Hans Georg Schaathun <georg@schaathun.net>
 
 """
 Generate an image for given parameters.
@@ -143,7 +143,7 @@ def main(args):
         print( "[roulettegen.py] Processing", index )
         resim = Resim( sim, param, row=row )
 
-        imsim = Resim( sim, row=row )
+        imsim = Resim( sim, param=param, row=row )
         imsim.saveImage()
 
         if args.actual: resim.getActual()
