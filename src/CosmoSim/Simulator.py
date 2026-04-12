@@ -84,12 +84,14 @@ class GenericSim:
 
         self.runSim()
 
-        self.image = self.sim.getDistortedImage( 
-                         critical=self.param.get( "criticalcurves" ),
-                         showmask=self.param.get( "showmask" ) ) 
+        self.image = self.getDistortedImage( )
         (self.centreimage,self.centrepoint) = centreImage(self.image)
         print( "[datagen.py] Centre Point", self.centrepoint,
               "(Centre of Luminence in Planar Co-ordinates)" )
+    def getDistortedImage(self):
+        return  self.sim.getDistortedImage( 
+                         critical=self.param.get( "criticalcurves" ),
+                         showmask=self.param.get( "showmask" ) ) 
     def setParameters(self):
         raise Exception("Not implemented")
     def runSim(self):

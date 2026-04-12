@@ -39,15 +39,28 @@ class Resim(GenericSim):
         if sim is None: sim = RouletteRegenerator()
         self.xireference = self.param.get( "xireference" )
         self.nterms = self.param.get( "nterms" )
+        if self.verbose: print( "[Resim] nterms =", self.nterms )
 
         self.sim = sim
         self.loadData( row )
         self.initSim(row)
 
+        im = self.image
+        if self.xireference:
+              R = np.float32( [ [ 1, 0, row["xiX"] ], [ 0, 1, -row["xiY"] ] ] )
+              m,n = im.shape
+              try:
+                  self.image = cv.warpAffine(im,R,(n,m))
+              except Exception as e:
+                  print( "Error in warpAffine.  Image", im )
+                  print( "Image shape", (m,n) )
+                  raise e
     def runSim( self ):
         if self.verbose: print( "[Resim.runSim]" )
         self.sim.makeSource( self.param )
         self.sim.update()
+    def getDistortedImage(self):
+        return  self.sim.getDistortedImage( )
     def setParameters( self, row ):
         """
         Reset the parameters in the backend simulator, using the
@@ -57,7 +70,6 @@ class Resim(GenericSim):
         maxm = self.coefs.getNterms()
         rsim = self.sim
         
-
         if self.xireference:
             print( "xi", row["xiX"], row["xiY"], row["sigma"] )
             pt = (0,0)
@@ -66,13 +78,6 @@ class Resim(GenericSim):
             pt = ( row["offsetX"], row["offsetY"] )
         rsim.setCentrePy( *pt )
         print( "Initialised simulator at point", pt )
-
-        im = self.sim.getDistortedImage( ) 
-        if self.xireference:
-              R = np.float32( [ [ 1, 0, row["xiX"] ], [ 0, 1, -row["xiY"] ] ] )
-              m,n = im.shape
-              im = cv.warpAffine(im,R,(n,m))
-        self.image = im 
 
         for m in range(maxm+1):
             for s in range((m+1)%2, m+2, 2):
@@ -138,14 +143,9 @@ def main(args):
     if not args.maskradius is None:
         sim.setMaskRadius( float(args.maskradius) )
         
-    param = Parameters( args )
-    if param.get( "imagesize" ) is None:
-        print( "args", param.args )
-        raise Exception( "Image size not specified" )
-
-
     for index,row in frame.iterrows():
         print( "[roulettegen.py] Processing", index )
+        param = Parameters( args )
 
         imsim = Resim( sim, param=param, row=row )
         imsim.saveImage()
