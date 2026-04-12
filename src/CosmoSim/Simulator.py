@@ -64,7 +64,6 @@ class GenericSim:
         """
         Run the simulator with the given data row.
         """
-        if self.verbose: print( "[initSim]" )
         if not row is None:
             if self.verbose: print( "[initSim] using row" )
             self.setParameters( row )
@@ -75,9 +74,11 @@ class GenericSim:
             except:
                 name = row["filename"].split(".")[0]
             self.row = row
+            self.name = name
         elif self.verbose: print( "[initSim] row is None" )
         if self.name is None:
             self.name = self.param.get( "name" )
+        if self.verbose: print( "[initSim] item name:", self.name )
 
         self.runSim()
 
