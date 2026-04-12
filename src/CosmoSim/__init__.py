@@ -20,12 +20,34 @@ PsiSpec = cs.PsiSpec
 LightProfileSpec = cs.LightProfileSpec
 
 class RouletteRegenerator(cs.RouletteRegenerator):
+    def __init__(self,*a,**kw):
+        super().__init__(*a,**kw)
+        self.bgcolour = 0
     def makeSource(self,param):
         if param.get( "imagesize" ) is None:
            param.__setitem__( "imagesize", 192 )
         self._src = makeSource(param)
         self.setSource( self._src )
         print( "RouletteSim.makeSource() returns" )
+    def getDistortedImage(self,reflines=False,critical=False,mask=False,showmask=False):
+        """
+        Return the Distorted Image from the simulator as a numpy array.
+        """
+        try:
+            if mask: self.maskImage()
+            if showmask: self.showMask()
+        except:
+            print( "Masking not supported for this lens model." )
+        try:
+            im = np.array(self.getDistorted(),copy=False)
+        except Exception as e:
+            print( "self", type(self) )
+            print( "reflines", reflines )
+            print( "critical", critical )
+            im = np.array(self.getDistorted(),copy=False)
+            raise e
+        if im.shape[2] == 1 : im.shape = im.shape[:2]
+        return np.maximum(im,self.bgcolour)
 Point = cs.Point 
 
 def makeSourceConstellation(src,size):
@@ -393,53 +415,3 @@ class CosmoSim(cs.CosmoSim):
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
 
-class RouletteSim:
-    """
-    Simulator for gravitational lensing.
-    This wraps the CosmoSim library written in C++.  In particular,
-    it wraps functions returning images, to convert the data to 
-    numpy arrays.
-    """
-    def __init__(self,*a,maxm=50,**kw):
-        super().__init__(*a,**kw)
-
-        self.bgcolour = 0
-
-    def setBGColour(self,s):
-        self.bgcolour = s
-
-    def getApparentImage(self,reflines=True):
-        """
-        Return the Apparent Image from the simulator as a numpy array.
-        """
-        im = np.array(self._rsim.getApparent(),copy=False)
-        if im.shape[2] == 1 : im.shape = im.shape[:2]
-        return np.maximum(im,self.bgcolour)
-    def getActualImage(self,reflines=True,caustics=False):
-        """
-        Return the Actual Image from the simulator as a numpy array.
-        """
-        im = np.array(self._rsim.getActual(),copy=False)
-        if im.shape[2] == 1 : im.shape = im.shape[:2]
-        return np.maximum(im,self.bgcolour)
-    def initSim(self,rsim):
-        self._rsim = rsim
-
-    def makeSource(self,param):
-        if param.get( "imagesize" ) == None:
-           param.__setitem__( "imagesize", self.getImageSize() )
-        self._src = makeSource(param)
-        print( "RouletteSim.makeSource() returns" )
-
-    def getDistortedImage(self,reflines=False,mask=False,showmask=False):
-        """
-        Return the Distorted Image from the simulator as a numpy array.
-        """
-        try:
-            if mask: self._rsim.maskImage()
-            if showmask: self._rsim.showMask()
-        except:
-            print( "Masking not supported for this lens model." )
-        im = np.array(self._rsim.getDistorted(),copy=False)
-        if im.shape[2] == 1 : im.shape = im.shape[:2]
-        return np.maximum(im,self.bgcolour)

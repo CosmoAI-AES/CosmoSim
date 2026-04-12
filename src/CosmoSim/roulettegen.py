@@ -36,10 +36,11 @@ class Resim(GenericSim):
         super().__init__(**kw)
         if self.verbose: print( "[Resim.__init__]" )
         if sim is None: sim = RouletteRegenerator()
-        self.sim = sim
         self.xireference = self.param.get( "xireference" )
         self.nterms = self.param.get( "nterms" )
 
+        self.sim = sim
+        self.loadData( row )
         self.initSim(row)
 
     def setParameters( self, row ):
@@ -51,10 +52,6 @@ class Resim(GenericSim):
         maxm = self.coefs.getNterms()
         rsim = self.sim
         
-        if df is None:
-             self.loadData( self.param.get( "csvfile" ) )
-        else:
-             self.loadData( df )
 
         if self.xireference:
             print( "xi", row["xiX"], row["xiY"], row["sigma"] )
@@ -65,7 +62,7 @@ class Resim(GenericSim):
         rsim.setCentrePy( *pt )
         print( "Initialised simulator at point", pt )
 
-        im = self.sim.getDistortedImage( showmask=showmask ) 
+        im = self.sim.getDistortedImage( ) 
         if self.xireference:
               R = np.float32( [ [ 1, 0, row["xiX"] ], [ 0, 1, -row["xiY"] ] ] )
               m,n = im.shape
@@ -89,10 +86,15 @@ class Resim(GenericSim):
         if isinstance(csvfile,pd.DataFrame):
             print( "Received dataframe for resimulation" )
             frame = csvfile
+            cols = frame.columns
+        elif isinstance(csvfile,pd.Series):
+            print( "Received dataframe for resimulation" )
+            frame = csvfile
+            cols = frame.axes[0]
         else:
             print( "Load CSV file:", csvfile )
             frame = pd.read_csv(csvfile,index_col="filename")
-        cols = frame.columns
+            cols = frame.columns
         print( "columns:", cols )
     
         coefs = RouletteAmplitudes(cols)
@@ -107,17 +109,16 @@ class Resim(GenericSim):
         self.coefs = coefs
         self.cols = cols
         self.frame = frame
-
-
     
 def main(args):
     """
     This is the main procedure of the script, simulating a dataset of
     roulette amplitudes based on a CLI args argument.
     """
-    if not args.csvfile:
+    if args.csvfile:
+        frame = pd.read_csv(args.csvfile)
+    else:
         raise Exception( "No CSV file given; the --csvfile option is mandatory." )
-
 
     count = 1
     if args.maxcount is None:
@@ -134,7 +135,7 @@ def main(args):
         
     param = Parameters( args )
 
-    for index,row in resim.frame.iterrows():
+    for index,row in frame.iterrows():
         print( "[roulettegen.py] Processing", index )
         resim = Resim( sim, param, row=row )
 
