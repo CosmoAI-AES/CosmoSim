@@ -376,7 +376,14 @@ class CosmoSim(cs.CosmoSim):
             if showmask: self.showMask()
         except:
             print( "Masking not supported for this lens model." )
-        im = np.array(self.getDistorted(reflines,critical),copy=False)
+        try:
+            im = np.array(self.getDistorted(reflines,critical),copy=False)
+        except Exception as e:
+            print( "self", type(self) )
+            print( "reflines", reflines )
+            print( "critical", critical )
+            im = np.array(self.getDistorted(),copy=False)
+            raise e
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
 

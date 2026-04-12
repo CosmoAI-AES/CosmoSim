@@ -15,6 +15,8 @@ import matplotlib.pyplot as plt
 
 from . import CosmoSim
 
+from .Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
+
 from .Arguments import CosmoParser
 from .Parameters import Parameters
 import pandas as pd
@@ -52,6 +54,8 @@ class GenericSim:
             name = self.param.get( "name" )
         self.name = name
 
+        self.runSim()
+
         self.image = self.sim.getDistortedImage( 
                          critical=self.param.get( "criticalcurves" ),
                          showmask=self.param.get( "showmask" ) ) 
@@ -62,7 +66,7 @@ class GenericSim:
         raise Exception("Not implemented")
     def runSim(self):
         self.sim.makeSource( self.param )
-        if verbose > 0: print ( "[initSim] ready for runSim()\n" ) ;
+        if self.verbose > 0: print ( "[initSim] ready for runSim()\n" ) ;
         self.sim.runSim()
         if self.verbose > 0: print ( "[initSim] runSim() completed\n" ) ;
     def getActual(self):
