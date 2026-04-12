@@ -202,7 +202,7 @@ def makeSingle(sim,param=None,name=None,row=None,outcols=None):
     just as args parsed from the command line.
     """
     if param is None: param = Parameters()
-    imsim = SimImage(sim,param,name,row,outcols)
+    imsim = SimImage(sim,param=param,name=name,row=row,outcols=outcols)
     imsim.saveImage()
     if param.get( "join" ): imsim.join()
     if param.get( "family" ): imsim.family()

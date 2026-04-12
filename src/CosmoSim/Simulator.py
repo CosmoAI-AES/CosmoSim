@@ -2,7 +2,20 @@
 # (C) 2026: Hans Georg Schaathun <georg@schaathun.net>
 
 """
-Simulator class to managa bulk image generation.
+Simulator class to manage bulk image generation.
+
+Different subclasses are required for different backend simulators, like
+`RouletteRegenerator` and `CosmoSim`.
+The `GenericSim` superclass contains shared methods.
+
+The constructor may takes a data row, typically a pandas Series object,
+reconfigures the backend simulator, and generates the distorted image.
+Since the object retains much of the simulation data, extensive information
+and annotated images may be retrieved as well.
+
+The constructor may take a backend simulator instance as parameter.  This saves
+the cost of reinstantiation in bulk simulation, and it also leaves the possibility
+to set defaults in advance.
 """
 
 import tomllib as tl
@@ -23,7 +36,6 @@ import pandas as pd
 
 defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "x", "y" ]
 
-
 class GenericSim:
     """
     This is a generic superclass for shared methods.
@@ -43,9 +55,9 @@ class GenericSim:
 
     def setParameters(self,row):
         """
-        Reset parameters in the underlying simulator, using the given data row.
+        Reset parameters in the backend simulator, using the given data row.
         This is an auxiliary for `initSim()` and will normally have to be 
-        overridden depending on the class of the underlying simulator.
+        overridden depending on the class of the backend simulator.
         """
     def initSim(self,row):
         """
@@ -60,7 +72,7 @@ class GenericSim:
             except:
                 name = row["filename"].split(".")[0]
             self.row = row
-        if self.name is None
+        if self.name is None:
             self.name = self.param.get( "name" )
 
         self.runSim()
