@@ -140,4 +140,5 @@ class GenericSim:
             fn = str(name) + ".png"
         else:
             fn = os.path.join(self.directory, str(name) + ".png" )
+        if self.verbose: print( "[saveImage]", fn )
         cv.imwrite(fn,im)

@@ -43,6 +43,10 @@ class Resim(GenericSim):
         self.loadData( row )
         self.initSim(row)
 
+    def runSim( self ):
+        if self.verbose: print( "[Resim.runSim]" )
+        self.sim.makeSource( self.param )
+        self.sim.update()
     def setParameters( self, row ):
         """
         Reset the parameters in the backend simulator, using the
