@@ -19,7 +19,7 @@ from .Arguments import CosmoParser
 
 from .RouletteAmplitudes import RouletteAmplitudes 
 from .Simulator import GenericSim 
-from . import RouletteRegenerator,makeSource
+from . import RouletteRegenerator
 
 
 class Resim(GenericSim):
@@ -34,25 +34,27 @@ class Resim(GenericSim):
         Note that `args` overrides Boolean parameters.
         """
         super().__init__(**kw)
+        if self.verbose: print( "[Resim.__init__]" )
         if sim is None: sim = RouletteRegenerator()
         self.sim = sim
-        self.initSim(row)
-
         self.xireference = self.param.get( "xireference" )
         self.nterms = self.param.get( "nterms" )
-        if df is None:
-             self.loadData( self.param.get( "csvfile" ) )
-        else:
-             self.loadData( df )
 
+        self.initSim(row)
 
     def setParameters( self, row ):
         """
         Reset the parameters in the backend simulator, using the
         give data row.
         """
+        if self.verbose: print( "[setParameters]" )
         maxm = self.coefs.getNterms()
         rsim = self.sim
+        
+        if df is None:
+             self.loadData( self.param.get( "csvfile" ) )
+        else:
+             self.loadData( df )
 
         if self.xireference:
             print( "xi", row["xiX"], row["xiY"], row["sigma"] )
@@ -63,8 +65,6 @@ class Resim(GenericSim):
         rsim.setCentrePy( *pt )
         print( "Initialised simulator at point", pt )
 
-        self.initSim( self.sim )
-    
         im = self.sim.getDistortedImage( showmask=showmask ) 
         if self.xireference:
               R = np.float32( [ [ 1, 0, row["xiX"] ], [ 0, 1, -row["xiY"] ] ] )
@@ -81,7 +81,11 @@ class Resim(GenericSim):
                 print( f"alpha[{m}][{s}] = {alpha}\t\tbeta[{m}][{s}] = {beta}." )
                 rsim.setAlphaXi( m, s, alpha )
                 rsim.setBetaXi( m, s, beta )
+        self.param.setRow( row )
+        if self.verbose:
+            print( "Source spec:", self.param.get( "source" ) )
     def loadData( self, csvfile ):
+        if self.verbose: print( "[loadData]" )
         if isinstance(csvfile,pd.DataFrame):
             print( "Received dataframe for resimulation" )
             frame = csvfile
@@ -129,10 +133,10 @@ def main(args):
         sim.setMaskRadius( float(args.maskradius) )
         
     param = Parameters( args )
-    resim = Resim( sim, param )
 
     for index,row in resim.frame.iterrows():
         print( "[roulettegen.py] Processing", index )
+        resim = Resim( sim, param, row=row )
 
         imsim = Resim( sim, row=row )
         imsim.saveImage()

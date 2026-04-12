@@ -59,11 +59,14 @@ class GenericSim:
         This is an auxiliary for `initSim()` and will normally have to be 
         overridden depending on the class of the backend simulator.
         """
+        raise NotImplementedError()
     def initSim(self,row):
         """
         Run the simulator with the given data row.
         """
+        if self.verbose: print( "[initSim]" )
         if not row is None:
+            if self.verbose: print( "[initSim] using row" )
             self.setParameters( row )
             if self.verbose: print( "index", row.get( "index", None ) )
             self.param.setRow( row )
@@ -72,6 +75,7 @@ class GenericSim:
             except:
                 name = row["filename"].split(".")[0]
             self.row = row
+        elif self.verbose: print( "[initSim] row is None" )
         if self.name is None:
             self.name = self.param.get( "name" )
 
@@ -86,6 +90,7 @@ class GenericSim:
     def setParameters(self):
         raise Exception("Not implemented")
     def runSim(self):
+        if self.verbose: print( "[runSim]" )
         self.sim.makeSource( self.param )
         if self.verbose > 0: print ( "[initSim] ready for runSim()\n" ) ;
         self.sim.runSim()
