@@ -7,6 +7,7 @@
 
 + The `Parameters` class is now available as `CosmoSim.Parameters`
   (not `CosmoSim.Parameters.Parameters`).
++ reflines option to `getImage()` methods
 
 ### Fixed
 
