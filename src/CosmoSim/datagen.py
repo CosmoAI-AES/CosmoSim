@@ -87,7 +87,7 @@ class SimImage(GenericSim):
         return setParameters(self.sim,row)
     def getData(self):
         sim = self.sim
-        if self.param( "centred" ):
+        if self.param.get( "centred" ):
             centrepoint = self.centrepoint
         else:
             centrepoint = (0,0)
