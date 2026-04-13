@@ -32,9 +32,9 @@ cv::Mat SimulatorModel::getActual() const {
 
 }
 cv::Mat SimulatorModel::getSource() const {
-   std::cout << "[SimulatorModel::getSource()]\n" ;
+   if (DEBUG) std::cout << "[SimulatorModel::getSource()]\n" ;
    if ( NULL == source ) {
-       std::cout << "[SimulatorModel::getSource()] Source not defined.\n" ;
+       if (DEBUG) std::cout << "[SimulatorModel::getSource()] Source not defined.\n" ;
    }
    return source->getImage() ;
 }
@@ -53,7 +53,7 @@ void SimulatorModel::update( ) {
    updateApparentAbs() ;
    if (DEBUG) std::cout << "[SimulatorModel::update] Done updateApparentAbs()\n" ;
    Py_BEGIN_ALLOW_THREADS
-   std::cout << "[SimulatorModel::update] thread section\n" << std::flush ;
+   if (DEBUG) std::cout << "[SimulatorModel::update] thread section\n" << std::flush ;
    updateInner() ;
    Py_END_ALLOW_THREADS
 }
@@ -121,9 +121,9 @@ void SimulatorModel::drawCritical( cv::Mat img ) {
 void SimulatorModel::updateInner( ) {
     cv::Mat imgApparent = getApparent() ;
 
-    std::cout << "[SimulatorModel::updateInner()] R=" << getEtaAbs() 
+    if (DEBUG) std::cout << "[SimulatorModel::updateInner()] R=" << getEtaAbs() 
               << "; CHI=" << CHI << "\n" ;
-    if ( DEBUG ) {
+    if ( DEBUG>1 ) {
       std::cout << "[SimulatorModel::updateInner()] xi=" << getXi()   
               << "; eta=" << getEta() << "; etaOffset=" << etaOffset << "\n" ;
       std::cout << "[SimulatorModel::updateInner()] nu=" << getNu()   
@@ -273,10 +273,10 @@ void SimulatorModel::undistort(const cv::Mat& src, cv::Mat& dst) {
 void SimulatorModel::calculateAlphaBeta() { 
 
     if ( lens == NULL ) {
-        std::cout << "[calculateAlphaBeta] No lens - does nothing.\n" ;
+        if (DEBUG) std::cout << "[calculateAlphaBeta] No lens - does nothing.\n" ;
     } else {
         cv::Point2d xi = getXi() ;
-        std::cout << "[calculateAlphaBeta] [" << xi << "] ... \n" ;
+        if (DEBUG) std::cout << "[calculateAlphaBeta] [" << xi << "] ... \n" ;
         lens->calculateAlphaBeta( xi, nterms ) ;
     }
 }
@@ -294,10 +294,12 @@ void SimulatorModel::setBGColour(int b) { bgcolour = b ; }
 void SimulatorModel::setSource(Source *src) {
     // if ( source != NULL ) delete source ;
     // delete segfaults on object created in python
-    if ( NULL == src ) {
-       std::cout << "[SimulatorModel::setSource] NULL source\n" ;
-    } else {
-       std::cout << "[SimulatorModel::setSource] setting source\n" ;
+    if ( DEBUG ) {
+      if ( NULL == src ) {
+         std::cout << "[SimulatorModel::setSource] NULL source\n" ;
+      } else {
+         std::cout << "[SimulatorModel::setSource] setting source\n" ;
+      }
     }
     source = src ;
 }

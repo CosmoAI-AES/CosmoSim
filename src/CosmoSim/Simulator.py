@@ -41,14 +41,14 @@ class GenericSim:
     This is a generic superclass for shared methods.
     """
     def __init__(self,param=None,row=None,name=None,outcols=None,verbose=1):
-        if verbose > 0: print( "[GenericSim] init ..." )
+        if verbose > 1: print( "[GenericSim] init ..." )
         self.verbose = verbose
 
         self.outcols = outcols
 
         self.name = name
         if param is None: 
-            print( "[GenericSim] No parameters give. Using defaults" )
+            if verbose: print( "[GenericSim] No parameters give. Using defaults" )
             param = Parameters()
         self.param = param
         self.directory = param.get( "directory" )
@@ -67,9 +67,9 @@ class GenericSim:
         Run the simulator with the given data row.
         """
         if not row is None:
-            if self.verbose: print( "[initSim] using row" )
+            if self.verbose > 1: print( "[initSim] using row" )
             self.setParameters( row )
-            if self.verbose: print( "index", row.get( "index", None ) )
+            if self.verbose > 1: print( "index", row.get( "index", None ) )
             self.param.setRow( row )
             try:
                 name = row.name.split(".")[0]
@@ -77,7 +77,7 @@ class GenericSim:
                 name = row["filename"].split(".")[0]
             self.row = row
             self.name = name
-        elif self.verbose: print( "[initSim] row is None" )
+        elif self.verbose > 1: print( "[initSim] row is None" )
         if self.name is None:
             self.name = self.param.get( "name" )
         if self.verbose: print( "[initSim] item name:", self.name )
@@ -86,8 +86,9 @@ class GenericSim:
 
         self.image = self.getDistortedImage( )
         (self.centreimage,self.centrepoint) = centreImage(self.image)
-        print( "[datagen.py] Centre Point", self.centrepoint,
-              "(Centre of Luminence in Planar Co-ordinates)" )
+        if self.verbose: print(
+                "[datagen.py] Centre Point", self.centrepoint,
+                "(Centre of Luminence in Planar Co-ordinates)" )
     def getDistortedImage(self):
         return  self.sim.getDistortedImage( 
                          critical=self.param.get( "criticalcurves" ),
@@ -95,11 +96,11 @@ class GenericSim:
     def setParameters(self):
         raise Exception("Not implemented")
     def runSim(self):
-        if self.verbose: print( "[runSim]" )
+        if self.verbose>2: print( "[runSim]" )
         self.sim.makeSource( self.param )
-        if self.verbose > 0: print ( "[initSim] ready for runSim()\n" ) ;
+        if self.verbose > 1: print ( "[GenericSim] ready for runSim()\n" ) ;
         self.sim.runSim()
-        if self.verbose > 0: print ( "[initSim] runSim() completed\n" ) ;
+        if self.verbose > 1: print ( "[GenericSim] runSim() completed\n" ) ;
     def getActual(self):
         param = self.param
         name = self.name

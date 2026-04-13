@@ -8,6 +8,10 @@
 + The `Parameters` class is now available as `CosmoSim.Parameters`
   (not `CosmoSim.Parameters.Parameters`).
 
+### Fixed
+
++ Reduced the amount of diagnostic debug information.
+
 ## [2.8.0] - 2026-04-13
 
 ### Added
