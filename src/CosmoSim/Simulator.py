@@ -80,7 +80,7 @@ class GenericSim:
         elif self.verbose > 1: print( "[initSim] row is None" )
         if self.name is None:
             self.name = self.param.get( "name" )
-        if self.verbose: print( "[initSim] item name:", self.name )
+        if self.verbose>1: print( "[initSim] item name:", self.name )
 
         self.runSim()
 

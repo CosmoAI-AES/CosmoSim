@@ -110,7 +110,8 @@ class Resim(GenericSim):
         if self.verbose>1: print( "columns:", cols )
     
         coefs = RouletteAmplitudes(cols)
-        print( "Number of roulette terms: ", coefs.getNterms() )
+        if self.verbose:
+            print( "Number of roulette terms: ", coefs.getNterms() )
         if self.nterms:
             if self.verbose:
                 print( "[Resim.loadData()] Set nterms from self", int(self.nterms) )
