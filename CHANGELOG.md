@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+## [2.8.1] - 2026-04-13
+
 ### Added
 
 + The `Parameters` class is now available as `CosmoSim.Parameters`
