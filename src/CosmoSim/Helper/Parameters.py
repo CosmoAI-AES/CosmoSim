@@ -1,8 +1,4 @@
-# (C) 2024: Hans Georg Schaathun <georg@schaathun.net> 
-
-from CosmoSim import sourceDict
-from .Arguments import CosmoParser
-import numpy as np
+# (C) 2024,2026: Hans Georg Schaathun <georg@schaathun.net> 
 
 class Args:
     def __init__(self):

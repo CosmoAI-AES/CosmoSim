@@ -5,6 +5,13 @@
 
 ### Added
 
++ The `Parameters` class is now available as `CosmoSim.Parameters`
+  (not `CosmoSim.Parameters.Parameters`).
+
+## [2.8.0] - 2026-04-13
+
+### Added
+
 + `CosmoSim.roulettegen.Resimm()` is now intended to be used as an API feature
   in the same way as `CosmoSim.datagen.SimImage()`.
 
