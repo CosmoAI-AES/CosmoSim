@@ -139,9 +139,9 @@ class GenericSim:
         if centred is None: centred = self.param.get( "centred" )
         if reflines is None: reflines = self.param.get( "reflines" )
         if centred:
-            im = self.centreimage
+            im = self.centreimage.copy()
         else:
-            im = self.image
+            im = self.image.copy()
         if cropsize is None: cropsize = self.param.get( "cropsize" )
         if cropsize:
             im = crop(im,int( cropsize ) )
