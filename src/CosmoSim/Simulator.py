@@ -55,6 +55,9 @@ class GenericSim:
         if self.directory:
             os.makedirs( self.directory, exist_ok=True )
 
+        if self.verbose > 2:
+            print( "[GenericSim] xireference =", self.param.get( "xireference" ) )
+
     def setParameters(self,row):
         """
         Reset parameters in the backend simulator, using the given data row.
