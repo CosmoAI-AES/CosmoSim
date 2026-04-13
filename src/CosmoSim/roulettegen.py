@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 
 from .Image import drawAxes
-from .Parameters import Parameters
+from . import Parameters
 from .datagen import crop
 
 from .Arguments import CosmoParser

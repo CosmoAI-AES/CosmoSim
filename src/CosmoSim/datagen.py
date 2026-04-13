@@ -19,7 +19,7 @@ from .Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, t
 from . import getMSheaders,CosmoSim,__version__
 
 from .Arguments import CosmoParser
-from .Parameters import Parameters
+from . import Parameters
 import pandas as pd
 
 defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "x", "y" ]

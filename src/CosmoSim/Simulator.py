@@ -31,7 +31,7 @@ from . import CosmoSim
 from .Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
 
 from .Arguments import CosmoParser
-from .Parameters import Parameters
+from . import Parameters
 import pandas as pd
 
 defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "x", "y" ]
@@ -123,18 +123,20 @@ class GenericSim:
         x, y = pt
         convradius = np.sqrt( x*x + y*y )
         im = annotateCircle( im, pt, radius=convradius, colour=( 64, 64, 255 ) )
+        if cropsize is None: cropsize = self.param.get( "cropsize" )
+        if cropsize:
+            im = crop(im,int( cropsize ) )
         return im
     def getImage(self,centred=None,cropsize=None):
-        param = self.param
-        if centred is None: centred = param.get( "centred" )
+        if centred is None: centred = self.param.get( "centred" )
         if centred:
             im = self.centreimage
         else:
             im = self.image
-        if cropsize is None: cropsize = param.get( "cropsize" )
+        if cropsize is None: cropsize = self.param.get( "cropsize" )
         if cropsize:
-            im = crop(im,int( param.get( "cropsize" ) ))
-        if param.get( "reflines" ):
+            im = crop(im,int( cropsize ) )
+        if self.param.get( "reflines" ):
             drawAxes(im)
         return im
     def saveImage(self,name=None):
