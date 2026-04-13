@@ -8,6 +8,10 @@ Post-processing functions for images.
 import numpy as np
 import cv2
 import argparse
+import matplotlib.pyplot as plt
+
+def imshow(im):
+    plt.imshow(im,cmap="grey", vmin=0, vmax=255)
 
 
 def imageCoordinate( pt, im ):
