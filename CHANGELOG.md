@@ -12,6 +12,8 @@
 ### Fixed
 
 + Reduced the amount of diagnostic debug information.
++ Preserve original image in `GenericSim`, by copying the image before
+  reference lines are added,
 
 ## [2.8.0] - 2026-04-13
 
