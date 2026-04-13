@@ -1,5 +1,7 @@
 /* (C) 2023: Hans Georg Schaathun <georg@schaathun.net> */
 
+#define DEBUG 1
+
 #include "cosmosim/Roulette.h"
 #include "simaux.h"
 
@@ -9,7 +11,7 @@
 RouletteModel::RouletteModel() :
    SimulatorModel::SimulatorModel()
 { 
-    std::cout << "Instantiating RouletteModel ... \n" ;
+    if (DEBUG) std::cout << "Instantiating RouletteModel ... \n" ;
 }
 
 void RouletteModel::setLens( Lens *l ) {

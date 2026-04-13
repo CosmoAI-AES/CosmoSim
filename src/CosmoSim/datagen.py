@@ -69,9 +69,15 @@ class SimImage(GenericSim):
     def __init__(self,sim=None,row=None,**kw):
         super().__init__(**kw)
 
-        if sim is None: sim = CosmoSim()
+        if sim is None:
+            sim = CosmoSim()
+            msk = self.param.get( "mask" )
+            if msk is not None:
+                sim.setMaskMode( msk )
         self.sim = sim
         self.initSim(row)
+        if self.verbose>2:
+            print( "[SimImage] Verbosity", self.verbose )
 
     def setParameters(self,row):
         """
@@ -94,8 +100,12 @@ class SimImage(GenericSim):
         offset = sim.getOffset(centrepoint=centrepoint)
         xioffset = sim.getXiOffset(centrepoint)
         if xireference:
+            if self.verbose>1:
+                print( "[xireference=True] nterms =", maxm )
             ab = sim.getAlphaBetas(maxm)
         else:
+            if self.verbose>1:
+                print( "[xireference=False] nterms =", maxm )
             ab = sim.getAlphaBetas(maxm,pt=centrepoint)
         relcols = [ "centreX", "centreY",
                    "reletaX", "reletaY",

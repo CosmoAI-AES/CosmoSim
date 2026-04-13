@@ -1,7 +1,9 @@
-/* (C) 2023: Hans Georg Schaathun <georg@schaathun.net> *
+/* (C) 2023,2026: Hans Georg Schaathun <georg@schaathun.net> *
  * Building on code by Simon Ingebrigtsen, Sondre Westbø Remøy,
  * Einar Leite Austnes, and Simon Nedreberg Runde
  */
+
+#define DEBUG 1
 
 #include "cosmosim/Simulator.h"
 #include "simaux.h"
@@ -9,6 +11,7 @@
 #include <thread>
 #include <pybind11/pybind11.h>
 namespace py = pybind11;
+
 
 SimulatorModel::SimulatorModel() :
         CHI(0.5),
@@ -149,8 +152,9 @@ void SimulatorModel::updateInner( ) {
 /* This just splits the image space in chunks and runs distort() in parallel */
 void SimulatorModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
     int n_threads = std::thread::hardware_concurrency() ;
-    if (DEBUG) std::cout << "[SimulatorModel::parallelDistort] " << n_threads << " threads (maskMode="
-                 << maskMode << ")\n" ;
+    if (DEBUG) std::cout 
+       << "[SimulatorModel::parallelDistort] " << n_threads << " threads (maskMode="
+       << maskMode << ")\n" ;
 
     std::vector<std::thread> threads_vec;
     double maskRadius = getMaskRadius() ;
@@ -286,6 +290,8 @@ void SimulatorModel::calculateAlphaBeta() {
 
 /* A.  Mode setters */
 void SimulatorModel::setMaskMode(bool b) {
+   if (DEBUG) std::cout
+      << "[SimulatorModel::setMaskMode] " << b << std::endl ;
    maskMode = b ; 
 }
 void SimulatorModel::setBGColour(int b) { bgcolour = b ; }
