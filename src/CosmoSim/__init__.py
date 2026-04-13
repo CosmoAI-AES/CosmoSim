@@ -75,7 +75,7 @@ def makeSourceConstellation(src,size,verbose=1):
             raise Exception( "Unknown Source Mode" )
 
         constellation.addSource( constituent, float(s[1]), float(s[2]))
-    if verbose:
+    if verbose>1:
         print( "makeSourceConstellation() returns" )
     return constellation
 
@@ -112,7 +112,7 @@ def makeSource(param,verbose=0):
         r = makeSourceConstellation(src,size)
         if verbose:
             print( "makeSource() - makeSourceConstellation() has returned" )
-    if verbose:
+    if verbose>1:
         print( "makeSource() returns" )
     return r 
 
