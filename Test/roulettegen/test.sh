@@ -1,14 +1,15 @@
 #!/bin/sh
 
-pyd=../../CosmoSimPy/
+pyd=../../python/
 
 mkdir -p Original Roulette diff montage
 
-python3 $pyd/datagen.py -Z 600 --csvfile debug.csv --outfile roulette.csv \
-   --model Roulette --xireference -D Original --actual  -R --nterms 9
-   # | tee datagen.log || exit 1
-python3 $pyd/roulettegen.py -n 10 -Z 600 --csvfile roulette.csv --xireference -D Roulette -R --nterms 9
-   # tee roulettegen.log || exit 2
+python3 -m CosmoSim.datagen -Z 600 --csvfile debug.csv --outfile roulette.csv \
+   --model Roulette --no-xireference -D Original --actual  -R --nterms 9 \
+   | tee datagen.log || exit 1
+python3 -m CosmoSim.roulettegen -n 10 -Z 600 --csvfile roulette.csv \
+   --no-xireference -D Roulette -R --nterms 9 \
+   | tee roulettegen.log || exit 2
 mkdir -p Actual
 mv Original/actual-* Actual
 python3 $pyd/compare.py --diff diff/ --masked Original Roulette 

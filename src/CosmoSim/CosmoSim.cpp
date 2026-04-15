@@ -14,8 +14,10 @@
 
 
 CosmoSim::CosmoSim() {
-   std::cout << "CosmoSim Constructor\n" ;
-   std::cout << "Number of CPU cores: " << std::thread::hardware_concurrency() << std::endl ; 
+   if (DEBUG) {
+      std::cout << "CosmoSim Constructor\n" ;
+      std::cout << "Number of CPU cores: " << std::thread::hardware_concurrency() << std::endl ; 
+   }
    rPos = -1 ;
 }
 
@@ -124,24 +126,24 @@ void CosmoSim::setModelMode(int m) {
 }
 void CosmoSim::setLensMode(int m) { 
    if ( lensmode != m ) {
-      std::cout << "[CosmoSim.cpp] setLensMode(" << lensmode 
+      if (DEBUG) std::cout << "[CosmoSim.cpp] setLensMode(" << lensmode 
          << " -> " << m << ")\n" ;
       lensmode = m ; 
       modelchanged = 1 ;
    } else {
-      std::cout << "[CosmoSim.cpp] setLensMode(" << lensmode << ") unchanged\n" ;
+      if (DEBUG) std::cout << "[CosmoSim.cpp] setLensMode(" << lensmode << ") unchanged\n" ;
    }
 }
 void CosmoSim::setLens(PsiFunctionLens *l) { 
-   std::cout << "[CosmoSim::setLens]\n" ;
+   if (DEBUG) std::cout << "[CosmoSim::setLens]\n" ;
    lensmode = CSIM_PSI_CLUSTER ; 
    modelchanged = 1 ;
    lens = psilens = l ;
-   std::cout << "[CosmoSim::setLens] returning\n" ;
+   if (DEBUG) std::cout << "[CosmoSim::setLens] returning\n" ;
 }
 void CosmoSim::setSampled(int m) { 
    if ( sampledlens != m ) {
-      std::cout << "[CosmoSim.cpp] setSampled(" << m << " -> " << m << ")\n" ;
+      if (DEBUG) std::cout << "[CosmoSim.cpp] setSampled(" << m << " -> " << m << ")\n" ;
       sampledlens = m ; 
       modelchanged = 1 ;
    }
@@ -152,10 +154,10 @@ void CosmoSim::initLens() {
    if (DEBUG) std::cout << "[initLens] ellipseratio = " << ellipseratio << "\n" ;
    if ( ! modelchanged ) return ;
    if ( sim ) {
-      std::cout << "[initLens] delete sim\n" ;
+      if (DEBUG) std::cout << "[initLens] delete sim\n" ;
       delete sim ;
    }
-   std::cout << "switch( lensmode )\n" ;
+   if (DEBUG) std::cout << "switch( lensmode )\n" ;
    switch ( lensmode ) {
        case CSIM_PSI_CLUSTER:
           std::cout << "[initLens] ClusterLens - no further init\n" ;
@@ -181,9 +183,9 @@ void CosmoSim::initLens() {
          std::cerr << "No such lens model!\n" ;
          throw NotImplemented();
    }
-   std::cout << "[initLens] instantiated lens\n" ;
+   if (DEBUG) std::cout << "[initLens] instantiated lens\n" ;
 
-   std::cout << "switch( modelmode )\n" ;
+   if (DEBUG) std::cout << "switch( modelmode )\n" ;
    switch ( modelmode ) {
        case CSIM_MODEL_POINTMASS_ROULETTE:
          if (DEBUG) std::cout << "Running Roulette Point Mass Lens (mode=" 
@@ -249,18 +251,18 @@ void CosmoSim::setResolution(int sz ) {
    basesize = sz ; 
 }
 int CosmoSim::setSource( Source *src ) {
-    std::cout  << "[setSource]\n" ;
+    if (DEBUG) std::cout  << "[setSource]\n" ;
     srcmode = CSIM_SOURCE_EXTERN ;
     this->src = src ;
     return 1 ; 
 }
 bool CosmoSim::runSim() { 
-   std::cout  << "[runSim] starting \n" ;
+   if (DEBUG) std::cout  << "[runSim] starting \n" ;
 
    // Configure the lens
    initLens() ;   // initLens() implements changing lens and model modes
    if ( sim == NULL ) {
-      std::cout << "Simulator not initialised after initLens().\n" ;
+      if (DEBUG) std::cout << "Simulator not initialised after initLens().\n" ;
       throw std::logic_error("Simulator not initialised") ;
    }
    configLens() ; // configLens() implements parameter changes
@@ -284,13 +286,13 @@ bool CosmoSim::runSim() {
    // Py_BEGIN_ALLOW_THREADS
    if (DEBUG) std::cout << "[runSim] thread section\n" ;
    if ( sim == NULL ) {
-      std::cout << "Simulator not initialised in thread section.\n" ;
+      if (DEBUG) std::cout << "Simulator not initialised in thread section.\n" ;
       throw std::logic_error("Simulator not initialised") ;
    }
    sim->update() ;
    // Py_END_ALLOW_THREADS
 
-   std::cout << "[runSim] completes\n" ;
+   if (DEBUG) std::cout << "[runSim] completes\n" ;
    return true ;
 }
 bool CosmoSim::moveSim( double rot, double scale ) { 

@@ -11,8 +11,9 @@ import threading as th
 import os, sys
 
 import traceback
+from .Helper.Parameters import Parameters 
 
-__version__ = "2.8.0"
+__version__ = "2.8.1"
 
 ModelSpec = cs.ModelSpec
 SourceSpec = cs.SourceSpec
@@ -21,15 +22,17 @@ LightProfileSpec = cs.LightProfileSpec
 Point = cs.Point 
 
 class RouletteRegenerator(cs.RouletteRegenerator):
-    def __init__(self,*a,**kw):
+    def __init__(self,*a,verbose=1,**kw):
         super().__init__(*a,**kw)
+        self.verbose = verbose
         self.bgcolour = 0
     def makeSource(self,param):
         if param.get( "imagesize" ) is None:
             raise Exception( "Image size not specified" )
         self._src = makeSource(param)
         self.setSource( self._src )
-        print( "RouletteRegenerator.makeSource() returns" )
+        if self.verbose>1:
+            print( "RouletteRegenerator.makeSource() returns" )
     def getDistortedImage(self,reflines=False,critical=False,mask=False,showmask=False):
         """
         Return the Distorted Image from the simulator as a numpy array.
@@ -50,10 +53,11 @@ class RouletteRegenerator(cs.RouletteRegenerator):
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
 
-def makeSourceConstellation(src,size):
+def makeSourceConstellation(src,size,verbose=1):
     ss = src.split(";")
     sl = [ x.split("/") for x in ss ]
-    print( "makeSourceConstellation: src=", src, "size=", size, "sl=", sl )
+    if verbose:
+        print( "makeSourceConstellation: src=", src, "size=", size, "sl=", sl )
     constellation = SourceConstellation(size)
     for s in sl:
         mode = sourceDict[s[0]]
@@ -71,24 +75,27 @@ def makeSourceConstellation(src,size):
             raise Exception( "Unknown Source Mode" )
 
         constellation.addSource( constituent, float(s[1]), float(s[2]))
-    print( "makeSourceConstellation() returns" )
+    if verbose>1:
+        print( "makeSourceConstellation() returns" )
     return constellation
 
-def makeSource(param):
+def makeSource(param,verbose=0):
     """
     Factory function to create a Source object given the parameter list.
     """
     size = int( param.get( "imagesize" ) )
     src = param.get("source")
     ltprf0 = param.get( "lightprofile", None )
-    print( f"[makeSource] src={src}, ltprf0={ltprf0}" )
+    if verbose:
+        print( f"[makeSource] src={src}, ltprf0={ltprf0}" )
     if src.find("/") < 0:
        mode = sourceDict[src]
        if ltprf0 is None:
            ltprf = lightProfileDict.get( src, LightProfileSpec.Gaussian ) 
        else:
            ltprf = lightProfileDict.get( ltprf0, LightProfileSpec.Gaussian ) 
-       print( f"[makeSource] mode={mode}, ltprf={ltprf}" )
+       if verbose:
+          print( f"[makeSource] mode={mode}, ltprf={ltprf}" )
        if mode == sourceDict.get( "Spherical" ):
            r = cs.SphericalSource( size, float(param.get( "sigma" )), ltprf)
        elif mode == sourceDict.get( "Ellipsoid" ):
@@ -103,8 +110,10 @@ def makeSource(param):
            raise Exception( "Unknown Source Mode" )
     else:
         r = makeSourceConstellation(src,size)
-        print( "makeSource() - makeSourceConstellation() has returned" )
-    print( "makeSource() returns" )
+        if verbose:
+            print( "makeSource() - makeSourceConstellation() has returned" )
+    if verbose>1:
+        print( "makeSource() returns" )
     return r 
 
 lensDict = {
@@ -211,9 +220,10 @@ def getSourceFileName():
     
 
 class SourceConstellation(cs.SourceConstellation):
-    def __init__(self,size):
+    def __init__(self,size,verbose=1):
         self._sources = []
-        print( "SourceConstellation.__init__" )
+        self.verbose = 1
+        if verbose: print( "SourceConstellation.__init__" )
         super().__init__(size)
     def addSource(self,src,*a):
         self._sources.append(src)
@@ -335,8 +345,8 @@ class CosmoSim(cs.CosmoSim):
         print( f"setModelMode({s})")
         # traceback.print_stack()
         return super().setModelMode( int( modelDict[s] ) ) 
-    def setConfigMode(self,s):
-        print( f"setConfigMode({s})")
+    def setConfigMode(self,s,verbose=0):
+        if verbose > 1: print( f"setConfigMode({s})")
         (model,lens,sampleMode) = configDict[s]
         super().setSampled( int( sampleMode ) ) 
         super().setLensMode( int( lens ) ) 

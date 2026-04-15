@@ -3,6 +3,22 @@
 
 ## Unreleased
 
+## [2.8.1] - 2026-04-13
+
+### Added
+
++ The `Parameters` class is now available as `CosmoSim.Parameters`
+  (not `CosmoSim.Parameters.Parameters`).
++ reflines option to `getImage()` methods
+
+### Fixed
+
++ Reduced the amount of diagnostic debug information.
++ Preserve original image in `GenericSim`, by copying the image before
+  reference lines are added,
+
+## [2.8.0] - 2026-04-13
+
 ### Added
 
 + `CosmoSim.roulettegen.Resimm()` is now intended to be used as an API feature
