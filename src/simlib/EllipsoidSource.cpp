@@ -2,6 +2,7 @@
 
 #include "cosmosim/Simulator.h"
 #include <thread>
+#include <stdexcept>
 
 EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2, double thet, LightProfileSpec lightprf) :
         sigma1(sig1),
@@ -38,7 +39,7 @@ void EllipsoidSource::drawSource(int begin, int end, cv::Mat& dst) {
                 }
                 dst.at<uchar>(row, col) = (uchar)value;
             }  else {
-	       throw std::exception( "Unknown light profile." )
+	       throw std::runtime_error( "Unknown light profile." );
 	    }
         }
     }
