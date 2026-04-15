@@ -22,10 +22,11 @@ void EllipsoidSource::drawSource(int begin, int end, cv::Mat& dst) {
             int x = col - dst.cols/2;
             int y = row - dst.rows/2;
             if (lightprofile == LightProfileSpec::CSIM_LIGHT_GAUSSIAN) {
-            auto value = (uchar)round(255 * exp( 0.5*(-(x*x)/(sigma1*sigma1) - (y*y)/(sigma2*sigma2) ) ));
-            dst.at<uchar>(row, col) = value;
-            }
-            else if (lightprofile == LightProfileSpec::CSIM_LIGHT_SERSIC) {
+              auto value = (uchar) round (
+		    255 * exp( 0.5*(-(x*x)/(sigma1*sigma1) 
+			  - (y*y)/(sigma2*sigma2) ) ) );
+              dst.at<uchar>(row, col) = value;
+            } else if (lightprofile == LightProfileSpec::CSIM_LIGHT_SERSIC) {
                 auto q = sigma2/sigma1;
                 int n = 4;  // Sersic index
                 auto re = 10*sigma1; // effective radius
@@ -36,7 +37,9 @@ void EllipsoidSource::drawSource(int begin, int end, cv::Mat& dst) {
                     value = 255;
                 }
                 dst.at<uchar>(row, col) = (uchar)value;
-            }  
+            }  else {
+	       throw std::exception( "Unknown light profile." )
+	    }
         }
     }
 }
