@@ -47,6 +47,22 @@ def uniform(toml,key,rng=(0,50)):
         return random.uniform(mn,mx)
     except:
         return None
+    
+def exponential(toml,key,rng=(0,50),lambd=0.8):
+    x = random.expovariate(lambd)
+    u = 1 - np.exp(-lambd * x)
+    if key in toml:
+        return toml[key]
+    if rng:
+        mn = toml.get( f"{key}-min", rng[0] )
+        mx = toml.get( f"{key}-max", rng[1] )
+        return mn + (mx - mn) * u
+    try:
+        mn = toml.get( f"{key}-min" )
+        mx = toml.get( f"{key}-max" )
+        return mn + (mx - mn) * u
+    except:
+        return None
 
 def getline(idx,toml):
 
@@ -59,6 +75,7 @@ def getline(idx,toml):
     theta = uniform( toml["source"], "theta", (0,179) )
     coor = toml["source"].get( "position", "cartesian" )
     n_sersic = uniform(toml["source"], "n_sersic", (1,5))
+    luminosity = exponential(toml["source"], "luminosity", (1,20), 2.0)
 
     # Lens
     einsteinR = uniform( toml["lens"], "einstein", (10,50) )
@@ -92,10 +109,10 @@ def getline(idx,toml):
     return pd.Series(
         data=[ idx,f"image-{idx:06}.png", src, cfg, chi, R, phi,
                einsteinR, ellipseratio, orientation, 
-               sigma, sigma2, theta, n_sersic, nterms, x, y ],
+               sigma, sigma2, theta, n_sersic, luminosity, nterms, x, y ],
         index=[ "index", "filename", "source", "config", "chi", 
                "R", "phi", "einsteinR", "ellipseratio", "orientation",
-               "sigma", "sigma2", "theta", "n_sersic", "nterms", "x", "y" ]
+               "sigma", "sigma2", "theta", "n_sersic", "luminosity", "nterms", "x", "y" ]
         )
     # return f'"{idx:04}","image-{idx:04}.png",{src},{cfg},{chi},' \
     #      + f'{R},{phi},{einsteinR},{sigma},{sigma2},{theta},{nterms},{x},{y}'

@@ -63,7 +63,7 @@ def makeSourceConstellation(src,size,verbose=1):
         mode = sourceDict[s[0]]
         ltprf = lightProfileDict.get( s[0], LightProfileSpec.Gaussian ) 
         if mode == sourceDict.get( "Spherical" ):
-            constituent = cs.SphericalSource( size, float(s[3]), float(s[6]),ltprf )
+            constituent = cs.SphericalSource( size, float(s[3]), float(s[6]), float(s[7]), ltprf )
         elif mode == sourceDict.get( "Ellipsoid" ):
             constituent = cs.EllipsoidSource( size, float(s[3]),
                     float(s[4]), float(s[5])*np.pi/180, ltprf)
@@ -97,7 +97,7 @@ def makeSource(param,verbose=0):
        if verbose:
           print( f"[makeSource] mode={mode}, ltprf={ltprf}" )
        if mode == sourceDict.get( "Spherical" ):
-           r = cs.SphericalSource( size, float(param.get( "sigma" )),float(param.get("n_sersic")), ltprf)
+           r = cs.SphericalSource( size, float(param.get( "sigma" )),float(param.get("n_sersic")),float(param.get("luminosity")), ltprf)
        elif mode == sourceDict.get( "Ellipsoid" ):
            r = cs.EllipsoidSource( size, float(param.get( "sigma" )),
                    float(param.get( "sigma2" )), float(param.get( "theta" ))*np.pi/180, ltprf)
