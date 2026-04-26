@@ -48,10 +48,10 @@ def uniform(toml,key,rng=(0,50)):
     except:
         return None
     
-def exponential(toml,key,rng=(0,50),lambda=0.8):
+def exponential(toml,key,rng=(0,50),lam=0.8):
     if key in toml:
         return toml[key]
-    lambd = toml.get( f"{key}-lambda", lambda )
+    lambd = toml.get( f"{key}-lambda", lam )
     x = random.expovariate(lambd)
     u = 1 - np.exp(-lambd * x)
 
