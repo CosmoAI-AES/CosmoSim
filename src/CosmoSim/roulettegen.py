@@ -123,6 +123,21 @@ class Resim(GenericSim):
         self.coefs = coefs
         self.cols = cols
         self.frame = frame
+def processResim( frame, sim=None, args=None, cfg=None, maxcount=2**30 ):
+
+    count = 1
+    for index,row in frame.iterrows():
+        print( "[roulettegen.py] Processing", index )
+        param = Parameters( args=args, cfg=cfg )
+
+        imsim = Resim( sim, param=param, row=row )
+        imsim.saveImage()
+
+        if args.actual: imsim.getActual()
+        if args.apparent: imsim.getApparent()
+
+        count += 1
+        if count > maxcount: break
     
 def main(args):
     """
@@ -134,7 +149,6 @@ def main(args):
     else:
         raise Exception( "No CSV file given; the --csvfile option is mandatory." )
 
-    count = 1
     if args.maxcount is None:
         maxcount = 2**30
     else:
@@ -146,19 +160,10 @@ def main(args):
     sim.setMaskMode( args.mask )
     if not args.maskradius is None:
         sim.setMaskRadius( float(args.maskradius) )
+
         
-    for index,row in frame.iterrows():
-        print( "[roulettegen.py] Processing", index )
-        param = Parameters( args )
+    processResim( frame, sim=sim, args=args, maxcount=maxcount )
 
-        imsim = Resim( sim, param=param, row=row )
-        imsim.saveImage()
-
-        if args.actual: imsim.getActual()
-        if args.apparent: imsim.getApparent()
-
-        count += 1
-        if count > maxcount: break
 
     print( "[roulettegen.py] Done" )
 
