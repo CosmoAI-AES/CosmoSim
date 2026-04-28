@@ -30,14 +30,14 @@ class Parameters:
         if hcfg:
             cfg1 = hcfg["simulator"]
             if "cropsize" not in self._args:
-                self._args.cropsize = cfg1.get( "cropsize", 256 )
+                self._args["cropsize"] = cfg1.get( "cropsize", 256 )
             if "imagesize" not in self._args:
-                self._args.imagesize = cfg1.get( "imagesize", 512 )
+                self._args["imagesize"] = cfg1.get( "imagesize", 512 )
             if "source" not in self._args:
                 try:
-                    self._args.source = hcfg["source"]["mode"]
+                    self._args["source"] = hcfg["source"]["mode"]
                 except:
-                    self._args.source = None
+                    self._args["source"] = None
     def setRow(self,row):
         self._row = row
     def get(self,key,default=None,verbose=0):
