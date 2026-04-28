@@ -74,9 +74,13 @@ class Resim(GenericSim):
                 print( "xi", row["xiX"], row["xiY"], row["sigma"] )
             pt = (0,0)
         else:
+            try:
+                pt = ( row["offsetX"], row["offsetY"] )
+            except:
+                raise RuntimeError( "offsetX/offsetY missing from dataset [no-xireference-mode]" )
             if self.verbose:
                 print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
-            pt = ( row["offsetX"], row["offsetY"] )
+                print( row )
         rsim.setCentrePy( *pt )
         print( "Initialised simulator at point", pt )
 
