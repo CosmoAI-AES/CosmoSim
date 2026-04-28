@@ -21,6 +21,15 @@ PsiSpec = cs.PsiSpec
 LightProfileSpec = cs.LightProfileSpec
 Point = cs.Point 
 
+class SphericalSource(cs.SphericalSource):
+    """Spherical source model.
+    This is a wrapper around the C++ class to provide default
+    arguments to the constructor.
+    """
+    def __init__( self, size, sigma, idx=0, lum=0,
+                 ltprf=LightProfileSpec.Gaussian ):
+        super().__init__( size, sigma, idx, lum, ltprf )
+
 class RouletteRegenerator(cs.RouletteRegenerator):
     def __init__(self,*a,verbose=1,**kw):
         super().__init__(*a,**kw)
@@ -63,10 +72,10 @@ def makeSourceConstellation(src,size,verbose=1):
         mode = sourceDict[s[0]]
         ltprf = lightProfileDict.get( s[0], LightProfileSpec.Gaussian ) 
         if mode == sourceDict.get( "Spherical" ):
-            constituent = cs.SphericalSource( size, float(s[3]), float(s[6]), float(s[7]), ltprf )
+            constituent = SphericalSource( size, float(s[3]), float(s[6]), float(s[7]), ltprf=ltprf )
         elif mode == sourceDict.get( "Ellipsoid" ):
             constituent = cs.EllipsoidSource( size, float(s[3]),
-                    float(s[4]), float(s[5])*np.pi/180, ltprf)
+                    float(s[4]), float(s[5])*np.pi/180, ltprf=ltprf)
         elif mode == sourceDict.get( "Triangle" ):
             constituent = cs.TriangleSource( size, float(s[3]), float(s[4])*np.pi/180 )
         elif mode == sourceDict.get( "Iamge (Einstein)" ):
@@ -97,10 +106,13 @@ def makeSource(param,verbose=0):
        if verbose:
           print( f"[makeSource] mode={mode}, ltprf={ltprf}" )
        if mode == sourceDict.get( "Spherical" ):
-           r = cs.SphericalSource( size, float(param.get( "sigma" )),float(param.get("n_sersic")),float(param.get("luminosity")), ltprf)
+           r = SphericalSource( size, float(param.get( "sigma" )),
+                  float(param.get("n_sersic")), float(param.get("luminosity")),
+                  ltprf=ltprf)
        elif mode == sourceDict.get( "Ellipsoid" ):
            r = cs.EllipsoidSource( size, float(param.get( "sigma" )),
-                   float(param.get( "sigma2" )), float(param.get( "theta" ))*np.pi/180, ltprf)
+                   float(param.get( "sigma2" )),
+                   float(param.get( "theta" ))*np.pi/180, ltprf)
        elif mode == sourceDict.get( "Triangle" ):
            r = cs.TriangleSource( size, float(param.get( "sigma" )),
                    float(param.get( "theta" ))*np.pi/180 )
