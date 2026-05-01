@@ -74,7 +74,7 @@ def getline(idx,toml):
     theta = uniform( toml["source"], "theta", (0,179) )
     coor = toml["source"].get( "position", "cartesian" )
     n_sersic = uniform(toml["source"], "n_sersic", (1,5))
-    luminosity = exponential(toml["source"], "luminosity", (1,20), 2.0)
+    flux = exponential(toml["source"], "flux", (14,16), 2.0)
 
     # Lens
     einsteinR = uniform( toml["lens"], "einstein", (10,50) )
@@ -108,10 +108,10 @@ def getline(idx,toml):
     return pd.Series(
         data=[ idx,f"image-{idx:06}.png", src, cfg, R, phi,
                einsteinR, ellipseratio, orientation, 
-               sigma, sigma2, theta, n_sersic, luminosity, nterms, x, y ],
+               sigma, sigma2, theta, n_sersic, flux, nterms, x, y ],
         index=[ "index", "filename", "source", "config", 
                "R", "phi", "einsteinR", "ellipseratio", "orientation",
-               "sigma", "sigma2", "theta", "n_sersic", "luminosity", "nterms", "x", "y" ]
+               "sigma", "sigma2", "theta", "n_sersic", "flux", "nterms", "x", "y" ]
         )
     # return f'"{idx:04}","image-{idx:04}.png",{src},{cfg},{chi},' \
     #      + f'{R},{phi},{einsteinR},{sigma},{sigma2},{theta},{nterms},{x},{y}'

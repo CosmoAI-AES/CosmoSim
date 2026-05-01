@@ -21,7 +21,7 @@ from .Arguments import CosmoParser
 from .Parameters import Parameters
 import pandas as pd
 
-defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "n_sersic", "luminosity", "x", "y" ]
+defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "n_sersic", "flux", "x", "y" ]
 
 def setParameters(sim,row,verbose=1):
     if verbose > 2:

@@ -44,7 +44,7 @@ class CosmoParser(argparse.ArgumentParser):
     self.add_argument('-z', '--cropsize', help="Final image size")
     self.add_argument('--lightprofile', help="light profile (sersic or gaussian)")
     self.add_argument('--n_sersic', help="sersic index")
-    self.add_argument('--luminosity', help="Effective Intensity")
+    self.add_argument('--flux', help="Apparent flux of the source")
 
     # Output configuration 
     self.add_argument('-R', '--reflines',action='store_true',

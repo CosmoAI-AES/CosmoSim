@@ -36,8 +36,8 @@ private:
     double ellipseratio=0.5, orientation=0, einsteinR=20 ;
     int sampledlens = 0, modelchanged = 1 ;
     int lensmode=CSIM_NOPSI_PM ;
-    int srcmode=CSIM_SOURCE_SPHERE, sourceSize=20, sourceSize2=10,
-        sourceTheta=0, n_sersic=5, luminosity = 10 ;
+    int srcmode=CSIM_SOURCE_SPHERE, sourceSize=10, sourceSize2=10,
+        sourceTheta=0, n_sersic=5, flux = 10 ;
     double xPos=10, yPos=0, rPos=10, thetaPos=0; ;
     cv::Point2d centrepoint ;
     double maskRadius=0 ;
