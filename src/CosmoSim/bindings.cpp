@@ -58,7 +58,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("getImage", &Source::getImage)
         ;
     py::class_<SphericalSource,Source>(m, "SphericalSource")
-        .def(py::init<int,double,LightProfileSpec>())
+        .def(py::init<int,double,double,double,LightProfileSpec>())
         ;
     py::class_<EllipsoidSource,Source>(m, "EllipsoidSource")
         .def(py::init<int,double,double,double,LightProfileSpec>())

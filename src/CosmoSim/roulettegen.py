@@ -74,9 +74,13 @@ class Resim(GenericSim):
                 print( "xi", row["xiX"], row["xiY"], row["sigma"] )
             pt = (0,0)
         else:
+            try:
+                pt = ( row["offsetX"], row["offsetY"] )
+            except:
+                raise RuntimeError( "offsetX/offsetY missing from dataset [no-xireference-mode]" )
             if self.verbose:
                 print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
-            pt = ( row["offsetX"], row["offsetY"] )
+                print( row )
         rsim.setCentrePy( *pt )
         print( "Initialised simulator at point", pt )
 
@@ -123,18 +127,20 @@ class Resim(GenericSim):
         self.coefs = coefs
         self.cols = cols
         self.frame = frame
-def processResim( frame, sim=None, args=None, cfg=None, maxcount=2**30 ):
+
+def processResim( frame, sim=None, args=None, cfg=None
+                 , hcfg=None, maxcount=2**30 ):
 
     count = 1
     for index,row in frame.iterrows():
         print( "[roulettegen.py] Processing", index )
-        param = Parameters( args=args, cfg=cfg )
+        param = Parameters( args=args, cfg=cfg, hcfg=hcfg )
 
         imsim = Resim( sim, param=param, row=row )
         imsim.saveImage()
 
-        if args.actual: imsim.getActual()
-        if args.apparent: imsim.getApparent()
+        if param.get( "actual" ): imsim.getActual()
+        if param.get( "apparent" ): imsim.getApparent()
 
         count += 1
         if count > maxcount: break
@@ -153,7 +159,6 @@ def main(args):
         maxcount = 2**30
     else:
         maxcount = int(args.maxcount)
-    param = Parameters(args)
 
     # Masking is not implemented in the Resim class.
     sim = RouletteRegenerator()
@@ -161,9 +166,7 @@ def main(args):
     if not args.maskradius is None:
         sim.setMaskRadius( float(args.maskradius) )
 
-        
     processResim( frame, sim=sim, args=args, maxcount=maxcount )
-
 
     print( "[roulettegen.py] Done" )
 

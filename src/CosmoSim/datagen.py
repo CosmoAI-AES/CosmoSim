@@ -22,7 +22,7 @@ from .Arguments import CosmoParser
 from . import Parameters
 import pandas as pd
 
-defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "x", "y" ]
+defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "n_sersic", "luminosity", "x", "y" ]
 
 def setParameters(sim,row,verbose=1):
     if verbose > 2:
@@ -92,7 +92,7 @@ class SimImage(GenericSim):
         else:
             centrepoint = (0,0)
         maxm = self.param.get( "nterms" )
-        xireference = self.param.get( "xireference" )
+        xireference = self.param.get( "xireference", True )
         if self.verbose > 0:
             print( "[datagen.py] Finding Alpha/beta; centrepoint=", centrepoint )
         # r = pd.Series([ row[x] for x in self.outcols ], index=self.outcols )

@@ -18,8 +18,6 @@ the cost of reinstantiation in bulk simulation, and it also leaves the possibili
 to set defaults in advance.
 """
 
-import tomllib as tl
-
 import cv2 as cv
 import sys
 import os
