@@ -1,8 +1,12 @@
-# (C) 2023: Hans Georg Schaathun <georg@schaathun.net> 
+# (C) 2023,2026: Hans Georg Schaathun <georg@schaathun.net> 
 
 """
 This defines the `ArgumentParser` for the CosmoSim scripts.
 Several scripts use the same arguments, and thus share this module.
+
+The argument list is not complete.  For ease of maintenance, we should
+abandon support for command line arguments and refer to CSV and TOML 
+files instead.
 """
 
 import argparse
@@ -43,8 +47,6 @@ class CosmoParser(argparse.ArgumentParser):
     self.add_argument('-Z', '--imagesize', default=512, help="image size for calculations")
     self.add_argument('-z', '--cropsize', help="Final image size")
     self.add_argument('--lightprofile', help="light profile (sersic or gaussian)")
-    self.add_argument('--n_sersic', help="sersic index")
-    self.add_argument('--luminosity', help="Effective Intensity")
 
     # Output configuration 
     self.add_argument('-R', '--reflines',action='store_true',

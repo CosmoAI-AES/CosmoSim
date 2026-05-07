@@ -107,7 +107,8 @@ def makeSource(param,verbose=0):
           print( f"[makeSource] mode={mode}, ltprf={ltprf}" )
        if mode == sourceDict.get( "Spherical" ):
            r = SphericalSource( size, float(param.get( "sigma" )),
-                  float(param.get("n_sersic")), float(param.get("luminosity")),
+                  float(param.get("n_sersic",0)),
+                  float(param.get("luminosity",0)),
                   ltprf=ltprf)
        elif mode == sourceDict.get( "Ellipsoid" ):
            r = cs.EllipsoidSource( size, float(param.get( "sigma" )),
