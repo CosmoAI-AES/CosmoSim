@@ -359,6 +359,9 @@ class CosmoSim(cs.CosmoSim):
         # traceback.print_stack()
         return super().setModelMode( int( modelDict[s] ) ) 
     def setConfigMode(self,s,verbose=0):
+        """
+        Set lens and simulation models based on the config string.
+        """
         if verbose > 1: print( f"setConfigMode({s})")
         (model,lens,sampleMode) = configDict[s]
         super().setSampled( int( sampleMode ) ) 

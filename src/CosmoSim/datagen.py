@@ -180,7 +180,6 @@ class SimImage(GenericSim):
         cv.imwrite(fn,im)
         return im
 
-
     def psiplot(self):
         a = self.sim.getPsiMap()
         print(a.shape, a.dtype)
