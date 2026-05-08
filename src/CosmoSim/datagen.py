@@ -217,7 +217,7 @@ def makeSingle(sim,param=None,name=None,row=None,outcols=None):
     if param.get( "join" ): imsim.join()
     if param.get( "family" ): imsim.family()
     if param.get( "psiplot" ): imsim.psiplot()
-    if param.get( "kappaplot" ): imsim.psiplot()
+    if param.get( "kappaplot" ): imsim.kappaplot()
     if param.get( "apparent" ): imsim.getApparent()
     if param.get( "actual" ): imsim.getActual()
     print( "makeSingle() returns" )
@@ -286,7 +286,7 @@ def main(args):
         print( "columns:", outcols )
         dfs = []
         for index,row in frame.iterrows():
-            imsim = makeSingle(sim,param,row=row,outcols=outcols)
+            imsim = makeSingle(sim,param,name=args.name,row=row,outcols=outcols)
             if args.outfile:
                 dfs.append( imsim.getData() )
         df = pd.DataFrame( dfs )

@@ -128,13 +128,13 @@ class Resim(GenericSim):
         self.cols = cols
         self.frame = frame
 
-def processResim( frame, sim=None, args=None, cfg=None
-                 , hcfg=None, maxcount=2**30 ):
+def processResim( frame, sim=None, args=None
+                 , cfg=None, maxcount=2**30 ):
 
     count = 1
     for index,row in frame.iterrows():
         print( "[roulettegen.py] Processing", index )
-        param = Parameters( args=args, cfg=cfg, hcfg=hcfg )
+        param = Parameters( args=args, cfg=cfg )
 
         imsim = Resim( sim, param=param, row=row )
         imsim.saveImage()

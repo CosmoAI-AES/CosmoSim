@@ -7,9 +7,76 @@ Several scripts use the same arguments, and thus share this module.
 The argument list is not complete.  For ease of maintenance, we should
 abandon support for command line arguments and refer to CSV and TOML 
 files instead.
+
+`paramap` is a mapping from the command line options into the
+structure of the TOML config files.
 """
 
 import argparse
+
+paramap = {
+        "config" : ( "simulator", "config", "mode" ), # renamed
+        "lens" : ( "simulator", "config", "lens" ),
+        "model" : ( "simulator", "config", "model" ),
+        "sampled" : ( "simulator", "config", "sampled" ),
+        "nterms" : ( "simulator", "nterms" ),
+        "imagesize" : ( "simulator", "imagesize" ),
+        "cropsize" : ( "simulator", "cropsize" ),
+        "xireference" : ( "simulator", "xireference" ), # new
+        "centred" : ( "simulator", "centred" ), # new
+        "source" : ( "source", "mode" ), # used differently
+
+        "chi" : ( "lens", "chi" ),
+        "einsteinradius" : ( "lens", "einsteinradius" ),
+        "orientation" : ( "lens", "orientation" ),
+        "ratio" : ( "lens", "ellipseratio" ), # relabelled
+
+        "sigma" :  ( "source", "sigma" ),
+        "sigma2" : ( "source", "sigma2" ),
+        "theta" : ( "source", "theta" ),
+        "directory" : ( "dataset", "directory" ) ,
+        "reflines" : ( "annotation", "reflines" ),
+        "criticalcurves" : ( "annotation", "criticalcurves" ),
+        }
+
+"""
+CLI options to be refactored into TOML structure.
++ [source] -> position is implicit
+
++ [position]
+        "x" : 1,
+        "y" : 1,
+        "phi" : 45,
+        # r is equal to x
+
+            
++ [masking] not yet in TOML
+    "maskradius" : None,
+    "mask" : False,
+    "showmask" : False,
+    "maskscale" : 0.9,
+
++ Not implemented yet
+        "cluster" : None,
+
+CLI options never used in main parameter structure
+    "toml" : None,        # Source
+    "maxcount" : None,
+    "amplitudes" : None,  # Amplitudes file
+    "mldata" : False,
+    "csvfile" : None,
+    "outfile" : None,
+    "name" : "test",
+
+CLI options currently unsupported
+    "psiplot" : False,
+    "kappaplot" : False,
+    "family" : False,
+    "components" : 6,
+    "join" : False,
+    "apparent" : False, 
+    "actual" : False, 
+"""
 
 class CosmoParser(argparse.ArgumentParser):
   def __init__(self,*a,**kw):
@@ -46,7 +113,6 @@ class CosmoParser(argparse.ArgumentParser):
                       help="Number of Roulettes terms", default=15)
     self.add_argument('-Z', '--imagesize', default=512, help="image size for calculations")
     self.add_argument('-z', '--cropsize', help="Final image size")
-    self.add_argument('--lightprofile', help="light profile (sersic or gaussian)")
 
     # Output configuration 
     self.add_argument('-R', '--reflines',action='store_true',
@@ -72,7 +138,6 @@ class CosmoParser(argparse.ArgumentParser):
     self.add_argument('-A', '--apparent',action='store_true',help="write apparent image")
     self.add_argument('--mldata',action='store_true',help="Make roulette output for ML without redundant colums")
     self.add_argument('-a', '--actual',action='store_true',help="write actual image")
-    self.add_argument('-U', '--original',action='store_true',help="write original image before centring")
 
     # Output file names
     self.add_argument('-N', '--name', default="test",
