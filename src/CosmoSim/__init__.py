@@ -13,7 +13,7 @@ import os, sys
 import traceback
 from .Helper.Parameters import Parameters 
 
-__version__ = "2.9.0beta"
+__version__ = "2.9.0"
 
 ModelSpec = cs.ModelSpec
 SourceSpec = cs.SourceSpec

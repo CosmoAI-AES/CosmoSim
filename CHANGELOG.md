@@ -1,7 +1,7 @@
 
 # CosmoSim Change Log
 
-## Unreleased
+## 2.9.0 - 2026-05-08
 
 ### Added
 
