@@ -9,7 +9,9 @@ abandon support for command line arguments and refer to CSV and TOML
 files instead.
 
 `paramap` is a mapping from the command line options into the
-structure of the TOML config files.
+structure of the TOML config files.  The key is the parameter
+name used in CSV and on the command line, while the value is
+the key used in TOML and nested `dict`s.
 """
 
 import argparse
