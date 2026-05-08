@@ -3,6 +3,19 @@
 
 ## Unreleased
 
+### Added
+
++ Parameterised sersic profile
+
+### Changed
+
++ Removed redundant CLI arguments
+
+### Fixed
+
++ Removed analytic but flawed calculation of apparent source position for SIE.
+  It now falls back on fix-point iteration which works.
+
 ## [2.8.1] - 2026-04-13
 
 ### Added

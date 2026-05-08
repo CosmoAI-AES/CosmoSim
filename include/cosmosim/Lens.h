@@ -138,7 +138,7 @@ public:
     virtual double psiXvalue( double, double ) const ;
     virtual double psiYvalue( double, double ) const ;
 
-    virtual cv::Point2d getXi( cv::Point2d ) ;
+    // virtual cv::Point2d getXi( cv::Point2d ) ;
 
     virtual double criticalXi( double ) const ;
     virtual cv::Point2d caustic( double ) const ;
