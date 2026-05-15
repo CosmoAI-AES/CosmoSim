@@ -62,7 +62,7 @@ def makeSource(param):
            ltprf = lightProfileDict.get( ltprf0, LightProfileSpec.Gaussian ) 
        print( f"[makeSource] mode={mode}, ltprf={ltprf}" )
        if mode == sourceDict.get( "Spherical" ):
-           r = cs.SphericalSource( size, float(param.get( "sigma" )),float(param.get("n_sersic")),float(param.get("flux")), ltprf)
+           r = cs.SphericalSource( size, float(param.get( "sigma" )),float(param.get("n_sersic")),float(param.get("magnitude")), ltprf)
        elif mode == sourceDict.get( "Ellipsoid" ):
            r = cs.EllipsoidSource( size, float(param.get( "sigma" )),
                    float(param.get( "sigma2" )), float(param.get( "theta" ))*np.pi/180, ltprf)

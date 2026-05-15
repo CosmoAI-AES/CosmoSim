@@ -4,11 +4,11 @@
 
 #include "cosmosim/Source.h"
 
-SphericalSource::SphericalSource(int sz, double sig, double idx, double fl, LightProfileSpec lightprf) :
+SphericalSource::SphericalSource(int sz, double sig, double idx, double mag, LightProfileSpec lightprf) :
         Source::Source(sz),
         sigma(sig),
         n_sersic(idx),
-        flux(fl),
+        magnitude(mag),
         lightprofile(lightprf)
 { 
         if (lightprofile == LightProfileSpec::CSIM_LIGHT_GAUSSIAN) {
@@ -33,7 +33,7 @@ void SphericalSource::drawSource(int begin, int end, cv::Mat& dst) {
                 float re = sigma; // effective radius
                 float r = std::sqrt(std::pow(x, 2)+std::pow(y, 2)); //source position
                 float bn = 1.992*n_sersic - 0.3271;
-                float F = std::pow(10, -0.4 * (flux - zp));
+                float F = std::pow(10, -0.4 * (magnitude - zp));
                 float pi = 3.141592;
                 float I_eff = F*std::pow(bn, 2.0 * n_sersic)/(2 * pi * std::pow(re, 2.0) * n_sersic * std::exp(bn) * std::tgamma(2.0 * n_sersic));
                 float value = round(I_eff*std::exp(-bn*((std::pow(r/re, 1.0/n_sersic))-1.0)));

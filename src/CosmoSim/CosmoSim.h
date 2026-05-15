@@ -37,7 +37,7 @@ private:
     int sampledlens = 0, modelchanged = 1 ;
     int lensmode=CSIM_NOPSI_PM ;
     int srcmode=CSIM_SOURCE_SPHERE, sourceSize=10, sourceSize2=10,
-        sourceTheta=0, n_sersic=5, flux = 10 ;
+        sourceTheta=0, n_sersic=5, magnitude = 10 ;
     double xPos=10, yPos=0, rPos=10, thetaPos=0; ;
     cv::Point2d centrepoint ;
     double maskRadius=0 ;

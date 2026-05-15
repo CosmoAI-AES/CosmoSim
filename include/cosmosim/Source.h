@@ -51,7 +51,7 @@ class SourceConstellation : public Source {
 class SphericalSource : public Source {
 
 private:
-    double sigma, n_sersic, flux;
+    double sigma, n_sersic, magnitude;
     LightProfileSpec lightprofile;
 
 public:

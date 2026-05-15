@@ -164,7 +164,7 @@ class SourcePane(ttk.Frame):
         self.Lslider = FloatSlider( self,
                 fromval=10,
                 toval=20,
-                text= "Flux", row = 6,  default=10 )
+                text= "Apparent magnitude", row = 6,  default=10 )
         self.sigmaSlider.var.trace_add( "write", self.push)
         self.sigma2Slider.var.trace_add( "write", self.push)
         self.thetaSlider.var.trace_add( "write", self.push)
@@ -181,7 +181,7 @@ class SourcePane(ttk.Frame):
            "theta":  self.thetaSlider.get(),
            "lightprofile": self.lightprfVar.get(),
            "n_sersic": self.nslider.get(),
-           "flux": self.Lslider.get()
+           "magnitude": self.Lslider.get()
            }
         print( "[Controller.py] Push source parameters", p )
         self.sim.makeSource(p)

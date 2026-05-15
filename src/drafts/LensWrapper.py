@@ -183,7 +183,7 @@ void LensWrapper::initSource( ) {
    // if ( src ) delete src ;
    switch ( srcmode ) {
        case CSIM_SOURCE_SPHERE:
-         src = new SphericalSource( size, sourceSize, n_sersic, flux) ;
+         src = new SphericalSource( size, sourceSize, n_sersic, magnitude) ;
          break ;
        case CSIM_SOURCE_ELLIPSE:
          src = new EllipsoidSource( size, sourceSize,
