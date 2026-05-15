@@ -15,6 +15,14 @@ the key used in TOML and nested `dict`s.
 """
 
 import argparse
+from cascadict import CascaDict
+
+skel = { "simulator" : { "config" : {} }
+         , "source" : {}
+         , "lens" : {}
+         , "dataset" : {}
+         , "annotation" : {}
+         }
 
 paramap = {
         "config" : ( "simulator", "config", "mode" ), # renamed
@@ -81,6 +89,35 @@ CLI options currently unsupported
 """
 
 class CosmoParser(argparse.ArgumentParser):
+  """Argument Parser for CosmoSim.
+  The class provides standardised CLI options for many scripts
+  in the CosmoSim suite.  
+  """
+  def getArgs(self,*a,**kw):
+      """Parse the arguments and return the resulting `args` object.
+      """
+      if not hasattr(self,"_args"):
+          self._args = super().parse_args(*a,**kw)
+      return self._args
+  def getConfig(self,*a,**kw):
+      """Return the configuration as a nested `dict` structure.
+      The arguments are parsed if required.
+      """
+      if not hasattr(self,"_args"):
+          self._args = super().parse_args(*a,**kw)
+      cfg = CascaDict( skel )
+      for k in self._args.__dict__:
+          if k in paramap:
+              key = paramap[k]
+              d = cfg
+              for subkey in key[:-1]:
+                  try:
+                     d = d[subkey]
+                  except KeyError:
+                      d[subkey] = {}
+                      d = d[subkey]
+              d[key[-1]] = self._args.__dict__[k]
+      return cfg
   def __init__(self,*a,**kw):
     super().__init__(*a,**kw)
 

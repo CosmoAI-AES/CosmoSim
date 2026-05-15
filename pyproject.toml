@@ -30,7 +30,7 @@ classifiers = [
 license = "MIT"
 license-files = ["LICENSE"]
 keywords=[ 'cosmology', 'gravitational lensing', "simulation" ]
-dependencies=["sympy>=1.13", "numpy", "matplotlib", "opencv-python", "pandas"]
+dependencies=["sympy>=1.13", "numpy", "matplotlib", "opencv-python", "pandas", "toml", "cascadict" ]
 
 [tool.setuptools.dynamic]
 version = {attr = "CosmoSim.__version__"}

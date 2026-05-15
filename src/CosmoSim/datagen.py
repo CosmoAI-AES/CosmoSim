@@ -314,6 +314,7 @@ if __name__ == "__main__":
           description = 'Generate an image for given lens and source parameters',
           epilog = '')
 
-    args = parser.parse_args()
+    args = parser.getArgs()
+    print( "CascaDict Config", parser.getConfig() )
     main(args)
     print( "[datagen.py] the end" )

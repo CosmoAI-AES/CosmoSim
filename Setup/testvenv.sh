@@ -14,6 +14,6 @@ else
 
    sh Setup/build.sh
 
-   pip install jupytext jupyterlab toml
+   pip install jupytext jupyterlab 
    pip install -e .
 fi
