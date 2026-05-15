@@ -15,7 +15,6 @@ the key used in TOML and nested `dict`s.
 """
 
 import argparse
-from cascadict import CascaDict
 
 skel = { "simulator" : { "config" : {} }
          , "source" : {}
@@ -105,7 +104,7 @@ class CosmoParser(argparse.ArgumentParser):
       """
       if not hasattr(self,"_args"):
           self._args = super().parse_args(*a,**kw)
-      cfg = CascaDict( skel )
+      cfg = skel.copy()
       for k in self._args.__dict__:
           if k in paramap:
               key = paramap[k]

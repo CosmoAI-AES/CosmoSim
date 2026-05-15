@@ -6,6 +6,7 @@ Generate an image for given parameters.
 """
 
 import tomllib as tl
+from cascadict import CascaDict
 
 import cv2 as cv
 import sys
@@ -222,7 +223,7 @@ def makeSingle(sim,param=None,name=None,row=None,outcols=None):
     print( "makeSingle() returns" )
     return imsim
 
-def main(args):
+def main(args,cfg={}):
     print( "[datagen.py] Instantiate Simulator ... " )
     sys.stdout.flush()
     if args.amplitudes:
@@ -274,10 +275,9 @@ def main(args):
         datasetgen(args.toml,args.csvfile)
         with open(args.toml, 'rb') as f:
             toml = tl.load(f)
-        if "cropsize" in toml["simulator"]:
-            args.cropsize = int( toml["simulator"]["cropsize"] )
-        if "imagesize" in toml["simulator"]:
-            args.imagesize = int( toml["simulator"]["imagesize"] )
+        toml = CascaDict( toml ).cascade( cfg )
+    else:
+        toml = CascaDict( cfg )
     if args.csvfile:
         print( "Load CSV file:", args.csvfile )
         frame = pd.read_csv(args.csvfile)
@@ -315,6 +315,5 @@ if __name__ == "__main__":
           epilog = '')
 
     args = parser.getArgs()
-    print( "CascaDict Config", parser.getConfig() )
-    main(args)
+    main(args,parser.getConfig())
     print( "[datagen.py] the end" )
