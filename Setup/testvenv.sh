@@ -1,9 +1,19 @@
 # (C) 2025: Hans Georg Schaathun <hg@schaathun.net>
 
-mkdir -p venv
-python -m venv venv/test
-. venv/test/bin/activate
+D=/tmp/venv/test
 
-sh Setup/build.sh
+mkdir -p $D
 
-pip install -e .
+if test -r $D/bin/activate
+then
+   . $D/bin/activate
+else
+   mkdir -p venv
+   python -m venv $D
+   . $D/bin/activate
+
+   sh Setup/build.sh
+
+   pip install jupytext jupyterlab toml
+   pip install -e .
+fi
