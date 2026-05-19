@@ -12,10 +12,9 @@ import numpy as np
 import pandas as pd
 
 from .Image import drawAxes
-from . import Parameters
 from .datagen import crop
 
-from .Arguments import CosmoParser
+from .Arguments import CosmoParser,Parameters
 
 from .RouletteAmplitudes import RouletteAmplitudes 
 from .Simulator import GenericSim 
@@ -104,7 +103,7 @@ class Resim(GenericSim):
             frame = csvfile
             cols = frame.columns
         elif isinstance(csvfile,pd.Series):
-            print( "Received dataframe for resimulation" )
+            print( "Received pandas series for resimulation" )
             frame = csvfile
             cols = frame.axes[0]
         else:

@@ -1,4 +1,4 @@
-# (C) 2023,2026: Hans Georg Schaathun <georg@schaathun.net> 
+# (C) 2026: Hans Georg Schaathun <georg@schaathun.net> 
 
 """
 This defines the `ArgumentParser` for the CosmoSim scripts.
@@ -15,8 +15,48 @@ the key used in TOML and nested `dict`s.
 """
 
 import argparse
+from cascadict import CascaDict
 
-skel = { "simulator" : { "config" : {} }
+class Parameters:
+    """
+    The Parameters class wraps the commandline arguments as well as a CSV 
+    row as a dict-like object.
+
+    The constructor can take either an `ArgumentParser` object (`args`) 
+    as well as a nested `dict` (`cfg`) as given by a TOML file.  
+    Only selected parameters are used from the
+    TOML format, and they will never override `args`/`cfg` parameters.
+
+    For executable scripts, one can use `CosmoParser` object directly as
+    the `args` argument, in addition to a TOML file if available.
+    For API use, one should normally use the `cfg` argument.
+
+    To add a row from the dataset, use the `serRow()` method.  Values
+    from the row will always override other parameters.
+    """
+    def __init__(self,cliconfig=None,fileconfig=None):
+
+        self._cliconfig = cliconfig
+        self._fileconfig = fileconfig
+
+        cfg = CascaDict( skel )
+        if fileconfig:
+           cfg = cfg.cascade( self._fileconfig  )
+        if cliconfig:
+           cfg = cfg.cascade( self._cliconfig )
+        cfg = cfg.cascade( {})
+        self.config = cfg
+    def setRow(self,row):
+        self._row = row
+        self.config = self._base.cascade( getConfig( self._row ) )
+    def get(self,key,default=None,verbose=0):
+        return self.config.get( key, default )
+    def __getitem__(self,key):
+        return self.get(key)
+    def __setitem__(self,key,v):
+        self._row[key] = v
+
+skel = { "simulator" : { "config" : {}, "cropsize" : 256, "imagesize: 512 }
          , "source" : {}
          , "lens" : {}
          , "dataset" : {}
@@ -87,6 +127,20 @@ CLI options currently unsupported
     "actual" : False, 
 """
 
+def getConfig( flat ):
+      cfg = skel.copy()
+      for k in self._args.__dict__:
+          if k in paramap:
+              key = paramap[k]
+              d = cfg
+              for subkey in key[:-1]:
+                  try:
+                     d = d[subkey]
+                  except KeyError:
+                      d[subkey] = {}
+                      d = d[subkey]
+              d[key[-1]] = self._args.__dict__[k]
+
 class CosmoParser(argparse.ArgumentParser):
   """Argument Parser for CosmoSim.
   The class provides standardised CLI options for many scripts
@@ -104,19 +158,7 @@ class CosmoParser(argparse.ArgumentParser):
       """
       if not hasattr(self,"_args"):
           self._args = super().parse_args(*a,**kw)
-      cfg = skel.copy()
-      for k in self._args.__dict__:
-          if k in paramap:
-              key = paramap[k]
-              d = cfg
-              for subkey in key[:-1]:
-                  try:
-                     d = d[subkey]
-                  except KeyError:
-                      d[subkey] = {}
-                      d = d[subkey]
-              d[key[-1]] = self._args.__dict__[k]
-      return cfg
+      return getConfig( self._args.__dict__ )
   def __init__(self,*a,**kw):
     super().__init__(*a,**kw)
 
@@ -202,28 +244,37 @@ class CosmoParser(argparse.ArgumentParser):
     self.add_argument('--xireference',default=True, action=argparse.BooleanOptionalAction,
             help="Use apparent position as reference for roulette amplitudes")
 
-def setParameters(sim,row):
-    print( row ) 
-    if row.get("y",None) != None:
-        print( "XY", row["x"], row["y"] )
+def setParameters(sim,row,verbose=1):
+    if verbose > 2:
+       print( "[datagen.py] setParameters()" )
+       print( row ) 
+    if row.get("y") is not None:
+        if verbose > 1: print( "XY", row["x"], row["y"] )
         sim.setXY( row["x"], row["y"] )
     elif row.get("phi",None) != None:
-        print( "Polar", row["x"], row["phi"] )
+        if verbose > 1: print( "Polar", row["x"], row["phi"] )
         sim.setPolar( row["x"], row["phi"] )
-    if row.get("lens",None) != None:
-        sim.setModelMode( row["lens"] )
+    if row.get("config",None) != None:
+        sim.setConfigMode( row["config"] )
+    elif row.get("cluster",None) != None:
+        if verbose > 1: print( "setCluster from CSV" )
+        sim.setCluster( row["cluster"] )
+    elif row.get("lens",None) != None:
+        sim.setLensMode( row["lens"] )
+    if row.get("model",None) != None:
+        sim.setModelMode( row["model"] )
+    if row.get("sampled",None) != None:
+        sim.setSampled( row["sampled"] )
     if row.get("chi",None) != None:
         sim.setCHI( row["chi"] )
+    if row.get("einsteinR",None) != None:
+        sim.setEinsteinR( row["einsteinR"] )
     if row.get("ellipseratio",None) != None:
         sim.setRatio( row["ellipseratio"] )
     if row.get("orientation",None) != None:
         sim.setOrientation( row["orientation"] )
-    if row.get("einsteinR",None) != None:
-        sim.setEinsteinR( row["einsteinR"] )
     if row.get("imagesize",None) != None:
         sim.setImageSize( row["imagesize"] )
         sim.setResolution( row["imagesize"] )
     if row.get("nterms",None) != None:
         sim.setNterms( row["nterms"] )
-    if row.get("lightprofile",None) != None:
-        sim.setLightProfile( row["lightprofile"] )

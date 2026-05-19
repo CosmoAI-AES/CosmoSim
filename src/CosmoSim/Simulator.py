@@ -28,8 +28,7 @@ from . import CosmoSim
 
 from .Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
 
-from .Arguments import CosmoParser
-from . import Parameters
+from .Arguments import CosmoParser, Parameters
 import pandas as pd
 
 defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "x", "y" ]
@@ -92,8 +91,6 @@ class GenericSim:
         return  self.sim.getDistortedImage( 
                          critical=self.param.get( "criticalcurves" ),
                          showmask=self.param.get( "showmask" ) ) 
-    def setParameters(self):
-        raise Exception("Not implemented")
     def runSim(self):
         if self.verbose>2: print( "[runSim]" )
         self.sim.makeSource( self.param )
