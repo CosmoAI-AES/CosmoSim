@@ -53,7 +53,14 @@ class Parameters:
         if isinstance( key, str ):
             return self.get( paramap[key], default, verbose )
         else:
-            return self.config.get( key, default )
+            cf = self.config
+            for k in key:
+                cf = cf.get( k, None )
+                if cf is None: break
+            if cf is None:
+                return default
+            else: 
+                return cf
     def __getitem__(self,key):
         return self.get(key)
     def __setitem__(self,key,v):
