@@ -19,7 +19,7 @@ from .Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, t
 from . import getMSheaders,CosmoSim,__version__
 
 from .CLI.Simulator import GenericSim
-from .CLI.Arguments import CosmoParser,setParameters,Parameters
+from .CLI.Arguments import setParameters,Parameters
 
 import pandas as pd
 
@@ -188,9 +188,8 @@ def makeSingle(sim,param=None,name=None,row=None,outcols=None):
     print( "makeSingle() returns" )
     return imsim
 
-def main(args,cfg={}):
-    print( "[datagen.py] Instantiate Simulator ... " )
-    sys.stdout.flush()
+def setupSim(args):
+    print( "[setupSim] Instantiate Simulator ... " )
     if args.amplitudes:
        sim = CosmoSim(fn=args.amplitudes)
     elif args.nterms:
@@ -232,29 +231,31 @@ def main(args,cfg={}):
         sim.setNterms( int(args.nterms) )
 
     sim.setMaskMode( args.mask )
+    return( sim )
 
-    param = Parameters( args )
-    if args.toml:
+def main(args,param=None):
+
+    if args.rnd:
         if not args.csvfile:
             raise Exception("The --toml option also requires --csvfile")
         datasetgen(args.toml,args.csvfile)
-        with open(args.toml, 'rb') as f:
-            toml = tl.load(f)
-        toml = CascaDict( toml ).cascade( cfg )
-    else:
-        toml = CascaDict( cfg )
+
     if args.csvfile:
         print( "Load CSV file:", args.csvfile )
         frame = pd.read_csv(args.csvfile)
-        outcols = list(frame.columns)
-        print( "columns:", outcols )
-        dfs = []
-        for index,row in frame.iterrows():
+    else:
+        raise RuntimeError( "CSV file needed for batch mode" )
+
+    sim = setupSim( args )
+    outcols = list(frame.columns)
+    print( "columns:", outcols )
+    dfs = []
+    for index,row in frame.iterrows():
             imsim = makeSingle(sim,param,name=args.name,row=row,outcols=outcols)
             if args.outfile:
                 dfs.append( imsim.getData() )
-        df = pd.DataFrame( dfs )
-        if args.outfile:
+    df = pd.DataFrame( dfs )
+    if args.outfile:
            if args.mldata:
                dropcol = [ "index", "source", "config", "nterms",
                          "centreX", "centreY", "reletaX", "reletaY",
@@ -266,8 +267,6 @@ def main(args,cfg={}):
                    except:
                        print( "No column", c )
            df.to_csv(args.outfile, sep=",", index=False)
-    else:
-        makeSingle(sim,param)
     print( "ready to close simulator" )
     sim.close()
     print( "simulator closed" )

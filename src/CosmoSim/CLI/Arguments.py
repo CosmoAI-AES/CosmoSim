@@ -41,9 +41,9 @@ class Parameters:
 
         cfg = CascaDict( skel )
         if fileconfig:
-           cfg = cfg.cascade( self._fileconfig  )
+           cfg = cfg.cascade( fileconfig  )
         if cliconfig:
-           cfg = cfg.cascade( self._cliconfig )
+           cfg = cfg.cascade( cliconfig )
         cfg = cfg.cascade( {})
         self.config = cfg
     def setRow(self,row):
@@ -56,7 +56,7 @@ class Parameters:
     def __setitem__(self,key,v):
         self._row[key] = v
 
-skel = { "simulator" : { "config" : {}, "cropsize" : 256, "imagesize: 512 }
+skel = { "simulator" : { "config" : {}, "cropsize" : 256, "imagesize": 512 }
          , "source" : {}
          , "lens" : {}
          , "dataset" : {}
@@ -129,7 +129,7 @@ CLI options currently unsupported
 
 def getConfig( flat ):
       cfg = skel.copy()
-      for k in self._args.__dict__:
+      for k in flat:
           if k in paramap:
               key = paramap[k]
               d = cfg
@@ -139,7 +139,7 @@ def getConfig( flat ):
                   except KeyError:
                       d[subkey] = {}
                       d = d[subkey]
-              d[key[-1]] = self._args.__dict__[k]
+              d[key[-1]] = flat[k]
 
 class CosmoParser(argparse.ArgumentParser):
   """Argument Parser for CosmoSim.
@@ -244,10 +244,12 @@ class CosmoParser(argparse.ArgumentParser):
     self.add_argument('--xireference',default=True, action=argparse.BooleanOptionalAction,
             help="Use apparent position as reference for roulette amplitudes")
     # Command mode
+    self.add_argument('--rnd', action='store_true',
+            default=False, help="Generate random dataset")
     self.add_argument('--version', action='store_true',
             default=False, help="Show version number")
-    self.add_argument('--roulette', action='store_true',
-            default=False, help="Roulette resimulation")
+    self.add_argument('--roulette', 
+            type=str, help="Input file for roulette resimulation")
 
 def setParameters(sim,row,verbose=1):
     if verbose > 2:

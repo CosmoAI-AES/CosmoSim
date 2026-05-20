@@ -1,8 +1,32 @@
 from . import __version__
 
+import os
 
 from .roulettegen import main as roulette
-from .datagen import main as gen
+from .datagen import main as gen,makeSingle,setupSim
+
+from .CLI.Arguments import CosmoParser,Parameters
+
+def main(args,cfg):
+    
+    if args.toml:
+        with open(args.toml, 'rb') as f:
+            toml = tl.load(f)
+    else:
+        toml = {}
+
+    param = Parameters( cfg, toml )
+
+    if args.directory:
+            os.makedirs( args.directory, exist_ok=True )
+    if args.roulette:
+            roulette(args,param)
+    elif args.csvfile:
+            gen(args,param)
+    else:
+        sim = setupSim( args )
+        makeSingle(sim,param)
+        sim.close()
 
 if __name__ == "__main__":
     print( "[CosmoSim] batch generator ..." )
@@ -15,11 +39,6 @@ if __name__ == "__main__":
     cfg = parser.getConfig()
     if args.version:
         print( "CosmoSim version", __version__ )
-    elif:
-        if args.directory:
-            os.makedirs( args.directory, exist_ok=True )
-        if args.roulette:
-            roulette(main,cfg)
-        else:
-            gen(main,cfg)
+    else:
+        main( args, cfg )
         print( "[CosmoSim] done." )

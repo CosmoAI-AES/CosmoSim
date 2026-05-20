@@ -7,14 +7,13 @@ Generate an image for given parameters.
 
 import cv2 as cv
 import sys
-import os
 import numpy as np
 import pandas as pd
 
 from .Image import drawAxes
 from .datagen import crop
 
-from .CLI.Arguments import CosmoParser,Parameters
+from .CLI.Arguments import Parameters
 from .CLI.Simulator import GenericSim 
 
 from .RouletteAmplitudes import RouletteAmplitudes 
@@ -144,15 +143,16 @@ def processResim( frame, sim=None, args=None
         count += 1
         if count > maxcount: break
     
-def main(args):
+def main(args,param):
     """
     This is the main procedure of the script, simulating a dataset of
     roulette amplitudes based on a CLI args argument.
     """
-    if args.csvfile:
+    if args.roulette:
+        print( "Load CSV file:", args.roulette )
         frame = pd.read_csv(args.csvfile)
     else:
-        raise Exception( "No CSV file given; the --csvfile option is mandatory." )
+        raise Exception( "No CSV file given." )
 
     if args.maxcount is None:
         maxcount = 2**30
@@ -170,4 +170,4 @@ def main(args):
     print( "[roulettegen.py] Done" )
 
 if __name__ == "__main__":
-    print( "[roulettegen.py] Deprecated.)
+    print( "[roulettegen.py] Deprecated." )
