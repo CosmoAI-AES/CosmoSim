@@ -10,7 +10,7 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 import numpy as np
 import threading as th
-from .Image import drawAxes
+from ..Image import drawAxes
 
 import sys
 

@@ -10,8 +10,8 @@ from tkinter import *
 from tkinter import ttk
 
 from CosmoSim import CosmoSim
-import CosmoSim.Controller as cont
-import CosmoSim.View as view
+from . import Controller as cont
+from . import View as view
 
 class Window(Tk):
     """

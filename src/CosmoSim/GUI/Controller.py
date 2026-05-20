@@ -10,7 +10,7 @@ from tkinter import *
 from tkinter import ttk
 import math
 
-from . import modelValues, sourceValues
+from .. import modelValues, sourceValues
 
 # Classes
 class FloatSlider:
