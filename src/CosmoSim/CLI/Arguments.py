@@ -50,7 +50,10 @@ class Parameters:
         self._row = row
         self.config = self._base.cascade( getConfig( self._row ) )
     def get(self,key,default=None,verbose=0):
-        return self.config.get( key, default )
+        if isinstance( key, str ):
+            return self.get( paramap[key], default, verbose )
+        else:
+            return self.config.get( key, default )
     def __getitem__(self,key):
         return self.get(key)
     def __setitem__(self,key,v):

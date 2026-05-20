@@ -31,7 +31,8 @@ from ..Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, 
 from .Arguments import CosmoParser, Parameters
 import pandas as pd
 
-defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "x", "y" ]
+defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi"
+                 , "einsteinR", "sigma", "sigma2", "theta", "x", "y" ]
 
 class GenericSim:
     """
