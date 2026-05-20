@@ -14,12 +14,13 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from .dataset import datasetgen
-from .Simulator import GenericSim
 
 from .Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
 from . import getMSheaders,CosmoSim,__version__
 
-from .Arguments import CosmoParser,setParameters,Parameters
+from .CLI.Simulator import GenericSim
+from .CLI.Arguments import CosmoParser,setParameters,Parameters
+
 import pandas as pd
 
 defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "n_sersic", "luminosity", "x", "y" ]
@@ -272,12 +273,4 @@ def main(args,cfg={}):
     print( "simulator closed" )
 
 if __name__ == "__main__":
-    print( "[CosmoSim] datagen", __version__ )
-    parser = CosmoParser(
-          prog = 'CosmoSim makeimage',
-          description = 'Generate an image for given lens and source parameters',
-          epilog = '')
-
-    args = parser.getArgs()
-    main(args,parser.getConfig())
-    print( "[datagen.py] the end" )
+    print( "[CosmoSim] datagen - deprecated." )

@@ -24,9 +24,9 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-from . import CosmoSim
+from .. import CosmoSim
 
-from .Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
+from ..Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
 
 from .Arguments import CosmoParser, Parameters
 import pandas as pd

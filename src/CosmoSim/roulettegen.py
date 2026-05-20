@@ -14,10 +14,10 @@ import pandas as pd
 from .Image import drawAxes
 from .datagen import crop
 
-from .Arguments import CosmoParser,Parameters
+from .CLI.Arguments import CosmoParser,Parameters
+from .CLI.Simulator import GenericSim 
 
 from .RouletteAmplitudes import RouletteAmplitudes 
-from .Simulator import GenericSim 
 from . import RouletteRegenerator
 
 
@@ -170,13 +170,4 @@ def main(args):
     print( "[roulettegen.py] Done" )
 
 if __name__ == "__main__":
-    print( "[roulettegen.py] Starting ..." )
-    parser = CosmoParser(
-          prog = 'CosmoSim makeimage',
-          description = 'Generaet an image for given lens and source parameters',
-          epilog = '')
-
-    args = parser.parse_args()
-    if args.directory:
-        os.makedirs( args.directory, exist_ok=True )
-    main(args)
+    print( "[roulettegen.py] Deprecated.)

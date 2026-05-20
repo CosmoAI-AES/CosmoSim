@@ -243,6 +243,11 @@ class CosmoParser(argparse.ArgumentParser):
             help="Maximum number of images to process")
     self.add_argument('--xireference',default=True, action=argparse.BooleanOptionalAction,
             help="Use apparent position as reference for roulette amplitudes")
+    # Command mode
+    self.add_argument('--version', action='store_true',
+            default=False, help="Show version number")
+    self.add_argument('--roulette', action='store_true',
+            default=False, help="Roulette resimulation")
 
 def setParameters(sim,row,verbose=1):
     if verbose > 2:
