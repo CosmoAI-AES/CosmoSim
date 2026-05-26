@@ -44,12 +44,14 @@ class Parameters:
            cfg = cfg.cascade( fileconfig  )
         if cliconfig:
            cfg = cfg.cascade( cliconfig )
-        cfg = cfg.cascade( {})
         self._base = cfg
-        self.config = cfg
+        self.config = cfg.cascade( {})
     def setRow(self,row):
+        print( row )
         self._row = row
-        self.config = self._base.cascade( getConfig( self._row ) )
+        c = getConfig( self._row ) 
+        print( c )
+        self.config = self._base.cascade( c )
     def get(self,key,default=None,verbose=0):
         if isinstance( key, str ):
             return self.get( paramap[key], default, verbose )
@@ -163,7 +165,7 @@ def getConfig( flat ):
                       d[subkey] = {}
                       d = d[subkey]
               d[key[-1]] = flat[k]
-
+      return cfg
 class CosmoParser(argparse.ArgumentParser):
   """Argument Parser for CosmoSim.
   The class provides standardised CLI options for many scripts
