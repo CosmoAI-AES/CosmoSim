@@ -163,4 +163,4 @@ def rgen(args,param):
     print( "[roulettegen.py] Done" )
 
 if __name__ == "__main__":
-    print( "[roulettegen.py] Deprecated." )
+    sys.exit( "[roulettegen.py] Deprecated." )

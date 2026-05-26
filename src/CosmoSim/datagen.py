@@ -273,4 +273,4 @@ def datagen(args,param=None):
     print( "simulator closed" )
 
 if __name__ == "__main__":
-    print( "[CosmoSim] datagen - deprecated." )
+    sys.exit( "[CosmoSim] datagen - deprecated." )

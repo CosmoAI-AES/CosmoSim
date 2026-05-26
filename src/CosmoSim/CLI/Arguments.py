@@ -45,6 +45,7 @@ class Parameters:
         if cliconfig:
            cfg = cfg.cascade( cliconfig )
         cfg = cfg.cascade( {})
+        self._base = cfg
         self.config = cfg
     def setRow(self,row):
         self._row = row
