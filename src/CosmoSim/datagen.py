@@ -32,7 +32,7 @@ class SimImage(GenericSim):
     Once the simulation has been run, various kinds of image and metadata can be
     retrieved from the object.
     """
-    def __init__(self,sim=None,row=None,**kw):
+    def __init__(self,sim=None,**kw):
         super().__init__(**kw)
 
         if sim is None:
@@ -41,7 +41,7 @@ class SimImage(GenericSim):
             if msk is not None:
                 sim.setMaskMode( msk )
         self.sim = sim
-        self.initSim(row)
+        self.initSim()
         if self.verbose>2:
             print( "[SimImage] Verbosity", self.verbose )
 

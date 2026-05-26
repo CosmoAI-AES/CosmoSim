@@ -27,7 +27,7 @@ class Resim(GenericSim):
     The class sets up the infrastructure, and provides the methods to
     run the simulator for each iaage on a CSV file.
     """
-    def __init__(self,sim=None,df=None,row=None,**kw):
+    def __init__(self,row,sim=None,**kw):
         """
         Note that `args` overrides Boolean parameters.
         """
@@ -151,7 +151,7 @@ def rgen(args,param):
     for index,row in frame.iterrows():
         print( "[roulettegen.py] Processing", index )
         param.setRow( row )
-        imsim = Resim( sim, param=param )
+        imsim = Resim( row, sim, param=param )
         imsim.saveImage()
 
         if param.get( "actual" ): imsim.getActual()

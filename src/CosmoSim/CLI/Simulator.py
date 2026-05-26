@@ -38,7 +38,10 @@ class GenericSim:
     """
     This is a generic superclass for shared methods.
     """
-    def __init__(self,param=None,row=None,name=None,outcols=None,verbose=1):
+    def __init__(self,param=None,name=None,outcols=None,verbose=1):
+        """
+        Normally the constructor should
+        """
         if verbose > 1: print( "[GenericSim] init ..." )
         self.verbose = verbose
 
@@ -63,22 +66,22 @@ class GenericSim:
         overridden depending on the class of the backend simulator.
         """
         raise NotImplementedError()
-    def initSim(self,row):
+    def initSim(self,row=None):
         """
         Run the simulator with the given data row.
         """
-        if not row is None:
-            if self.verbose > 1: print( "[initSim] using row" )
-            self.setParameters( row )
-            if self.verbose > 1: print( "index", row.get( "index", None ) )
-            self.param.setRow( row )
-            try:
+        if row is None: row = self.param
+        if self.verbose > 1: print( "[initSim] using row" )
+        self.setParameters( row )
+        if self.verbose > 1: print( "index", row.get( "index", None ) )
+        print( f"[initSim] type(row)={type(row)}" )
+        # self.param.setRow( row )
+        try:
                 name = row.name.split(".")[0]
-            except:
+        except:
                 name = row["filename"].split(".")[0]
-            self.row = row
-            self.name = name
-        elif self.verbose > 1: print( "[initSim] row is None" )
+        self.name = name
+
         if self.verbose>1: print( "[initSim] item name:", self.name )
 
         self.runSim()

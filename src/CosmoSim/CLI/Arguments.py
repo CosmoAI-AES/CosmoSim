@@ -55,7 +55,7 @@ class Parameters:
     def get(self,key,default=None,verbose=0):
         if isinstance( key, str ):
             return self.get( paramap[key], default, verbose )
-        else:
+        elif isinstance( key, tuple ):
             cf = self.config
             for k in key:
                 cf = cf.get( k, None )
@@ -64,6 +64,9 @@ class Parameters:
                 return default
             else: 
                 return cf
+        else:
+            print( key )
+            raise Exception( "Key should be string or tuple." )
     def __getitem__(self,key):
         return self.get(key)
     def __setitem__(self,key,v):
@@ -96,12 +99,19 @@ paramap = {
         "einsteinradius" : ( "lens", "einsteinradius" ),
         "orientation" : ( "lens", "orientation" ),
         "ratio" : ( "lens", "ellipseratio" ), # relabelled
+        "ellipseratio" : ( "lens", "ellipseratio" ), # duplicate
+        "einsteinR" : ( "lens", "einsteinR" ), 
 
         "sigma" :  ( "source", "sigma" ),
         "sigma2" : ( "source", "sigma2" ),
         "theta" : ( "source", "theta" ),
+        "x" : ( "position", "x" ),
+        "y" : ( "position", "y" ),
+        "phi" : ( "position", "phi" ),
+
         "directory" : ( "dataset", "directory" ) ,
         "reflines" : ( "annotation", "reflines" ),
+        "criticalcurves" : ( "annotation", "criticalcurves" ),
         "criticalcurves" : ( "annotation", "criticalcurves" ),
 
         "maxcount" : ( "management", "maxcount" ),
@@ -112,6 +122,8 @@ paramap = {
         "kappaplot" : ( "management", "kappaplot" ),
         "apparent" : ( "management", "apparent" ),
         "actual" : ( "management", "actual" ),
+        "filename" : ( "management", "filename" ),
+        "index" : ( "management", "index" ),
         }
 
 """
@@ -154,7 +166,8 @@ CLI options currently unsupported
 
 def getConfig( flat ):
       cfg = skel.copy()
-      for k in flat:
+      print( "[getConfig]", flat )
+      for k in dict(flat):
           if k in paramap:
               key = paramap[k]
               d = cfg
@@ -165,6 +178,9 @@ def getConfig( flat ):
                       d[subkey] = {}
                       d = d[subkey]
               d[key[-1]] = flat[k]
+              print( f"[getConfig] {k} -> {key} ({flat[k]})" )
+          else:
+              print( f"[getConfig] {k} -> not found ({flat[k]})" )
       return cfg
 class CosmoParser(argparse.ArgumentParser):
   """Argument Parser for CosmoSim.
@@ -216,8 +232,8 @@ class CosmoParser(argparse.ArgumentParser):
     # Other parameters
     self.add_argument('-n', '--nterms', type=int,
                       help="Number of Roulettes terms", default=15)
-    self.add_argument('-Z', '--imagesize', default=512, help="image size for calculations")
-    self.add_argument('-z', '--cropsize', help="Final image size")
+    self.add_argument('-Z', '--imagesize', type=int, default=512, help="image size for calculations")
+    self.add_argument('-z', '--cropsize', type=int, help="Final image size")
 
     # Output configuration 
     self.add_argument('-R', '--reflines',action='store_true',
@@ -281,32 +297,36 @@ def setParameters(sim,row,verbose=1):
        print( "[datagen.py] setParameters()" )
        print( row ) 
     if row.get("y") is not None:
-        if verbose > 1: print( "XY", row["x"], row["y"] )
-        sim.setXY( row["x"], row["y"] )
+        if verbose > 1: print( "XY", row.get( "x" ), row.get( "y" ) )
+        sim.setXY( row.get( "x" ), row.get( "y" ) )
     elif row.get("phi",None) != None:
-        if verbose > 1: print( "Polar", row["x"], row["phi"] )
-        sim.setPolar( row["x"], row["phi"] )
+        if verbose > 1: print( "Polar", row.get( "x" ), row.get( "phi" ) )
+        sim.setPolar( row.get( "x" ), row.get( "phi" ) )
     if row.get("config",None) != None:
-        sim.setConfigMode( row["config"] )
+        try:
+           sim.setConfigMode( row.get( "config" ) )
+        except KeyError as e:
+            print( f"config={row.get( "config" )}" )
+            raise e
     elif row.get("cluster",None) != None:
         if verbose > 1: print( "setCluster from CSV" )
-        sim.setCluster( row["cluster"] )
+        sim.setCluster( row.get( "cluster" ) )
     elif row.get("lens",None) != None:
-        sim.setLensMode( row["lens"] )
+        sim.setLensMode( row.get( "lens" ) )
     if row.get("model",None) != None:
-        sim.setModelMode( row["model"] )
+        sim.setModelMode( row.get( "model" ) )
     if row.get("sampled",None) != None:
-        sim.setSampled( row["sampled"] )
+        sim.setSampled( row.get( "sampled" ) )
     if row.get("chi",None) != None:
-        sim.setCHI( row["chi"] )
+        sim.setCHI( row.get( "chi" ) )
     if row.get("einsteinR",None) != None:
-        sim.setEinsteinR( row["einsteinR"] )
+        sim.setEinsteinR( row.get( "einsteinR" ) )
     if row.get("ellipseratio",None) != None:
-        sim.setRatio( row["ellipseratio"] )
+        sim.setRatio( row.get( "ellipseratio" ) )
     if row.get("orientation",None) != None:
-        sim.setOrientation( row["orientation"] )
+        sim.setOrientation( row.get( "orientation" ) )
     if row.get("imagesize",None) != None:
-        sim.setImageSize( row["imagesize"] )
-        sim.setResolution( row["imagesize"] )
+        sim.setImageSize( row.get( "imagesize" ) )
+        sim.setResolution( row.get( "imagesize" ) )
     if row.get("nterms",None) != None:
-        sim.setNterms( row["nterms"] )
+        sim.setNterms( row.get( "nterms" ) )
