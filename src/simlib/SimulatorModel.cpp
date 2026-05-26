@@ -389,7 +389,7 @@ double SimulatorModel::getNuAbs() const {
    return sqrt( nu.x*nu.x + nu.y*nu.y ) ;
 }
 cv::Point2d SimulatorModel::getEta() const {
-   std::cout << "[getEta] " << eta ;
+   std::cout << "[getEta] " << eta << std::endl ;
    return eta ;
 }
 double SimulatorModel::getEtaSquare() const {
@@ -457,7 +457,7 @@ cv::Point2d SimulatorModel::getOffset( cv::Point2d xi1 ) {
 void SimulatorModel::updateApparentAbs( ) {
     cv::Mat im = getActual() ;
     cv::Point2d chieta = CHI*getEta() ;
-    std::cout << "[updateApparentAbs] " << chieta ;
+    std::cout << "[updateApparentAbs] " << chieta << std::endl ;
     cv::Point2d xi1 = lens->getXi( chieta ) ;
     setNu( xi1/CHI ) ;
 }
