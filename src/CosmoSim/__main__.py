@@ -2,8 +2,8 @@ from . import __version__
 
 import os
 
-from .roulettegen import main as roulette
-from .datagen import main as gen,makeSingle,setupSim
+from .roulettegen import rgen
+from .datagen import datagen,makeSingle,setupSim
 
 from .CLI.Arguments import CosmoParser,Parameters
 
@@ -20,9 +20,9 @@ def main(args,cfg):
     if args.directory:
             os.makedirs( args.directory, exist_ok=True )
     if args.roulette:
-            roulette(args,param)
+            rgen(args,param)
     elif args.csvfile:
-            gen(args,param)
+            datagen(args,param)
     else:
         sim = setupSim( args )
         makeSingle(sim,param)

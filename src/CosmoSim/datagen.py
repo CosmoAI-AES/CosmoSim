@@ -172,12 +172,12 @@ class SimImage(GenericSim):
         plt.savefig( fn )
         plt.close()
 
-def makeSingle(sim,param=None,name=None,row=None,outcols=None):
+def makeSingle(sim,param=None,name=None,outcols=None):
     """Process a single parameter set, given either as a pandas row or
     just as args parsed from the command line.
     """
     if param is None: param = Parameters()
-    imsim = SimImage(sim,param=param,name=name,row=row,outcols=outcols)
+    imsim = SimImage(sim,param=param,name=name,outcols=outcols)
     imsim.saveImage()
     if param.get( "join" ): imsim.join()
     if param.get( "family" ): imsim.family()
@@ -233,7 +233,7 @@ def setupSim(args):
     sim.setMaskMode( args.mask )
     return( sim )
 
-def main(args,param=None):
+def datagen(args,param=None):
 
     if args.rnd:
         if not args.csvfile:
@@ -251,9 +251,10 @@ def main(args,param=None):
     print( "columns:", outcols )
     dfs = []
     for index,row in frame.iterrows():
-            imsim = makeSingle(sim,param,name=args.name,row=row,outcols=outcols)
-            if args.outfile:
-                dfs.append( imsim.getData() )
+        param.setRow( row )
+        imsim = makeSingle(sim,param,name=args.name,outcols=outcols)
+        if args.outfile:
+            dfs.append( imsim.getData() )
     df = pd.DataFrame( dfs )
     if args.outfile:
            if args.mldata:

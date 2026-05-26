@@ -126,24 +126,8 @@ class Resim(GenericSim):
         self.cols = cols
         self.frame = frame
 
-def processResim( frame, sim=None, args=None
-                 , cfg=None, maxcount=2**30 ):
-
-    count = 1
-    for index,row in frame.iterrows():
-        print( "[roulettegen.py] Processing", index )
-        param = Parameters( args=args, cfg=cfg )
-
-        imsim = Resim( sim, param=param, row=row )
-        imsim.saveImage()
-
-        if param.get( "actual" ): imsim.getActual()
-        if param.get( "apparent" ): imsim.getApparent()
-
-        count += 1
-        if count > maxcount: break
     
-def main(args,param):
+def rgen(args,param):
     """
     This is the main procedure of the script, simulating a dataset of
     roulette amplitudes based on a CLI args argument.
@@ -154,18 +138,27 @@ def main(args,param):
     else:
         raise Exception( "No CSV file given." )
 
-    if args.maxcount is None:
-        maxcount = 2**30
-    else:
-        maxcount = int(args.maxcount)
-
     # Masking is not implemented in the Resim class.
     sim = RouletteRegenerator()
     sim.setMaskMode( args.mask )
     if not args.maskradius is None:
         sim.setMaskRadius( float(args.maskradius) )
 
-    processResim( frame, sim=sim, args=args, maxcount=maxcount )
+    count = 1
+    param = Parameters( args=args, cfg=cfg )
+    maxcount = param["management"].get( "maxcount" )
+
+    for index,row in frame.iterrows():
+        print( "[roulettegen.py] Processing", index )
+        param.setRow( row )
+        imsim = Resim( sim, param=param )
+        imsim.saveImage()
+
+        if param.get( "actual" ): imsim.getActual()
+        if param.get( "apparent" ): imsim.getApparent()
+
+        count += 1
+        if (maxcount is not None) & (count > maxcount): break
 
     print( "[roulettegen.py] Done" )
 

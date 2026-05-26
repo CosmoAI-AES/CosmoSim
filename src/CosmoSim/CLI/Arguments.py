@@ -71,6 +71,7 @@ skel = { "simulator" : { "config" : {}, "cropsize" : 256, "imagesize": 512 }
          , "lens" : {}
          , "dataset" : {}
          , "annotation" : {}
+         , "management" : { "maxcount" : None },
          }
 
 paramap = {
@@ -84,6 +85,9 @@ paramap = {
         "xireference" : ( "simulator", "xireference" ), # new
         "centred" : ( "simulator", "centred" ), # new
         "source" : ( "source", "mode" ), # used differently
+        "lightprofile" : ( "source", "lightprofile" ), 
+        "n_sersic" : ( "source", "n_sersic" ), 
+        "luminosity" : ( "source", "luminosity" ), 
 
         "chi" : ( "lens", "chi" ),
         "einsteinradius" : ( "lens", "einsteinradius" ),
@@ -96,6 +100,15 @@ paramap = {
         "directory" : ( "dataset", "directory" ) ,
         "reflines" : ( "annotation", "reflines" ),
         "criticalcurves" : ( "annotation", "criticalcurves" ),
+
+        "maxcount" : ( "management", "maxcount" ),
+        "showmask" : ( "management", "showmask" ),
+        "join" : ( "management", "join" ),
+        "family" : ( "management", "family" ),
+        "psiplot" : ( "management", "psiplot" ),
+        "kappaplot" : ( "management", "kappaplot" ),
+        "apparent" : ( "management", "apparent" ),
+        "actual" : ( "management", "actual" ),
         }
 
 """
@@ -120,7 +133,6 @@ CLI options to be refactored into TOML structure.
 
 CLI options never used in main parameter structure
     "toml" : None,        # Source
-    "maxcount" : None,
     "amplitudes" : None,  # Amplitudes file
     "mldata" : False,
     "csvfile" : None,
