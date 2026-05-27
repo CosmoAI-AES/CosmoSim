@@ -72,7 +72,7 @@ class Parameters:
     def __setitem__(self,key,v):
         self._row[key] = v
 
-skel = { "simulator" : { "config" : {}, "cropsize" : 256, "imagesize": 512 }
+skel = { "simulator" : { "configs" : {}, "cropsize" : 256, "imagesize": 512 }
          , "source" : {}
          , "lens" : {}
          , "dataset" : {}
@@ -228,7 +228,7 @@ class CosmoParser(argparse.ArgumentParser):
     self.add_argument('-E', '--einsteinradius', default=20, help="Einstein radius")
     self.add_argument('-r', '--ratio', help="Ratio (usually Elliptic eccentricity)")
     self.add_argument('--orientation', default=0, help="Orientation of the lens")
-    self.add_argument('--config', default=0, help="Configuration (Model and Lens)")
+    self.add_argument('--config', help="Configuration (Model and Lens)")
 
     # Other parameters
     self.add_argument('-n', '--nterms', type=int,
