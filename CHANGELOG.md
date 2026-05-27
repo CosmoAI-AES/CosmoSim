@@ -1,7 +1,7 @@
 
 # CosmoSim Change Log
 
-## 2.9.0 - 2026-05-08
+## 3.0.0 - 2026-05-08
 
 ### Added
 
@@ -10,6 +10,8 @@
 ### Changed
 
 + Removed redundant CLI arguments
++ Unified the scripts into the main module.  All command line features are
+  now run as `python -m CosmoSim`.
 
 ### Fixed
 
