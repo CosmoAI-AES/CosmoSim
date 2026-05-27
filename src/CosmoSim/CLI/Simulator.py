@@ -49,7 +49,7 @@ class GenericSim:
 
         self.name = name
         if param is None: 
-            if verbose: print( "[GenericSim] No parameters give. Using defaults" )
+            if verbose: print( "[GenericSim] No parameters given. Using defaults" )
             param = Parameters()
         self.param = param
         self.directory = param.get( "directory" )

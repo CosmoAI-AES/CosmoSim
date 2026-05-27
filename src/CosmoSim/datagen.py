@@ -37,7 +37,7 @@ class SimImage(GenericSim):
 
         if sim is None:
             sim = CosmoSim()
-            msk = self.param.get( "mask" )
+            msk = self.param.get( "mask", None )
             if msk is not None:
                 sim.setMaskMode( msk )
         self.sim = sim

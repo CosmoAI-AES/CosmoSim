@@ -9,6 +9,9 @@ import CosmoSim.CosmoSimPy as cs
 import numpy as np
 import threading as th
 import os, sys
+from .CLI import Arguments
+
+Parameters = Arguments.Parameters
 
 import traceback
 

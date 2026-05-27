@@ -34,7 +34,7 @@ class Parameters:
     To add a row from the dataset, use the `serRow()` method.  Values
     from the row will always override other parameters.
     """
-    def __init__(self,cliconfig=None,fileconfig=None):
+    def __init__(self,fileconfig=None,cliconfig=None):
 
         self._cliconfig = cliconfig
         self._fileconfig = fileconfig
@@ -45,7 +45,11 @@ class Parameters:
         if cliconfig:
            cfg = cfg.cascade( cliconfig )
         self._base = cfg
-        self.config = cfg.cascade( {})
+        self.reset()
+    def reset(self):
+        self.config = self._base.cascade( {})
+    def __str__(self): 
+        return self.config.__str__()
     def setRow(self,row):
         print( row )
         self._row = row
@@ -117,6 +121,7 @@ paramap = {
 
         "maxcount" : ( "management", "maxcount" ),
         "showmask" : ( "management", "showmask" ),
+        "mask" : ( "management", "mask" ),
         "join" : ( "management", "join" ),
         "family" : ( "management", "family" ),
         "psiplot" : ( "management", "psiplot" ),
