@@ -134,7 +134,12 @@ def rgen(args,param):
     """
     if args.roulette:
         print( "Load CSV file:", args.roulette )
-        frame = pd.read_csv(args.csvfile)
+        try:
+            frame = pd.read_csv(args.roulette)
+        except Exception as e:
+            print( "Fails to open file:", args.roulette )
+            raise e
+
     else:
         raise Exception( "No CSV file given." )
 
