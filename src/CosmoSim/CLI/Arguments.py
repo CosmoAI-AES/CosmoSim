@@ -101,6 +101,7 @@ paramap = {
         "ratio" : ( "lens", "ellipseratio" ), # relabelled
         "ellipseratio" : ( "lens", "ellipseratio" ), # duplicate
         "einsteinR" : ( "lens", "einsteinR" ), 
+        "cluster" : ( "lens", "cluster" ), 
 
         "sigma" :  ( "source", "sigma" ),
         "sigma2" : ( "source", "sigma2" ),
