@@ -90,7 +90,8 @@ def translateImage(im,pt):
         m,n = im.shape
     return cv2.warpAffine(im,R,(n,m))
 
-def crop(im,cropsize=256):
+def crop(im,cropsize=256,verbose=1):
+    if verbose: print( f"[crop] cropsize={cropsize}" )
     (m,n) = im.shape[:2]
     if cropsize < min(m,n):
         assert m == n

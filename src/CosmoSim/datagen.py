@@ -138,7 +138,9 @@ class SimImage(GenericSim):
         if param.get( "centred" ):
             (im,(cx,cy)) = centreImage(im)
         if param.get( "cropsize" ):
-            im = crop(im,int( param.get( "cropsize" ) ))
+            cs = param.get( "cropsize", None )
+            if cs is not None:
+                im = crop( int( cs ) )
         if param.get( "reflines" ):
             drawAxes(im)
 

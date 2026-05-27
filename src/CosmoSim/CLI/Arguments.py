@@ -72,7 +72,7 @@ class Parameters:
     def __setitem__(self,key,v):
         self._row[key] = v
 
-skel = { "simulator" : { "configs" : {}, "cropsize" : 256, "imagesize": 512 }
+skel = { "simulator" : { "configs" : {}, "imagesize": 512 }
          , "source" : {}
          , "lens" : {}
          , "dataset" : {}
