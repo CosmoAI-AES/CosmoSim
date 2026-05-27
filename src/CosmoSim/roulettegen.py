@@ -150,8 +150,7 @@ def rgen(args,param):
         sim.setMaskRadius( float(args.maskradius) )
 
     count = 1
-    param = Parameters( args=args, cfg=cfg )
-    maxcount = param["management"].get( "maxcount" )
+    maxcount = param.get( ("management", "maxcount" ) )
 
     for index,row in frame.iterrows():
         print( "[roulettegen.py] Processing", index )
@@ -162,8 +161,9 @@ def rgen(args,param):
         if param.get( "actual" ): imsim.getActual()
         if param.get( "apparent" ): imsim.getApparent()
 
-        count += 1
-        if (maxcount is not None) & (count > maxcount): break
+        if maxcount is not None:
+            count += 1
+            if count > maxcount: break
 
     print( "[roulettegen.py] Done" )
 
