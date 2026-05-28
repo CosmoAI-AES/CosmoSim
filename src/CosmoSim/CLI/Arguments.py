@@ -72,7 +72,7 @@ class Parameters:
             print( key )
             raise Exception( "Key should be string or tuple." )
     def __getitem__(self,key):
-        return self.get(key)
+        return self.config.get(key)
     def __setitem__(self,key,v):
         self._row[key] = v
 
@@ -81,7 +81,7 @@ skel = { "simulator" : { "configs" : {}, "imagesize": 512 }
          , "lens" : {}
          , "dataset" : {}
          , "annotation" : {}
-         , "management" : { "maxcount" : None },
+         , "management" : { "maxcount" : None ,"filename" : "test.png" },
          }
 
 paramap = {
@@ -170,10 +170,17 @@ CLI options currently unsupported
     "actual" : False, 
 """
 
-def getConfig( flat ):
+def getConfig( data, verbose=1 ):
       cfg = skel.copy()
-      print( "[getConfig]", flat )
-      for k in dict(flat):
+      print( "[getConfig]", data )
+      flat = dict(data)
+      if not "filename" in flat:
+          try:
+             flat["filename"] = data.name
+          except:
+              if verbose: print( "No filename given" )
+
+      for k in flat:
           if k in paramap:
               key = paramap[k]
               d = cfg

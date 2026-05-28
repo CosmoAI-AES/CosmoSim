@@ -32,24 +32,26 @@ class SimImage(GenericSim):
     Once the simulation has been run, various kinds of image and metadata can be
     retrieved from the object.
     """
-    def __init__(self,sim=None,**kw):
-        super().__init__(**kw)
+    def __init__(self,param,**kw):
+        super().__init__(param,**kw)
 
-        if sim is None:
-            sim = CosmoSim()
-            msk = self.param.get( "mask", None )
-            if msk is not None:
-                sim.setMaskMode( msk )
-        self.sim = sim
+        self.sim = CosmoSim()
+        msk = self.param.get( "mask", None )
+        if msk is not None:
+            print( "[SimImage] sets mask", msk )
+            self.sim.setMaskMode( msk )
         self.initSim()
         if self.verbose>2:
             print( "[SimImage] Verbosity", self.verbose )
 
+    def close(self):
+        self.sim.close()
     def setParameters(self,row):
         """
         Reset parameters in the underlying `CosmoSim` simulator, using the
         given data row.
         """
+        print( "[SimImage] setParameters()" )
         return setParameters(self.sim,row)
     def getData(self):
         sim = self.sim
@@ -179,7 +181,7 @@ def makeSingle(sim,param=None,name=None,outcols=None):
     just as args parsed from the command line.
     """
     if param is None: param = Parameters()
-    imsim = SimImage(sim,param=param,name=name,outcols=outcols)
+    imsim = SimImage(param=param,name=name,outcols=outcols)
     imsim.saveImage()
     if param.get( "join" ): imsim.join()
     if param.get( "family" ): imsim.family()
@@ -248,15 +250,15 @@ def datagen(args,param=None):
     else:
         raise RuntimeError( "CSV file needed for batch mode" )
 
-    sim = setupSim( args )
     outcols = list(frame.columns)
     print( "columns:", outcols )
     dfs = []
     for index,row in frame.iterrows():
         param.setRow( row )
-        imsim = makeSingle(sim,param,name=args.name,outcols=outcols)
+        imsim = makeSingle(param,name=args.name,outcols=outcols)
         if args.outfile:
             dfs.append( imsim.getData() )
+        imsim.close()
     df = pd.DataFrame( dfs )
     if args.outfile:
            if args.mldata:
@@ -271,7 +273,6 @@ def datagen(args,param=None):
                        print( "No column", c )
            df.to_csv(args.outfile, sep=",", index=False)
     print( "ready to close simulator" )
-    sim.close()
     print( "simulator closed" )
 
 if __name__ == "__main__":

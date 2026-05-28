@@ -45,7 +45,7 @@ private:
     int bgcolour=0 ;
     SimulatorModel *sim = NULL ;
     Source *src = NULL ;
-    bool maskmode ;
+    bool maskmode=0 ;
     // LightProfileSpec lightprf = LightProfileSpec::CSIM_LIGHT_GAUSSIAN ;
 
     void initLens() ;

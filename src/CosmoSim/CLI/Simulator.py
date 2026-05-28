@@ -76,10 +76,7 @@ class GenericSim:
         if self.verbose > 1: print( "index", row.get( "index", None ) )
         print( f"[initSim] type(row)={type(row)}" )
         # self.param.setRow( row )
-        try:
-                name = row.name.split(".")[0]
-        except:
-                name = row["filename"].split(".")[0]
+        name = row.get( "filename" ).split(".")[0]
         self.name = name
 
         if self.verbose>1: print( "[initSim] item name:", self.name )
@@ -88,8 +85,8 @@ class GenericSim:
 
         self.image = self.getDistortedImage( )
         (self.centreimage,self.centrepoint) = centreImage(self.image)
-        if self.verbose: print(
-                "[datagen.py] Centre Point", self.centrepoint,
+        if self.verbose: 
+            print( f"[Simulator] Centre Point ({self.centrepoint[0]:.2f},{self.centrepoint[1]:.2f})",
                 "(Centre of Luminence in Planar Co-ordinates)" )
     def getDistortedImage(self):
         return  self.sim.getDistortedImage( 
