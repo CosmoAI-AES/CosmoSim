@@ -389,6 +389,7 @@ double SimulatorModel::getNuAbs() const {
    return sqrt( nu.x*nu.x + nu.y*nu.y ) ;
 }
 cv::Point2d SimulatorModel::getEta() const {
+   std::cout << "[getEta] " << eta << std::endl ;
    return eta ;
 }
 double SimulatorModel::getEtaSquare() const {

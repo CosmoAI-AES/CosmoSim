@@ -52,7 +52,7 @@ class SimImage(GenericSim):
         given data row.
         """
         print( "[SimImage] setParameters()" )
-        return setParameters(self.sim,row)
+        return setParameters(self.sim,row,verbose=self.verbose)
     def getData(self):
         sim = self.sim
         if self.param.get( "centred" ):

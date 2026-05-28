@@ -307,10 +307,11 @@ class CosmoParser(argparse.ArgumentParser):
 
 def setParameters(sim,row,verbose=1):
     if verbose > 2:
-       print( "[datagen.py] setParameters()" )
+       print( "[CLI.Arguments] setParameters()" )
        print( row ) 
     if row.get("y") is not None:
-        if verbose > 1: print( "XY", row.get( "x" ), row.get( "y" ) )
+        if verbose > 1:
+            print( "[setParameters] XY", row.get( "x" ), row.get( "y" ) )
         sim.setXY( row.get( "x" ), row.get( "y" ) )
     elif row.get("phi",None) != None:
         if verbose > 1: print( "Polar", row.get( "x" ), row.get( "phi" ) )
