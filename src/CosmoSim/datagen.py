@@ -35,7 +35,7 @@ class SimImage(GenericSim):
     def __init__(self,param,**kw):
         super().__init__(param,**kw)
 
-        self.sim = CosmoSim()
+        self.sim = CosmoSim(verbose=self.verbose)
         msk = self.param.get( "mask", None )
         if msk is not None:
             print( "[SimImage] sets mask", msk )
@@ -152,7 +152,7 @@ class SimImage(GenericSim):
 
     def psiplot(self):
         a = self.sim.getPsiMap()
-        print(a.shape, a.dtype)
+        print("[SimImage] psiplot", a.shape, a.dtype)
         print(a)
         sys.stdout.flush()
         nx,ny = a.shape
@@ -165,7 +165,7 @@ class SimImage(GenericSim):
         plt.close()
     def kappaplot(self):
         a = self.sim.getMassMap()
-        print(a.shape, a.dtype)
+        print("[SimImage] kappaplot", a.shape, a.dtype)
         print(a)
         nx,ny = a.shape
         X, Y = np.meshgrid( range(nx), range(ny) )

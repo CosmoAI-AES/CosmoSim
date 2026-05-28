@@ -250,7 +250,7 @@ class CosmoSim(cs.CosmoSim):
     it wraps functions returning images, to convert the data to 
     numpy arrays.
     """
-    def __init__(self,*a,maxm=50,fn=None,**kw):
+    def __init__(self,*a,maxm=50,fn=None,verbose=1,**kw):
         super().__init__(*a,**kw)
         dir = os.path.dirname(os.path.abspath(__file__))
         if fn == None:
@@ -266,6 +266,7 @@ class CosmoSim(cs.CosmoSim):
         self._simThread = th.Thread(target=self.simThread)
         self._simThread.start()
         self.bgcolour = 0
+        self.verbose = 1
     def makeSource(self,param):
         if param.get( "imagesize" ) == None:
            param.__setitem__( "imagesize", self.getImageSize() )
@@ -360,12 +361,18 @@ class CosmoSim(cs.CosmoSim):
         print( f"setModelMode({s})")
         # traceback.print_stack()
         return super().setModelMode( int( modelDict[s] ) ) 
-    def setConfigMode(self,s,verbose=0):
+    def setConfigMode(self,s,verbose=None):
         """
         Set lens and simulation models based on the config string.
         """
-        if verbose > 1: print( f"setConfigMode({s})")
+        if verbose is None: 
+            verbose = self.verbose
+        if verbose > 1: 
+            print( f"setConfigMode({s})")
         (model,lens,sampleMode) = configDict[s]
+        if verbose > 1:
+            print( f"[setConfigMode]", (model,lens,sampleMode) )
+        print( f"[setConfigMode]", (model,lens,sampleMode) )
         super().setSampled( int( sampleMode ) ) 
         super().setLensMode( int( lens ) ) 
         return super().setModelMode( int( model ) ) 
