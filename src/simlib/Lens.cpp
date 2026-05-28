@@ -30,7 +30,7 @@ cv::Point2d Lens::getXi( cv::Point2d chieta ) {
          std::cout << "Bad approximation of xi: xi0=" << xi0 
             << "; xi1=" << xi1 << "; dist=" << dist << "\n" ;
       } else {
-         std::cout << "[SampledLens] Good approximation: xi0=" << xi0 
+         std::cout << "[Lens] Good approximation: xi0=" << xi0 
             << "; xi1=" << xi1 << "\n" ;
       }
    }

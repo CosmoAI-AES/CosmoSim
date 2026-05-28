@@ -85,10 +85,10 @@ skel = { "simulator" : { "configs" : {}, "imagesize": 512 }
          }
 
 paramap = {
-        "config" : ( "simulator", "config", "mode" ), # renamed
-        "lens" : ( "simulator", "config", "lens" ),
-        "model" : ( "simulator", "config", "model" ),
-        "sampled" : ( "simulator", "config", "sampled" ),
+        "config" : ( "simulator", "config" ), # renamed
+        "lens" : ( "lens", "mode" ),
+        "model" : ( "simulator", "model" ),
+        "sampled" : ( "simulator", "sampled" ),
         "nterms" : ( "simulator", "nterms" ),
         "imagesize" : ( "simulator", "imagesize" ),
         "cropsize" : ( "simulator", "cropsize" ),

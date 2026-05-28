@@ -176,7 +176,7 @@ class SimImage(GenericSim):
         plt.savefig( fn )
         plt.close()
 
-def makeSingle(sim,param=None,name=None,outcols=None):
+def makeSingle(param=None,name=None,outcols=None):
     """Process a single parameter set, given either as a pandas row or
     just as args parsed from the command line.
     """
