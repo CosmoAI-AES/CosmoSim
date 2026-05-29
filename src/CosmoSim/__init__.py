@@ -77,7 +77,8 @@ def makeSourceConstellation(src,size,verbose=1):
         ltprf = lightProfileDict.get( s[0], LightProfileSpec.Gaussian ) 
         if mode == sourceDict.get( "Spherical" ):
             constituent = SphericalSource( size, float(s[3]), float(s[6]),
-                                          float(s[7]), ltprf=ltprf, verbose=verbose )
+                                          float(s[7]), ltprf=ltprf,
+                                          verbose=verbose )
 
         elif mode == sourceDict.get( "Ellipsoid" ):
             constituent = cs.EllipsoidSource( size, float(s[3]),
@@ -120,7 +121,8 @@ def makeSource(param,verbose=0):
                print( "[makeSource] Spherical Source - "
                      + f"n_sersic={nsersic}, luminosity={luminosity}" )
            r = SphericalSource( size, float(param.get( "sigma" )),
-                               nsersic, luminosity, ltprf=ltprf)
+                               nsersic, luminosity, ltprf=ltprf,
+                               verbose=verbose)
        elif mode == sourceDict.get( "Ellipsoid" ):
            r = cs.EllipsoidSource( size, float(param.get( "sigma" )),
                    float(param.get( "sigma2" )),
@@ -382,7 +384,6 @@ class CosmoSim(cs.CosmoSim):
         (model,lens,sampleMode) = configDict[s]
         if verbose > 1:
             print( f"[setConfigMode]", (model,lens,sampleMode) )
-        print( f"[setConfigMode]", (model,lens,sampleMode) )
         super().setSampled( int( sampleMode ) ) 
         super().setLensMode( int( lens ) ) 
         return super().setModelMode( int( model ) ) 
