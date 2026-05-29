@@ -1,7 +1,18 @@
-
 # CosmoSim Change Log
 
-## 3.0.0 - 2026-05-08
+## 3.0.0b1 - 2026-05-29
+
+### Changed
+
++ Unified the scripts into the main module.  All command line features are
+  now run as `python -m CosmoSim`.
+
+### Fixed
+
++ Removed analytic but flawed calculation of apparent source position for SIE.
+  It now falls back on fix-point iteration which works.
+
+## 2.9.0 - 2026-05-08
 
 ### Added
 
@@ -10,8 +21,6 @@
 ### Changed
 
 + Removed redundant CLI arguments
-+ Unified the scripts into the main module.  All command line features are
-  now run as `python -m CosmoSim`.
 
 ### Fixed
 
