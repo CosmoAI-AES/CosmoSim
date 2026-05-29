@@ -73,4 +73,4 @@ runs:
       - name: Test
         shell: bash
         run: |
-          PYTHONPATH=src/:$PYTHONPATH python3 -m CosmoSim.datagen
+          PYTHONPATH=src/:$PYTHONPATH python3 -m CosmoSim
