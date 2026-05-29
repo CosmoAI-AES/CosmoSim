@@ -42,8 +42,8 @@ class GenericSim:
         """
         Normally the constructor should
         """
-        if verbose > 1: print( "[GenericSim] init ..." )
         self.verbose = verbose
+        if verbose > 1: print( f"[GenericSim] init (verbose={verbose}) ..." )
 
         self.outcols = outcols
 

@@ -34,6 +34,7 @@ class SimImage(GenericSim):
     """
     def __init__(self,param,**kw):
         super().__init__(param,**kw)
+        if self.verbose: print( f"[SimImage] init (verbose={self.verbose}) ..." )
 
         self.sim = CosmoSim(verbose=self.verbose)
         msk = self.param.get( "mask", None )

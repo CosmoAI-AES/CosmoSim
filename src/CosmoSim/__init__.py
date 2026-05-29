@@ -29,8 +29,10 @@ class SphericalSource(cs.SphericalSource):
     arguments to the constructor.
     """
     def __init__( self, size, sigma, idx=0, lum=0,
-                 ltprf=LightProfileSpec.Gaussian ):
+                 ltprf=LightProfileSpec.Gaussian,
+                 verbose=1 ):
         super().__init__( size, sigma, idx, lum, ltprf )
+        if verbose: print( "[SphericalSource] constructor done" )
 
 class RouletteRegenerator(cs.RouletteRegenerator):
     def __init__(self,*a,verbose=1,**kw):
@@ -74,7 +76,9 @@ def makeSourceConstellation(src,size,verbose=1):
         mode = sourceDict[s[0]]
         ltprf = lightProfileDict.get( s[0], LightProfileSpec.Gaussian ) 
         if mode == sourceDict.get( "Spherical" ):
-            constituent = SphericalSource( size, float(s[3]), float(s[6]), float(s[7]), ltprf=ltprf )
+            constituent = SphericalSource( size, float(s[3]), float(s[6]),
+                                          float(s[7]), ltprf=ltprf, verbose=verbose )
+
         elif mode == sourceDict.get( "Ellipsoid" ):
             constituent = cs.EllipsoidSource( size, float(s[3]),
                     float(s[4]), float(s[5])*np.pi/180, ltprf=ltprf)
@@ -98,20 +102,25 @@ def makeSource(param,verbose=0):
     src = param.get("source")
     ltprf0 = param.get( "lightprofile", None )
     if verbose:
-        print( f"[makeSource] src={src}, ltprf0={ltprf0}" )
+        print( f"[makeSource] src={src}, ltprf0={ltprf0}, verbose={verbose}" )
     if src.find("/") < 0:
        mode = sourceDict[src]
        if ltprf0 is None:
            ltprf = lightProfileDict.get( src, LightProfileSpec.Gaussian ) 
+           if verbose > 1: print( "[makeSource] Lightprofile:", src, ltprf )
        else:
            ltprf = lightProfileDict.get( ltprf0, LightProfileSpec.Gaussian ) 
+           if verbose > 1: print( "[makeSource] Lightprofile:", ltprf0, ltprf )
        if verbose:
           print( f"[makeSource] mode={mode}, ltprf={ltprf}" )
        if mode == sourceDict.get( "Spherical" ):
+           nsersic = float(param.get("n_sersic",4))
+           luminosity = float(param.get("luminosity",10))
+           if verbose > 1: 
+               print( "[makeSource] Spherical Source - "
+                     + f"n_sersic={nsersic}, luminosity={luminosity}" )
            r = SphericalSource( size, float(param.get( "sigma" )),
-                  float(param.get("n_sersic",0)),
-                  float(param.get("luminosity",0)),
-                  ltprf=ltprf)
+                               nsersic, luminosity, ltprf=ltprf)
        elif mode == sourceDict.get( "Ellipsoid" ):
            r = cs.EllipsoidSource( size, float(param.get( "sigma" )),
                    float(param.get( "sigma2" )),
@@ -126,7 +135,7 @@ def makeSource(param,verbose=0):
     else:
         r = makeSourceConstellation(src,size)
         if verbose:
-            print( "makeSource() - makeSourceConstellation() has returned" )
+            print( "[makeSource] - makeSourceConstellation() has returned" )
     if verbose>1:
         print( "makeSource() returns" )
     return r 
@@ -252,6 +261,8 @@ class CosmoSim(cs.CosmoSim):
     """
     def __init__(self,*a,maxm=50,fn=None,verbose=1,**kw):
         super().__init__(*a,**kw)
+        self.verbose = verbose
+        if self.verbose>1: print( f"[CosmoSim] init (verbose={self.verbose}) ..." )
         dir = os.path.dirname(os.path.abspath(__file__))
         if fn == None:
             super().setFile( PsiSpec.SIS, getFileName( maxm ) )
@@ -266,12 +277,11 @@ class CosmoSim(cs.CosmoSim):
         self._simThread = th.Thread(target=self.simThread)
         self._simThread.start()
         self.bgcolour = 0
-        self.verbose = 1
     def makeSource(self,param):
         if param.get( "imagesize" ) == None:
            param.__setitem__( "imagesize", self.getImageSize() )
-        self._src = makeSource(param)
-        print( "CosmoSim.makeSource() returns" )
+        self._src = makeSource(param,verbose=self.verbose)
+        print( f"CosmoSim.makeSource() returns (verbose={self.verbose}" )
     def getRelativeEta(self,centrepoint):
         # print ( "[getRelativeEta] centrepoint=", centrepoint, "in Planar Co-ordinates"  )
         r = super().getRelativeEta(centrepoint[0],centrepoint[1])
