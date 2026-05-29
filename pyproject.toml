@@ -5,7 +5,8 @@ requires = [
     "scikit-build>=0.17.3",
     "skbuild-conan",
     "cmake>=3.15",
-    "ninja",
+    "ninja>=1.13",
+    "cascadict>=0.8",
 ]
 build-backend = "setuptools.build_meta"
 
