@@ -228,19 +228,19 @@ class CosmoParser(argparse.ArgumentParser):
             default=False, help="Sample the lens model")
 
     # Model Parameters
-    self.add_argument('-x', '--x', default=0, help="x coordinate")
-    self.add_argument('-y', '--y', default=0, help="y coordinate")
-    self.add_argument('-T', '--phi', help="polar coordinate angle (phi)")
+    self.add_argument('-x', '--x', type=float, default=0, help="x coordinate")
+    self.add_argument('-y', '--y', type=float, default=0, help="y coordinate")
+    self.add_argument('-T', '--phi', type=float, help="polar coordinate angle (phi)")
 
-    self.add_argument('-s', '--sigma', default=20, help="source size (sigma)")
-    self.add_argument('-2', '--sigma2', default=10, help="secondary source size (sigma2)")
-    self.add_argument('-t', '--theta', default=45, help="source rotation angle (theta)")
+    self.add_argument('-s', '--sigma', type=float, default=20, help="source size (sigma)")
+    self.add_argument('-2', '--sigma2', type=float, default=10, help="secondary source size (sigma2)")
+    self.add_argument('-t', '--theta', type=float, default=45, help="source rotation angle (theta)")
 
-    self.add_argument('-X', '--chi', default=50, help="lens distance ratio (chi)")
-    self.add_argument('-E', '--einsteinradius', default=20, help="Einstein radius")
-    self.add_argument('-r', '--ratio', help="Ratio (usually Elliptic eccentricity)")
-    self.add_argument('--orientation', default=0, help="Orientation of the lens")
-    self.add_argument('--config', help="Configuration (Model and Lens)")
+    self.add_argument('-X', '--chi', type=float, default=50, help="lens distance ratio (chi)")
+    self.add_argument('-E', '--einsteinradius', type=float, default=20, help="Einstein radius")
+    self.add_argument('-r', '--ratio', type=float, help="Ratio (usually Elliptic eccentricity)")
+    self.add_argument('--orientation', default=0, type=float, help="Orientation of the lens")
+    self.add_argument('--config', type=str, help="Configuration (Model and Lens)")
 
     # Other parameters
     self.add_argument('-n', '--nterms', type=int,
