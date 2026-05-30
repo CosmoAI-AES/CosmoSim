@@ -305,7 +305,7 @@ class CosmoParser(argparse.ArgumentParser):
     self.add_argument('--roulette', type=str,
             help="Input file for roulette resimulation")
 
-    self.add_argument('-v','--verbose', action="count",
+    self.add_argument('-v','--verbose', action="count",default=0,
             help="Debug output")
 
 def setParameters(sim,row,verbose=1):
