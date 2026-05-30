@@ -177,12 +177,12 @@ class SimImage(GenericSim):
         plt.savefig( fn )
         plt.close()
 
-def makeSingle(param=None,name=None,outcols=None):
+def makeSingle(param=None,name=None,outcols=None,verbose=0):
     """Process a single parameter set, given either as a pandas row or
     just as args parsed from the command line.
     """
     if param is None: param = Parameters()
-    imsim = SimImage(param=param,name=name,outcols=outcols)
+    imsim = SimImage(param=param,name=name,outcols=outcols,verbose=verbose)
     imsim.saveImage()
     if param.get( "join" ): imsim.join()
     if param.get( "family" ): imsim.family()

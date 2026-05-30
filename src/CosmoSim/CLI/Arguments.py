@@ -302,8 +302,11 @@ class CosmoParser(argparse.ArgumentParser):
             default=False, help="Generate random dataset")
     self.add_argument('--version', action='store_true',
             default=False, help="Show version number")
-    self.add_argument('--roulette', 
-            type=str, help="Input file for roulette resimulation")
+    self.add_argument('--roulette', type=str,
+            help="Input file for roulette resimulation")
+
+    self.add_argument('-v','--verbose', action="count",
+            help="Debug output")
 
 def setParameters(sim,row,verbose=1):
     if verbose > 2:

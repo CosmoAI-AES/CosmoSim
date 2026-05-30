@@ -24,9 +24,8 @@ def main(args,cfg):
     elif args.csvfile:
             datagen(args,param)
     else:
-        sim = setupSim( args )
-        makeSingle(sim,param)
-        sim.close()
+        imsim = makeSingle(param,verbose=args.verbose)
+        imsim.close()
 
 if __name__ == "__main__":
     print( "[CosmoSim] batch generator ..." )
