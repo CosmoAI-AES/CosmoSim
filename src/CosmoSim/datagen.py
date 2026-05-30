@@ -193,51 +193,6 @@ def makeSingle(param=None,name=None,outcols=None,verbose=0):
     print( "makeSingle() returns" )
     return imsim
 
-def setupSim(args):
-    print( "[setupSim] Instantiate Simulator ... " )
-    if args.amplitudes:
-       sim = CosmoSim(fn=args.amplitudes)
-    elif args.nterms:
-       sim = CosmoSim(maxm=int(args.nterms))
-    else:
-       sim = CosmoSim()
-    print( "[datagen.py] Simulator initialised" )
-    if args.phi:
-        sim.setPolar( float(args.x), float(args.phi) )
-    else:
-        sim.setXY( float(args.x), float(args.y) )
-    if args.sampled:
-        sim.setSampled( 1 )
-    else:
-        sim.setSampled( 0 )
-
-    if args.config:
-        sim.setConfigMode( args.config )
-    elif args.cluster:
-        print( "setCluster from arguments" )
-        sim.setCluster( args.cluster )
-    elif args.lens:
-        sim.setLensMode( args.lens)
-
-    if args.model:
-        sim.setModelMode( args.model)
-    if args.chi:
-        sim.setCHI( float(args.chi) )
-    if args.einsteinradius:
-        sim.setEinsteinR( float(args.einsteinradius) )
-    if args.ratio:
-        sim.setRatio( float(args.ratio) )
-    if args.orientation:
-        sim.setOrientation( float(args.orientation) )
-    if args.imagesize:
-        sim.setImageSize( int(args.imagesize) )
-        sim.setResolution( int(args.imagesize) )
-    if args.nterms:
-        sim.setNterms( int(args.nterms) )
-
-    sim.setMaskMode( args.mask )
-    return( sim )
-
 def datagen(args,param=None):
 
     if args.rnd:

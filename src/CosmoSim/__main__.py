@@ -3,7 +3,7 @@ from . import __version__
 import os
 
 from .roulettegen import rgen
-from .datagen import datagen,makeSingle,setupSim
+from .datagen import datagen,makeSingle
 
 from .CLI.Arguments import CosmoParser,Parameters
 
