@@ -46,6 +46,8 @@ runs:
           pip3 install -r requirements.txt
       - name: Install and run conan
         shell: bash
+        env:
+            GIT_SSL_NO_VERIFY: "true" # Bypasses SSL verification for Git
         run: |
           conan profile detect 
           conan profile show
