@@ -77,7 +77,7 @@ class Parameters:
         self._row[key] = v
 
 skel = { "simulator" : { "configs" : {}, "imagesize": 512 }
-         , "source" : {}
+        , "source" : { "sigma" : 10, "sigma2" : 20, "theta" : 45 }
          , "lens" : {}
          , "dataset" : {}
          , "annotation" : {}
