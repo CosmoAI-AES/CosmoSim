@@ -4,13 +4,13 @@
 #define DEBUG 1
 #include "simaux.h"
 
-cv::Point2d Lens::getXi( cv::Point2d chieta ) {
+cv::Point2d Lens::getXi( cv::Point2d eta ) {
 
-   cv::Point2d xi0, xi1 = chieta ;
+   cv::Point2d xi0, xi1 = eta ;
    int cont = 1, count = 0, maxcount = 200 ;
    double dist, dist0=pow(10,12), threshold = 0.02 ;
 
-   if (DEBUG) std::cout << "[Lens::getXi] " << chieta << "\n" ;
+   if (DEBUG) std::cout << "[Lens::getXi] " << eta << "\n" ;
 
    /** This block makes a fix-point iteration to find \xi. */
    while ( cont ) {
@@ -20,7 +20,7 @@ cv::Point2d Lens::getXi( cv::Point2d chieta ) {
       if (DEBUG) std::cout
 	   << "[Lens] Fix pt it'n " << count
            << "; xi0=" << xi0 << "; Delta eta = " << x << ", " << y << "\n" ;
-      xi1 = chieta + cv::Point2d( x, y ) ;
+      xi1 = eta + cv::Point2d( x, y ) ;
       dist = cv::norm( cv::Mat(xi1-xi0), cv::NORM_L2 ) ;
       if ( dist < threshold ) cont = 0 ;
       if ( ++count > maxcount ) cont = 0 ;

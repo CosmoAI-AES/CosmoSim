@@ -31,7 +31,7 @@ void RotatedModel::updateInner( ) {
 
     if (DEBUG) {
       std::cout << "[RotatedModel::updateInner()] R=" << getEtaAbs() << "; theta=" << phi
-              << "; CHI=" << CHI << "\n" ;
+                << "\n" ;
       std::cout << "[RotatedModel::updateInner()] xi=" << getXi()   
               << "; eta=" << getEta() <<  "\n" ;
       std::cout << "[RotatedModel::updateInner()] nu=" << getNu()   
@@ -65,8 +65,8 @@ void RotatedModel::updateInner( ) {
 
 void RotatedModel::updateApparentAbs( ) {
     cv::Mat im = getActual() ;
-    cv::Point2d chieta = cv::Point2d( CHI*getEtaAbs(), 0 ) ;
-    cv::Point2d xi1 = lens->getXi( chieta ) ;
-    setNu( xi1/CHI ) ;
+    cv::Point2d eta = cv::Point2d( getEtaAbs(), 0 ) ;
+    cv::Point2d xi1 = lens->getXi( eta ) ;
+    setNu( xi1 ) ;
 }
 

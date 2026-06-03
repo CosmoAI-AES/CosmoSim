@@ -45,30 +45,16 @@ cv::Point2d RouletteModel::getDistortedPos(double r, double theta) const {
     }
 
 
-    // The return value should be normalised coordinates in the source plane.
-    // We have calculated the coordinates in the lens plane.
-    // return cv::Point2d( nu1/CHI, nu2/CHI ) ;
-    cv::Point2d rpt = cv::Point2d( nu1/CHI, nu2/CHI ) ;
+    cv::Point2d rpt = cv::Point2d( nu1, nu2 ) ;
 
     if ( DEBUG && (r < 2) ) {
        std::string s = "No lens" ;
        std::cout << "[getDistortedPos] nu=" << rpt << 
           " theta=" << theta << " r=" << r << "\n" ;
        if ( lens != NULL ) s = lens->idString() ;
-       std::cout << s << CHI << cv::Point2d(r,theta) << "->" << rpt << std::endl ;
+       std::cout << s << cv::Point2d(r,theta) << "->" << rpt << std::endl ;
     }
 
     return rpt ;
 }
-/*
-double RouletteModel::getMaskRadius() const { 
-   // Should this depend on the source position or the local origin?
-   // return getNuAbs() ; 
-   if ( maskRadius > 0 ) {
-      return maskRadius ;
-   } else {
-      return getXiAbs()/CHI ; 
-   }
-}
-*/
 

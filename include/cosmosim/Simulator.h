@@ -31,7 +31,6 @@ protected:
     virtual void distort(int row, int col, const cv::Mat &src, cv::Mat &dst);
     virtual void undistort(const cv::Mat &src, cv::Mat &dst);
 
-    double CHI;
     Source *source ;
     Lens *lens = NULL ;
     int nterms;
@@ -55,7 +54,6 @@ protected:
     double getEtaAbs() const ;
     double getEtaSquare() const ;
     cv::Point2d getEta() const ;
-    cv::Point2d getCentre() const ;
 
 public:
     SimulatorModel();
@@ -75,14 +73,12 @@ public:
     /* Getters (Parameters) */
     cv::Point2d getNu() const ;
     cv::Point2d getXi() const ;
-    cv::Point2d getTrueXi() const ;
 
     /* Setters */
     virtual void setLens( Lens* ) ;
 
     void setXY(double, double) ;
     void setPolar(double, double) ;
-    void setCHI(double) ;
     void setNterms(int);
     void setSource(Source*) ;
     // void setLightProfile( LightProfileSpec );

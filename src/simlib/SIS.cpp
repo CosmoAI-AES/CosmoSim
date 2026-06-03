@@ -5,10 +5,10 @@
 
 #define norm(x,y) sqrt( x*x + y*y ) 
 
-cv::Point2d SIS::getXi( cv::Point2d chieta ) {
-   return chieta + cv::Point2d( 
-         psiXvalue(chieta.x, chieta.y ),
-         psiYvalue(chieta.x, chieta.y ) ) ;
+cv::Point2d SIS::getXi( cv::Point2d eta ) {
+   return eta + cv::Point2d( 
+         psiXvalue(eta.x, eta.y ),
+         psiYvalue(eta.x, eta.y ) ) ;
 }
 
 double SIS::psiValue( double x, double y ) const {

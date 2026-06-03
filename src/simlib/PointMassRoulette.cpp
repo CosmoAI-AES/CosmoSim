@@ -22,5 +22,5 @@ cv::Point2d PointMassRoulette::getDistortedPos(double r, double theta) const {
     }
     // The return value should be normalised coordinates in the source plane.
     // We have calculated the coordinates in the lens plane.
-    return cv::Point2d( nu1 / CHI, nu2 / CHI ) ;
+    return cv::Point2d( nu1, nu2 ) ;
 }

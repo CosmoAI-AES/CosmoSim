@@ -22,8 +22,8 @@ double PointMass::psiYvalue( double x, double y ) const {
    return s*y ;
 }
 
-cv::Point2d PointMass::getXi( cv::Point2d chieta ) {
-   double c = chieta.x*chieta.x + chieta.y*chieta.y ;
-   double root = sqrt(0.25*c + einsteinR*einsteinR) ; // /CHI
-   return chieta/2 + root*chieta/sqrt(c) ;
+cv::Point2d PointMass::getXi( cv::Point2d eta ) {
+   double c = eta.x*eta.x + eta.y*eta.y ;
+   double root = sqrt(0.25*c + einsteinR*einsteinR) ; 
+   return eta/2 + root*eta/sqrt(c) ;
 }

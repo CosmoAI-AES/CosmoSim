@@ -17,7 +17,7 @@ cv::Point2d RaytraceModel::calculateEta( cv::Point2d xi ) {
     * These differentiated arrays are used for getXi (both roulette and raytrace)
     * and for the deflection in raytrace.
     */
-   return (xi - xy)/CHI ;
+   return (xi - xy) ;
 }
 void RaytraceModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) {
 
@@ -25,11 +25,9 @@ void RaytraceModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst
     for (int row = begin; row < end; row++) {
         for (int col = 0; col < dst.cols; col++) {
 
-            cv::Point2d eta, xi, ij, targetPos ;
+            cv::Point2d eta, xi, ij ;
 
-            targetPos = pointCoordinate( cv::Point2d( row, col ), dst ) ;
-               // cv::Point2d( col - dst.cols / 2.0, dst.rows / 2.0 - row ) ;
-            xi = CHI*targetPos ;
+            xi = pointCoordinate( cv::Point2d( row, col ), dst ) ;
             eta = calculateEta( xi ) - getEta() ;
             ij = imageCoordinate( eta, src ) ;
   
@@ -58,7 +56,7 @@ void RaytraceModel::undistort(const cv::Mat& src, cv::Mat& dst) {
             cv::Point2d eta, ij, srcPos ;
 
             srcPos = pointCoordinate( cv::Point2d( row, col ), src ) ;
-            eta = calculateEta( CHI*srcPos ) ;
+            eta = calculateEta( srcPos ) ;
             ij = imageCoordinate( eta, dst ) ;
   
             if (ij.x <= dst.rows-1 && ij.y <= dst.cols-1 && ij.x >= 0 && ij.y >= 0) {
