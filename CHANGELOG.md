@@ -1,5 +1,9 @@
 # CosmoSim Change Log
 
+### Changed
+
++ Interpret images in the lens plane, removing CHI as a parameter. 
+
 ## 3.0.0b1 - 2026-05-29
 
 ### Changed
