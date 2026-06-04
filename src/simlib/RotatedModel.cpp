@@ -35,7 +35,7 @@ void RotatedModel::updateInner( ) {
       std::cout << "[RotatedModel::updateInner()] xi=" << getXi()   
               << "; eta=" << getEta() <<  "\n" ;
       std::cout << "[RotatedModel::updateInner()] nu=" << getNu()   
-              << "; centre=" << getCentre() << "\n" << std::flush ;
+              << "; centre=" << getXi() << "\n" << std::flush ;
     }
     auto startTime = std::chrono::system_clock::now();
 

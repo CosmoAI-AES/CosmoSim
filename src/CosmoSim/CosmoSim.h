@@ -64,7 +64,6 @@ public:
     std::string getFile(int) ;
     void setXY(double, double) ;
     void setPolar(int, int) ;
-    void setCHI(double);
     void setNterms(int);
     void setMaskRadius(double);
     void setImageSize(int);

@@ -22,7 +22,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setOrientation", &CosmoSim::setOrientation)
         .def("setNterms", &CosmoSim::setNterms)
         .def("setMaskRadius", &CosmoSim::setMaskRadius)
-        .def("setCHI", &CosmoSim::setCHI)
         .def("setXY", &CosmoSim::setXY)
         .def("setPolar", &CosmoSim::setPolar)
         // .def("setLightProfile", &CosmoSim::setLightProfile)

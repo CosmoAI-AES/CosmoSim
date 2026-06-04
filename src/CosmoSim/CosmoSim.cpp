@@ -110,7 +110,6 @@ std::string CosmoSim::getFile( int key ) {
     return filename[key] ;
 } 
 
-void CosmoSim::setCHI(double c) { chi = c/100.0 ; }
 void CosmoSim::setNterms(int c) { nterms = c ; }
 void CosmoSim::setMaskRadius(double c) { maskRadius = c ; }
 void CosmoSim::setXY( double x, double y) { xPos = x ; yPos = y ; rPos = -1 ; }
@@ -270,7 +269,6 @@ bool CosmoSim::runSim() {
    configLens() ; // configLens() implements parameter changes
 
    // Set simulation parameters
-   sim->setCHI( chi ) ;
    sim->setBGColour( bgcolour ) ;
    sim->setNterms( nterms ) ;
    sim->setMaskRadius( maskRadius ) ;

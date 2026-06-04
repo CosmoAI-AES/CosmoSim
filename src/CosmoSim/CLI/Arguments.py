@@ -99,7 +99,6 @@ paramap = {
         "n_sersic" : ( "source", "n_sersic" ), 
         "luminosity" : ( "source", "luminosity" ), 
 
-        "chi" : ( "lens", "chi" ),
         "einsteinradius" : ( "lens", "einsteinradius" ),
         "orientation" : ( "lens", "orientation" ),
         "ratio" : ( "lens", "ellipseratio" ), # relabelled
@@ -236,7 +235,6 @@ class CosmoParser(argparse.ArgumentParser):
     self.add_argument('-2', '--sigma2', type=float, default=10, help="secondary source size (sigma2)")
     self.add_argument('-t', '--theta', type=float, default=45, help="source rotation angle (theta)")
 
-    self.add_argument('-X', '--chi', type=float, default=50, help="lens distance ratio (chi)")
     self.add_argument('-E', '--einsteinradius', type=float, default=20, help="Einstein radius")
     self.add_argument('-r', '--ratio', type=float, help="Ratio (usually Elliptic eccentricity)")
     self.add_argument('--orientation', default=0, type=float, help="Orientation of the lens")
@@ -334,8 +332,6 @@ def setParameters(sim,row,verbose=1):
         sim.setModelMode( row.get( "model" ) )
     if row.get("sampled",None) != None:
         sim.setSampled( row.get( "sampled" ) )
-    if row.get("chi",None) != None:
-        sim.setCHI( row.get( "chi" ) )
     if row.get("einsteinR",None) != None:
         sim.setEinsteinR( row.get( "einsteinR" ) )
     if row.get("ellipseratio",None) != None:
