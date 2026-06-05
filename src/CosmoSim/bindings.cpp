@@ -45,7 +45,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("getBeta", &CosmoSim::getBeta)
         .def("getAlphaXi", &CosmoSim::getAlphaXi)
         .def("getBetaXi", &CosmoSim::getBetaXi)
-        .def("getChi", &CosmoSim::getChi)
         .def("getOffset", &CosmoSim::getOffset)
         .def("getNu", &CosmoSim::getNu)
         .def("getRelativeEta", &CosmoSim::getRelativeEta)

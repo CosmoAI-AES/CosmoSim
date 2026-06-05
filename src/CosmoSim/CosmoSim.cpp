@@ -35,14 +35,13 @@ PsiFunctionLens *CosmoSim::getLens( int lensmode ) {
    }
 } ;
 
-double CosmoSim::getChi( ) { return chi ; } ;
 cv::Point2d CosmoSim::getRelativeEta( double x, double y ) {
    // Input (x,y) is the centre point $\nu$
-   return sim->getRelativeEta( cv::Point2d( x,y )*chi ) ; 
+   return sim->getRelativeEta( cv::Point2d( x,y ) ) ; 
 } ;
 cv::Point2d CosmoSim::getOffset( double x, double y ) {
    // Input (x,y) is the centre point $\nu$ 
-   return sim->getOffset( cv::Point2d( x,y )*chi ) ; 
+   return sim->getOffset( cv::Point2d( x,y ) ) ; 
 } ;
 cv::Point2d CosmoSim::getNu( ) {
    return sim->getNu() ;

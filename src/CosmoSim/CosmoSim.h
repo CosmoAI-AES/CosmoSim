@@ -31,7 +31,6 @@ enum PsiSpec    { CSIM_PSI_SIS,
 class CosmoSim {
 private:
     int size=512, basesize=512 ;
-    double chi=0.5 ;
     int modelmode=CSIM_MODEL_POINTMASS_EXACT ;
     double ellipseratio=0.5, orientation=0, einsteinR=20 ;
     int sampledlens = 0, modelchanged = 1 ;
@@ -97,7 +96,6 @@ public:
     cv::Point2d getOffset( double x, double y ) ;
     cv::Point2d getNu( ) ;
     cv::Point2d getRelativeEta( double x, double y ) ;
-    double getChi( ) ;
     double getAlpha( double x, double y, int m, int s ) ;
     double getBeta( double x, double y, int m, int s ) ;
     double getAlphaXi( int m, int s ) ;
