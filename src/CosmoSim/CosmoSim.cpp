@@ -53,7 +53,6 @@ double CosmoSim::getAlphaXi( int m, int s ) {
    // cv::Point2d xi = lens->getXi( sim->getEta() ) ;
    cv::Point2d xi = sim->getXi() ;
    if (DEBUG) std::cout << "[getAlphaXi] xi = " << xi << std::endl ;
-   xi /= chi ;
    return getAlpha( xi.x, xi.y, m, s ) ;
 
 }
@@ -61,14 +60,13 @@ double CosmoSim::getBetaXi( int m, int s ) {
    // cv::Point2d xi = lens->getXi( sim->getEta() ) ;
    cv::Point2d xi = sim->getXi( ) ;
    if (DEBUG) std::cout << "[getBetaXi] xi = " << xi << std::endl ;
-   xi /= chi ;
    return getBeta( xi.x, xi.y, m, s ) ;
 }
 double CosmoSim::getAlpha(
       double x, double y, int m, int s 
  ) {
       double r ;
-      cv::Point2d xi = cv::Point2d( x, y )*chi ;
+      cv::Point2d xi = cv::Point2d( x, y ) ;
       if ( NULL != psilens )
           r = psilens->getAlpha( xi, m, s ) ;
       else if ( NULL != lens )
@@ -80,7 +78,7 @@ double CosmoSim::getBeta(
       double x, double y, int m, int s 
 ) {
       double r ;
-      cv::Point2d xi = cv::Point2d( x, y )*chi ;
+      cv::Point2d xi = cv::Point2d( x, y ) ;
       if ( NULL != psilens )
           r = psilens->getBeta( xi, m, s ) ;
       else if ( NULL != lens )
