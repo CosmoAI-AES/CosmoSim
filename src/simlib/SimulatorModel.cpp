@@ -337,6 +337,8 @@ cv::Point2d SimulatorModel::getNu() const {
 double SimulatorModel::getNuAbs() const { 
    return sqrt( nu.x*nu.x + nu.y*nu.y ) ;
 }
+/** Get the source position $\beta$
+ */
 cv::Point2d SimulatorModel::getEta() const {
    // std::cout << "[getEta] " << eta << std::endl ;
    return eta ;
@@ -373,10 +375,6 @@ void SimulatorModel::setLens( Lens *l ) {
    lens = l ;
 }
 
-// void SimulatorModel::setLightProfile(LightProfileSpec p) {
-//    lightprf = p ;
-// }
-
 cv::Point2d SimulatorModel::getRelativeEta( cv::Point2d xi1 ) {
    // returns $\vec\eta''$
    cv::Point2d releta ;
@@ -404,7 +402,8 @@ cv::Point2d SimulatorModel::getOffset( cv::Point2d xi1 ) {
 }
 
 void SimulatorModel::updateApparentAbs( ) {
-    cv::Mat im = getActual() ;
+    cv::Mat im = getActual() ; 
+      // This looks redundant but it may be required to compute the source image.
     cv::Point2d xi1 = lens->getXi( getEta() ) ;
     setNu( xi1 ) ;
 }
