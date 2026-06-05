@@ -23,9 +23,6 @@ from .CLI.Arguments import setParameters,Parameters
 
 import pandas as pd
 
-defaultoutcols = [ "index", "filename", "source", "lens", "chi", "R", "phi", "einsteinR", "sigma", "sigma2", "theta", "n_sersic", "luminosity", "x", "y" ]
-
-
 class SimImage(GenericSim):
     """
     This class simulates a single image.
