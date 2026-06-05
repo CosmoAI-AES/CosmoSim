@@ -12,8 +12,9 @@ df = pd.read_csv( args.infile )
 
 
 cols = [ "x", "y", "sigma", "sigma2" ]
-for k in cols:
-   df[k] = df[k]* df["chi"]/100
+# for k in cols:
+#    df[k] = df[k]* df["chi"]/100
+df["einsteinR"] = df["einsteinR"]*100/ df["chi"]
 
 df.to_csv( args.outfile, index=False)
 
