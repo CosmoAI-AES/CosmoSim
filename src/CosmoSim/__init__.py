@@ -384,9 +384,13 @@ class CosmoSim(cs.CosmoSim):
         (model,lens,sampleMode) = configDict[s]
         if verbose > 1:
             print( f"[setConfigMode] configDict[{s}]:", (model,lens,sampleMode) )
-        super().setSampled( int( sampleMode ) ) 
+        self.setSampled( sampleMode ) 
         super().setLensMode( int( lens ) ) 
         return super().setModelMode( int( model ) ) 
+    def setSampled(self,s):
+        if self.verbose: print( f"[setSampled] {s}" )
+        if s is not None:
+            super().setSampled( int( s ) ) 
     def setBGColour(self,s):
         self.bgcolour = s
     def simThread(self):
