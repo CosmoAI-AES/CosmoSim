@@ -79,6 +79,12 @@ class SimImage(GenericSim):
                    "xiX", "xiY" ]
         r1 = pd.Series(
                 { "filename" : self.param.get( "filename" )
+                , "source" : self.param.get( "source" )
+                , "x" : self.param.get( "x" )
+                , "y" : self.param.get( "y" )
+                , "sigma" : self.param.get( "sigma" )
+                , "sigma2" : self.param.get( "sigma2" )
+                , "theta" : self.param.get( "theta" )
                 } )
         r2 = pd.Series(
               [ centrepoint[0], centrepoint[1], releta[0], releta[1],
