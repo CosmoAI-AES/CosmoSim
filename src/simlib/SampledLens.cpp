@@ -12,7 +12,7 @@ void SampledLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
 
     int mp, m, s ;
     double C ;
-    // std::cout << psi ;
+
     cv::Mat psi, matA, matB, matAouter, matBouter, matAx, matAy, matBx, matBy ;
     cv::Point2d ij ;
 
@@ -28,8 +28,6 @@ void SampledLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
         if ( mp == 0 ) {
           // This is the outer base case, for m=0, s=1
           gradient(psi, matBouter, matAouter) ;
-          // matAouter *= -1 ;
-          // matBouter *= -1 ;
         } else {
           gradient(matAouter, matAy, matAx) ;
           gradient(matBouter, matBy, matBx) ;
