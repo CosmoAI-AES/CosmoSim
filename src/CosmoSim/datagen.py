@@ -77,12 +77,15 @@ class SimImage(GenericSim):
                    "reletaX", "reletaY",
                    "offsetX", "offsetY",
                    "xiX", "xiY" ]
+        r1 = pd.Series(
+                { "filename" : self.param.get( "filename" )
+                } )
         r2 = pd.Series(
               [ centrepoint[0], centrepoint[1], releta[0], releta[1],
                offset[0], offset[1], xioffset[0], xioffset[1] ],
               index=relcols ) 
         r3 = pd.Series( ab, index=getMSheaders(maxm)) 
-        r1 = pd.concat( [ self.row, r2, r3 ] )
+        r1 = pd.concat( [ r1, r2, r3 ] )
         if self.verbose > 1:
             print( f"New row (verbosity={self.verbose})" )
             print( r1 )
