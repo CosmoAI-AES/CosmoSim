@@ -3,12 +3,16 @@
 #include "cosmosim/Lens.h"
 #include "simaux.h"
 
+#define DEBUG 1
+
 #define norm(x,y) sqrt( x*x + y*y ) 
 
 cv::Point2d SIS::getXi( cv::Point2d eta ) {
-   return eta + cv::Point2d( 
+   cv::Point2d r = eta + cv::Point2d( 
          psiXvalue(eta.x, eta.y ),
          psiYvalue(eta.x, eta.y ) ) ;
+   if (DEBUG) std::cout << "[Lens::getXi] " << eta << " -> " << r << "\n" ;
+   return r ;
 }
 
 double SIS::psiValue( double x, double y ) const {

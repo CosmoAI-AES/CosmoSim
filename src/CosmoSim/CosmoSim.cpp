@@ -231,7 +231,7 @@ void CosmoSim::configLens() {
 
    if ( sampledlens ) {
      std::cout << "[CosmoSim.initLens] ready to sample lens\n" ;
-     lens = new SampledPsiFunctionLens( psilens ) ;
+     lens = new SampledPsiFunctionLens( psilens, size ) ;
      std::cout << "[CosmoSim.initLens] lens sampled\n" ;
      sim->setLens( lens ) ;
    } else {

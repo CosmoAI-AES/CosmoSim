@@ -34,6 +34,7 @@ cv::Point2d Lens::getXi( cv::Point2d eta ) {
             << "; xi1=" << xi1 << "\n" ;
       }
    }
+   if (DEBUG) std::cout << "[Lens::getXi] " << eta << " -> " << xi1 << "\n" ;
    return xi1 ;
 }
 
