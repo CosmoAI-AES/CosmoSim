@@ -271,6 +271,8 @@ void SimulatorModel::setSource(Source *src) {
 
 /* C. Lens Model setter */
 void SimulatorModel::setNterms(int n) {
+   if (DEBUG) std::cout << "[SimulatorModel::setNterms] " << nterms 
+                        << " -> " << n << std::endl ;
    nterms = n ;
 }
 
