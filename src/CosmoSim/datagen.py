@@ -179,6 +179,7 @@ def makeSingle(param=None,name=None,outcols=None,verbose=0):
     just as args parsed from the command line.
     """
     if param is None: param = Parameters()
+    if verbose: print( f"[makeSingle] verbose={verbose}" )
     imsim = SimImage(param=param,name=name,outcols=outcols,verbose=verbose)
     imsim.saveImage()
     if param.get( "join" ): imsim.join()
@@ -208,7 +209,7 @@ def datagen(args,param=None):
     dfs = []
     for index,row in frame.iterrows():
         param.setRow( row )
-        imsim = makeSingle(param,name=args.name,outcols=outcols)
+        imsim = makeSingle(param,name=args.name,outcols=outcols,verbose=args.verbose)
         if args.outfile:
             dfs.append( imsim.getData() )
         imsim.close()

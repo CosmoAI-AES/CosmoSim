@@ -383,7 +383,7 @@ class CosmoSim(cs.CosmoSim):
             print( f"setConfigMode({s})")
         (model,lens,sampleMode) = configDict[s]
         if verbose > 1:
-            print( f"[setConfigMode]", (model,lens,sampleMode) )
+            print( f"[setConfigMode] configDict[{s}]:", (model,lens,sampleMode) )
         super().setSampled( int( sampleMode ) ) 
         super().setLensMode( int( lens ) ) 
         return super().setModelMode( int( model ) ) 

@@ -22,7 +22,7 @@ def main(args,cfg):
     if args.roulette:
             rgen(args,param)
     elif args.csvfile:
-            datagen(args,param)
+           datagen(args,param)
     else:
         imsim = makeSingle(param,verbose=args.verbose)
         imsim.close()
