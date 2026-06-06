@@ -138,8 +138,8 @@ void CosmoSim::setLens(PsiFunctionLens *l) {
    if (DEBUG) std::cout << "[CosmoSim::setLens] returning\n" ;
 }
 void CosmoSim::setSampled(int m) { 
+   if (DEBUG) std::cout << "[CosmoSim.cpp] setSampled(" << m << " -> " << m << ")\n" ;
    if ( sampledlens != m ) {
-      if (DEBUG) std::cout << "[CosmoSim.cpp] setSampled(" << m << " -> " << m << ")\n" ;
       sampledlens = m ; 
       modelchanged = 1 ;
    }
