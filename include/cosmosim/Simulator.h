@@ -12,7 +12,10 @@
 
 #define PI 3.14159265358979323846
 
-int debug=0 ;
+extern int debug ;
+#ifndef DEBUG
+#  define DEBUG debug
+#endif
 
 class SimulatorModel {
 private:

@@ -4,6 +4,7 @@ import os
 
 from .roulettegen import rgen
 from .datagen import datagen,makeSingle
+from .CosmoSimPy import setDebug
 
 from .CLI.Arguments import CosmoParser,Parameters
 
@@ -35,6 +36,8 @@ if __name__ == "__main__":
           epilog = '')
 
     args = parser.parse_args()
+    setDebug( args.verbose )
+
     if args.version:
         print( "CosmoSim version", __version__ )
     else:

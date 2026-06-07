@@ -1,7 +1,5 @@
 /* (C) 2023: Hans Georg Schaathun <georg@schaathun.net> */
 
-#define DEBUG 1
-
 #include "cosmosim/Roulette.h"
 #include "simaux.h"
 

@@ -3,8 +3,6 @@
 #include "cosmosim/Lens.h"
 #include "simaux.h"
 
-#define DEBUG 1
-
 #define norm(x,y) sqrt( x*x + y*y ) 
 
 cv::Point2d SIS::getXi( cv::Point2d eta ) {

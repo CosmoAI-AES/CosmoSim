@@ -1,7 +1,5 @@
 /* (C) 2024: Hans Georg Schaathun <georg@schaathun.net> */
 
-#define DEBUG 1
-
 #include "cosmosim/Lens.h"
 #include "simaux.h"
 

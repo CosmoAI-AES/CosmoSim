@@ -3,14 +3,14 @@
  * Einar Leite Austnes, and Simon Nedreberg Runde
  */
 
-#define DEBUG 1
-
 #include "cosmosim/Simulator.h"
 #include "simaux.h"
 
 #include <thread>
 #include <pybind11/pybind11.h>
 namespace py = pybind11;
+
+int debug = 0 ;
 
 
 SimulatorModel::SimulatorModel() :
