@@ -36,7 +36,7 @@ class SimImage(GenericSim):
         self.sim = CosmoSim(verbose=self.verbose)
         msk = self.param.get( "mask", None )
         if msk is not None:
-            print( "[SimImage] sets mask", msk )
+            if self.verbose: print( "[SimImage] sets mask", msk )
             self.sim.setMaskMode( msk )
         self.initSim()
         if self.verbose>2:
@@ -49,7 +49,7 @@ class SimImage(GenericSim):
         Reset parameters in the underlying `CosmoSim` simulator, using the
         given data row.
         """
-        print( "[SimImage] setParameters()" )
+        if self.verbose: print( "[SimImage] setParameters()" )
         return setParameters(self.sim,row,verbose=self.verbose)
     def getData(self):
         sim = self.sim

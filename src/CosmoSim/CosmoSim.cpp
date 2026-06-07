@@ -230,12 +230,12 @@ void CosmoSim::configLens() {
    }
 
    if ( sampledlens ) {
-     std::cout << "[CosmoSim.initLens] ready to sample lens\n" ;
+     if (DEBUG) std::cout << "[CosmoSim.initLens] ready to sample lens\n" ;
      lens = new SampledPsiFunctionLens( psilens, size ) ;
-     std::cout << "[CosmoSim.initLens] lens sampled\n" ;
+     if (DEBUG) std::cout << "[CosmoSim.initLens] lens sampled\n" ;
      sim->setLens( lens ) ;
    } else {
-     std::cout << "[CosmoSim.initLens] no sampling\n" ;
+     if (DEBUG) std::cout << "[CosmoSim.initLens] no sampling\n" ;
    }
 }
 void CosmoSim::setEinsteinR(double r) { einsteinR = r ; }
