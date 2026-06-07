@@ -204,7 +204,7 @@ void SimulatorModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& ds
 
             // Set coordinate system with origin at the centre of mass
             // in the distorted image in the lens plane.
-            cv::Point2d refxy = pointCoordinate( refij ) ;
+            cv::Point2d refxy = pointCoordinate( refij, dst ) ;
             cv::Point2d relpt = refxy - xi ;
 
             // Calculate distance and angle of the point evaluated 
