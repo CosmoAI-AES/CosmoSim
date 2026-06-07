@@ -185,30 +185,36 @@ void SimulatorModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
     }
 }
 
+/** The default implementation of distort() is intended for the roulette
+ * formalism.  Several subclasses use this, but for Raytrace it is overridden.
+ * The implementation depends on getDistortedPos() which must be implemented
+ * by subclasses not overriding distort().
+ */
 void SimulatorModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) {
     // Iterate over the pixels in the image distorted image.
     // (row,col) are pixel co-ordinates
     double maskRadius = getMaskRadius() ;
     cv::Point2d xi = getXi() ;
-    if (DEBUG) std::cout << "[SimulatorModel::distort] begin=" << begin << "; end=" << end
-            << std::endl ;
+    if (DEBUG) std::cout << "[SimulatorModel::distort] refXi=" 
+                         << xi << " begin=" << begin << "; end=" << end << std::endl ;
     for (int row = begin; row < end; row++) {
         for (int col = 0; col < dst.cols; col++) {
 
-            cv::Point2d pos, ij ;
+            cv::Point2d pos, ij, refij=cv::Point2d(row,col) ;
 
             // Set coordinate system with origin at the centre of mass
             // in the distorted image in the lens plane.
-            double x = (col - dst.cols / 2.0 ) - xi.x;
-            double y = (dst.rows / 2.0 - row ) - xi.y;
+            cv::Point2d refxy = pointCoordinate( refij ) ;
+            cv::Point2d relpt = refxy - xi ;
 
             // Calculate distance and angle of the point evaluated 
             // relative to CoM (origin)
-            double r = sqrt(x * x + y * y);
+            double r = sqrt(relpt.x * relpt.x + relpt.y * relpt.y);
 
             if ( maskMode && r > maskRadius ) {
+               if (DEBUG>1) std::cout << "[distort] Masking.\n" ;
             } else {
-              double theta = x == 0 ? signf(y)*PI/2 : atan2(y, x);
+              double theta = relpt.x == 0 ? signf(relpt.y)*PI/2 : atan2(relpt.y, relpt.x);
               pos = this->getDistortedPos(r, theta);
               pos += etaOffset ;
 
