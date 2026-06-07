@@ -1,6 +1,7 @@
 /* (C) 2024: Hans Georg Schaathun <georg@schaathun.net> */
 
 #include "CosmoSim.h"
+#include "cosmosim/Simulator.h"
 
 #include <pybind11/pybind11.h>
 #ifndef DEBUG
@@ -10,6 +11,9 @@ namespace py = pybind11;
 
 PYBIND11_MODULE(CosmoSimPy, m) {
     m.doc() = "Wrapper for the CosmoSim simulator" ;
+
+    m.def("getDebug", []() { return debug ; });
+    m.def("setDebug", [](int val) { debug  = val; });
 
     py::class_<CosmoSim>(m, "CosmoSim")
         .def(py::init<>())

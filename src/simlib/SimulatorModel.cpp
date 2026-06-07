@@ -61,7 +61,7 @@ void SimulatorModel::update( ) {
 
 void SimulatorModel::update( cv::Point2d xi ) {
    setXi( xi ) ;
-   if (DEBUG) std::cout << "[SimulatorModel::update] Done setXi()\n" ;
+   if (DEBUG) std::cout << "[SimulatorModel::update] " << xi << " Done setXi()\n" ;
    return updateInner() ;
 }
 

@@ -12,6 +12,8 @@
 
 #define PI 3.14159265358979323846
 
+int debug=0 ;
+
 class SimulatorModel {
 private:
     cv::Point2d eta ;  // Actual position in the source plane
