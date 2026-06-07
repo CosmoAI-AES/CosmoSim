@@ -74,7 +74,7 @@ class GenericSim:
         if self.verbose > 1: print( "[initSim] using row" )
         self.setParameters( row )
         if self.verbose > 1: print( "index", row.get( "index", None ) )
-        print( f"[initSim] type(row)={type(row)}" )
+        if self.verbose: print( f"[initSim] type(row)={type(row)}" )
         # self.param.setRow( row )
         name = row.get( "filename" ).split(".")[0]
         self.name = name

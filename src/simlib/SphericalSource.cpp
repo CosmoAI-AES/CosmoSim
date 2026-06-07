@@ -2,6 +2,7 @@
 
 /* The SphericalSource class implements a a Spherical, Gaussian mass, */
 
+#include "cosmosim/Simulator.h"
 #include "cosmosim/Source.h"
 
 SphericalSource::SphericalSource(int sz, double sig, double idx, double lum, LightProfileSpec lightprf) :
@@ -12,9 +13,9 @@ SphericalSource::SphericalSource(int sz, double sig, double idx, double lum, Lig
         lightprofile(lightprf)
 { 
         if (lightprofile == LightProfileSpec::CSIM_LIGHT_GAUSSIAN) {
-	   std::cout << "[SphericalSource] GAUSS\n" ;
+	   if (DEBUG>1) std::cout << "[SphericalSource] GAUSS\n" ;
         } else if (lightprofile == LightProfileSpec::CSIM_LIGHT_SERSIC) {
-	   std::cout << "[SphericalSource] SERSIC\n" ;
+	   if (DEBUG>1) std::cout << "[SphericalSource] SERSIC\n" ;
 	}
 }
 

@@ -212,7 +212,7 @@ void CosmoSim::initLens() {
          throw NotImplemented();
     }
     modelchanged = 0 ;
-    std::cout  << "[initLens] returning \n" ;
+    if (DEBUG) std::cout  << "[initLens] returning \n" ;
     return ;
 }
 
