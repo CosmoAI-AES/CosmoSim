@@ -283,7 +283,8 @@ class CosmoSim(cs.CosmoSim):
         if param.get( "imagesize" ) == None:
            param.__setitem__( "imagesize", self.getImageSize() )
         self._src = makeSource(param,verbose=self.verbose)
-        print( f"CosmoSim.makeSource() returns (verbose={self.verbose}" )
+        if self.verbose:
+            print( f"CosmoSim.makeSource() returns (verbose={self.verbose})" )
     def getRelativeEta(self,centrepoint):
         # print ( "[getRelativeEta] centrepoint=", centrepoint, "in Planar Co-ordinates"  )
         r = super().getRelativeEta(centrepoint[0],centrepoint[1])

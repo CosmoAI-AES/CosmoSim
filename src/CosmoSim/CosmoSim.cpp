@@ -168,7 +168,7 @@ void CosmoSim::initLens() {
           break ;
        case CSIM_NOPSI_PM:
           lens = psilens = new PointMass() ;
-          std::cout << "CSIM_NOPSI_PM\n" ;
+          if (DEBUG>1) std::cout << "CSIM_NOPSI_PM\n" ;
           break ;
        case CSIM_NOPSI:
           if (DEBUG) std::cout << "[initLens] Point Mass or No Lens (" 
@@ -192,7 +192,7 @@ void CosmoSim::initLens() {
        case CSIM_MODEL_POINTMASS_EXACT:
          if (DEBUG) std::cout << "Running Point Mass Lens (mode=" << modelmode << ")\n" ;
          sim = new PointMassExact( psilens ) ;
-         std::cout << "CSIM_MODEL_POINTMASS_EXACT\n" ;
+         if (DEBUG>1) std::cout << "CSIM_MODEL_POINTMASS_EXACT\n" ;
          break ;
        case CSIM_MODEL_RAYTRACE:
          if (DEBUG) std::cout << "Running Raytrace Lens (mode=" << modelmode << ")\n" ;

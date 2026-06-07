@@ -23,6 +23,7 @@ import sys
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+from ..CosmoSimPy import setDebug
 
 from .. import CosmoSim
 
@@ -41,6 +42,7 @@ class GenericSim:
         """
         if verbose is None: verbose=1
         self.verbose = verbose
+        setDebug( verbose )
         if verbose > 1: print( f"[GenericSim] init (verbose={verbose}) ..." )
 
         self.outcols = outcols

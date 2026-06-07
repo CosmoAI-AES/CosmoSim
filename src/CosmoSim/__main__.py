@@ -36,11 +36,10 @@ if __name__ == "__main__":
           epilog = '')
 
     args = parser.parse_args()
-    setDebug( args.verbose )
 
     if args.version:
         print( "CosmoSim version", __version__ )
     else:
-        cfg = parser.getConfig()
+        cfg = parser.getConfig( verbose=args.verbose )
         main( args, cfg )
         print( "[CosmoSim] done." )

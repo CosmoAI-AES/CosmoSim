@@ -197,7 +197,7 @@ def makeSingle(param=None,name=None,outcols=None,verbose=0):
     if param.get( "kappaplot" ): imsim.kappaplot()
     if param.get( "apparent" ): imsim.getApparent()
     if param.get( "actual" ): imsim.getActual()
-    print( "makeSingle() returns" )
+    if verbose: print( "makeSingle() returns" )
     return imsim
 
 def datagen(args,param=None):

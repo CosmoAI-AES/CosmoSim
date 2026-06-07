@@ -34,10 +34,11 @@ class Parameters:
     To add a row from the dataset, use the `serRow()` method.  Values
     from the row will always override other parameters.
     """
-    def __init__(self,fileconfig=None,cliconfig=None):
+    def __init__(self,fileconfig=None,cliconfig=None,verbosity=0):
 
         self._cliconfig = cliconfig
         self._fileconfig = fileconfig
+        self.verbosity = verbosity
 
         cfg = CascaDict( skel )
         if fileconfig:
@@ -51,10 +52,10 @@ class Parameters:
     def __str__(self): 
         return self.config.__str__()
     def setRow(self,row):
-        print( row )
+        if self.verbosity > 1: print( row )
         self._row = row
-        c = getConfig( self._row ) 
-        print( c )
+        c = getConfig( self._row, verbose=self.verbosity ) 
+        if self.verbosity: print( c )
         self.config = self._base.cascade( c )
     def get(self,key,default=None,verbose=0):
         if isinstance( key, str ):
@@ -169,9 +170,9 @@ CLI options currently unsupported
     "actual" : False, 
 """
 
-def getConfig( data, verbose=1 ):
+def getConfig( data, verbose=0 ):
       cfg = skel.copy()
-      print( "[getConfig]", data )
+      if verbose: print( "[getConfig]", data )
       flat = dict(data)
       if not "filename" in flat:
           try:
@@ -190,9 +191,9 @@ def getConfig( data, verbose=1 ):
                       d[subkey] = {}
                       d = d[subkey]
               d[key[-1]] = flat[k]
-              print( f"[getConfig] {k} -> {key} ({flat[k]})" )
+              if verbose: print( f"[getConfig] {k} -> {key} ({flat[k]})" )
           else:
-              print( f"[getConfig] {k} -> not found ({flat[k]})" )
+              if verbose: print( f"[getConfig] {k} -> not found ({flat[k]})" )
       return cfg
 class CosmoParser(argparse.ArgumentParser):
   """Argument Parser for CosmoSim.
@@ -205,13 +206,13 @@ class CosmoParser(argparse.ArgumentParser):
       if not hasattr(self,"_args"):
           self._args = super().parse_args(*a,**kw)
       return self._args
-  def getConfig(self,*a,**kw):
+  def getConfig(self,*a,verbose=0,**kw):
       """Return the configuration as a nested `dict` structure.
       The arguments are parsed if required.
       """
       if not hasattr(self,"_args"):
           self._args = super().parse_args(*a,**kw)
-      return getConfig( self._args.__dict__ )
+      return getConfig( self._args.__dict__, verbose=verbose )
   def __init__(self,*a,**kw):
     super().__init__(*a,**kw)
 
