@@ -8,6 +8,7 @@ clean alltests:
 	cd exactpm ; $(MAKE) $@
 	cd raytrace ; $(MAKE) $@
 	cd roulette ; $(MAKE) $@
+	cd old-sampled ; $(MAKE) $@
 	cd roulettepm ; $(MAKE) $@
 	cd new-roulette ; $(MAKE) $@
 	cd new-raytrace ; $(MAKE) $@
@@ -25,6 +26,7 @@ cpptests:
 	cd exactpm ; $(MAKE) alltests
 	cd raytrace ; $(MAKE) alltests
 	cd roulette ; $(MAKE) alltests
+	cd old-sampled ; $(MAKE) alltests
 	cd roulettepm ; $(MAKE) alltests
 	cd new-roulette ; $(MAKE) alltests
 	cd new-raytrace ; $(MAKE) alltests
@@ -41,6 +43,7 @@ baselines:
 	cd exactpm ; $(MAKE) baseline`date "+%Y%m%d"`
 	cd raytrace ; $(MAKE) baseline`date "+%Y%m%d"` 
 	cd roulette ; $(MAKE) baseline`date "+%Y%m%d"` 
+	cd old-sampled ; $(MAKE) baseline`date "+%Y%m%d"` 
 	cd roulettepm ; $(MAKE) baseline`date "+%Y%m%d"`
 	cd new-roulette ; $(MAKE)  baseline`date "+%Y%m%d"`
 	cd new-raytrace ; $(MAKE)  baseline`date "+%Y%m%d"`
