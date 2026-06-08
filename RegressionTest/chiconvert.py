@@ -1,5 +1,9 @@
 #! /usr/bin/env python
 
+"""
+Update data sets for v3.0.0 with angular co-ordinates.
+"""
+
 import pandas as pd
 import argparse
 
