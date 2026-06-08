@@ -20,7 +20,7 @@ void SampledLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
     ij = imageCoordinate( xi, psi ) ;
 
     if (DEBUG) std::cout
-              << "[SampledLens::calculateAlpaBeta] xi in image space is "
+              << "[SampledLens::calculateAlpaBeta] xi in pixel coordinates is "
               << ij << "; nterms=" << nterms << "\n" ;
 
     for ( mp = 0; mp <= nterms; mp++){

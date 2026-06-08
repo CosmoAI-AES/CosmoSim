@@ -307,7 +307,8 @@ class CosmoSim(cs.CosmoSim):
         """
         Get the roulette amplitudes for a given point in the source plane.
         """
-        # print ( "[getAlphaBetas] pt=", pt, "in Planar Co-ordinates"  )
+        if self.verbose>1:
+            print ( "[getAlphaBetas] pt=", pt, "in Planar Co-ordinates"  )
         if pt == None:
            r = [ (self.getAlphaXi(m,s),self.getBetaXi(m,s)) for (m,s) in getMS(maxm) ]
         else:
