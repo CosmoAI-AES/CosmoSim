@@ -42,6 +42,16 @@ baselines:
 	cd raytrace ; $(MAKE) baseline`date "+%Y%m%d"` 
 	cd roulette ; $(MAKE) baseline`date "+%Y%m%d"` 
 	cd roulettepm ; $(MAKE) baseline`date "+%Y%m%d"`
+	cd new-roulette ; $(MAKE)  baseline`date "+%Y%m%d"`
+	cd new-raytrace ; $(MAKE)  baseline`date "+%Y%m%d"`
+	cd sampled-roulette ; $(MAKE)  baseline`date "+%Y%m%d"`
+	cd sampled-raytrace ; $(MAKE)  baseline`date "+%Y%m%d"`
+	cd cluster-roulette ; $(MAKE)  baseline`date "+%Y%m%d"`
+	cd cluster-raytrace ; $(MAKE)  baseline`date "+%Y%m%d"`
+	cd cluster-sampled-roulette ; $(MAKE)  baseline`date "+%Y%m%d"`
+	cd cluster-sampled-raytrace ; $(MAKE)  baseline`date "+%Y%m%d"`
+	cd roulettegen-old ; $(MAKE)  baseline`date "+%Y%m%d"`
+	cd roulettegen ; $(MAKE)  baseline`date "+%Y%m%d"`
 false:
 	/bin/false | tee test.log ; echo $${PIPESTATUS[0]} $${PIPESTATUS[1]} 
 true:
