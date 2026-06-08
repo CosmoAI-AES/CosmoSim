@@ -133,3 +133,6 @@ if __name__ == "__main__":
     cv2.imwrite( args.newversion, im2 )
     cv2.imwrite( args.withaxes, im )
 
+def imageDiff(im1,im2):
+    return ( (im1.astype(float) - im2.astype(float) + 256)/2 ).astype(np.uint8)
+
