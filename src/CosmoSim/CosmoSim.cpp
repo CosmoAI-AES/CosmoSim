@@ -41,6 +41,7 @@ cv::Point2d CosmoSim::getRelativeEta( double x, double y ) {
 } ;
 cv::Point2d CosmoSim::getOffset( double x, double y ) {
    // Input (x,y) is the centre point $\nu$ 
+   if (DEBUG>2) std::cout << "[CosmoSim::getOffset] " << x << "," << y << std::endl ;
    return sim->getOffset( cv::Point2d( x,y ) ) ; 
 } ;
 cv::Point2d CosmoSim::getNu( ) {

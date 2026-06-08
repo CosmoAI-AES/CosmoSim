@@ -296,10 +296,12 @@ class CosmoSim(cs.CosmoSim):
         a = np.array(nu)
         return ( a[0] - centrepoint[0], a[1] - centrepoint[1] )
     def getOffset(self,centrepoint):
-        # print ( "[getOffset] centrepoint=", centrepoint, "in Planar Co-ordinates"  )
+        if self.verbose > 2:
+            print ( "[getOffset] centrepoint=", centrepoint, "in Planar Co-ordinates"  )
         r = super().getOffset(centrepoint[0],centrepoint[1])
         a = np.array(r)
-        # print ( "[getOffset] r=", a )
+        if self.verbose > 2:
+            print ( "[getOffset] r=", a )
         return (a[0],a[1])
     def getAlphaBetas(self,maxm=2,pt=None):
         """

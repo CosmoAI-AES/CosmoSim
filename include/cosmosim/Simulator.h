@@ -27,7 +27,6 @@ private:
 protected:
     cv::Point2d etaOffset = cv::Point2d(0,0) ;
         // Offset in the source plane resulting from moving xi
-	//
 
     virtual void updateInner();
     cv::Mat imgDistorted;

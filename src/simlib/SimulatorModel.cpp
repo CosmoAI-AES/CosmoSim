@@ -377,6 +377,7 @@ void SimulatorModel::setXi( cv::Point2d xi1 ) {
 
    // etaOffset is the difference between source point corresponding to the
    // reference point in the lens plane and the actual source centre
+   if (DEBUG>2) std::cout << "[setXi] " << xi1 << std::endl ;
    etaOffset = getOffset( xi1 ) ;
 }
 void SimulatorModel::setLens( Lens *l ) {
@@ -419,4 +420,6 @@ void SimulatorModel::updateApparentAbs( ) {
 void SimulatorModel::setMaskRadius( double r ) {
    maskRadius = r ;
 }
-cv::Point2d SimulatorModel::getDistortedPos(double r, double theta) const { throw NotImplemented() ; }
+cv::Point2d SimulatorModel::getDistortedPos(double r, double theta) const {
+   throw NotImplemented() ; 
+}

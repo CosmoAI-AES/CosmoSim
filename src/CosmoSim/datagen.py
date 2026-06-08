@@ -63,6 +63,7 @@ class SimImage(GenericSim):
             print( "[datagen.py] Finding Alpha/beta; centrepoint=", centrepoint )
         # r = pd.Series([ row[x] for x in self.outcols ], index=self.outcols )
         releta = sim.getRelativeEta(centrepoint=centrepoint)
+        if self.verbose > 2: print( "[SimImage.getData] ", centrepoint )
         offset = sim.getOffset(centrepoint=centrepoint)
         xioffset = sim.getXiOffset(centrepoint)
         if xireference:
@@ -217,6 +218,8 @@ def datagen(args,param=None):
     print( "columns:", outcols )
     dfs = []
     for index,row in frame.iterrows():
+        if args.verbose:
+            print( "[datagen] Processing", index )
         param.setRow( row )
         imsim = makeSingle(param,name=args.name,outcols=outcols,verbose=args.verbose)
         if args.outfile:
