@@ -8,11 +8,11 @@ if test -r $D/bin/activate
 then
    . $D/bin/activate
 else
+   sh Setup/build.sh
+
    mkdir -p venv
    python -m venv $D
    . $D/bin/activate
-
-   sh Setup/build.sh
 
    pip install jupytext jupyterlab 
    pip install -e .
