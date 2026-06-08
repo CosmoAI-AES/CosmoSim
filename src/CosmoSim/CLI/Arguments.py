@@ -224,8 +224,8 @@ class CosmoParser(argparse.ArgumentParser):
             help="simulation model")
     self.add_argument('-S', '--source',
             default="Spherical", help="source model")
-    self.add_argument('-G', '--sampled', action='store_true',
-            default=False, help="Sample the lens model")
+    self.add_argument('-G', '--sampled', action=argparse.BooleanOptionalAction,
+            default=None, help="Sample the lens model")
 
     # Model Parameters
     self.add_argument('-x', '--x', type=float, default=0, help="x coordinate")

@@ -1,5 +1,12 @@
 # CosmoSim Change Log
 
+## 3.0.0b2 - 2026-06-08
+
+### Fixed
+
++ Bugfix with `--outfile` option which broke in b1.
++ Made `--sampled` option optional, defaulting to `None`.
+
 ## 3.0.0b1 - 2026-05-29
 
 ### Changed
