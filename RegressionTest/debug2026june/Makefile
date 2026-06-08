@@ -10,9 +10,9 @@ unsampled.csv:
 	python -m CosmoSim $O --csvfile $F --dir unsampled --outfile unsampled.csv --no-sampled --model Roulette | tee unsampled.log
 
 resampled.log: sampled.csv
-	python -m CosmoSim $O --roulette $< --dir resampled --outfile resampled.csv | tee resampled.log
+	python -m CosmoSim $O --roulette $< --dir resampled | tee resampled.log
 reunsampled.log: unsampled.csv
-	python -m CosmoSim $O --roulette $< --dir reunsampled --outfile reunsampled.csv | tee reunsampled.log
+	python -m CosmoSim $O --roulette $< --dir reunsampled | tee reunsampled.log
 
 clean: 
 	rm -f *.log
