@@ -1,12 +1,19 @@
 # CosmoSim Change Log
 
-## 3.0.0b2 - unreleased
+## 3.0.0b3 - unreleased
 
 ### Changed
 
 + Interpret images in the lens plane, removing CHI as a parameter. 
 + Most of the debug messages from C++ can be controled with the verbose
   setting from python.
+
+## 3.0.0b2 - 2026-06-08
+
+### Fixed
+
++ Bugfix with `--outfile` option which broke in b1.
++ Made `--sampled` option optional, defaulting to `None`.
 
 ## 3.0.0b1 - 2026-05-29
 
