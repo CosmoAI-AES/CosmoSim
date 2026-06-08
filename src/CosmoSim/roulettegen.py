@@ -155,7 +155,7 @@ def rgen(args,param):
     for index,row in frame.iterrows():
         print( "[roulettegen.py] Processing", index )
         param.setRow( row )
-        imsim = Resim( row, sim, param=param )
+        imsim = Resim( row, sim, param=param, verbose=args.verbose )
         imsim.saveImage()
 
         if param.get( "actual" ): imsim.getActual()

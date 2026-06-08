@@ -4,7 +4,6 @@ import os
 
 from .roulettegen import rgen
 from .datagen import datagen,makeSingle
-from .CosmoSimPy import setDebug
 
 from .CLI.Arguments import CosmoParser,Parameters
 

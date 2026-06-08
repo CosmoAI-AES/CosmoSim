@@ -22,8 +22,7 @@ cv::Point2d RouletteModel::getDistortedPos(double r, double theta) const {
    // It is scaled to the lens plane and rescaled when rpt is calculated below.
     double nu1 = r*cos(theta) ;
     double nu2 = r*sin(theta) ;
-
-
+    
     for (int m=1; m<=nterms; m++){
         double frac = pow(r, m) / factorial_(m);
         double subTerm1 = 0;
@@ -46,11 +45,10 @@ cv::Point2d RouletteModel::getDistortedPos(double r, double theta) const {
     cv::Point2d rpt = cv::Point2d( nu1, nu2 ) ;
 
     if ( DEBUG && (r < 2) ) {
-       std::string s = "No lens" ;
-       std::cout << "[getDistortedPos] nu=" << rpt << 
-          " theta=" << theta << " r=" << r << "\n" ;
-       if ( lens != NULL ) s = lens->idString() ;
-       std::cout << s << cv::Point2d(r,theta) << "->" << rpt << std::endl ;
+       std::string s = lens == NULL ? "No lens" : lens->idString() ;
+       std::cout << "[getDistortedPos(" << DEBUG << ")] nu=" << rpt << 
+          " theta=" << theta << " r=" << r 
+	  << " (" << s << ") " << cv::Point2d(r,theta) << "->" << rpt << std::endl ;
     }
 
     return rpt ;

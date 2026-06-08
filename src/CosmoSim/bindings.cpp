@@ -13,7 +13,9 @@ PYBIND11_MODULE(CosmoSimPy, m) {
     m.doc() = "Wrapper for the CosmoSim simulator" ;
 
     m.def("getDebug", []() { return debug ; });
-    m.def("setDebug", [](int val) { debug  = val; });
+    m.def("setDebug", [](int val) { 
+	  std::cout << "[setDebug] " << val << std::endl ;
+	  debug  = val; });
 
     py::class_<CosmoSim>(m, "CosmoSim")
         .def(py::init<>())
