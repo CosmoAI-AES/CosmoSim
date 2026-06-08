@@ -4,6 +4,9 @@ echo Running: $0
 bindir=`dirname $0`
 echo Running from $bindir
 
+# Default
+opts="-Z 400"
+
 if test -f ./makeimages.sh
 then
    echo Starting ./makeimages.sh
@@ -19,4 +22,4 @@ mkdir -p $dir
 test $csv || csv=debug.csv
 echo $csv
 
-python -m CosmoSim $opts -Z 400 --directory="$dir" --csvfile $csv  || exit 1
+python -m CosmoSim $opts --directory="$dir" --csvfile $csv  || exit 1
