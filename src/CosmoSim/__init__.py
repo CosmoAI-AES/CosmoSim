@@ -15,7 +15,7 @@ Parameters = Arguments.Parameters
 
 import traceback
 
-__version__ = "3.0.0b3"
+__version__ = "3.0.0b4"
 
 ModelSpec = cs.ModelSpec
 SourceSpec = cs.SourceSpec
@@ -215,12 +215,16 @@ lightProfileDict = {
         }
 
 def getMS(minm,maxm=None):
+    if minm is None:
+        raise RuntimeError( "None argument to getMS()." )
     if maxm is None:
         maxm = minm
         minm = 0
     return [ (m,s) for m in range(minm,maxm+1)
                                     for s in range(1-m%2,m+2,2) ]
 def getMSheaders(maxm): 
+    if maxm is None:
+        raise RuntimeError( "None argument to getMSheaders()." )
     r = [ ( f"alpha[{m}][{s}]", f"beta[{m}][{s}]") for (m,s) in getMS(maxm) ]
     return [ x for p in r for x in p ]
 
