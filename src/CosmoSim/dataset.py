@@ -25,7 +25,6 @@ def tomldefaults(toml):
     toml["source"] = toml.get( "source", {} )
     toml["lens"] = toml.get( "lens", {} )
 
-
 def configs(toml):
     r = toml["simulator"].get( "configs", [ "ss" ] )
     if isinstance(r, str): r = [ r ] 
@@ -116,20 +115,16 @@ def getline(idx,toml):
                "R", "phi", "einsteinR", "ellipseratio", "orientation",
                "sigma", "sigma2", "theta", "n_sersic", "luminosity", "nterms", "x", "y" ]
         )
-    # return f'"{idx:04}","image-{idx:04}.png",{src},{cfg},{chi},' \
-    #      + f'{R},{phi},{einsteinR},{sigma},{sigma2},{theta},{nterms},{x},{y}'
 
-header = ( "index,filename,source,config,chi,"
-         + "R,phi,einsteinR,sigma,sigma2,theta,nterms,x,y\n"
-         )
-
-def datasetgen(infile,outfile=None):
+def datasetgen(infile,outfile=None,verbose=1):
     with open(infile, 'rb') as f:
         toml = tl.load(f)
     tomldefaults(toml)
-    print(toml)
-    print(configs(toml))
-    print(srcmode(toml))
+    if verbose > 1:
+       print(toml)
+    if verbose > 0:
+       print(configs(toml))
+       print(srcmode(toml))
 
     n = toml["simulator"].get( "size", 10000 )
     df = pd.DataFrame( [ getline(i+1,toml) for i in range(n) ] )
