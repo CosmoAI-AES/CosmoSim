@@ -1,5 +1,11 @@
 # CosmoSim Change Log
 
+## 3.0.0b4 - unreleased
+
+### Fixed
+
++ Bugfix.  Needs default for nterms
+
 ## 3.0.0b3 - unreleased
 
 ### Changed
