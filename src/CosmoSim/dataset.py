@@ -18,6 +18,10 @@ import argparse
 import pandas as pd
 
 def isnumeric(x): return isinstance(x, numbers.Number )
+def fromPolar(R,phi): 
+        x = R*np.cos(np.pi*phi/180)
+        y = R*np.sin(np.pi*phi/180)
+        return (x,y)
 
 def tomldefaults(toml):
     toml["simulator"] = toml.get( "simulator", {} )
@@ -25,8 +29,22 @@ def tomldefaults(toml):
     toml["source"] = toml.get( "source", {} )
     toml["lens"] = toml.get( "lens", {} )
 
+def simodels(toml):
+    r = toml["simulator"].get( "model", None )
+    if r is None:
+        r = toml["simulator"].get( "models", None )
+    if isinstance(r, str): r = [ r ] 
+    return r
+def lensmodes(toml):
+    r = toml["lens"].get( "mode", None )
+    if r is None:
+        r = toml["lens"].get( "modes", None )
+    if isinstance(r, str): r = [ r ] 
+    return r
 def configs(toml):
-    r = toml["simulator"].get( "configs", [ "ss" ] )
+    r = toml["simulator"].get( "config", None )
+    if r is None:
+        r = toml["simulator"].get( "configs", None )
     if isinstance(r, str): r = [ r ] 
     return r
 def srcmode(toml):
@@ -65,23 +83,16 @@ def exponential(toml,key,rng=(0,50),lam=0.8):
     except:
         return None
 
-def getline(toml,idx=0,fn=None):
+def rndsource(toml,verbose=1):
 
-    nterms = toml["simulator"].get( "nterms", 16 )
-    chi = uniform(toml["lens"], "chi", (30,70) )
+    src = random.choice( srcmode(toml) )
 
-    # Source
     sigma = uniform( toml["source"], "sigma", (1,60) )
     sigma2 = uniform( toml["source"], "sigma2", (1,40) )
     theta = uniform( toml["source"], "theta", (0,179) )
     coor = toml["source"].get( "position", "cartesian" )
     n_sersic = uniform(toml["source"], "n_sersic", (1,5))
     luminosity = exponential(toml["source"], "luminosity", (1,20), 2.0)
-
-    # Lens
-    einsteinR = uniform( toml["lens"], "einstein", (10,50) )
-    orientation = uniform( toml["lens"], "orientation", rng=None )
-    ellipseratio = uniform( toml["lens"], "ellipseratio", rng=None )
 
     if coor == "polar":
         # Polar Source Co-ordinates
@@ -94,8 +105,7 @@ def getline(toml,idx=0,fn=None):
         R =  random.uniform(rmin,rmax)
 
         # Cartesian Co-ordinates
-        x = R*np.cos(np.pi*phi/180)
-        y = R*np.sin(np.pi*phi/180)
+        (x,y) = fromPolar(R,phi)
     else:
         # Cartesian Co-ordinates
         (x,y) = (0,0)
@@ -105,19 +115,84 @@ def getline(toml,idx=0,fn=None):
         R = np.sqrt( x*x + y*y )
         phi = np.atan2(x,y)
 
-    src = random.choice( srcmode(toml) )
-    cfg = random.choice( configs(toml) )
-    if fn is None: fn = f"image-{idx:06}.png"
     return pd.Series(
-        data=[ idx,fn, src, cfg, chi, R, phi,
-               einsteinR, ellipseratio, orientation, 
-               sigma, sigma2, theta, n_sersic, luminosity, nterms, x, y ],
-        index=[ "index", "filename", "source", "config", "chi", 
-               "R", "phi", "einsteinR", "ellipseratio", "orientation",
-               "sigma", "sigma2", "theta", "n_sersic", "luminosity", "nterms", "x", "y" ]
+        data=[ src, R, phi, sigma, sigma2, theta, n_sersic, luminosity, x, y ],
+        index=[ "source", "R", "phi", "sigma", "sigma2", "theta", "n_sersic", "luminosity", "x", "y" ]
         )
 
+def rndlens(toml,verbose=1):
+    einsteinR = uniform( toml["lens"], "einstein", (10,50) )
+    orientation = uniform( toml["lens"], "orientation", rng=None )
+    ellipseratio = uniform( toml["lens"], "ellipseratio", rng=None )
+
+    return pd.Series(
+        data=[  einsteinR, ellipseratio, orientation ] 
+        index=[ "einsteinR", "ellipseratio", "orientation" ]
+        )
+
+def lensString(toml,verbose=0):
+    param = rndlens(toml,verbose)
+    eR = param["einsteinR"]
+    rmax = 1.2*eR
+    phi = random.uniform(0,359)
+    r = random.uniform(0,rmax)
+    (x,y) = fromPolar( r, phi )
+    try:
+       lens = toml.get["lens"].get( "mode" )
+    except:
+        raise RuntimeError( "Lens model undefined" )
+    ls = [ lens, x, y, eR ]
+    if lens == "SIE":
+        ls.extend( [ str(param["ellipseratio"]), str(param["orientation"]) ] )
+    elif lens == "SIS":
+        pass
+    else:
+        raise RuntimeError( f"Unknown lens model {lens}" )
+    return "/".join( ls )
+
+def getline(toml,idx=0,fn=None):
+    """
+    Get random parameters for one lensing system, using the distribution defined
+    by argument `toml`.  The return value is a pandas Series object, which includes
+    the index `idx` and filename `fn` as fields.
+    """
+
+    if fn is None: fn = f"image-{idx:06}.png"
+
+    r = pd.Series ( { "index" : idx
+                    , "filename" : fn
+                    } )
+
+    cfg = random.choice( simodels(toml) )
+    if cfg is not None: r["config"] = cfg 
+    cfg = random.choice( configs(toml) )
+    if cfg is not None: r["config"] = cfg 
+
+    nterms = toml["simulator"].get( "nterms", None )
+    if nterms is not None: r["nterms"] : nterms
+
+    s = rndsource( toml, verbosity )
+
+    cluster = toml.get( "cluster", None ) 
+    if cluster:
+        nc = toml["cluster"].get( "ncluster", 1 )
+        if nc > 1:
+            ls = [ lensString(toml) for i in range(nc) ]
+            l = pd.Series( { "cluster" : ";".join( ls ) } )
+        else:
+            raise RuntimeException( "[dataset.py] Singleton or malformed cluster lens" )
+    else:
+        cfg = random.choice( lensmodes(toml) )
+        if cfg is not None: c["lens"] = cfg 
+        l =  rndlens( toml, verbosity )
+
+    return pd.concat( [ r, l, s ] )
+
 def readtoml(infile,verbose=1):
+    """
+    Load a TOML file for dataset generation.
+    The return value is a nested dict.
+    """
     with open(infile, 'rb') as f:
         toml = tl.load(f)
     tomldefaults(toml)
