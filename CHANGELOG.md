@@ -1,5 +1,13 @@
 # CosmoSim Change Log
 
+## 3.0.0b6 - 2026-06-14
+
+### Added
+
++ getActualImage() function in the API
++ Random generation of datasets with cluster lenses (not tested)
+
+
 ## 3.0.0b5 - 2026-06-14
 
 ### Added
