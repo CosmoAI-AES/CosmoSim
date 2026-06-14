@@ -126,7 +126,7 @@ def rndlens(toml,verbose=1):
     ellipseratio = uniform( toml["lens"], "ellipseratio", rng=None )
 
     return pd.Series(
-        data=[  einsteinR, ellipseratio, orientation ] 
+        data=[  einsteinR, ellipseratio, orientation ],
         index=[ "einsteinR", "ellipseratio", "orientation" ]
         )
 
@@ -150,7 +150,7 @@ def lensString(toml,verbose=0):
         raise RuntimeError( f"Unknown lens model {lens}" )
     return "/".join( ls )
 
-def getline(toml,idx=0,fn=None):
+def getline(toml,idx=0,fn=None,verbose=1):
     """
     Get random parameters for one lensing system, using the distribution defined
     by argument `toml`.  The return value is a pandas Series object, which includes
@@ -163,15 +163,15 @@ def getline(toml,idx=0,fn=None):
                     , "filename" : fn
                     } )
 
-    cfg = random.choice( simodels(toml) )
-    if cfg is not None: r["config"] = cfg 
-    cfg = random.choice( configs(toml) )
-    if cfg is not None: r["config"] = cfg 
+    cfg = simodels(toml) 
+    if cfg is not None: r["config"] = random.choice( cfg )
+    cfg = configs(toml)
+    if cfg is not None: r["config"] = random.choice( cfg )
 
     nterms = toml["simulator"].get( "nterms", None )
     if nterms is not None: r["nterms"] : nterms
 
-    s = rndsource( toml, verbosity )
+    s = rndsource( toml, verbose )
 
     cluster = toml.get( "cluster", None ) 
     if cluster:
@@ -182,9 +182,9 @@ def getline(toml,idx=0,fn=None):
         else:
             raise RuntimeException( "[dataset.py] Singleton or malformed cluster lens" )
     else:
-        cfg = random.choice( lensmodes(toml) )
-        if cfg is not None: c["lens"] = cfg 
-        l =  rndlens( toml, verbosity )
+        cfg = lensmodes(toml)
+        if cfg is not None: c["lens"] = random.choice( cfg )
+        l =  rndlens( toml, verbose )
 
     return pd.concat( [ r, l, s ] )
 
