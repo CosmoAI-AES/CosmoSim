@@ -1,6 +1,6 @@
 # CosmoSim Change Log
 
-## 3.0.0b5 - unreleased
+## 3.0.0b5 - 2026-06-14
 
 ### Added
 
