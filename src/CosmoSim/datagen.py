@@ -57,7 +57,7 @@ class SimImage(GenericSim):
             centrepoint = self.centrepoint
         else:
             centrepoint = (0,0)
-        maxm = self.param.get( "nterms" )
+        maxm = self.param.get( "nterms", 16 )
         xireference = self.param.get( "xireference", True )
         if self.verbose > 0:
             print( "[datagen.py] Finding Alpha/beta; centrepoint=", centrepoint )
