@@ -98,6 +98,9 @@ class GenericSim:
         if self.verbose > 1: print ( "[GenericSim] ready for runSim()\n" ) ;
         self.sim.runSim()
         if self.verbose > 1: print ( "[GenericSim] runSim() completed\n" ) ;
+    def getActualImage(self):
+        param = self.param
+        return self.sim.getActualImage( reflines=param.get( "reflines" ) )
     def getActual(self):
         param = self.param
         name = self.name
