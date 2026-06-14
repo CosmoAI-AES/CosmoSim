@@ -1,12 +1,19 @@
 # CosmoSim Change Log
 
-## 3.0.0b4 - unreleased
+## 3.0.0b5 - unreleased
+
+### Added
+
++ New function `CosmoSim.dataset.readtoml` to read the config for dataset
+  generation.
+
+## 3.0.0b4 - 2026-06-13
 
 ### Fixed
 
 + Bugfix.  Needs default for nterms
 
-## 3.0.0b3 - unreleased
+## 3.0.0b3 - 2026-06-XX
 
 ### Changed
 

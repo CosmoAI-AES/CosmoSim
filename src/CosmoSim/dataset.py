@@ -116,10 +116,13 @@ def getline(idx,toml):
                "sigma", "sigma2", "theta", "n_sersic", "luminosity", "nterms", "x", "y" ]
         )
 
-def datasetgen(infile,outfile=None,verbose=1):
+def readtoml(infile,verbose=1):
     with open(infile, 'rb') as f:
         toml = tl.load(f)
     tomldefaults(toml)
+    return toml
+def datasetgen(infile,outfile=None,verbose=1):
+    toml = readtoml(infile,verbose)
     if verbose > 1:
        print(toml)
     if verbose > 0:
