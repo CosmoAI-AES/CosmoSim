@@ -65,7 +65,7 @@ def exponential(toml,key,rng=(0,50),lam=0.8):
     except:
         return None
 
-def getline(idx,toml):
+def getline(toml,idx=0,fn=None):
 
     nterms = toml["simulator"].get( "nterms", 16 )
     chi = uniform(toml["lens"], "chi", (30,70) )
@@ -107,8 +107,9 @@ def getline(idx,toml):
 
     src = random.choice( srcmode(toml) )
     cfg = random.choice( configs(toml) )
+    if fn is None: fn = f"image-{idx:06}.png"
     return pd.Series(
-        data=[ idx,f"image-{idx:06}.png", src, cfg, chi, R, phi,
+        data=[ idx,fn, src, cfg, chi, R, phi,
                einsteinR, ellipseratio, orientation, 
                sigma, sigma2, theta, n_sersic, luminosity, nterms, x, y ],
         index=[ "index", "filename", "source", "config", "chi", 
@@ -130,7 +131,7 @@ def datasetgen(infile,outfile=None,verbose=1):
        print(srcmode(toml))
 
     n = toml["simulator"].get( "size", 10000 )
-    df = pd.DataFrame( [ getline(i+1,toml) for i in range(n) ] )
+    df = pd.DataFrame( [ getline(toml,i+1) for i in range(n) ] )
     if outfile:
         df.to_csv( outfile, float_format="%.4f", index=False )
     return df
