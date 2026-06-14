@@ -1,10 +1,16 @@
-from . import __version__
+# (C) 2026: Hans Georg Schaathun <georg@schaathun.net> 
+
+"""
+The CosmoSim script generates synthetic images of gravitational
+lensing systems in bulk.
+"""
+
 
 import os
 
+from . import __version__
 from .roulettegen import rgen
 from .datagen import datagen,makeSingle
-
 from .CLI.Arguments import CosmoParser,Parameters
 
 def main(args,cfg):
