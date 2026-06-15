@@ -34,7 +34,7 @@ class Resim(GenericSim):
         super().__init__(**kw)
         if self.verbose>2: print( "[Resim.__init__]" )
         if sim is None: sim = RouletteRegenerator()
-        self.xireference = self.param.get( "xireference" )
+        self.xireference = self.param.get( "xireference", True )
         self.nterms = self.param.get( "nterms" )
         if self.verbose>1: print( "[Resim] nterms =", self.nterms )
 
