@@ -1,50 +1,30 @@
 # CosmoSim Change Log
 
-## 3.0.0b6 - 2026-06-14
+## 3.0.0b7 - 2026-06-15
+
+### Fixed 
+
++ Bugfixes in API for resimulation.
+
+## 3.0.0 - unreleased
 
 ### Added
 
-+ getActualImage() function in the API
-+ Random generation of datasets with cluster lenses (not tested)
-
-
-## 3.0.0b5 - 2026-06-14
-
-### Added
-
-+ New function `CosmoSim.dataset.readtoml` to read the config for dataset
-  generation.
-
-## 3.0.0b4 - 2026-06-13
-
-### Fixed
-
-+ Bugfix.  Needs default for nterms
-
-## 3.0.0b3 - 2026-06-XX
++ Made random dataset generation available as API functions.
+    + New function `CosmoSim.dataset.readtoml` to read the config 
++ Random generation of datasets with cluster lenses 
++ Better control of verbosity level, including runtim suppression of debug messages from C++
+  modules.
 
 ### Changed
 
 + Interpret images in the lens plane, removing CHI as a parameter. 
-+ Most of the debug messages from C++ can be controled with the verbose
-  setting from python.
-
-## 3.0.0b2 - 2026-06-08
-
-### Fixed
-
-+ Bugfix with `--outfile` option which broke in b1.
-+ Made `--sampled` option optional, defaulting to `None`.
-
-## 3.0.0b1 - 2026-05-29
-
-### Changed
-
 + Unified the scripts into the main module.  All command line features are
-  now run as `python -m CosmoSim`.
+  now run as `python -m CosmoSim`, except random dataset generation.
 
 ### Fixed
 
++ Made `--sampled` option optional, defaulting to `None`.
 + Removed analytic but flawed calculation of apparent source position for SIE.
   It now falls back on fix-point iteration which works.
 
