@@ -51,7 +51,8 @@ class SimImage(GenericSim):
         """
         if self.verbose: print( "[SimImage] setParameters()" )
         return setParameters(self.sim,row,verbose=self.verbose)
-    def getData(self):
+    def getData(self,verbose=None):
+        if verbose is None: verbose = self.verbose
         sim = self.sim
         if self.param.get( "centred" ):
             centrepoint = self.centrepoint
@@ -59,19 +60,20 @@ class SimImage(GenericSim):
             centrepoint = (0,0)
         maxm = self.param.get( "nterms", 16 )
         xireference = self.param.get( "xireference", True )
-        if self.verbose > 0:
+        if verbose > 0:
             print( "[datagen.py] Finding Alpha/beta; centrepoint=", centrepoint )
         # r = pd.Series([ row[x] for x in self.outcols ], index=self.outcols )
         releta = sim.getRelativeEta(centrepoint=centrepoint)
-        if self.verbose > 2: print( "[SimImage.getData] ", centrepoint )
+        if verbose > 2: print( "[SimImage.getData] ", centrepoint )
         offset = sim.getOffset(centrepoint=centrepoint)
+        if verbose: print( "[getData] ", offset, centrepoint )
         xioffset = sim.getXiOffset(centrepoint)
         if xireference:
-            if self.verbose>1:
+            if verbose>1:
                 print( "[xireference=True] nterms =", maxm )
             ab = sim.getAlphaBetas(maxm)
         else:
-            if self.verbose>1:
+            if verbose>1:
                 print( "[xireference=False] nterms =", maxm )
             ab = sim.getAlphaBetas(maxm,pt=centrepoint)
         relcols = [ "centreX", "centreY",
@@ -93,8 +95,8 @@ class SimImage(GenericSim):
               index=relcols ) 
         r3 = pd.Series( ab, index=getMSheaders(maxm)) 
         r1 = pd.concat( [ r1, r2, r3 ] )
-        if self.verbose > 1:
-            print( f"New row (verbosity={self.verbose})" )
+        if verbose > 1:
+            print( f"New row (verbosity={verbose})" )
             print( r1 )
         return r1
     def join(self):

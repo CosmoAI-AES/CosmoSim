@@ -10,7 +10,13 @@ EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2, double thet,
         theta(thet),
         lightprofile(lightprf),
         Source::Source(sz)
-{ }
+{ if (DEBUG) std::cout << "[EllipsoidSource ] sz=" << sz
+                       << "; sigma1=" << sig1
+                       << "; sigma2=" << sig2
+                       << "; theta=" << thet
+                       << "; lightprf=" << lightprf
+		       << std::endl ;
+}
 EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2 ) :
         EllipsoidSource(sz,sig1,sig2,0,CSIM_LIGHT_GAUSSIAN)
 { }

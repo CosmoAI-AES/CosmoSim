@@ -394,14 +394,22 @@ cv::Point2d SimulatorModel::getRelativeEta( cv::Point2d xi1 ) {
    // returns $\vec\eta''$
    cv::Point2d releta ;
    releta = getEta() - xi1 ;
+   if (DEBUG) {
+     std::cout << "[getRelativeEta] eta=" << getEta() << "; xi1=" << xi1
+             << "; releta=" << releta << std::endl ;
+   }
    return releta ;
 }
 
 cv::Point2d SimulatorModel::getOffset( cv::Point2d xi1 ) {
    cv::Point2d releta, eta, r ; 
+   double dx = lens->psiXvalue( xi1.x, xi1.y ),
+	  dy = lens->psiYvalue( xi1.x, xi1.y ) ;
 
-   releta = xi1 - cv::Point2d( lens->psiXvalue( xi1.x, xi1.y ),
-                       lens->psiYvalue( xi1.x, xi1.y ) ) ;
+   dx = isnan( dx ) ? 0 : dx ;
+   dy = isnan( dy ) ? 0 : dx ;
+
+   releta = xi1 - cv::Point2d( dx, dy ) ;
    eta = getEta() ;
    r = releta - eta ;
 

@@ -95,7 +95,7 @@ def makeSourceConstellation(src,size,verbose=1):
         print( "makeSourceConstellation() returns" )
     return constellation
 
-def makeSource(param,verbose=0):
+def makeSource(param,verbose=1):
     """
     Factory function to create a Source object given the parameter list.
     """

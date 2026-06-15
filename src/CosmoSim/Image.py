@@ -10,9 +10,11 @@ import cv2
 import argparse
 import matplotlib.pyplot as plt
 
-def imshow(im):
+def imshow(im,title=None):
     plt.imshow(im,cmap="grey", vmin=0, vmax=255)
-
+    if title is not None:
+        plt.title( title )
+    plt.axis( "off" )
 
 def imageCoordinate( pt, im ):
     nrows, ncols = im.shape[:2]
