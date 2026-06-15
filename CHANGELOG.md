@@ -1,12 +1,8 @@
 # CosmoSim Change Log
 
-## 3.0.0b7 - 2026-06-15
 
-### Fixed 
 
-+ Bugfixes in API for resimulation.
-
-## 3.0.0 - unreleased
+## 3.0.0 - 2026-06-15
 
 ### Added
 
