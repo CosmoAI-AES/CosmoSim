@@ -16,7 +16,7 @@ clean alltests:
 	cd sampled-raytrace ; $(MAKE) $@
 	cd cluster-roulette ; $(MAKE) $@
 	cd cluster-raytrace ; $(MAKE) $@
-	# cd cluster-sampled-roulette ; $(MAKE) $@
+	cd cluster-sampled-roulette ; $(MAKE) $@
 	cd cluster-sampled-raytrace ; $(MAKE) $@
 	cd roulettegen-old ; $(MAKE) $@
 	cd roulettegen ; $(MAKE) $@
@@ -34,7 +34,7 @@ cpptests:
 	cd sampled-raytrace ; $(MAKE) alltests
 	cd cluster-roulette ; $(MAKE) alltests
 	cd cluster-raytrace ; $(MAKE) alltests
-	# cd cluster-sampled-roulette ; $(MAKE) alltests
+	cd cluster-sampled-roulette ; $(MAKE) alltests
 	cd cluster-sampled-raytrace ; $(MAKE) alltests
 	cd roulettegen-old ; $(MAKE) alltests
 	cd roulettegen ; $(MAKE) alltests
