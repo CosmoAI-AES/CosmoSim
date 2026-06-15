@@ -332,7 +332,7 @@ def setParameters(sim,row,verbose=1):
     if row.get("model",None) != None:
         sim.setModelMode( row.get( "model" ) )
     if row.get("sampled",None) != None:
-        print( row )
+        if verbose>1: print( row )
         sim.setSampled( row.get( "sampled" ) )
     if row.get("einsteinR",None) != None:
         sim.setEinsteinR( row.get( "einsteinR" ) )

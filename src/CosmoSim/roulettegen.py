@@ -80,7 +80,7 @@ class Resim(GenericSim):
                 print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
                 print( row )
         rsim.setCentrePy( *pt )
-        print( "Initialised simulator at point", pt )
+        if self.verbose: print( "Initialised simulator at point", pt )
 
         for m in range(maxm+1):
             for s in range((m+1)%2, m+2, 2):
@@ -98,15 +98,15 @@ class Resim(GenericSim):
     def loadData( self, csvfile ):
         if self.verbose>2: print( "[loadData]" )
         if isinstance(csvfile,pd.DataFrame):
-            print( "Received dataframe for resimulation" )
+            if self.verbose: print( "Received dataframe for resimulation" )
             frame = csvfile
             cols = frame.columns
         elif isinstance(csvfile,pd.Series):
-            print( "Received pandas series for resimulation" )
+            if self.verbose: print( "Received pandas series for resimulation" )
             frame = csvfile
             cols = frame.axes[0]
         else:
-            print( "Load CSV file:", csvfile )
+            if self.verbose: print( "Load CSV file:", csvfile )
             frame = pd.read_csv(csvfile,index_col="filename")
             cols = frame.columns
         if self.verbose>1: print( "columns:", cols )
@@ -133,7 +133,7 @@ def rgen(args,param):
     roulette amplitudes based on a CLI args argument.
     """
     if args.roulette:
-        print( "Load CSV file:", args.roulette )
+        if self.verbose: print( "Load CSV file:", args.roulette )
         try:
             frame = pd.read_csv(args.roulette)
         except Exception as e:
@@ -153,7 +153,7 @@ def rgen(args,param):
     maxcount = param.get( ("management", "maxcount" ) )
 
     for index,row in frame.iterrows():
-        print( "[roulettegen.py] Processing", index )
+        if self.verbose: print( "[roulettegen.py] Processing", index )
         param.setRow( row )
         imsim = Resim( row, sim, param=param, verbose=args.verbose )
         imsim.saveImage()
@@ -165,7 +165,7 @@ def rgen(args,param):
             count += 1
             if count > maxcount: break
 
-    print( "[roulettegen.py] Done" )
+    if self.verbose: print( "[roulettegen.py] Done" )
 
 if __name__ == "__main__":
     sys.exit( "[roulettegen.py] Deprecated." )

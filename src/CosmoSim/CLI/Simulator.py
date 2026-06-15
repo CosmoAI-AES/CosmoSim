@@ -38,12 +38,14 @@ class GenericSim:
     """
     def __init__(self,param=None,name=None,outcols=None,verbose=1):
         """
-        Normally the constructor should
+        Normally the constructor should be overridden, calling the superclass
+        constructor first.
         """
         if verbose is None: verbose=1
         self.verbose = verbose
         setDebug( verbose )
         if verbose > 1: print( f"[GenericSim] init (verbose={verbose}) ..." )
+        sys.stdout.flush()
 
         self.outcols = outcols
 

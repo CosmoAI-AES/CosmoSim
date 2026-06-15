@@ -274,7 +274,7 @@ class CosmoSim(cs.CosmoSim):
             super().setFile( PsiSpec.SIS, getFileName( maxm ) )
             super().setFile( PsiSpec.SIE, os.path.join( dir, "sie05.txt" ) )
         else:
-            print( "Amplitudes file:", fn )
+            if verbose: print( "Amplitudes file:", fn )
             super().setFile( PsiSpec.SIS, fn )
             super().setFile( PsiSpec.SIE, fn )
         self._continue = True
@@ -338,7 +338,7 @@ class CosmoSim(cs.CosmoSim):
     def maskImage(self,scale=1):
         return super().maskImage( float(scale) )
     def setCluster(self,s):
-        print( f"[CosmoSim/py] setCluster({s})")
+        if self.verbose: print( f"[CosmoSim/py] setCluster({s})")
         sys.stdout.flush()
         ll = [ x.split("/") for x in s.split(";") ]
         self.lenslist = []
@@ -346,7 +346,7 @@ class CosmoSim(cs.CosmoSim):
         for lens in ll:
             lenstype = lens[0]
             lensparam = [ float(x) for x in lens[1:] ]
-            print( lenstype, ":", lensparam )
+            if self.verbose: print( lenstype, ":", lensparam )
             sys.stdout.flush()
             nl = len(lensparam)
             if nl < 3:
@@ -370,15 +370,15 @@ class CosmoSim(cs.CosmoSim):
             self.lenslist.append( l )
             cluster.addLens( l, x, y )
         self.cluster = cluster
-        print( f"[CosmoSim/py] setCluster calls setLens")
+        if self.verbose: print( f"[CosmoSim/py] setCluster calls setLens")
         sys.stdout.flush()
         super().setLens(cluster)
         return
     def setLensMode(self,s):
-        print( f"setLensMode({s})")
+        if self.verbose: print( f"setLensMode({s})")
         return super().setLensMode( int( lensDict[s] ) ) 
     def setModelMode(self,s):
-        print( f"setModelMode({s})")
+        if self.verbose: print( f"setModelMode({s})")
         # traceback.print_stack()
         return super().setModelMode( int( modelDict[s] ) ) 
     def setConfigMode(self,s,verbose=None):
@@ -422,7 +422,7 @@ class CosmoSim(cs.CosmoSim):
         have changed.  This triggers an event which will be handled
         when the simulator is idle.
         """
-        print( "CosmoSim.runSimulator() [python]" )
+        if self.verbose: print( "CosmoSim.runSimulator() [python]" )
         self.simEvent.set()
 
     def getApparentImage(self,reflines=True):
