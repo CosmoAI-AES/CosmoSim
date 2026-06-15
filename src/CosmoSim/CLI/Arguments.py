@@ -16,6 +16,7 @@ the key used in TOML and nested `dict`s.
 
 import argparse
 from cascadict import CascaDict
+from copy import deepcopy
 
 class Parameters:
     """
@@ -47,6 +48,8 @@ class Parameters:
            cfg = cfg.cascade( cliconfig )
         self._base = cfg
         self.reset()
+    def copy(self):
+        return deepcopy(self)
     def reset(self):
         self.config = self._base.cascade( {})
     def __str__(self): 
