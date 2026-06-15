@@ -4,5 +4,5 @@ include ../makefile-template
 
 roulette.csv: orig.csv
 	mkdir -p original
-	python3 ../../CosmoSimPy/datagen.py --directory=original --outfile $@ --csvfile $<
+	python -m CosmoSimPy --directory=original --outfile $@ --csvfile $<
 
