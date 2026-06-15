@@ -140,8 +140,11 @@ class GenericSim:
         if cropsize:
             im = crop(im,int( cropsize ) )
         return im
-    def getImage(self,centred=None,cropsize=None,reflines=None):
-        if centred is None: centred = self.param.get( "centred" )
+    def getImage(self,centred=None,cropsize=None,reflines=None,verbose=None):
+        if verbose is None: verbose = self.verbose
+        if centred is None:
+            centred = self.param.get( "centred" )
+            if verbose: print( "[getImage] centring from parameters:", centred )
         if reflines is None: reflines = self.param.get( "reflines" )
         if centred:
             im = self.centreimage.copy()
