@@ -138,10 +138,10 @@ def lensString(toml,verbose=0):
     r = random.uniform(0,rmax)
     (x,y) = fromPolar( r, phi )
     try:
-       lens = toml.get["lens"].get( "mode" )
+       lens = toml["lens"].get( "mode" )
     except:
         raise RuntimeError( "Lens model undefined" )
-    ls = [ lens, x, y, eR ]
+    ls = [ lens, str(x), str(y), str(eR) ]
     if lens == "SIE":
         ls.extend( [ str(param["ellipseratio"]), str(param["orientation"]) ] )
     elif lens == "SIS":
@@ -199,11 +199,11 @@ def readtoml(infile,verbose=1):
     return toml
 def datasetgen(infile,outfile=None,verbose=1):
     toml = readtoml(infile,verbose)
+    if verbose > 0:
+       print( "[datasetgen]", configs(toml))
+       print( "[datasetgen]", srcmode(toml))
     if verbose > 1:
        print(toml)
-    if verbose > 0:
-       print(configs(toml))
-       print(srcmode(toml))
 
     n = toml["simulator"].get( "size", 10000 )
     df = pd.DataFrame( [ getline(toml,i+1) for i in range(n) ] )
