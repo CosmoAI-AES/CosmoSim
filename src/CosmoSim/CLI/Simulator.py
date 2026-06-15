@@ -100,7 +100,13 @@ class GenericSim:
         if self.verbose > 1: print ( "[GenericSim] runSim() completed\n" ) ;
     def getActualImage(self):
         param = self.param
-        return self.sim.getActualImage( reflines=param.get( "reflines" ) )
+        try:
+           return self.sim.getActualImage( reflines=param.get( "reflines" ) )
+        except:
+           im = np.array( self.sim.getActual() )
+           if self.verbose: print( "actual image", type(im) )
+           if im.shape[2] == 1 : im.shape = im.shape[:2]
+           return im
     def getActual(self):
         param = self.param
         name = self.name
