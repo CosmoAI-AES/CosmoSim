@@ -42,7 +42,7 @@ class RouletteRegenerator(cs.RouletteRegenerator):
     def makeSource(self,param):
         if param.get( "imagesize" ) is None:
             raise Exception( "Image size not specified" )
-        self._src = makeSource(param)
+        self._src = makeSource(param,verbose=self.verbose)
         self.setSource( self._src )
         if self.verbose>1:
             print( "RouletteRegenerator.makeSource() returns" )
