@@ -56,6 +56,7 @@ private:
 
 public:
     CosmoSim();
+    ~CosmoSim();
 
     PsiFunctionLens *getLens( int ) ;
 

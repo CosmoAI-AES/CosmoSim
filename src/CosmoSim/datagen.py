@@ -29,11 +29,14 @@ class SimImage(GenericSim):
     Once the simulation has been run, various kinds of image and metadata can be
     retrieved from the object.
     """
-    def __init__(self,param,**kw):
+    def __init__(self,param,sim=None,**kw):
         super().__init__(param,**kw)
         if self.verbose: print( f"[SimImage] init (verbose={self.verbose}) ..." )
 
-        self.sim = CosmoSim(verbose=self.verbose)
+        if sim is None:
+            self.sim = CosmoSim(verbose=self.verbose)
+        else:
+            self.sim = sim
         msk = self.param.get( "mask", None )
         if msk is not None:
             if self.verbose: print( "[SimImage] sets mask", msk )
@@ -186,13 +189,13 @@ class SimImage(GenericSim):
         plt.savefig( fn )
         plt.close()
 
-def makeSingle(param=None,name=None,outcols=None,verbose=0):
+def makeSingle(param=None,name=None,outcols=None,sim=None,verbose=0):
     """Process a single parameter set, given either as a pandas row or
     just as args parsed from the command line.
     """
     if param is None: param = Parameters()
     if verbose: print( f"[makeSingle] verbose={verbose}" )
-    imsim = SimImage(param=param,name=name,outcols=outcols,verbose=verbose)
+    imsim = SimImage(param=param,name=name,outcols=outcols,sim=sim,verbose=verbose)
     imsim.saveImage()
     if param.get( "join" ): imsim.join()
     if param.get( "family" ): imsim.family()
@@ -218,14 +221,15 @@ def datagen(args,param=None):
     outcols = list(frame.columns)
     print( "columns:", outcols )
     dfs = []
+    sim = CosmoSim(verbose=args.verbose)
     for index,row in frame.iterrows():
         if args.verbose:
             print( "[datagen] Processing", index )
         param.setRow( row )
-        imsim = makeSingle(param,name=args.name,outcols=outcols,verbose=args.verbose)
+        imsim = makeSingle(param,name=args.name,outcols=outcols,sim=sim,verbose=args.verbose)
         if args.outfile:
             dfs.append( imsim.getData() )
-        imsim.close()
+    imsim.close()
     df = pd.DataFrame( dfs )
     if args.outfile:
            if args.mldata:

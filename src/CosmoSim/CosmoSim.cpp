@@ -20,6 +20,16 @@ CosmoSim::CosmoSim() {
    }
    rPos = -1 ;
 }
+CosmoSim::~CosmoSim() {
+   if (this->lens != NULL) delete this->lens ;
+   if (this->psilens != NULL) delete this->psilens ;
+   if (this->sim != NULL) delete this->sim ;
+   if (this->src != NULL) delete this->src ;
+   if (DEBUG) {
+      std::cout << "CosmoSim Destructor\n" ;
+   }
+}
+
 
 
 PsiFunctionLens *CosmoSim::getLens( int lensmode ) { 
@@ -231,12 +241,12 @@ void CosmoSim::configLens() {
    }
 
    if ( sampledlens ) {
-     if (DEBUG) std::cout << "[CosmoSim.initLens] ready to sample lens\n" ;
+     if (DEBUG) std::cout << "[CosmoSim.configLens] ready to sample lens\n" ;
      lens = new SampledPsiFunctionLens( psilens, size ) ;
-     if (DEBUG) std::cout << "[CosmoSim.initLens] lens sampled\n" ;
+     if (DEBUG) std::cout << "[CosmoSim.configLens] lens sampled\n" ;
      sim->setLens( lens ) ;
    } else {
-     if (DEBUG) std::cout << "[CosmoSim.initLens] no sampling\n" ;
+     if (DEBUG) std::cout << "[CosmoSim.configLens] no sampling\n" ;
    }
 }
 void CosmoSim::setEinsteinR(double r) { einsteinR = r ; }
