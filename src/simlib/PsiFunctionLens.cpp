@@ -25,7 +25,8 @@ void PsiFunctionLens::initAlphasBetas() {
     if (!input.is_open()) {
         throw std::runtime_error("Could not open file: " + filename);
     } else {
-       std::cout << "[initAlphasBetas] opened file " << filename << "\n" ;
+        if (DEBUG) std::cout 
+           << "[initAlphasBetas] opened file " << filename << "\n" ;
     }
 
     while (input) {
@@ -79,7 +80,7 @@ double PsiFunctionLens::getBetaXi( int m, int s ) {
 
 void PsiFunctionLens::setFile( std::string fn ) {
    filename = fn ;
-   std::cout << "setFile " << filename << "\n" ;
+   if (DEBUG) std::cout << "setFile " << filename << "\n" ;
 } 
 
 void PsiFunctionLens::setEinsteinR( double r ) { einsteinR = r ; }

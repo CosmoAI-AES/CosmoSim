@@ -127,13 +127,35 @@ class Resim(GenericSim):
         self.frame = frame
 
     
+def processResim(frame,param,maxcount=None,verbose=0):
+    """
+    Bulk simulation from a dataset.
+    The `frame` is normally a pandas DataFrame, with a row for
+    each lensing system.
+    """
+    count = 1
+    for index,row in frame.iterrows():
+        if verbose: print( "[roulettegen.py] Processing", index )
+        param.setRow( row )
+        imsim = Resim( row, sim, param=param, verbose=verbose )
+        imsim.saveImage()
+
+        if param.get( "actual" ): imsim.getActual()
+        if param.get( "apparent" ): imsim.getApparent()
+
+        if maxcount is not None:
+            count += 1
+            if count > maxcount: break
+
+
 def rgen(args,param):
     """
     This is the main procedure of the script, simulating a dataset of
     roulette amplitudes based on a CLI args argument.
     """
+    verbose = args.verbose
     if args.roulette:
-        if self.verbose: print( "Load CSV file:", args.roulette )
+        if verbose: print( "Load CSV file:", args.roulette )
         try:
             frame = pd.read_csv(args.roulette)
         except Exception as e:
@@ -149,23 +171,11 @@ def rgen(args,param):
     if not args.maskradius is None:
         sim.setMaskRadius( float(args.maskradius) )
 
-    count = 1
-    maxcount = param.get( ("management", "maxcount" ) )
+    maxcount = param.get( ("management", "maxcount" ), None )
 
-    for index,row in frame.iterrows():
-        if self.verbose: print( "[roulettegen.py] Processing", index )
-        param.setRow( row )
-        imsim = Resim( row, sim, param=param, verbose=args.verbose )
-        imsim.saveImage()
+    processResim(frame,param,maxcount,verbose=verbose)
 
-        if param.get( "actual" ): imsim.getActual()
-        if param.get( "apparent" ): imsim.getApparent()
-
-        if maxcount is not None:
-            count += 1
-            if count > maxcount: break
-
-    if self.verbose: print( "[roulettegen.py] Done" )
+    if verbose: print( "[roulettegen.py] Done" )
 
 if __name__ == "__main__":
     sys.exit( "[roulettegen.py] Deprecated." )

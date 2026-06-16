@@ -12,7 +12,7 @@ description: |
 
 on: 
    push:
-       branches: [ "develop", "build/pypi*", "refactor/workflow*" ]
+       branches: [ "build/pypi*", "refactor/workflow*" ]
    workflow_call:
    workflow_dispatch:
 
