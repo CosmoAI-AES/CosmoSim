@@ -17,8 +17,9 @@ Source::~Source() {
 Source::Source(int sz) :
         size(sz)
 { 
-    drawn = 0 ;
-    imgApparent = cv::Mat(size, size, CV_8UC1, cv::Scalar(0, 0, 0)) ;
+   drawn = 0 ;
+   imgApparent = cv::Mat(size, size, CV_8UC1, cv::Scalar(0, 0, 0)) ;
+   if (DEBUG>1) std::cout << "[Source] Constructor\n" ;
 }
 Source::Source() : Source(512) {}
 
