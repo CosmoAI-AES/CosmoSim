@@ -215,6 +215,8 @@ def datasetgen(infile,outfile=None,verbose=1):
     n = toml["simulator"].get( "size", 10000 )
     df = pd.DataFrame( [ getline(toml,i+1) for i in range(n) ] )
     if outfile:
+        if verbose:
+            print( "[datasetgen] Output", outfile )
         df.to_csv( outfile, float_format="%.4f", index=False )
     return df
 

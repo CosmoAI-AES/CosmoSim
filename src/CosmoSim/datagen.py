@@ -209,7 +209,7 @@ def datagen(args,param=None):
         raise RuntimeError( "CSV file needed for batch mode" )
     if args.rnd:
         if not args.csvfile:
-            raise Exception("The --toml option also requires --csvfile")
+            raise Exception("The --rnd option also requires --csvfile")
         frame = datasetgen(args.toml,args.csvfile)
     else:
         print( "Load CSV file:", args.csvfile )

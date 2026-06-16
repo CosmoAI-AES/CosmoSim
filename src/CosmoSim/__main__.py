@@ -7,6 +7,7 @@ lensing systems in bulk.
 
 
 import os
+import tomllib as tl
 
 from . import __version__
 from .roulettegen import rgen
