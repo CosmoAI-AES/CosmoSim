@@ -5,7 +5,7 @@
 
 #include <pybind11/pybind11.h>
 #ifndef DEBUG
-#define DEBUG 0
+#define DEBUG debug
 #endif
 namespace py = pybind11;
 
@@ -14,7 +14,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
 
     m.def("getDebug", []() { return debug ; });
     m.def("setDebug", [](int val) { 
-	  std::cout << "[setDebug] " << val << std::endl ;
+	  if (DEBUG) std::cout << "[setDebug] " << val << std::endl ;
 	  debug  = val; });
 
     py::class_<CosmoSim>(m, "CosmoSim")
