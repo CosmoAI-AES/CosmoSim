@@ -15,7 +15,7 @@ Parameters = Arguments.Parameters
 
 import traceback
 
-__version__ = "3.0.1b1"
+__version__ = "3.0.1b2"
 
 ModelSpec = cs.ModelSpec
 SourceSpec = cs.SourceSpec

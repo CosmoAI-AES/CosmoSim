@@ -215,7 +215,10 @@ class CosmoParser(argparse.ArgumentParser):
       """
       if not hasattr(self,"_args"):
           self._args = super().parse_args(*a,**kw)
-      return getConfig( self._args.__dict__, verbose=verbose )
+      d = self._args.__dict__
+      ks = [ k for k in d if d[k] is None ]
+      for k in ks: del d[k]
+      return getConfig( d, verbose=verbose )
   def __init__(self,*a,**kw):
     super().__init__(*a,**kw)
 
