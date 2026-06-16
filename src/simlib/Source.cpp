@@ -11,8 +11,8 @@
 
 #include <thread>
 
-
 Source::~Source() {
+   if (DEBUG>1) std::cout << "[Source] Destructor - destructed\n" ;
 }
 Source::Source(int sz) :
         size(sz)

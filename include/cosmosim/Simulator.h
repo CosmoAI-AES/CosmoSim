@@ -35,7 +35,7 @@ protected:
     virtual void distort(int row, int col, const cv::Mat &src, cv::Mat &dst);
     virtual void undistort(const cv::Mat &src, cv::Mat &dst);
 
-    Source *source ;
+    Source *source = NULL ;
     Lens *lens = NULL ;
     int nterms;
     double maskRadius=0 ;
