@@ -83,7 +83,7 @@ def exponential(toml,key,rng=(0,50),lam=0.8):
     except:
         return None
 
-def rndsource(toml,verbose=1):
+def rndsource(toml,einstein=50,verbose=1):
 
     src = random.choice( srcmode(toml) )
 
@@ -99,12 +99,19 @@ def rndsource(toml,verbose=1):
         phi = uniform( toml["position"], "phi", (0,359) )
         rmin = toml["position"].get( "r-min" )
         rmax = toml["position"].get( "r-max" )
-        if not isnumeric(rmin): rmin = einsteinR
+        if not isnumeric(rmin): rmin = einstein
         if not isnumeric(rmax): rmax = 2.5*rmin
 
         R =  random.uniform(rmin,rmax)
 
         # Cartesian Co-ordinates
+        (x,y) = fromPolar(R,phi)
+    elif coor == "relative":
+        # Polar coordinates relative to the Einstein radius.
+        phi = uniform( toml["position"], "phi", (0,359) )
+        rmin = toml["position"].get( "r-min", 1 )
+        rel = toml.get( "r-relativemax", 1.2 )
+        R =  random.uniform(rmin,rel*einstein)
         (x,y) = fromPolar(R,phi)
     else:
         # Cartesian Co-ordinates
@@ -164,14 +171,13 @@ def getline(toml,idx=0,fn=None,verbose=1):
                     } )
 
     cfg = simodels(toml) 
-    if cfg is not None: r["config"] = random.choice( cfg )
+    if cfg is not None: r["model"] = random.choice( cfg )
     cfg = configs(toml)
     if cfg is not None: r["config"] = random.choice( cfg )
 
     nterms = toml["simulator"].get( "nterms", None )
     if nterms is not None: r["nterms"] : nterms
 
-    s = rndsource( toml, verbose )
 
     cluster = toml.get( "cluster", None ) 
     if cluster:
@@ -185,6 +191,7 @@ def getline(toml,idx=0,fn=None,verbose=1):
         cfg = lensmodes(toml)
         if cfg is not None: c["lens"] = random.choice( cfg )
         l =  rndlens( toml, verbose )
+    s = rndsource( toml, einstein=l["einsteinR"], verbose=verbose )
 
     return pd.concat( [ r, l, s ] )
 

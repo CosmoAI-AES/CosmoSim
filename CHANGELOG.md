@@ -1,6 +1,10 @@
 # CosmoSim Change Log
 
+## 3.0.1b1 - 2026-06-16
 
+### Added
+
++ Added relative bound on source r for random dataset generation
 
 ## 3.0.0 - 2026-06-15
 
