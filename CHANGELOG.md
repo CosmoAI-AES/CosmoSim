@@ -1,10 +1,14 @@
 # CosmoSim Change Log
 
-## 3.0.1b1 - 2026-06-16
+## 3.0.1 - 2026-06-?? unreleased
 
 ### Added
 
 + Added relative bound on source r for random dataset generation
+
+### Fixed
+
++ Fixed inconsistencies to make it work with droulette.
 
 ## 3.0.0 - 2026-06-15
 
