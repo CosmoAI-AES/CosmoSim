@@ -56,7 +56,10 @@ class GenericSim:
         self.param = param
         self.directory = param.get( "directory" )
         if self.directory:
+            if self.verbose > 1: print( "[GenericSim] directory", self.param )
             os.makedirs( self.directory, exist_ok=True )
+        if self.verbose > 2:
+            print( "[GenericSim]", self.param )
 
         if self.verbose > 2:
             print( "[GenericSim] xireference =", self.param.get( "xireference" ) )
@@ -75,10 +78,12 @@ class GenericSim:
         if row is None: row = self.param
         if self.verbose > 1: print( "[initSim] using row" )
         self.setParameters( row )
-        if self.verbose > 1: print( "index", row.get( "index", None ) )
         if self.verbose: print( f"[initSim] type(row)={type(row)}" )
         # self.param.setRow( row )
-        name = row.get( "filename" ).split(".")[0]
+        fn = row.get( "filename" )
+        if fn is None: fn = row.name
+        if self.verbose > 1: print( "filename", fn )
+        name = fn.split(".")[0]
         self.name = name
 
         if self.verbose>1: print( "[initSim] item name:", self.name )
@@ -161,8 +166,10 @@ class GenericSim:
         if name is None:
             name = self.name
         if self.directory is None:
+            if self.verbose: print( "[saveImage] No directory" )
             fn = str(name) + ".png"
         else:
+            if self.verbose: print( "[saveImage] Directory", self.directory )
             fn = os.path.join(self.directory, str(name) + ".png" )
         if self.verbose: print( "[saveImage]", fn )
         cv.imwrite(fn,im)

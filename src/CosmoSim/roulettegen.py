@@ -127,16 +127,20 @@ class Resim(GenericSim):
         self.frame = frame
 
     
-def processResim(frame,param,maxcount=None,verbose=0):
+def processResim(frame,param,sim=None,maxcount=None,verbose=0):
     """
     Bulk simulation from a dataset.
     The `frame` is normally a pandas DataFrame, with a row for
     each lensing system.
     """
     count = 1
+    print( "[processResim]", verbose )
+    print( "[processResim]", param )
+    if sim is None: sim = RouletteRegenerator()
     for index,row in frame.iterrows():
         if verbose: print( "[roulettegen.py] Processing", index )
         param.setRow( row )
+        print( f"[processResim] {index}", param )
         imsim = Resim( row, sim, param=param, verbose=verbose )
         imsim.saveImage()
 
@@ -173,7 +177,7 @@ def rgen(args,param):
 
     maxcount = param.get( ("management", "maxcount" ), None )
 
-    processResim(frame,param,maxcount,verbose=verbose)
+    processResim(frame,param,sim,maxcount,verbose=verbose)
 
     if verbose: print( "[roulettegen.py] Done" )
 
