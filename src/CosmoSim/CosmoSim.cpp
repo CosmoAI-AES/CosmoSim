@@ -24,6 +24,7 @@ CosmoSim::~CosmoSim() {
    if (DEBUG) {
       std::cout << "[CosmoSim] Destructor\n" ;
    }
+   /*
    if (this->lens != NULL) {
       delete this->lens ;
       if (this->lens == this->psilens) this->psilens = NULL ;
@@ -35,6 +36,7 @@ CosmoSim::~CosmoSim() {
       this->psilens = NULL ;
    }
    if (DEBUG>2) std::cout << "[CosmoSim] Destructor 2\n" ;
+   */
    if (this->sim != NULL) {
       delete this->sim ;
       this->sim = NULL ;
