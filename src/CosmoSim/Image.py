@@ -16,6 +16,19 @@ def imshow(im,title=None):
         plt.title( title )
     plt.axis( "off" )
 
+def showImages(ims,size=(1,3),titles=None):
+    (x,y) = size
+    fig = plt.figure(figsize=(5*y, 5*x))
+    fig.tight_layout(pad=0.0)
+    for (i,(im,t)) in enumerate(zip(ims,titles)):
+        fig.add_subplot(x, y, i+1)
+        imshow(im,t)
+
+def imageCompare(im1,im2,title1=None,title2=None):
+    showImages( [ im1, imageDiff(im1,im2), im2 ]
+               , size=(1,3)
+               , titles=[ title1, "Difference", title2 ] )
+
 def imageCoordinate( pt, im ):
     nrows, ncols = im.shape[:2]
     (x,y) = pt
