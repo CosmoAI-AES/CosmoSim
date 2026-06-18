@@ -24,8 +24,14 @@ def showImages(ims,size=(1,3),titles=None):
         fig.add_subplot(x, y, i+1)
         imshow(im,t)
 
-def imageCompare(im1,im2,title1=None,title2=None):
-    showImages( [ im1, imageDiff(im1,im2), im2 ]
+def imageCompare(im1,im2,title1=None,title2=None,axiscross=False):
+    diff = imageDiff(im1,im2)
+    if axiscross:
+        im1 = im1.copy()
+        im2 = im2.copy()
+        drawAxes( im1 )
+        drawAxes( im2 )
+    return showImages( [ im1, diff, im2 ]
                , size=(1,3)
                , titles=[ title1, "Difference", title2 ] )
 

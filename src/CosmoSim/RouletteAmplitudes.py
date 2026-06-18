@@ -33,10 +33,10 @@ def parseAB(s):
         return None
     return (a,s,tuple(l))
 
-def parseCols(l):
+def parseCols(l,verbose=0):
     """Auxiliary function for RouletteAmplitudes."""
     r = [ parseAB(s) for s in l ]
-    print( r )
+    if verbose: print( r )
     r = filter( lambda x : x != None, r )
     return r
 

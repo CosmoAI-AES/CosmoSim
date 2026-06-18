@@ -143,7 +143,7 @@ class GenericSim:
         im = annotateCircle( im, pt, radius=convradius, colour=( 64, 64, 255 ) )
         if cropsize is None: cropsize = self.param.get( "cropsize" )
         if cropsize:
-            im = crop(im,int( cropsize ) )
+            im = crop(im,int( cropsize ), verbose=self.verbose  )
         return im
     def getImage(self,centred=None,cropsize=None,reflines=None,verbose=None):
         if verbose is None: verbose = self.verbose
@@ -157,7 +157,7 @@ class GenericSim:
             im = self.image.copy()
         if cropsize is None: cropsize = self.param.get( "cropsize" )
         if cropsize:
-            im = crop(im,int( cropsize ) )
+            im = crop(im,int( cropsize ), verbose=self.verbose  )
         if reflines:
             drawAxes(im)
         return im
