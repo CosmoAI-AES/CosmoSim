@@ -137,10 +137,11 @@ def rndlens(toml,verbose=1):
         index=[ "einsteinR", "ellipseratio", "orientation" ]
         )
 
-def lensString(toml,verbose=0):
+def lensSpec(toml,verbose=0):
     param = rndlens(toml,verbose)
     eR = param["einsteinR"]
-    rmax = 1.2*eR
+    c = toml.get( ("cluster","maxrelativelocation"), 1.2 )
+    rmax = c*eR
     phi = random.uniform(0,359)
     r = random.uniform(0,rmax)
     (x,y) = fromPolar( r, phi )
@@ -148,14 +149,19 @@ def lensString(toml,verbose=0):
        lens = toml["lens"].get( "mode" )
     except:
         raise RuntimeError( "Lens model undefined" )
-    ls = [ lens, str(x), str(y), str(eR) ]
+    ls = [ lens, x, y, eR ]
     if lens == "SIE":
-        ls.extend( [ str(param["ellipseratio"]), str(param["orientation"]) ] )
+        ls.extend( [ param["ellipseratio"], param["orientation"] ] )
     elif lens == "SIS":
         pass
     else:
         raise RuntimeError( f"Unknown lens model {lens}" )
-    return "/".join( ls )
+    return ls
+def lensSpec2String(ls,verbose=0):
+    r = [ ls[0] ] ++ [ str(x) for x in ls[1:] ]
+    return "/".join( r )
+def lensString(toml,verbose=0):
+    return lensSpec2String( lensSpec( toml, verbose=verbose ) )
 
 def getline(toml,idx=0,fn=None,verbose=1):
     """
@@ -181,17 +187,22 @@ def getline(toml,idx=0,fn=None,verbose=1):
 
     cluster = toml.get( "cluster", None ) 
     if cluster:
-        nc = toml["cluster"].get( "ncluster", 1 )
+        nc = toml["cluster"].get( "count", 1 )
+        if verbosity: print( "[getline]", toml["cluster"] )
         if nc > 1:
-            ls = [ lensString(toml) for i in range(nc) ]
-            l = pd.Series( { "cluster" : ";".join( ls ) } )
+            ls0 = [ lensSpec(toml,verbose=verbose) for i in range(nc) ]
+            ls1 = [ "/".join( x ) for x in ls0 ]
+            eRs = [ np.sqrt(x[1]**2++x[2]**2) + x[3] for x in ls0 ]
+            eR = max( eRs )
+            l = pd.Series( { "cluster" : ";".join( ls1 ) } )
         else:
-            raise RuntimeException( "[dataset.py] Singleton or malformed cluster lens" )
+            raise RuntimeError( "[dataset.py] Singleton or malformed cluster lens" )
     else:
         cfg = lensmodes(toml)
         if cfg is not None: c["lens"] = random.choice( cfg )
         l =  rndlens( toml, verbose )
-    s = rndsource( toml, einstein=l["einsteinR"], verbose=verbose )
+        eR = l["einsteinR"]
+    s = rndsource( toml, einstein=eR, verbose=verbose )
 
     return pd.concat( [ r, l, s ] )
 
