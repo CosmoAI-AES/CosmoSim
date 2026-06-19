@@ -190,8 +190,8 @@ def getline(toml,idx=0,fn=None,verbose=1):
         nc = toml["cluster"].get( "count", 1 )
         if verbosity: print( "[getline]", toml["cluster"] )
         if nc > 1:
-            ls0 = [ lensSpec(toml,verbose=verbose) for i in range(nc) ]
-            ls1 = [ "/".join( x ) for x in ls0 ]
+            ls0 = lensSpec(toml,verbose=verbose) for i in range(nc)
+            ls1 = "/".join( x ) for x in ls0
             eRs = [ np.sqrt(x[1]**2++x[2]**2) + x[3] for x in ls0 ]
             eR = max( eRs )
             l = pd.Series( { "cluster" : ";".join( ls1 ) } )
