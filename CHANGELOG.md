@@ -1,6 +1,12 @@
 # CosmoSim Change Log
 
-## 3.0.1 - 2026-06-?? unreleased
+## 3.0.2 - 2026-06-18
+
+### Added
+
++ Image utility functions
+
+## 3.0.1 - 2026-06-17 
 
 ### Added
 

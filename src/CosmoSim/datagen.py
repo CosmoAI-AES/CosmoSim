@@ -58,8 +58,10 @@ class SimImage(GenericSim):
         if verbose is None: verbose = self.verbose
         sim = self.sim
         if self.param.get( "centred" ):
+            if verbose: print( "[getData] centred" )
             centrepoint = self.centrepoint
         else:
+            if verbose: print( "[getData] not centred" )
             centrepoint = (0,0)
         maxm = self.param.get( "nterms", 16 )
         xireference = self.param.get( "xireference", True )
@@ -151,11 +153,12 @@ class SimImage(GenericSim):
         print( "getDistortedImage() has returned", type(im) )
 
         if param.get( "centred" ):
+            if self.verbose: print( "[movedImage] centred" )
             (im,(cx,cy)) = centreImage(im)
         if param.get( "cropsize" ):
             cs = param.get( "cropsize", None )
             if cs is not None:
-                im = crop( int( cs ) )
+                im = crop( int( cs ), verbose=self.verbose  )
         if param.get( "reflines" ):
             drawAxes(im)
 
@@ -165,8 +168,9 @@ class SimImage(GenericSim):
 
     def psiplot(self):
         a = self.sim.getPsiMap()
-        print("[SimImage] psiplot", a.shape, a.dtype)
-        print(a)
+        if self.verbose:
+            print("[SimImage] psiplot", a.shape, a.dtype)
+            print(a)
         sys.stdout.flush()
         nx,ny = a.shape
         X, Y = np.meshgrid( range(nx), range(ny) )
@@ -178,8 +182,9 @@ class SimImage(GenericSim):
         plt.close()
     def kappaplot(self):
         a = self.sim.getMassMap()
-        print("[SimImage] kappaplot", a.shape, a.dtype)
-        print(a)
+        if self.verbose:
+            print("[SimImage] kappaplot", a.shape, a.dtype)
+            print(a)
         nx,ny = a.shape
         X, Y = np.meshgrid( range(nx), range(ny) )
         hf = plt.figure()
