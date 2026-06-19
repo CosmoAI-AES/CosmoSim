@@ -20,6 +20,8 @@ def showImages(ims,size=(1,3),titles=None):
     (x,y) = size
     fig = plt.figure(figsize=(5*y, 5*x))
     fig.tight_layout(pad=0.0)
+    if titles is None:
+        titles = [ None for _ in ims ]
     for (i,(im,t)) in enumerate(zip(ims,titles)):
         fig.add_subplot(x, y, i+1)
         imshow(im,t)
