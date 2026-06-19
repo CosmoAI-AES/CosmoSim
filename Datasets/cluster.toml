@@ -22,6 +22,8 @@ ellipseratio-max = 1.0
 
 [lens.cluster]
 count = 4
+
+# The other parameters are early drafts
 maxrelativesize = 10
 mindistance = [ 0, 1, 1 ] # Sum of Einstein radiuses
 maxdistance = [ 0, 10 ] # 10 times largest Einstein radiues in cluster
