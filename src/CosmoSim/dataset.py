@@ -158,7 +158,6 @@ def lensSpec(toml,verbose=0):
         raise RuntimeError( f"Unknown lens model {lens}" )
     return ls
 def lensSpec2String(ls,verbose=0):
-    if verbose: print( "[lensSpec2String]", ls )
     r = [ ls[0] ] + [ str(x) for x in ls[1:] ]
     return "/".join( r )
 def lensString(toml,verbose=0):
@@ -192,9 +191,7 @@ def getline(toml,idx=0,fn=None,verbose=1):
         if verbose: print( "[getline]", toml["cluster"] )
         if nc > 1:
             ls0 = [ lensSpec(toml,verbose=verbose) for i in range(nc) ]
-            print( ls0 )
-            ls1 = lensSpec2String( ls0, verbose=verbose )
-            print( ls1 )
+            ls1 = [ lensSpec2String( x, verbose=verbose ) for x in ls0 ]
             eRs = [ np.sqrt(x[1]**2+x[2]**2) + x[3] for x in ls0 ]
             eR = max( eRs )
             l = pd.Series( { "cluster" : ";".join( ls1 ) } )
