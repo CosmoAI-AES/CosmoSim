@@ -43,7 +43,37 @@ double Lens::getBetaXi( int m, int s ) { throw NotImplemented() ; }
 double Lens::getAlpha( cv::Point2d xi, int m, int s ) { throw NotImplemented() ; }
 double Lens::getBeta( cv::Point2d xi, int m, int s ) { throw NotImplemented() ; }
 
-double Lens::criticalXi( double phi ) const { throw NotImplemented() ; }
+double Lens::criticalXi( double phi ) const {
+   cv::Point2d xi ; 
+   int cont = 1, count = 0, maxcount = 200 ;
+   double dist, dist0=pow(10,12), threshold = 0.02 ;
+
+   double r0, r1 = 10 ;
+
+   /** This block makes a fix-point iteration to find \xi. */
+   while ( cont ) {
+      r0 = r1 ;
+      xi = r0*cv::Point2d( cos( phi ), sin( phi ) ) ;
+      double x = psiXvalue( xi.x, xi.y ),
+             y = psiYvalue( xi.x, xi.y ) ;
+      if (DEBUG) std::cout
+	   << "[Lens] Fix pt it'n " << count << "; r0=" << r0 << std::endl ;
+      r1 = sqrt( x * x + y * y ) ;
+      dist = r0 - r1 ;
+      if ( dist < threshold ) cont = 0 ;
+      if ( ++count > maxcount ) cont = 0 ;
+   }
+   if (DEBUG) {
+      if ( dist > threshold ) {
+         std::cout << "[Lens::criticalCurve] Bad approximation: r0=" << r0 
+            << "; r1=" << r1 << "; dist=" << dist << "\n" ;
+      } else {
+         std::cout << "[Lens::criticalCurve] [Lens] Good approximation: r0=" << r0 
+            << "; r1=" << r1 << "\n" ;
+      }
+   }
+   return r1 ;
+}
 cv::Point2d Lens::caustic( double phi ) const { throw NotImplemented() ; }
 double Lens::psiValue( double x, double y ) const { throw NotImplemented() ; }
 double Lens::psiXvalue( double x, double y ) const { throw NotImplemented() ; }
