@@ -23,14 +23,12 @@ import sys
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from ..CosmoSimPy import setDebug
-
-from .. import CosmoSim
-
-from ..Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
-
-from .Arguments import CosmoParser, Parameters
 import pandas as pd
+
+from ..CosmoSimPy import setDebug
+from .. import CosmoSim
+from ..Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
+from .Arguments import CosmoParser, Parameters
 
 class GenericSim:
     """

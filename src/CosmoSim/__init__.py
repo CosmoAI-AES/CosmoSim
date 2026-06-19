@@ -2,7 +2,10 @@
 
 """
 The CosmoSim package comprises several components, including scripts,
-a wrapper around the C++ CosmoSim library, and GUI components.
+GUI, and API.
+
+The root module provides wrappers around most of the C++ classes,
+to make the python API more streamlined.
 """
 
 import CosmoSim.CosmoSimPy as cs
@@ -35,6 +38,12 @@ class SphericalSource(cs.SphericalSource):
         if verbose: print( "[SphericalSource] constructor done" )
 
 class RouletteRegenerator(cs.RouletteRegenerator):
+    """
+    The roulette regenerator simulates gravitational lenses based
+    on pre-computed roulette amplitudes.
+
+    This class is a wrapper around the corresponding C++ class.
+    """
     def __init__(self,*a,verbose=1,**kw):
         super().__init__(*a,**kw)
         self.verbose = verbose

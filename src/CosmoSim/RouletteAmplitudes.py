@@ -16,7 +16,7 @@ class RouletteAmplitudes:
     def getNterms(self): return self.maxm
 
 def parseAB(s):
-    """Auxiliary function for RouletteAmplitudes."""
+    """Auxiliary function for the RouletteAmplitudes class."""
     a = s.split("[")
     if len(a) < 2:
         return None
@@ -34,7 +34,7 @@ def parseAB(s):
     return (a,s,tuple(l))
 
 def parseCols(l,verbose=0):
-    """Auxiliary function for RouletteAmplitudes."""
+    """Auxiliary function for the RouletteAmplitudes class."""
     r = [ parseAB(s) for s in l ]
     if verbose: print( r )
     r = filter( lambda x : x != None, r )
