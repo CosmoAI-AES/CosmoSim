@@ -1,5 +1,11 @@
 # CosmoSim Change Log
 
+## 3.0.3 - 2026-06-19
+
+### Fixed
+
++ Cluster lens generation
+
 ## 3.0.2 - 2026-06-18
 
 ### Added
