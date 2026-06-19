@@ -188,7 +188,7 @@ def getline(toml,idx=0,fn=None,verbose=1):
     cluster = toml.get( "cluster", None ) 
     if cluster:
         nc = toml["cluster"].get( "count", 1 )
-        if verbose: print( "[getline]", toml["cluster"] )
+        if verbose > 1: print( "[getline]", toml["cluster"] )
         if nc > 1:
             ls0 = [ lensSpec(toml,verbose=verbose) for i in range(nc) ]
             ls1 = [ lensSpec2String( x, verbose=verbose ) for x in ls0 ]
