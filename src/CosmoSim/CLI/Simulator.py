@@ -2,20 +2,22 @@
 # (C) 2026: Hans Georg Schaathun <georg@schaathun.net>
 
 """
-Simulator class to manage bulk image generation.
+Abstract simulator class to manage bulk image generation.
 
 Different subclasses are required for different backend simulators, like
 `RouletteRegenerator` and `CosmoSim`.
 The `GenericSim` superclass contains shared methods.
 
-The constructor may takes a data row, typically a pandas Series object,
-reconfigures the backend simulator, and generates the distorted image.
+Subclasses shoulded override the constructor, calling the superclass constructor
+first and `initSim()` last.  In the middle, the `self.sim` must be set with a
+backend simulator.
+
+The `setParameters()` method must also be overridden.
+
+The `initSim` method reconfigures the backend simulator, and generates the 
+distorted image.
 Since the object retains much of the simulation data, extensive information
 and annotated images may be retrieved as well.
-
-The constructor may take a backend simulator instance as parameter.  This saves
-the cost of reinstantiation in bulk simulation, and it also leaves the possibility
-to set defaults in advance.
 """
 
 import cv2 as cv
@@ -37,7 +39,7 @@ class GenericSim:
     def __init__(self,param=None,name=None,outcols=None,verbose=1):
         """
         Normally the constructor should be overridden, calling the superclass
-        constructor first.
+        constructor first and `initSim()` last.
         """
         if verbose is None: verbose=1
         self.verbose = verbose
