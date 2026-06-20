@@ -19,7 +19,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
 
     py::class_<CosmoSim>(m, "CosmoSim")
         .def(pybind11::init<>())
-        .def("getLens", &CosmoSim::getLens)
         .def("setLensMode", &CosmoSim::setLensMode)
         .def("setModelMode", &CosmoSim::setModelMode)
         .def("setSampled", &CosmoSim::setSampled)

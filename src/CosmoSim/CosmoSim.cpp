@@ -46,19 +46,6 @@ CosmoSim::~CosmoSim() {
    }
 }
 
-PsiFunctionLens *CosmoSim::getLens( int lensmode ) { 
-   switch ( lensmode ) {
-      case CSIM_PSI_SIE:
-         return new SIE() ;
-      case CSIM_PSI_SIS:
-         return new SIS() ;
-      case CSIM_PSI_CLUSTER:
-         return new ClusterLens() ;
-      default:
-         throw NotImplemented() ;
-   }
-} ;
-
 cv::Point2d CosmoSim::getRelativeEta( double x, double y ) {
    // Input (x,y) is the centre point $\nu$
    return sim->getRelativeEta( cv::Point2d( x,y ) ) ; 
