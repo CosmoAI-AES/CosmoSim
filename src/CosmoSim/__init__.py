@@ -154,7 +154,6 @@ def makeSource(param,verbose=1):
 lensDict = {
         "SIS" : PsiSpec.SIS,
         "PM" : PsiSpec.PM,
-        "Cluster" : PsiSpec.Cluster,
         "SIE" : PsiSpec.SIE,
         }
 modelDict = {

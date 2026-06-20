@@ -158,7 +158,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
     pybind11::enum_<PsiSpec>(m, "PsiSpec") 
        .value( "SIE", CSIM_PSI_SIE )
        .value( "SIS", CSIM_PSI_SIS )
-       .value( "Cluster", CSIM_PSI_CLUSTER )
+       .value( "Python", CSIM_PSI_PY )
        .value( "PM", CSIM_NOPSI_PM ) 
        .value( "NoPsi", CSIM_NOPSI ) ;
     pybind11::enum_<SourceSpec>(m, "SourceSpec") 

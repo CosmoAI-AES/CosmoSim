@@ -52,7 +52,7 @@ PsiFunctionLens *CosmoSim::getLens( int lensmode ) {
          return new SIE() ;
       case CSIM_PSI_SIS:
          return new SIS() ;
-      case CSIM_PSI_CLUSTER:
+      case CSIM_PSI_PY:
          return new ClusterLens() ;
       default:
          throw NotImplemented() ;
@@ -157,7 +157,7 @@ void CosmoSim::setLensMode(int m) {
 }
 void CosmoSim::setLens(PsiFunctionLens *l) { 
    if (DEBUG) std::cout << "[CosmoSim::setLens]\n" ;
-   lensmode = CSIM_PSI_CLUSTER ; 
+   lensmode = CSIM_PSI_PY ; 
    modelchanged = 1 ;
    lens = psilens = l ;
    if (DEBUG) std::cout << "[CosmoSim::setLens] returning\n" ;
@@ -180,8 +180,8 @@ void CosmoSim::initLens() {
    }
    if (DEBUG) std::cout << "switch( lensmode )\n" ;
    switch ( lensmode ) {
-       case CSIM_PSI_CLUSTER:
-          std::cout << "[initLens] ClusterLens - no further init\n" ;
+       case CSIM_PSI_PY:
+          std::cout << "[initLens] Lens managed from python.\n" ;
           break ;
        case CSIM_PSI_SIE:
           lens = psilens = new SIE() ;
@@ -244,7 +244,7 @@ void CosmoSim::initLens() {
 void CosmoSim::configLens() {
    // Set lens parameters
    if ( psilens != NULL  ) {
-      if ( CSIM_PSI_CLUSTER != lensmode ) {
+      if ( CSIM_PSI_PY != lensmode ) {
          psilens->setEinsteinR( einsteinR ) ;
          psilens->setRatio( ellipseratio ) ;
          psilens->setOrientation( orientation ) ;
