@@ -45,6 +45,7 @@ class SimImage(GenericSim):
         self.sim = getSimulator(self.param,verbose=self.verbose)
         self.src = getSource(self.param,verbose=self.verbose)
         self.lens = getLens(self.param,verbose=self.verbose)
+        """
         if row.get("y") is not None:
             if verbose > 1:
                 print( "[setParameters] XY", row.get( "x" ), row.get( "y" ) )
@@ -52,6 +53,7 @@ class SimImage(GenericSim):
         elif row.get("phi",None) != None:
             if verbose > 1: print( "Polar", row.get( "x" ), row.get( "phi" ) )
             sim.setPolar( row.get( "x" ), row.get( "phi" ) )
+"""
 
     def close(self):
         self.sim.close()

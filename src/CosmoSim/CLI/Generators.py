@@ -23,19 +23,19 @@ def getSimulator(param,verbose=1):
     model = param.get( ( "simulator", "model" ), None )
     if model is None:
         raise RuntimeError( "[getSimulator] No simulator model" )
-    elif mode == "Raytrace":
+    elif model == "Raytrace":
         sim = cs.RaytraceModel()
-    elif mode == "Roulette":
+    elif model == "Roulette":
         sim = cs.RouletteModel()
-    elif mode == "Point Mass (exact)":
+    elif model == "Point Mass (exact)":
         raise NotImplemented( "The exact PointMass model has not been implemented" )
-    elif mode == "Point Mass (roulettes)":
+    elif model == "Point Mass (roulettes)":
         raise NotImplemented( "The roulettes PointMass model has not been implemented" )
     else:
         raise RuntimeError( f"[getSimulator] Unknown model: {model}" )
     msk = param.get( "mask", None )
     if msk is not None:
-        if self.verbose: print( "[getSimulator] sets mask", msk )
+        if verbose: print( "[getSimulator] sets mask", msk )
         sim.setMaskMode( msk )
     return sim
 def makeSourceConstellation(src,size,verbose=1):
@@ -150,7 +150,7 @@ def getLens(param,verbose=1):
         raise RuntimeError( "[getLens] Unknown lens specification" )
     smp = param.get( ( "simulator", "sampled"), None )
     if smp is not None:
-        size = self.param.get( ( "simulator", "imagesize" ), 512 )
+        size = param.get( ( "simulator", "imagesize" ), 512 )
         if verbose>1: print( "[getLens] Sampled mode is", smp )
         if smp: lens = SampledPsiFunctionLens( lens, size )
     return lens
