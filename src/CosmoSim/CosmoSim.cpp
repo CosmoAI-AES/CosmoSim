@@ -21,29 +21,12 @@ CosmoSim::CosmoSim() {
    rPos = -1 ;
 }
 CosmoSim::~CosmoSim() {
-   if (DEBUG) {
-      std::cout << "[CosmoSim] Destructor\n" ;
-   }
-   /*
-   if (this->lens != NULL) {
-      delete this->lens ;
-      if (this->lens == this->psilens) this->psilens = NULL ;
-      this->lens = NULL ;
-   }
-   if (DEBUG>2) std::cout << "[CosmoSim] Destructor 1\n" ;
-   if (this->psilens != NULL) {
-      delete this->psilens ;
-      this->psilens = NULL ;
-   }
-   if (DEBUG>2) std::cout << "[CosmoSim] Destructor 2\n" ;
-   */
+   if (DEBUG) std::cout << "[CosmoSim] Destructor\n" ;
    if (this->sim != NULL) {
       delete this->sim ;
       this->sim = NULL ;
    }
-   if (DEBUG>1) {
-      std::cout << "[CosmoSim] Destructor - destructed\n" ;
-   }
+   if (DEBUG>1) std::cout << "[CosmoSim] Destructor - destructed\n" ;
 }
 
 cv::Point2d CosmoSim::getRelativeEta( double x, double y ) {
@@ -130,16 +113,6 @@ void CosmoSim::setModelMode(int m) {
          << " -> " << m << ")\n" ;
       modelmode = m ; 
       modelchanged = 1 ;
-   }
-}
-void CosmoSim::setLensMode(int m) { 
-   if ( lensmode != m ) {
-      if (DEBUG) std::cout << "[CosmoSim.cpp] setLensMode(" << lensmode 
-         << " -> " << m << ")\n" ;
-      lensmode = m ; 
-      modelchanged = 1 ;
-   } else {
-      if (DEBUG) std::cout << "[CosmoSim.cpp] setLensMode(" << lensmode << ") unchanged\n" ;
    }
 }
 void CosmoSim::setLens(PsiFunctionLens *l) { 

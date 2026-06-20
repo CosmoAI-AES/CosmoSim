@@ -334,18 +334,12 @@ def setParameters(sim,row,verbose=1):
         if verbose > 1: print( "setCluster from CSV" )
         sim.setCluster( row.get( "cluster" ) )
     elif row.get("lens",None) != None:
-        sim.setLensMode( row.get( "lens" ) )
+        sim.setLensMode( row )
     if row.get("model",None) != None:
         sim.setModelMode( row.get( "model" ) )
     if row.get("sampled",None) != None:
         if verbose>1: print( row )
         sim.setSampled( row.get( "sampled" ) )
-    if row.get("einsteinR",None) != None:
-        sim.setEinsteinR( row.get( "einsteinR" ) )
-    if row.get("ellipseratio",None) != None:
-        sim.setRatio( row.get( "ellipseratio" ) )
-    if row.get("orientation",None) != None:
-        sim.setOrientation( row.get( "orientation" ) )
     if row.get("imagesize",None) != None:
         sim.setImageSize( row.get( "imagesize" ) )
         sim.setResolution( row.get( "imagesize" ) )

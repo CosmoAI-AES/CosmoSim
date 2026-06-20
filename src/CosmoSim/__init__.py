@@ -382,9 +382,33 @@ class CosmoSim(cs.CosmoSim):
         sys.stdout.flush()
         super().setLens(cluster)
         return
-    def setLensMode(self,s):
-        if self.verbose: print( f"setLensMode({s})")
-        return super().setLensMode( int( lensDict[s] ) ) 
+    def setLensMode(self,param):
+        if self.verbose: print( f"[CosmoSim.__init__.py] setLensMode({s})")
+        s = param.get( ( "lens", "mode" ), None )
+        try:
+            mode = lensDict[s] 
+        except:
+            raise
+        if mode == PsiSpec.PM:
+            lens = cs.PointMass()
+        elif mode == PsiSpec.SIS:
+            lens = cs.SIS()
+            lens.setFile( super().getFile( PsiSpec.SIS ) )
+        elif mode == PsiSpec.SIE:
+            lens = cs.SIE()
+            if nl < 5:
+                raise Exception( f"Too few parameters for SIE lens" )
+            lens.setRatio( param.get( ( "lens", "ellipseratio" ) )
+            lens.setOrientation( param.get( ( "lens", "orientation" ) )
+            lens.setFile( super().getFile( PsiSpec.SIE ) )
+        else:
+            self.verbose: print( f"[CosmoSim.__init__.py] No lens: {s}")
+            lens = None
+        if lens is not None:
+            lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) )
+        super().setLens( lens )
+        self.lenslist = [ lens ] # Prevent garbage collection of `lens`
+        return lens
     def setModelMode(self,s):
         if self.verbose: print( f"setModelMode({s})")
         # traceback.print_stack()
