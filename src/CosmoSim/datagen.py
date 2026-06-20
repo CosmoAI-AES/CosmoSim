@@ -16,7 +16,7 @@ from .dataset import datasetgen
 
 from .Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
 
-from .CLI.Arguments import setParameters,Parameters
+from .CLI.Arguments import Parameters
 from .CLI.SimImage import SimImage
 
 import pandas as pd

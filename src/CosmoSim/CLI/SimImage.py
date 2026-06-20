@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from .Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
+from ..Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
 
 from .Generators import getSimulator, getLens, getSource
 

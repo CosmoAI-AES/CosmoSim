@@ -7,7 +7,7 @@ Fanctions to create lenses, sources, and simulators.
 + `getSource`
 """
 
-import ..CosmoSimPy as cs
+from .. import CosmoSimPy as cs
 import numpy as np
 import os, sys
 
@@ -20,7 +20,7 @@ def getSourceFileName():
 
 def getSimulator(param,verbose=1):
     model = param.get( ( "simulator", "model" ), None )
-    if model is None
+    if model is None:
         raise RuntimeError( "[getSimulator] No simulator model" )
     elif mode == "Raytrace":
         sim = cs.RaytraceModel()
@@ -124,22 +124,22 @@ def getPathFN(fn):
 def getLens(param,verbose=1):
     lensmode = param.get( ( "lens", "mode" ), None )
     cluster = param.get( ( "lens", "cluster" ), None )
-    if cluster is not None: 
+    if cluster is not None:
         lens = ClusterLens( cluster, verbose=verbose )
     elif lensmode == "PointMass":
         lens = cs.PointMass()
-        lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) )
+        lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
     elif lensmode == "SIS":
         lens = cs.SIS()
-        lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) )
+        lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
         fn = param.get( ( "lens", "roulettefile" ) )
         if fn is None: fn = getPathFN( "sis50.txt" )
         lens.setFile( fn )
     elif lensmode == "SIE":
         lens = cs.SIE()
-        lens.setRatio( param.get( ( "lens", "ellipseratio" ) )
-        lens.setOrientation( param.get( ( "lens", "orientation" ) )
-        lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) )
+        lens.setRatio( param.get( ( "lens", "ellipseratio" ) ) )
+        lens.setOrientation( param.get( ( "lens", "orientation" ) ) )
+        lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
         fn = param.get( ( "lens", "roulettefile" ) )
         if fn is None: fn = getPathFN( "sie05.txt" )
         lens.setFile( fn )
