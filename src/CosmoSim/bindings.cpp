@@ -154,6 +154,9 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setAlphaXi", &RouletteRegenerator::setAlphaXi)
         .def("setBetaXi", &RouletteRegenerator::setBetaXi) ;
 
+    py::class_<RaytraceModel,SimulatorModel>(m, "RaytraceModel")
+        .def(py::init<>()) ;
+
     pybind11::enum_<PsiSpec>(m, "PsiSpec") 
        .value( "SIE", CSIM_PSI_SIE )
        .value( "SIS", CSIM_PSI_SIS )
