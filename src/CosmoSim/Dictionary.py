@@ -1,6 +1,6 @@
 # (C) 2026: Hans Georg Schaathun <georg@schaathun.net> 
 
-import .CosmoSimPy as cs
+from . import CosmoSimPy as cs
 
 ModelSpec = cs.ModelSpec
 SourceSpec = cs.SourceSpec

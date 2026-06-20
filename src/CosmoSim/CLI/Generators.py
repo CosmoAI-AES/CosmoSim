@@ -8,6 +8,7 @@ Fanctions to create lenses, sources, and simulators.
 """
 
 from .. import CosmoSimPy as cs
+from CosmoSim.Dictionary import *
 import numpy as np
 import os, sys
 
@@ -151,13 +152,12 @@ def getLens(param,verbose=1):
     if smp is not None:
         size = self.param.get( ( "simulator", "imagesize" ), 512 )
         if verbose>1: print( "[getLens] Sampled mode is", smp )
-        if smp: lens = SampledLens( lens, size )
+        if smp: lens = SampledPsiFunctionLens( lens, size )
     return lens
 
-class SampledLens(cs.SampledLens):
+class SampledPsiFunctionLens(cs.SampledPsiFunctionLens):
     def __init__(self,lens,size,verbose=1):
         self.lens = lens
-        raise NotImplemented( "Sampling not implemented" )
         return super().__init__( lens, size )
 class ClusterLens(cs.ClusterLens):
     def __init__(self,s,verbose=1):

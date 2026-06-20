@@ -27,8 +27,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from ..CosmoSimPy import setDebug
-from .. import CosmoSim
+from .. import setDebug
 from ..Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
 from .Arguments import CosmoParser, Parameters
 
