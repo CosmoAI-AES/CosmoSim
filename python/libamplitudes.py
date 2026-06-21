@@ -17,7 +17,7 @@ import time
 import argparse
 
 import sympy
-from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh, pi
+from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh, pi, log
 
 def identity(f): return f
 
@@ -50,6 +50,15 @@ def psiSIS():
     alpha = sympy.factor(diff(psi, x))
     beta = sympy.factor(diff(psi, y))
     return (psi,alpha,beta,x,y)
+def psiPM():
+    print( "psiPM()" )
+    # g is the Einstein radius and (x,y) coordinates in the lens plane
+    x, y = symbols('x, y', real=True)
+    g = symbols("g", positive=True, real=True)
+    psi = g ** 2 * log(x ** 2 + y ** 2)
+    alpha = sympy.factor(diff(psi, x))
+    beta = sympy.factor(diff(psi, y))
+    return (psi,alpha,beta,x,y)
 def psiSIE():
     print( "psiSIE()" )
     # g is the Einstein radius and (x,y) coordinates in the lens plane
@@ -79,6 +88,8 @@ def zeroth(lens="SIS"):
         return psiSIS()
     if lens == "SIE":
         return psiSIE()
+    if lens == "PM":
+        return psiPM()
     raise "Unknown lens model"
 
 def ampPrint(alphabeta,fn):

@@ -1,5 +1,9 @@
 #! /usr/bin/env python3
 
+"""
+Utility script to compare images.
+"""
+
 import cv2 as cv
 import sys
 import os
