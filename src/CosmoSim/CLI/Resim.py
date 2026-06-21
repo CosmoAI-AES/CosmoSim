@@ -8,7 +8,7 @@ from .Arguments import Parameters
 from .Simulator import GenericSim 
 
 from CosmoSim.RouletteAmplitudes import RouletteAmplitudes 
-from .Generators import RouletteRegenerator
+from .Generators import RouletteRegenerator, getSource
 
 class Resim(GenericSim):
     """
@@ -48,46 +48,12 @@ class Resim(GenericSim):
         Initialise the simulator with the given data row.
         """
         param = self.param
+        row = self.row
+
         fn = param.get( "filename" )
         if fn is None: fn = row.name
-        if self.verbose > 1: print( "filename", fn )
-        name = fn.split(".")[0]
-        self.name = name
+        if self.verbose > 1: print( "[initSim] item ", fn)
 
-        if self.verbose>1: print( "[initSim] item name:", self.name )
-
-        self.runSim()
-
-    def loadData( self, row ):
-        """
-        Load data as a row from the dataset.
-
-        The `Parameters` class does not support roulette amplitudes, and hence
-        they are handled separately.
-        """
-        if self.verbose>2: print( "[loadData]" )
-        if not isinstance(row,pd.Series):
-            raise RuntimeException( "Should have a pandas Series as a row object." )
-        if self.verbose>1: print( "columns:", cols )
-    
-        coefs = RouletteAmplitudes(cols)
-        nterms = self.param.get( ( "simulator", "nterms" ) )
-        if nterms is None:
-            if verbose: print( "[loadData] deducing nterms =", nterms )
-            nterms = coefs.getNterms()
-        elif verbose: print( "[loadData] nterms =", nterms )
-
-        self.sim.setNterms( int(nterms) )
-
-        self.coefs = coefs
-        self.cols = cols
-        self.row = row
-
-    def setParameters( self, row ):
-        """
-        Reset the parameters in the backend simulator, using the
-        give data row.
-        """
         if self.verbose>2: print( "[setParameters]" )
         maxm = self.coefs.getNterms()
         
@@ -116,6 +82,36 @@ class Resim(GenericSim):
                     print( f"alpha[{m}][{s}] = {alpha}\t\tbeta[{m}][{s}] = {beta}." )
                 self.sim.setAlphaXi( m, s, alpha )
                 self.sim.setBetaXi( m, s, beta )
-        self.param.setRow( row )
         if self.verbose>1:
             print( "Source spec:", self.param.get( "source" ) )
+        self.src = getSource( param )
+        self.sim.setSource( self.src )
+
+    def loadData( self, row ):
+        """
+        Load data as a row from the dataset.
+
+        The `Parameters` class does not support roulette amplitudes, and hence
+        they are handled separately.
+        """
+        if self.verbose>2: print( "[loadData]" )
+        if not isinstance(row,pd.Series):
+            raise RuntimeException( "Should have a pandas Series as a row object." )
+        cols = row.axes[0]
+        if self.verbose>1: print( "columns:", cols )
+    
+        coefs = RouletteAmplitudes(cols)
+
+        nterms = self.param.get( ( "simulator", "nterms" ) )
+        if nterms is None:
+            if self.verbose: print( "[loadData] deducing nterms =", nterms )
+            nterms = coefs.getNterms()
+        elif self.verbose: print( "[loadData] nterms =", nterms )
+
+        self.sim.setNterms( int(nterms) )
+
+        self.param.setRow( row )
+        self.coefs = coefs
+        self.cols = cols
+        self.row = row
+
