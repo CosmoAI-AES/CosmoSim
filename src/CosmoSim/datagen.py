@@ -61,7 +61,6 @@ def datagen(args,param=None):
         imsim = makeSingle(param,name=args.name,outcols=outcols,sim=sim,verbose=args.verbose)
         if args.outfile:
             dfs.append( imsim.getData() )
-    imsim.close()
     df = pd.DataFrame( dfs )
     if args.outfile:
            if args.mldata:
@@ -75,8 +74,7 @@ def datagen(args,param=None):
                    except:
                        print( "No column", c )
            df.to_csv(args.outfile, sep=",", index=False)
-    print( "ready to close simulator" )
-    print( "simulator closed" )
+    print( "simulator done" )
 
 if __name__ == "__main__":
     sys.exit( "[CosmoSim] datagen - deprecated." )
