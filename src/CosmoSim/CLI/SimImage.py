@@ -35,18 +35,39 @@ class SimImage(GenericSim):
     Once the simulation has been run, various kinds of image and metadata can be
     retrieved from the object.
     """
-    def __init__(self,param,sim=None,**kw):
+    def __init__(self,param,**kw):
+        """
+        In the present implementation, all the parameters must be passed as 
+        a `Parameters` object.  The settings cannot be updated in an exising
+        instance.
+        """
         super().__init__(param,**kw)
         if self.verbose: print( f"[SimImage] init (verbose={self.verbose}) ..." )
         self.initSim()
 
     def initSim(self):
+        """
+        Initialise the simulator, using the settings from the `param` attribute.
+        """
         param = self.param
         self.sim = getSimulator(self.param,verbose=self.verbose)
         self.src = getSource(self.param,verbose=self.verbose)
         self.lens = getLens(self.param,verbose=self.verbose)
         self.sim.setLens( self.lens )
         self.sim.setSource( self.src )
+        if param.get("y") is not None:
+            if verbose > 1:
+                print( "[setParameters] XY", row.get( "x" ), row.get( "y" ) )
+            self.sim.setXY( row.get( "x" ), row.get( "y" ) )
+        elif row.get("phi",None) != None:
+            if verbose > 1: print( "Polar", row.get( "x" ), row.get( "phi" ) )
+            self.sim.setPolar( row.get( "x" ), row.get( "phi" ) )
+        self.runSim()
+
+    def runSim(self):
+        """
+        Run the simulator in the present state.
+        """
         self.sim.update()
         self.image = self.getDistortedImage( )
 
@@ -54,17 +75,11 @@ class SimImage(GenericSim):
         if self.verbose: 
             print( f"[Simulator] Centre Point ({self.centrepoint[0]:.2f},{self.centrepoint[1]:.2f})",
                 "(Centre of Luminence in Planar Co-ordinates)" )
-        """
-        if row.get("y") is not None:
-            if verbose > 1:
-                print( "[setParameters] XY", row.get( "x" ), row.get( "y" ) )
-            sim.setXY( row.get( "x" ), row.get( "y" ) )
-        elif row.get("phi",None) != None:
-            if verbose > 1: print( "Polar", row.get( "x" ), row.get( "phi" ) )
-            sim.setPolar( row.get( "x" ), row.get( "phi" ) )
-"""
 
     def getDistortedImage(self):
+        """
+        Get the distorted image from the simulator.
+        """
         im = np.array(self.sim.getDistorted(),copy=False)
         if len(im.shape) > 2 and im.shape[-1] == 1:
             im.shape = im.shape[:2]
@@ -79,6 +94,10 @@ class SimImage(GenericSim):
         if self.verbose: print( "[SimImage] setParameters()" )
         return setParameters(self.sim,row,verbose=self.verbose)
     def getData(self,verbose=None):
+        """
+        Get the data generated from the simulation, particularly the roulette
+        amplitudes.  The return value is a pandas `Series` object.
+        """
         if verbose is None: verbose = self.verbose
         sim = self.sim
         if self.param.get( "centred" ):
