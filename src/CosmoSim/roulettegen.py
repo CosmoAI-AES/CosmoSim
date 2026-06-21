@@ -16,7 +16,7 @@ from .CLI.Resim import Resim
 
 
     
-def processResim(frame,param,sim=None,maxcount=None,verbose=0):
+def processResim(frame,param,maxcount=None,verbose=0):
     """
     Bulk simulation from a dataset.
     The `frame` is normally a pandas DataFrame, with a row for
@@ -25,7 +25,6 @@ def processResim(frame,param,sim=None,maxcount=None,verbose=0):
     count = 1
     print( "[processResim]", verbose )
     print( "[processResim]", param )
-    if sim is None: sim = RouletteRegenerator()
     for index,row in frame.iterrows():
         if verbose: print( "[roulettegen.py] Processing", index )
         param.setRow( row )
@@ -58,15 +57,8 @@ def rgen(args,param):
     else:
         raise Exception( "No CSV file given." )
 
-    # Masking is not implemented in the Resim class.
-    sim = RouletteRegenerator()
-    sim.setMaskMode( args.mask )
-    if not args.maskradius is None:
-        sim.setMaskRadius( float(args.maskradius) )
-
     maxcount = param.get( ("management", "maxcount" ), None )
-
-    processResim(frame,param,sim,maxcount,verbose=verbose)
+    processResim(frame,param,maxcount,verbose=verbose)
 
     if verbose: print( "[roulettegen.py] Done" )
 
