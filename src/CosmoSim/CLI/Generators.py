@@ -37,7 +37,11 @@ def getSimulator(param,verbose=1):
     if msk is not None:
         if verbose: print( "[getSimulator] sets mask", msk )
         sim.setMaskMode( msk )
+    sim.setNterms( param.get( ( "simulator", "nterms" ), 5 ) ;
+    #   sim->setBGColour( bgcolour ) ;  # TODO
+    #   sim->setMaskRadius( maskRadius ) ; # TODO
     return sim
+
 def makeSourceConstellation(src,size,verbose=1):
     """
     Factory function to create a Source Constellation comprising several
@@ -148,6 +152,7 @@ def getLens(param,verbose=1):
         if verbose: print( "[getLens] No lens" )
     else:
         raise RuntimeError( "[getLens] Unknown lens specification" )
+    lens.initAlphasBeta()
     smp = param.get( ( "simulator", "sampled"), None )
     if smp is not None:
         size = param.get( ( "simulator", "imagesize" ), 512 )
