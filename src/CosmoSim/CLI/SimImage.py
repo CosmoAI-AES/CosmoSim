@@ -45,6 +45,15 @@ class SimImage(GenericSim):
         self.sim = getSimulator(self.param,verbose=self.verbose)
         self.src = getSource(self.param,verbose=self.verbose)
         self.lens = getLens(self.param,verbose=self.verbose)
+        self.sim.setLens( self.lens )
+        self.sim.setSource( self.src )
+        self.sim.update()
+        self.image = self.getDistortedImage( )
+
+        (self.centreimage,self.centrepoint) = centreImage(self.image)
+        if self.verbose: 
+            print( f"[Simulator] Centre Point ({self.centrepoint[0]:.2f},{self.centrepoint[1]:.2f})",
+                "(Centre of Luminence in Planar Co-ordinates)" )
         """
         if row.get("y") is not None:
             if verbose > 1:
@@ -55,8 +64,13 @@ class SimImage(GenericSim):
             sim.setPolar( row.get( "x" ), row.get( "phi" ) )
 """
 
-    def close(self):
-        self.sim.close()
+    def getDistortedImage(self):
+        im = np.array(self.sim.getDistorted(),copy=False)
+        if len(im.shape) > 2 and im.shape[-1] == 1:
+            im.shape = im.shape[:2]
+        self.image = im
+        return  im
+
     def setParameters(self,row):
         """
         Reset parameters in the underlying `CosmoSim` simulator, using the
