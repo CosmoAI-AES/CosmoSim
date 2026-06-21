@@ -81,7 +81,6 @@ public:
     int setSource( Source *src ) ;
 
     bool runSim();
-    bool moveSim( double, double ) ;
     void diagnostics();
 
     void maskImage(double) ;

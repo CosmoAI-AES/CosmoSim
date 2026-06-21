@@ -304,20 +304,7 @@ bool CosmoSim::runSim() {
    if (DEBUG) std::cout << "[runSim] completes\n" ;
    return true ;
 }
-bool CosmoSim::moveSim( double rot, double scale ) { 
-   cv::Point2d xi = sim->getNu(), xi1 ;
-   xi1 = cv::Point2d( 
-           xi.x*cos(rot) - xi.y*sin(rot),
-           xi.x*sin(rot) + xi.y*cos(rot)
-         );
-   xi1 *= scale ;
-   Py_BEGIN_ALLOW_THREADS
-   if ( sim == NULL )
-      throw std::logic_error("Simulator not initialised") ;
-   sim->update( xi1 ) ;
-   Py_END_ALLOW_THREADS
-   return true ;
-}
+
 cv::Mat CosmoSim::getSource(bool refLinesMode) {
    if ( NULL == sim )
       throw std::bad_function_call() ;

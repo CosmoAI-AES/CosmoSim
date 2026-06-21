@@ -128,41 +128,6 @@ class SimImage(GenericSim):
             print( f"New row (verbosity={verbose})" )
             print( r1 )
         return r1
-    def join(self):
-        """
-        Merge images simulated different reference points for
-        the roulette expansion.  This has not been tested since the early
-        work where we tried to get accurate simulations using roulette. 
-        """
-        # sim.setMaskMode(False)
-        sim = self.sim
-        maskscale = float(self.param.get( "maskscale" ))
-        criticalcurves = self.param.get( "criticalcurves" )
-        nc = int(self.param.get( "components" ))
-        sim.runSim()
-        print ( "[datagen.py] runSim() completed\n" ) ;
-        sim.maskImage(maskscale)
-        joinim = sim.getDistortedImage(critical=criticalcurves)
-        for i in range(1,nc):
-           sim.moveSim(rot=2*i*np.pi/nc,scale=1)
-           sim.maskImage(maskscale)
-           im = sim.getDistortedImage(critical=criticalcurves)
-           joinim = np.maximum(joinim,im)
-        fn = os.path.join(self.directory,"join-" + str(self.name) + ".png" ) 
-        if self.param.get( "reflines" ):
-            drawAxes(joinim)
-        cv.imwrite(fn,joinim)
-    def family(self):
-        """
-        Run a family of simulations with different reference points for
-        the roulette expansion.  This has not been tested since the early
-        work where we tried to get accurate simulations using roulette. 
-        """
-        sim = self.sim
-        self.moveImage(rot=-np.pi/4,scale=1,name=f"{self.name}-45+1")
-        self.moveImage(rot=+np.pi/4,scale=1,name=f"{self.name}+45+1")
-        self.moveImage(rot=0,scale=-1,name=f"{self.name}+0-1")
-        self.moveImage(rot=0,scale=2,name=f"{self.name}+0+2")
     def moveImage(self,rot,scale,name):
         """
         Simulate with a different reference point.  This only makes

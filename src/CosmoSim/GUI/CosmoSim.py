@@ -71,8 +71,6 @@ class CosmoSim(cs.CosmoSim):
         self._simThread.join()
     def getUpdateEvent(self):
         return self.updateEvent
-    def moveSim(self,rot,scale):
-        return super().moveSim( float(rot), float(scale) )
     def maskImage(self,scale=1):
         return super().maskImage( float(scale) )
     def setLensMode(self,s):
