@@ -43,14 +43,12 @@ cv::Point2d CosmoSim::getNu( ) {
 
 double CosmoSim::getAlphaXi( int m, int s ) {
 
-   // cv::Point2d xi = lens->getXi( sim->getEta() ) ;
    cv::Point2d xi = sim->getXi() ;
    if (DEBUG) std::cout << "[getAlphaXi] xi = " << xi << std::endl ;
    return getAlpha( xi.x, xi.y, m, s ) ;
 
 }
 double CosmoSim::getBetaXi( int m, int s ) {
-   // cv::Point2d xi = lens->getXi( sim->getEta() ) ;
    cv::Point2d xi = sim->getXi( ) ;
    if (DEBUG) std::cout << "[getBetaXi] xi = " << xi << std::endl ;
    return getBeta( xi.x, xi.y, m, s ) ;
