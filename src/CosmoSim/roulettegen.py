@@ -30,7 +30,7 @@ def processResim(frame,param,sim=None,maxcount=None,verbose=0):
         if verbose: print( "[roulettegen.py] Processing", index )
         param.setRow( row )
         print( f"[processResim] {index}", param )
-        imsim = Resim( row, sim, param=param, verbose=verbose )
+        imsim = Resim( param, row, verbose=verbose )
         imsim.saveImage()
 
         if param.get( "actual" ): imsim.getActual()

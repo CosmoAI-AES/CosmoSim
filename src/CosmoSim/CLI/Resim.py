@@ -8,7 +8,7 @@ from .Arguments import Parameters
 from .Simulator import GenericSim 
 
 from CosmoSim.RouletteAmplitudes import RouletteAmplitudes 
-from CosmoSim.CosmoSimPy import RouletteRegenerator
+from .Generators import RouletteRegenerator
 
 class Resim(GenericSim):
     """
@@ -31,6 +31,7 @@ class Resim(GenericSim):
 
         self.loadData( row )
         self.initSim(row)
+        self.runSim()
 
         im = self.image
         if self.xireference:
@@ -42,11 +43,6 @@ class Resim(GenericSim):
                   print( "Error in warpAffine.  Image", im )
                   print( "Image shape", (m,n) )
                   raise e
-        self.runSim()
-    def runSim( self ):
-        if self.verbose>2: print( "[Resim.runSim]" )
-        self.sim.makeSource( self.param )
-        self.sim.update()
     def setParameters( self, row ):
         """
         Reset the parameters in the backend simulator, using the
