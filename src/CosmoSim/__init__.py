@@ -9,7 +9,9 @@ to make the python API more streamlined.
 """
 
 from .CLI import Arguments
+from . import CosmoSimPy
 
 Parameters = Arguments.Parameters
+setDebug = CosmoSimPy.setDebug
 
 __version__ = "3.0.3"

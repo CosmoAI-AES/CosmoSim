@@ -7,12 +7,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from .Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
+from ..Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
 
 from .Generators import getSimulator, getLens, getSource
 
 from .Simulator import GenericSim
-from .Arguments import setParameters,Parameters
+from .Arguments import Parameters
 
 def getMS(minm,maxm=None):
     if minm is None:
@@ -45,6 +45,16 @@ class SimImage(GenericSim):
         self.sim = getSimulator(self.param,verbose=self.verbose)
         self.src = getSource(self.param,verbose=self.verbose)
         self.lens = getLens(self.param,verbose=self.verbose)
+        self.sim.setLens( self.lens )
+        self.sim.setSource( self.src )
+        self.sim.update()
+        self.image = self.getDistortedImage( )
+
+        (self.centreimage,self.centrepoint) = centreImage(self.image)
+        if self.verbose: 
+            print( f"[Simulator] Centre Point ({self.centrepoint[0]:.2f},{self.centrepoint[1]:.2f})",
+                "(Centre of Luminence in Planar Co-ordinates)" )
+        """
         if row.get("y") is not None:
             if verbose > 1:
                 print( "[setParameters] XY", row.get( "x" ), row.get( "y" ) )
@@ -52,9 +62,15 @@ class SimImage(GenericSim):
         elif row.get("phi",None) != None:
             if verbose > 1: print( "Polar", row.get( "x" ), row.get( "phi" ) )
             sim.setPolar( row.get( "x" ), row.get( "phi" ) )
+"""
 
-    def close(self):
-        self.sim.close()
+    def getDistortedImage(self):
+        im = np.array(self.sim.getDistorted(),copy=False)
+        if len(im.shape) > 2 and im.shape[-1] == 1:
+            im.shape = im.shape[:2]
+        self.image = im
+        return  im
+
     def setParameters(self,row):
         """
         Reset parameters in the underlying `CosmoSim` simulator, using the

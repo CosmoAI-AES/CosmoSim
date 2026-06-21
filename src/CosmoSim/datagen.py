@@ -16,7 +16,7 @@ from .dataset import datasetgen
 
 from .Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
 
-from .CLI.Arguments import setParameters,Parameters
+from .CLI.Arguments import Parameters
 from .CLI.SimImage import SimImage
 
 import pandas as pd
@@ -53,12 +53,11 @@ def datagen(args,param=None):
     outcols = list(frame.columns)
     print( "columns:", outcols )
     dfs = []
-    sim = CosmoSim(verbose=args.verbose)
     for index,row in frame.iterrows():
         if args.verbose:
             print( "[datagen] Processing", index )
         param.setRow( row )
-        imsim = makeSingle(param,name=args.name,outcols=outcols,sim=sim,verbose=args.verbose)
+        imsim = makeSingle(param,name=args.name,outcols=outcols,verbose=args.verbose)
         if args.outfile:
             dfs.append( imsim.getData() )
     df = pd.DataFrame( dfs )

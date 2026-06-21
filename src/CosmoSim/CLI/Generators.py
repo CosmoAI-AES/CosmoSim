@@ -7,7 +7,8 @@ Fanctions to create lenses, sources, and simulators.
 + `getSource`
 """
 
-import ..CosmoSimPy as cs
+from .. import CosmoSimPy as cs
+from CosmoSim.Dictionary import *
 import numpy as np
 import os, sys
 
@@ -20,21 +21,21 @@ def getSourceFileName():
 
 def getSimulator(param,verbose=1):
     model = param.get( ( "simulator", "model" ), None )
-    if model is None
+    if model is None:
         raise RuntimeError( "[getSimulator] No simulator model" )
-    elif mode == "Raytrace":
+    elif model == "Raytrace":
         sim = cs.RaytraceModel()
-    elif mode == "Roulette":
+    elif model == "Roulette":
         sim = cs.RouletteModel()
-    elif mode == "Point Mass (exact)":
+    elif model == "Point Mass (exact)":
         raise NotImplemented( "The exact PointMass model has not been implemented" )
-    elif mode == "Point Mass (roulettes)":
+    elif model == "Point Mass (roulettes)":
         raise NotImplemented( "The roulettes PointMass model has not been implemented" )
     else:
         raise RuntimeError( f"[getSimulator] Unknown model: {model}" )
     msk = param.get( "mask", None )
     if msk is not None:
-        if self.verbose: print( "[getSimulator] sets mask", msk )
+        if verbose: print( "[getSimulator] sets mask", msk )
         sim.setMaskMode( msk )
     return sim
 def makeSourceConstellation(src,size,verbose=1):
@@ -124,22 +125,22 @@ def getPathFN(fn):
 def getLens(param,verbose=1):
     lensmode = param.get( ( "lens", "mode" ), None )
     cluster = param.get( ( "lens", "cluster" ), None )
-    if cluster is not None: 
+    if cluster is not None:
         lens = ClusterLens( cluster, verbose=verbose )
     elif lensmode == "PointMass":
         lens = cs.PointMass()
-        lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) )
+        lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
     elif lensmode == "SIS":
         lens = cs.SIS()
-        lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) )
+        lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
         fn = param.get( ( "lens", "roulettefile" ) )
         if fn is None: fn = getPathFN( "sis50.txt" )
         lens.setFile( fn )
     elif lensmode == "SIE":
         lens = cs.SIE()
-        lens.setRatio( param.get( ( "lens", "ellipseratio" ) )
-        lens.setOrientation( param.get( ( "lens", "orientation" ) )
-        lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) )
+        lens.setRatio( param.get( ( "lens", "ellipseratio" ) ) )
+        lens.setOrientation( param.get( ( "lens", "orientation" ) ) )
+        lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
         fn = param.get( ( "lens", "roulettefile" ) )
         if fn is None: fn = getPathFN( "sie05.txt" )
         lens.setFile( fn )
@@ -149,15 +150,14 @@ def getLens(param,verbose=1):
         raise RuntimeError( "[getLens] Unknown lens specification" )
     smp = param.get( ( "simulator", "sampled"), None )
     if smp is not None:
-        size = self.param.get( ( "simulator", "imagesize" ), 512 )
+        size = param.get( ( "simulator", "imagesize" ), 512 )
         if verbose>1: print( "[getLens] Sampled mode is", smp )
-        if smp: lens = SampledLens( lens, size )
+        if smp: lens = SampledPsiFunctionLens( lens, size )
     return lens
 
-class SampledLens(cs.SampledLens):
+class SampledPsiFunctionLens(cs.SampledPsiFunctionLens):
     def __init__(self,lens,size,verbose=1):
         self.lens = lens
-        raise NotImplemented( "Sampling not implemented" )
         return super().__init__( lens, size )
 class ClusterLens(cs.ClusterLens):
     def __init__(self,s,verbose=1):

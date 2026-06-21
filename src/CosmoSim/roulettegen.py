@@ -17,7 +17,7 @@ from .CLI.Arguments import Parameters
 from .CLI.Simulator import GenericSim 
 
 from .RouletteAmplitudes import RouletteAmplitudes 
-from . import RouletteRegenerator
+from .CosmoSimPy import RouletteRegenerator
 
 
 class Resim(GenericSim):
