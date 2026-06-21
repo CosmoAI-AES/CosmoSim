@@ -17,7 +17,7 @@ import time
 import argparse
 
 import sympy
-from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh, pi
+from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh, pi, log
 
 def identity(f): return f
 
