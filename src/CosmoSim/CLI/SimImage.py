@@ -56,12 +56,13 @@ class SimImage(GenericSim):
         self.sim.setLens( self.lens )
         self.sim.setSource( self.src )
         if param.get("y") is not None:
-            if verbose > 1:
-                print( "[setParameters] XY", row.get( "x" ), row.get( "y" ) )
-            self.sim.setXY( row.get( "x" ), row.get( "y" ) )
-        elif row.get("phi",None) != None:
-            if verbose > 1: print( "Polar", row.get( "x" ), row.get( "phi" ) )
-            self.sim.setPolar( row.get( "x" ), row.get( "phi" ) )
+            if self.verbose > 1:
+                print( "[initSim] XY", param.get( "x" ), param.get( "y" ) )
+            self.sim.setXY( param.get( "x" ), param.get( "y" ) )
+        elif param.get("phi",None) != None:
+            if self.verbose > 1: 
+                print( "[initSim] Polar", param.get( "x" ), param.get( "phi" ) )
+            self.sim.setPolar( param.get( "x" ), param.get( "phi" ) )
         self.runSim()
 
     def runSim(self):
@@ -86,13 +87,6 @@ class SimImage(GenericSim):
         self.image = im
         return  im
 
-    def setParameters(self,row):
-        """
-        Reset parameters in the underlying `CosmoSim` simulator, using the
-        given data row.
-        """
-        if self.verbose: print( "[SimImage] setParameters()" )
-        return setParameters(self.sim,row,verbose=self.verbose)
     def getData(self,verbose=None):
         """
         Get the data generated from the simulation, particularly the roulette

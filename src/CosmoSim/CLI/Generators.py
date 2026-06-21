@@ -8,16 +8,11 @@ Fanctions to create lenses, sources, and simulators.
 """
 
 from .. import CosmoSimPy as cs
+from .. import getPathFN, getSourceFileName
 from CosmoSim.Dictionary import *
 import numpy as np
 import os, sys
 
-def getSourceFileName():
-    """
-    Get the filename for an image source.
-    """
-    dir = os.path.dirname(os.path.abspath(__file__))
-    return( os.path.join( dir, f"einstein.png" ) )
 
 def getSimulator(param,verbose=1):
     model = param.get( ( "simulator", "model" ), None )
@@ -37,7 +32,7 @@ def getSimulator(param,verbose=1):
     if msk is not None:
         if verbose: print( "[getSimulator] sets mask", msk )
         sim.setMaskMode( msk )
-    sim.setNterms( param.get( ( "simulator", "nterms" ), 5 ) ;
+    sim.setNterms( param.get( ( "simulator", "nterms" ), 5 ) )
     #   sim->setBGColour( bgcolour ) ;  # TODO
     #   sim->setMaskRadius( maskRadius ) ; # TODO
     return sim
@@ -122,9 +117,6 @@ def getSource(param,verbose=1):
         print( "makeSource() returns" )
     return r 
 
-def getPathFN(fn):
-    dir = os.path.dirname(os.path.abspath(__file__))
-    return  os.path.join( dir, fn )
 
 def getLens(param,verbose=1):
     lensmode = param.get( ( "lens", "mode" ), None )
@@ -152,7 +144,7 @@ def getLens(param,verbose=1):
         if verbose: print( "[getLens] No lens" )
     else:
         raise RuntimeError( "[getLens] Unknown lens specification" )
-    lens.initAlphasBeta()
+    lens.initAlphasBetas()
     smp = param.get( ( "simulator", "sampled"), None )
     if smp is not None:
         size = param.get( ( "simulator", "imagesize" ), 512 )

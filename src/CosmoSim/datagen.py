@@ -21,18 +21,14 @@ from .CLI.SimImage import SimImage
 
 import pandas as pd
 
-def makeSingle(param=None,name=None,outcols=None,sim=None,verbose=0):
+def makeSingle(param=None,outcols=None,verbose=0):
     """Process a single parameter set, given either as a pandas row or
     just as args parsed from the command line.
     """
     if param is None: param = Parameters()
     if verbose: print( f"[makeSingle] verbose={verbose}" )
-    imsim = SimImage(param=param,name=name,outcols=outcols,sim=sim,verbose=verbose)
+    imsim = SimImage(param=param,outcols=outcols,verbose=verbose)
     imsim.saveImage()
-    if param.get( "join" ): imsim.join()
-    if param.get( "family" ): imsim.family()
-    if param.get( "psiplot" ): imsim.psiplot()
-    if param.get( "kappaplot" ): imsim.kappaplot()
     if param.get( "apparent" ): imsim.getApparent()
     if param.get( "actual" ): imsim.getActual()
     if verbose: print( "makeSingle() returns" )
@@ -57,7 +53,7 @@ def datagen(args,param=None):
         if args.verbose:
             print( "[datagen] Processing", index )
         param.setRow( row )
-        imsim = makeSingle(param,name=args.name,outcols=outcols,verbose=args.verbose)
+        imsim = makeSingle(param,outcols=outcols,verbose=args.verbose)
         if args.outfile:
             dfs.append( imsim.getData() )
     df = pd.DataFrame( dfs )

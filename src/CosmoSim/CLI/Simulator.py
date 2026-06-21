@@ -35,7 +35,7 @@ class GenericSim:
     """
     This is a generic superclass for shared methods.
     """
-    def __init__(self,param=None,name=None,outcols=None,verbose=1):
+    def __init__(self,param=None,outcols=None,verbose=1):
         """
         Normally the constructor should be overridden, calling the superclass
         constructor first and `initSim()` last.
@@ -48,7 +48,6 @@ class GenericSim:
 
         self.outcols = outcols
 
-        self.name = name
         if param is None: 
             if verbose: print( "[GenericSim] No parameters given. Using defaults" )
             param = Parameters()
@@ -160,15 +159,11 @@ class GenericSim:
         if reflines:
             drawAxes(im)
         return im
-    def saveImage(self,name=None):
+    def saveImage(self):
         im = self.getImage()
-        if name is None:
-            name = self.name
-        if self.directory is None:
-            if self.verbose: print( "[saveImage] No directory" )
-            fn = str(name) + ".png"
-        else:
-            if self.verbose: print( "[saveImage] Directory", self.directory )
-            fn = os.path.join(self.directory, str(name) + ".png" )
-        if self.verbose: print( "[saveImage]", fn )
+        fn = self.param.get( ( "management", "filename" ), "test.png" )
+        dir = self.param.get( ( "dataset", "directory" ) )
+        if dir is not None:
+            fn = os.path.join(dir, fn )
+        if self.verbose: print( "[saveImage] saving to", fn)
         cv.imwrite(fn,im)

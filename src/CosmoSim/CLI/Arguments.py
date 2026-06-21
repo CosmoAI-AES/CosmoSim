@@ -267,28 +267,14 @@ class CosmoParser(argparse.ArgumentParser):
             help="Mark the convergence circle")
     self.add_argument('-O', '--maskscale',default="0.9",
             help="Scaling factor for the mask radius")
-    self.add_argument('-P', '--psiplot',action='store_true',default=False,
-            help="Plot lens potential as 3D surface")
-    self.add_argument('-K', '--kappaplot',action='store_true',default=False,
-            help="Plot mass distribution as 3D surface")
-    self.add_argument('-f', '--family',action='store_true',
-            help="Several images moving the viewpoint")
     self.add_argument('-F', '--amplitudes',help="Amplitudes file")
     self.add_argument('-A', '--apparent',action='store_true',help="write apparent image")
     self.add_argument('--mldata',action='store_true',help="Make roulette output for ML without redundant colums")
     self.add_argument('-a', '--actual',action='store_true',help="write actual image")
 
     # Output file names
-    self.add_argument('-N', '--name', default="test",
-            help="simulation name")
     self.add_argument('-D', '--directory',default="./",
             help="directory path (for output files)")
-
-    # Joining images
-    self.add_argument('-c', '--components',default="6",
-            help="Number of components for joined image")
-    self.add_argument('-J', '--join',action='store_true',
-            help="Join several images from different viewpoints")
 
     # Using CSV data sets
     self.add_argument('-o', '--outfile',
