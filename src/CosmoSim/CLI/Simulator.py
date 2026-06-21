@@ -50,10 +50,6 @@ class GenericSim:
             if verbose: print( "[GenericSim] No parameters given. Using defaults" )
             param = Parameters()
         self.param = param
-        self.directory = param.get( "directory" )
-        if self.directory:
-            if self.verbose > 1: print( "[GenericSim] directory", self.param )
-            os.makedirs( self.directory, exist_ok=True )
         if self.verbose > 2:
             print( "[GenericSim]", self.param )
 
@@ -71,25 +67,6 @@ class GenericSim:
             print( "[Simulator] Centre Point",
                 f"({self.centrepoint[0]:.2f},{self.centrepoint[1]:.2f})",
                 "(Centre of Luminence in Planar Co-ordinates)" )
-
-    def initSim(self,row=None):
-        """
-        Run the simulator with the given data row.
-        """
-        if row is None: row = self.param
-        if self.verbose > 1: print( "[initSim] using row" )
-        # self.setParameters( row )
-        if self.verbose: print( f"[initSim] type(row)={type(row)}" )
-        # self.param.setRow( row )
-        fn = row.get( "filename" )
-        if fn is None: fn = row.name
-        if self.verbose > 1: print( "filename", fn )
-        name = fn.split(".")[0]
-        self.name = name
-
-        if self.verbose>1: print( "[initSim] item name:", self.name )
-
-        self.runSim()
 
     def getDistortedImage(self):
         """

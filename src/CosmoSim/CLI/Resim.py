@@ -43,6 +43,21 @@ class Resim(GenericSim):
                   print( "Error in warpAffine.  Image", im )
                   print( "Image shape", (m,n) )
                   raise e
+    def initSim(self):
+        """
+        Initialise the simulator with the given data row.
+        """
+        param = self.param
+        fn = param.get( "filename" )
+        if fn is None: fn = row.name
+        if self.verbose > 1: print( "filename", fn )
+        name = fn.split(".")[0]
+        self.name = name
+
+        if self.verbose>1: print( "[initSim] item name:", self.name )
+
+        self.runSim()
+
     def setParameters( self, row ):
         """
         Reset the parameters in the backend simulator, using the
