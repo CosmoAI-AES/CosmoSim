@@ -6,9 +6,6 @@ import argparse
 
 from .RouletteAmplitudes import RouletteAmplitudes 
 
-
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
           prog = 'Roulette Statistics',

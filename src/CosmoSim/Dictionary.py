@@ -2,6 +2,13 @@
 
 from . import CosmoSimPy as cs
 
+"""
+The module provides dictionaries of the different model identifiers,
+both lens, simulator, and source models.  They are used as lookup tables
+for the different strings used in configuration files and command line 
+arguments.
+"""
+
 ModelSpec = cs.ModelSpec
 SourceSpec = cs.SourceSpec
 PsiSpec = cs.PsiSpec
