@@ -30,7 +30,7 @@ class Resim(GenericSim):
         if self.verbose>1: print( "[Resim] nterms =", self.nterms )
 
         self.loadData( row )
-        self.initSim(row)
+        self.initSim()
         self.runSim()
 
         im = self.image
@@ -58,6 +58,31 @@ class Resim(GenericSim):
 
         self.runSim()
 
+    def loadData( self, row ):
+        """
+        Load data as a row from the dataset.
+
+        The `Parameters` class does not support roulette amplitudes, and hence
+        they are handled separately.
+        """
+        if self.verbose>2: print( "[loadData]" )
+        if not isinstance(row,pd.Series):
+            raise RuntimeException( "Should have a pandas Series as a row object." )
+        if self.verbose>1: print( "columns:", cols )
+    
+        coefs = RouletteAmplitudes(cols)
+        nterms = self.param.get( ( "simulator", "nterms" ) )
+        if nterms is None:
+            if verbose: print( "[loadData] deducing nterms =", nterms )
+            nterms = coefs.getNterms()
+        elif verbose: print( "[loadData] nterms =", nterms )
+
+        self.sim.setNterms( int(nterms) )
+
+        self.coefs = coefs
+        self.cols = cols
+        self.row = row
+
     def setParameters( self, row ):
         """
         Reset the parameters in the backend simulator, using the
@@ -65,7 +90,6 @@ class Resim(GenericSim):
         """
         if self.verbose>2: print( "[setParameters]" )
         maxm = self.coefs.getNterms()
-        rsim = self.sim
         
         if self.xireference:
             if self.verbose:
@@ -79,7 +103,7 @@ class Resim(GenericSim):
             if self.verbose:
                 print( "Offset", row["offsetX"], row["offsetY"], row["sigma"] )
                 print( row )
-        rsim.setCentrePy( *pt )
+        self.sim.setCentrePy( *pt )
         if self.verbose: print( "Initialised simulator at point", pt )
 
         for m in range(maxm+1):
@@ -90,39 +114,8 @@ class Resim(GenericSim):
                 if self.verbose>1:
                     print( "alpha/beta are",  type( alpha ), type( beta ) )
                     print( f"alpha[{m}][{s}] = {alpha}\t\tbeta[{m}][{s}] = {beta}." )
-                rsim.setAlphaXi( m, s, alpha )
-                rsim.setBetaXi( m, s, beta )
+                self.sim.setAlphaXi( m, s, alpha )
+                self.sim.setBetaXi( m, s, beta )
         self.param.setRow( row )
         if self.verbose>1:
             print( "Source spec:", self.param.get( "source" ) )
-    def loadData( self, csvfile ):
-        if self.verbose>2: print( "[loadData]" )
-        if isinstance(csvfile,pd.DataFrame):
-            if self.verbose: print( "Received dataframe for resimulation" )
-            frame = csvfile
-            cols = frame.columns
-        elif isinstance(csvfile,pd.Series):
-            if self.verbose: print( "Received pandas series for resimulation" )
-            frame = csvfile
-            cols = frame.axes[0]
-        else:
-            if self.verbose: print( "Load CSV file:", csvfile )
-            frame = pd.read_csv(csvfile,index_col="filename")
-            cols = frame.columns
-        if self.verbose>1: print( "columns:", cols )
-    
-        coefs = RouletteAmplitudes(cols)
-        if self.verbose:
-            print( "Number of roulette terms: ", coefs.getNterms() )
-        if self.nterms:
-            if self.verbose:
-                print( "[Resim.loadData()] Set nterms from self", int(self.nterms) )
-            self.sim.setNterms( int(self.nterms) )
-        else:
-            nterms = coefs.getNterms() 
-            if self.verbose: print( "[Resim.loadData()] Set nterms from coefs", nterms )
-            self.sim.setNterms( nterms )
-        self.coefs = coefs
-        self.cols = cols
-        self.frame = frame
-
