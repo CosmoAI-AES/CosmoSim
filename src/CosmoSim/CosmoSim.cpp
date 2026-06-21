@@ -1,5 +1,4 @@
-/* (C) 2022-23: Hans Georg Schaathun <georg@schaathun.net> */
-
+/* (C) 2022-26: Hans Georg Schaathun <georg@schaathun.net> */
 
 #include "CosmoSim.h"
 
@@ -21,16 +20,12 @@ CosmoSim::CosmoSim() {
    rPos = -1 ;
 }
 CosmoSim::~CosmoSim() {
-   if (DEBUG) {
-      std::cout << "[CosmoSim] Destructor\n" ;
-   }
+   if (DEBUG) std::cout << "[CosmoSim] Destructor\n" ;
    if (this->sim != NULL) {
       delete this->sim ;
       this->sim = NULL ;
    }
-   if (DEBUG>1) {
-      std::cout << "[CosmoSim] Destructor - destructed\n" ;
-   }
+   if (DEBUG>1) std::cout << "[CosmoSim] Destructor - destructed\n" ;
 }
 
 cv::Point2d CosmoSim::getRelativeEta( double x, double y ) {
@@ -319,12 +314,6 @@ cv::Mat CosmoSim::getActual(bool refLinesMode, bool causticMode) {
    }
    if (causticMode) {
       sim->drawCaustics( im ) ;
-      /*
-      cv::Mat caus = sim->getCaustic( ) ;
-      cv::Mat im2 ;
-      cv::addWeighted(im,1,caus,1,0,im2) ;
-      im = im2 ;
-      */
    }
    return im ;
 }

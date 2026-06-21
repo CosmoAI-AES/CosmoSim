@@ -44,6 +44,7 @@ class SimImage(GenericSim):
         super().__init__(param,**kw)
         if self.verbose: print( f"[SimImage] init (verbose={self.verbose}) ..." )
         self.initSim()
+        self.runSim()
 
     def initSim(self):
         """
@@ -63,7 +64,6 @@ class SimImage(GenericSim):
             if self.verbose > 1: 
                 print( "[initSim] Polar", param.get( "x" ), param.get( "phi" ) )
             self.sim.setPolar( param.get( "x" ), param.get( "phi" ) )
-        self.runSim()
 
     def runSim(self):
         """
