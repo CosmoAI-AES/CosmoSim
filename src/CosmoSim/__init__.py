@@ -279,13 +279,15 @@ class CosmoSim(cs.CosmoSim):
         self.verbose = verbose
         if self.verbose>1: print( f"[CosmoSim] init (verbose={self.verbose}) ..." )
         dir = os.path.dirname(os.path.abspath(__file__))
-        if fn == None:
+        if fn is None:
             super().setFile( PsiSpec.SIS, getFileName( maxm ) )
             super().setFile( PsiSpec.SIE, os.path.join( dir, "sie05.txt" ) )
+            super().setFile( PsiSpec.PM, os.path.join( dir, "pm50.txt" ) )
         else:
             if verbose: print( "Amplitudes file:", fn )
             super().setFile( PsiSpec.SIS, fn )
             super().setFile( PsiSpec.SIE, fn )
+            super().setFile( PsiSpec.PM, fn )
         self._continue = True
         self.updateEvent = th.Event()
         self.simEvent = th.Event()
@@ -373,6 +375,7 @@ class CosmoSim(cs.CosmoSim):
                 l.setFile( super().getFile( PsiSpec.SIE ) )
             elif lenstype == "PointMass":
                 l = cs.PointMass()
+                l.setFile( super().getFile( PsiSpec.PM ) )
             else:
                 raise Exception( f"Lens Type not Supported {lenstype}" )
             l.setEinsteinR( lensparam[2] )
