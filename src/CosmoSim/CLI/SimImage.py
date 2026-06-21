@@ -65,28 +65,7 @@ class SimImage(GenericSim):
                 print( "[initSim] Polar", param.get( "x" ), param.get( "phi" ) )
             self.sim.setPolar( param.get( "x" ), param.get( "phi" ) )
 
-    def runSim(self):
-        """
-        Run the simulator in the present state.
-        """
-        self.sim.update()
-        self.image = self.getDistortedImage( )
 
-        (self.centreimage,self.centrepoint) = centreImage(self.image)
-        if self.verbose: 
-            print( "[Simulator] Centre Point",
-                f"({self.centrepoint[0]:.2f},{self.centrepoint[1]:.2f})",
-                "(Centre of Luminence in Planar Co-ordinates)" )
-
-    def getDistortedImage(self):
-        """
-        Get the distorted image from the simulator.
-        """
-        im = np.array(self.sim.getDistorted(),copy=False)
-        if len(im.shape) > 2 and im.shape[-1] == 1:
-            im.shape = im.shape[:2]
-        self.image = im
-        return  im
 
     def getData(self,verbose=None):
         """

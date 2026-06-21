@@ -241,25 +241,6 @@ class RouletteRegenerator(cs.RouletteRegenerator):
         self.setSource( self._src )
         if self.verbose>1:
             print( "RouletteRegenerator.makeSource() returns" )
-    def getDistortedImage(self,reflines=False,critical=False,mask=False,showmask=False):
-        """
-        Return the Distorted Image from the simulator as a numpy array.
-        """
-        try:
-            if mask: self.maskImage()
-            if showmask: self.showMask()
-        except:
-            print( "Masking not supported for this lens model." )
-        try:
-            im = np.array(self.getDistorted(),copy=False)
-        except Exception as e:
-            print( "self", type(self) )
-            print( "reflines", reflines )
-            print( "critical", critical )
-            im = np.array(self.getDistorted(),copy=False)
-            raise e
-        if im.shape[2] == 1 : im.shape = im.shape[:2]
-        return np.maximum(im,self.bgcolour)
 
 def makeSourceConstellation(src,size,verbose=1):
     ss = src.split(";")

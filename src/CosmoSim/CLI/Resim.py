@@ -17,18 +17,18 @@ class Resim(GenericSim):
     The class sets up the infrastructure, and provides the methods to
     run the simulator for each iaage on a CSV file.
     """
-    def __init__(self,row,sim=None,**kw):
+    def __init__(self,param,row,**kw):
         """
         Note that `args` overrides Boolean parameters.
         """
-        super().__init__(**kw)
+        super().__init__(param,**kw)
         if self.verbose>2: print( "[Resim.__init__]" )
-        if sim is None: sim = RouletteRegenerator(verbose=self.verbose)
+
+        self.sim = RouletteRegenerator(verbose=self.verbose)
         self.xireference = self.param.get( "xireference", True )
         self.nterms = self.param.get( "nterms" )
         if self.verbose>1: print( "[Resim] nterms =", self.nterms )
 
-        self.sim = sim
         self.loadData( row )
         self.initSim(row)
 
@@ -42,12 +42,11 @@ class Resim(GenericSim):
                   print( "Error in warpAffine.  Image", im )
                   print( "Image shape", (m,n) )
                   raise e
+        self.runSim()
     def runSim( self ):
         if self.verbose>2: print( "[Resim.runSim]" )
         self.sim.makeSource( self.param )
         self.sim.update()
-    def getDistortedImage(self):
-        return  self.sim.getDistortedImage( )
     def setParameters( self, row ):
         """
         Reset the parameters in the backend simulator, using the
