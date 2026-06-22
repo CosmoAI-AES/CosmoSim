@@ -11,7 +11,7 @@ class CosmoSimConan(ConanFile):
     generators = "CMakeToolchain", "CMakeDeps"
 
     def requirements(self):
-        self.requires( "symengine/0.11.2" )
+        self.requires( "symengine/0.14.0" )
         self.requires( "opencv/4.12.0" )
 
     def layout(self):
