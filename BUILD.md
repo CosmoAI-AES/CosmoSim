@@ -2,7 +2,7 @@
 
 A number of approaches have been attempted for building.
 Some work, and others may serve as inspiration if you have
-other needs. It is easiest to look at the various scriopts 
+other needs. It is easiest to look at the various scripts 
 and workflows that are included.
 
 The currently working approaches (on MacOS and Linux) are 
@@ -19,12 +19,12 @@ The currently working approaches (on MacOS and Linux) are
     + `Setup/idunbuild.sh` does this for the NTNU HPC cluster.
       It can be used as an example, but as written, it depends on their
       module system for preinstalled libraries.
-At presernt, nothing works on Windows.  Under `.github/actions` there
-is a `build-windows` action that used to work, but it currently does
-not.
+Windows wheels are built with `cibuildwheel` via the `wheels.yml` workflow
+and the `[tool.cibuildwheel.windows]` section of `pyproject.toml`; this path
+is still being stabilised.
 
 For broken or otherwise non-supported approaches, see
-+ directory `Legacy/github-workflows`
++ directory `Legacy/github-workflow`
     + including a workflow for a MacOS desktop application (GUI)
 + directory `docker`
 + directory `Setup`
@@ -43,7 +43,7 @@ that you trust the binary before it will run.
 ## Building from Source
 
 The build procedure is primarily developed on Debian Bullseye, but it now 
-also works reliable on github runners running Windows, Ubuntu, and MacOS.
+also works reliably on github runners running Windows, Ubuntu, and MacOS.
 We have limited capacity to develop generic and robust build procedures,
 but we shall be happy to incorporate contributions.
 

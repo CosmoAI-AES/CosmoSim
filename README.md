@@ -26,8 +26,8 @@ pip install CosmoSim
 ```
 
 We successfully build CosmoSim for 
-Linux/x86_64 and MacOS/arm, for python 3.11 trough 3.14, and 3.14.t
-Buiilding for python 3.10 is impossible because tomllib is required.
+Linux/x86_64 and MacOS/arm, for python 3.11 through 3.14, and 3.14t.
+Building for python 3.10 is impossible because tomllib is required.
 Building on Windows (amd64, python 3.11-3.14) sometimes works,
 but currently not.
 
