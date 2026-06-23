@@ -1,6 +1,0 @@
-{
-	"dependencies": [
-		"opencv",
-		"symengine"
-	]
-}

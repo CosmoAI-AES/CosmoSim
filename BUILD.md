@@ -24,8 +24,6 @@ is a `build-windows` action that used to work, but it currently does
 not.
 
 For broken or otherwise non-supported approaches, see
-+ directory `Legacy/github-workflows`
-    + including a workflow for a MacOS desktop application (GUI)
 + directory `docker`
 + directory `Setup`
 
