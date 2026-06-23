@@ -18,7 +18,7 @@ import argparse
 
 import sympy
 from libamplitudes import *
-from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh
+from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh, Rational
 
 def func(n, m, s, alpha, beta, x, y, rdict):
     """
@@ -29,9 +29,10 @@ def func(n, m, s, alpha, beta, x, y, rdict):
     while s > 0 and m < n:
         m += 1
         s -= 1
-        c = (m + 1) / (m + 1 - s) 
         if s == 0:
-            c = 1/2
+            c = Rational(1,2)
+        else:
+            c = Rational(m + 1, m + 1 - s) 
         # start calculate
         alpha_ = sympy.factor(c * (diff(alpha, x) + diff(beta, y)))
         beta_ = sympy.factor(c * (diff(beta, x) - diff(alpha, y)))
@@ -79,7 +80,7 @@ def main(lens="SIS",n=50,nproc=None,fn=None):
                 beta = - beta
             else:
                 # This is the base case (m+1,s+1) of the inner recursion
-                c = (m + 1.0) / (m + s + 1.0) 
+                c = Rational(m + 1, m + 1 + s) 
                 # Should there not be an extra factor 2 for s==1 above?
                 # - maybe it does not matter because s=m+1 and m>1.
                 alpha_ = sympy.factor(c * (diff(alpha, x) - diff(beta, y)))
