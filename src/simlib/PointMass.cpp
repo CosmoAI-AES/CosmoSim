@@ -8,7 +8,7 @@
 
 double PointMass::psiValue( double x, double y ) const {
    double s = einsteinR*einsteinR ;
-   s *= log( sqrt( x*x + y*y )/einsteinR ) ;
+   s *= log( sqrt( x*x + y*y ) ) ;
    return s ;
 }
 double PointMass::psiXvalue( double x, double y ) const {
