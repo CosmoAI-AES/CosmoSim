@@ -2,6 +2,12 @@
 
 name: Release on github
 
+description: |
+  Record a release on github.
+
+  This is to maintain a record of releases on the github repo.
+  Users are expected to use PyPI for download, and not the release on github. 
+
 on:
   push:
     # Sequence of patterns matched against refs/tags
