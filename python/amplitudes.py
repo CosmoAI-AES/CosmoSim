@@ -132,5 +132,7 @@ if __name__ == "__main__":
         alphabeta = main(lens=args.lens,n=args.n,nproc=args.nproc,fn=args.output)
         if args.output:
            ampPrint(alphabeta,args.output)
-        if args.tex:
+        elif args.tex:
            texPrint(alphabeta,args.tex)
+        else:
+            ampPrint(alphabeta)

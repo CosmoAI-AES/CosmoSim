@@ -1,6 +1,10 @@
 # CosmoSim Change Log
 
-## 3.0.4 - 2026-06-XX
+## 3.0.4b1 - 2026-06-23
+
+### Added
+
++ Roulette amplitudes for the pointmass lens, allowing modular roulette simulation.
 
 ### Fixed
 

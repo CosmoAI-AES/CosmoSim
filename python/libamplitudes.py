@@ -92,17 +92,22 @@ def zeroth(lens="SIS"):
         return psiPM()
     raise "Unknown lens model"
 
-def ampPrint(alphabeta,fn):
-    print( "ampPrint" )
-    with open(fn, 'w') as f:
-        print( "Opened file", fn ) 
-        for (m,s) in alphabeta.keys():
-
+def ampWrite(alphabeta,f):
+    for (m,s) in alphabeta.keys():
             alpha,beta = alphabeta[(m,s)]
             res = f'{m}:{s}:{alpha}:{beta}'
             print ( f'{m}:{s}' )
             f.write(str(res) + '\n')
-        f.close()
+    f.close()
+def ampPrint(alphabeta,fn=None):
+    if fn is None:
+        ampWrite(alphabeta,sys.stdout)
+    else:
+        print( "ampPrint" )
+        with open(fn, 'w') as f:
+            print( "Opened file", fn ) 
+            ampWrite(alphabeta,f)
+
 
 def latex(x): return sympy.latex(sympy.simplify(x))
 def texPrint(alphabeta,fn,latex=latex,opt="12pt,paper=a4"):
