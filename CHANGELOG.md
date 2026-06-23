@@ -1,5 +1,11 @@
 # CosmoSim Change Log
 
+## 3.0.4 - 2026-06-XX
+
+### Fixed
+
++ Build on Windows
+
 ## 3.0.3 - 2026-06-19
 
 ### Fixed
