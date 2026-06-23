@@ -31,7 +31,7 @@ def func(n, m, s, alpha, beta, x, y, rdict):
         s -= 1
         c = (m + 1) / (m + 1 - s) 
         if s == 0:
-            c /= 2
+            c = 1/2
         # start calculate
         alpha_ = sympy.factor(c * (diff(alpha, x) + diff(beta, y)))
         beta_ = sympy.factor(c * (diff(beta, x) - diff(alpha, y)))
