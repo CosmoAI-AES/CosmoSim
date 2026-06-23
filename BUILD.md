@@ -54,7 +54,7 @@ which requires the setup of a virtual environment.
 ```sh
 python -m venv pythonenv
 . pythonenv/bin/activate
-pip3 install -r requirements-build.txt
+pip3 install -r requirements.txt
 conan profile detect
 sh build.sh
 ```
