@@ -19,7 +19,7 @@ Parameters = Arguments.Parameters
 
 import traceback
 
-__version__ = "3.0.3"
+__version__ = "3.0.4b1"
 
 class SphericalSource(cs.SphericalSource):
     """Spherical source model.
