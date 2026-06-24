@@ -1,5 +1,11 @@
 # CosmoSim Change Log
 
+## unreleased - 2026-??
+
+### Added
+
++ Amplitudes scripts as part of the package
+
 ## 3.0.4b1 - 2026-06-23
 
 ### Added
