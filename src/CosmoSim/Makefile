@@ -1,6 +1,6 @@
-all: sis100.txt sis50.txt sie05.txt
+all: pm50.txt sis50.txt sie05.txt
 
-sis: sis100.txt sis50.txt sis200.txt
+sis: sis50.txt sis200.txt
 sis100.txt sis50.txt sie05.txt:
 
 P=./Roulettes
