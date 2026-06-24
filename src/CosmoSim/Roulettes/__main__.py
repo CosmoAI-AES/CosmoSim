@@ -17,7 +17,7 @@ import time
 import argparse
 
 import sympy
-from libamplitudes import *
+from .libamplitudes import *
 from sympy import symbols, sqrt, diff, sin, cos, asin, atan2, asinh
 
 def func(n, m, s, alpha, beta, x, y, rdict):

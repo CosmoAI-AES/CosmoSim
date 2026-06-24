@@ -14,9 +14,9 @@ P=../../python
 	sort $< > $@
 sis%.txt:
 	echo $*
-	python3 $P/amplitudes.py --output $@ --lens SIS $* 
+	python3 -m CosmoSim.Roulettes --output $@ --lens SIS $* 
 sie%.txt:
-	python3 $P/sieamplitudes.py --output $@ --lens SIE $* 
+	python3 -m CosmoSim.Roulettes.sie --output $@ --lens SIE $* 
 %.status: %.new %.baseline
 	diff $^ && echo Regression test passes > $@
 

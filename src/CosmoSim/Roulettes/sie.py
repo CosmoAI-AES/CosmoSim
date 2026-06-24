@@ -16,7 +16,7 @@ import argparse
 import queue
 
 import sympy
-from libamplitudes import *
+from .libamplitudes import *
 from sympy import symbols, diff, sin, cos, asin, atan2, asinh, binomial
 
 def firstworker(q,resDict,maxm=6):

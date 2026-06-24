@@ -1,20 +1,28 @@
 # CosmoSim Change Log
 
-## unreleased - 2026-??
+## 3.2.0 - 2026-??
+
+Version 3.2 will remove the old point mass simulator in favour of
+the purely modular version.  The code is massively refactored with
+more consistent parameter handling and modularisation.
+
+## 3.1.0 - 2026-??
+
+### Fixed
+
++ Fixed the calculation of roulettes amplitudes to use rational numbers
+  rather than floating point until final evaluation.
+
+## 3.0.4 - 2026-06-24
 
 ### Added
 
 + Amplitudes scripts as part of the package
-
-## 3.0.4b1 - 2026-06-23
-
-### Added
-
 + Roulette amplitudes for the pointmass lens, allowing modular roulette simulation.
 
 ### Fixed
 
-+ Build on Windows
++ Build on Windows with precompiled distribution on PyPi
 
 ## 3.0.3 - 2026-06-19
 
