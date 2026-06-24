@@ -8,12 +8,21 @@ more consistent parameter handling and modularisation.
 
 ## 3.1.0 - 2026-??
 
+Version 3.1 will be the last version including the old implementation
+of pointmass lenses, treating them as a special case.  It is released
+only to keep a record for comparing this legacy implemetation to the
+new modular implementation, before the legacy code is removed.
+
 ### Fixed
 
 + Fixed the calculation of roulettes amplitudes to use rational numbers
   rather than floating point until final evaluation.
 
 ## 3.0.4 - 2026-06-24
+
+Version 3.0 will be the last version using the old amplitudes.py
+script which accidentally introduce floating point numbers prematurely
+into the roulettes amplitudes.
 
 ### Added
 
