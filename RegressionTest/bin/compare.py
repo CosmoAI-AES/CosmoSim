@@ -2,6 +2,10 @@
 
 """
 Utility script to compare images.
+
+The script quantitatively compares two images.
+This is used by the regression tests, but may have other
+uses for evaluation of experiments.
 """
 
 import cv2 as cv
