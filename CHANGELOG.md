@@ -18,11 +18,23 @@ new modular implementation, before the legacy code is removed.
 + Fixed the calculation of roulettes amplitudes to use rational numbers
   rather than floating point until final evaluation.
 
-## 3.0.4 - 2026-06-24
+## 3.0.4 - 2026-06-25
 
 Version 3.0 will be the last version using the old amplitudes.py
 script which accidentally introduce floating point numbers prematurely
 into the roulettes amplitudes.
+
+### Changed
+
++ CosmoSim.Roulettes uses rational numbers instead of floating point.
+  The generated amplitudes formulæ have not been changed.
+
+### Fixed
+
++ Forcing version numbers, hoping to make it run on MacOS.
+
+## 3.0.4 - 2026-06-24
+
 
 ### Added
 
