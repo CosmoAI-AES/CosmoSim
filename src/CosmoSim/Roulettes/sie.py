@@ -39,10 +39,13 @@ def firstworker(q,resDict,maxm=6):
         # `q.task_done()` is called.  Hence the queue will not be
         # empty if the current job should spawn new ones. 
     print ( "I.", os.getpid(),"returning" )
-def secondworker(q,psidiff,diff1,vars ):
+def secondworker(q,psidiff,diff1,vars,circular=False ):
     print ( os.getpid(),"working" )
     cont = True
-    theta = symbols("p",real=True)
+    if circular:
+        theta = 0
+    else:
+        theta = symbols("p",real=True)
     x,y = vars
     x1,y1 = symbols("x1 y1",real=True)
     while cont:
@@ -66,10 +69,7 @@ def secondworker(q,psidiff,diff1,vars ):
       except queue.Empty:
         print ( "II.", os.getpid(), "completes" )
         cont = False
-
     print ( "II.", os.getpid(),"returning" )
-
-
 
 def thirdworker(q,ampdict,indict, var=[] ):
     print ( os.getpid(),"working" )
@@ -100,12 +100,13 @@ def thirdworker(q,ampdict,indict, var=[] ):
     print ( "III.", os.getpid(),"returning" )
 
 class RouletteManager():
-    def __init__(self,psivec=None,thirdworker=thirdworker):
+    def __init__(self,psivec=None,secondworker=secondworker,thirdworker=thirdworker):
        self.mgr = mp.Manager()      
        if psivec == None:
            self.psivec = psiSIE()
        else:
            self.psivec = psivec
+       self.secondworker = secondworker
        self.thirdworker = thirdworker
 
     def getDict(self,n=50,nproc=None):
@@ -179,6 +180,7 @@ class RouletteManager():
         print( "Time spent:", time.time() - start)
         return rdict
 
+def cworker(*a,**kw): return secondworker( *a, circular=True, **kw )
 
 def main(f=thirdworker):
     parser = argparse.ArgumentParser(description='Generate roulette amplitude formulæ for CosmoSim.')
@@ -191,6 +193,8 @@ def main(f=thirdworker):
                     help='Simply differentiate psi')
     parser.add_argument('--lens', default="SIE",
                     help='Lens model')
+    parser.add_argument('--circular', default=False,action="store_true",
+                    help='Circular (symmetric) lens')
     parser.add_argument('--tex', 
                     help='TeX output file')
     args = parser.parse_args()
@@ -204,7 +208,10 @@ def main(f=thirdworker):
 
     psivec = zeroth( args.lens )
     
-    mgr = RouletteManager( psivec=psivec,thirdworker=f )
+    if args.circular:
+        mgr = RouletteManager( psivec=psivec,secondworker=cworker,thirdworker=f )
+    else:
+        mgr = RouletteManager( psivec=psivec,thirdworker=f )
     alphabeta = mgr.getAmplitudes(n,nproc )
 
     if args.output:
