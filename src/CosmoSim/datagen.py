@@ -34,7 +34,8 @@ class SimImage(GenericSim):
         if self.verbose: print( f"[SimImage] init (verbose={self.verbose}) ..." )
 
         if sim is None:
-            self.sim = CosmoSim(fn=param.get( ( "lens"."amplitudefile" ),verbose=self.verbose)
+            self.sim = CosmoSim( fn=param.get( ( "lens","amplitudefile" ) )
+                               , verbose=self.verbose )
         else:
             self.sim = sim
         msk = self.param.get( "mask", None )
