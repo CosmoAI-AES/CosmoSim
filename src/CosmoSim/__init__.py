@@ -160,19 +160,6 @@ def getMSheaders(maxm):
     r = [ ( f"alpha[{m}][{s}]", f"beta[{m}][{s}]") for (m,s) in getMS(maxm) ]
     return [ x for p in r for x in p ]
 
-maxmlist = [ 50, 100, 200 ]
-def getFileName(maxm):
-    """
-    Get the filename for the amplitudes files.
-    The argument `maxm` is the maximum number of terms (nterms) to be
-    used in the simulator.
-    """
-    dir = os.path.dirname(os.path.abspath(__file__))
-    for m in maxmlist:
-        m0 = m
-        if maxm <= m:
-            return( os.path.join( dir, f"sis{m}.txt" ) )
-    raise Exception( f"Cannot support m > {m0}." )
 def getSourceFileName():
     """
     Get the filename for an image source.
@@ -203,9 +190,9 @@ class CosmoSim(cs.CosmoSim):
         if self.verbose>1: print( f"[CosmoSim] init (verbose={self.verbose}) ..." )
         dir = os.path.dirname(os.path.abspath(__file__))
         if fn is None:
-            super().setFile( PsiSpec.SIS, getFileName( maxm ) )
+            super().setFile( PsiSpec.SIS, os.path.join( dir, "sis20.txt" ) )
             super().setFile( PsiSpec.SIE, os.path.join( dir, "sie05.txt" ) )
-            super().setFile( PsiSpec.PM, os.path.join( dir, "pm50.txt" ) )
+            super().setFile( PsiSpec.PM, os.path.join( dir, "pm20.txt" ) )
         else:
             if verbose: print( "Amplitudes file:", fn )
             super().setFile( PsiSpec.SIS, fn )
