@@ -34,7 +34,7 @@ class SimImage(GenericSim):
         if self.verbose: print( f"[SimImage] init (verbose={self.verbose}) ..." )
 
         if sim is None:
-            self.sim = CosmoSim(verbose=self.verbose)
+            self.sim = CosmoSim(fn=args.amplitudes,verbose=self.verbose)
         else:
             self.sim = sim
         msk = self.param.get( "mask", None )
@@ -226,7 +226,7 @@ def datagen(args,param=None):
     outcols = list(frame.columns)
     print( "columns:", outcols )
     dfs = []
-    sim = CosmoSim(verbose=args.verbose)
+    sim = CosmoSim(fn=args.amplitudes,verbose=args.verbose)
     for index,row in frame.iterrows():
         if args.verbose:
             print( "[datagen] Processing", index )
