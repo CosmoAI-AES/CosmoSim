@@ -9,14 +9,14 @@ P=./Roulettes
 	sort $< > $@
 
 sis%.raw:  $P/__main__.py
-	time python3 $< --output $@ $* 8
+	time python3 -m CosmoSim.Roulettes --output $@ $* 8
 pm%.raw:  $P/__main__.py
-	time python3 $< --lens PM --output $@ $* 8
+	time python3 -m CosmoSim.Roulettes --lens PM --output $@ $* 8
 
 sie%.raw: $P/sie.py 
-	time python3 $< --output $@ $* 7
+	time -m CosmoSim.Roulettes.sie --output $@ $* 7
 sie%.tex: $P/sie.py 
-	time python3 $< --tex $@ $* 7
+	time -m CosmoSim.Roulettes.sie --tex $@ $* 7
 
 %.pdf: %.tex
 	pdflatex $<

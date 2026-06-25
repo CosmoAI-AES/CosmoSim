@@ -103,6 +103,7 @@ paramap = {
         "n_sersic" : ( "source", "n_sersic" ), 
         "luminosity" : ( "source", "luminosity" ), 
 
+        "amplitudes" : ( "lens", "amplitudefile" ),
         "einsteinradius" : ( "lens", "einsteinradius" ),
         "orientation" : ( "lens", "orientation" ),
         "ratio" : ( "lens", "ellipseratio" ), # relabelled
