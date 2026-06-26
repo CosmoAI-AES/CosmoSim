@@ -39,13 +39,10 @@ def firstworker(q,resDict,maxm=6):
         # `q.task_done()` is called.  Hence the queue will not be
         # empty if the current job should spawn new ones. 
     print ( "I.", os.getpid(),"returning" )
-def secondworker(q,psidiff,diff1,vars,circular=False ):
+def secondworker(q,psidiff,diff1,vars):
     print ( os.getpid(),"working" )
     cont = True
-    if circular:
-        theta = 0
-    else:
-        theta = symbols("p",real=True)
+    theta = symbols("p",real=True)
     x,y = vars
     x1,y1 = symbols("x1 y1",real=True)
     while cont:
@@ -182,7 +179,31 @@ class RouletteManager():
         print( "Time spent:", time.time() - start)
         return rdict
 
-def cworker(*a,**kw): return secondworker( *a, circular=True, **kw )
+def cworker(*a,**kw):
+    print ( os.getpid(),"working" )
+    cont = True
+    theta = 0
+    x,y = vars
+    x1,y1 = symbols("x1 y1",real=True)
+    while cont:
+      try:
+        m,n = q.get(False)   # does not block
+        res = sum( [
+                  binomial( m, i )*
+                  binomial( n, j )*
+                  1**(m-i+j)*
+                  0**(n-j+i)*
+                  (-1)**i
+                  * diff1[(m+n-i-j,j+i)]
+                  for i in range(m+1) for j in range(n+1) ] ) 
+        # res = sympy.expand( res )  # This is too slow
+        # res = sympy.simplify( res )  # This is too slow
+        print( "II. (circular)", os.getpid(), m, n )
+        psidiff[(m,n)] = res
+      except queue.Empty:
+        print ( "II. (circular)", os.getpid(), "completes" )
+        cont = False
+    print ( "II. (circular)", os.getpid(),"returning" )
 
 def main(f=thirdworker):
     parser = argparse.ArgumentParser(description='Generate roulette amplitude formulæ for CosmoSim.')
