@@ -8,8 +8,13 @@ P=./Roulettes
 %.txt: %.raw
 	sort $< > $@
 
+sis%sie.raw:  $P/__main__.py
+	time python3 -m CosmoSim.Roulettes.sie --circular --lens SIS --output $@ $* 8
+pm%sie.raw:  $P/__main__.py
+	time python3 -m CosmoSim.Roulettes.sie --circular --lens PM --output $@ $* 8
+
 sis%.raw:  $P/__main__.py
-	time python3 -m CosmoSim.Roulettes --output $@ $* 8
+	time python3 -m CosmoSim.Roulettes --lens SIS --output $@ $* 8
 pm%.raw:  $P/__main__.py
 	time python3 -m CosmoSim.Roulettes --lens PM --output $@ $* 8
 
