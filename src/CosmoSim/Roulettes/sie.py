@@ -92,12 +92,14 @@ def thirdworker(q,ampdict,indict, var=[] ):
         if s == 0:
                a /= 2
         print( "III (Chris).", os.getpid(), m, s )
+        sys.stdout.flush()
         ampdict[(m,s)] = (a,b)
       except queue.Empty:
         print ( "III.", os.getpid(), "completes" )
         cont = False
 
     print ( "III.", os.getpid(),"returning" )
+    sys.stdout.flush()
 
 class RouletteManager():
     def __init__(self,psivec=None,secondworker=secondworker,thirdworker=thirdworker):
