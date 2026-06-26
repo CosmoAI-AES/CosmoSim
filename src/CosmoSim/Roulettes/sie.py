@@ -142,9 +142,9 @@ class RouletteManager():
 
         for k in self.diff1.keys():
            q.put( k )
+        # All jobs are submitted before the Pool starts
         pool = mp.Pool(nproc, secondworker,(q,psidiff,self.diff1,self.vars))
 
-        q.close()
         pool.close()
         pool.join()
 
@@ -172,7 +172,6 @@ class RouletteManager():
                q.put((m,s))
         pool = mp.Pool(nproc, self.thirdworker,(q,rdict,self.psidiff,self.vars))
 
-        q.close()
         pool.close()
         pool.join()
 
