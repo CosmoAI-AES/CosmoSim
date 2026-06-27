@@ -16,10 +16,11 @@ import matplotlib.pyplot as plt
 from .dataset import datasetgen
 
 from .Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
-from . import getMSheaders,CosmoSim,__version__
+from . import CosmoSim,__version__
 
 from .CLI.Simulator import GenericSim
 from .CLI.Arguments import setParameters,Parameters
+from .CLI.Parser import RouletteParser
 
 import pandas as pd
 
@@ -55,6 +56,50 @@ class SimImage(GenericSim):
         """
         if self.verbose: print( "[SimImage] setParameters()" )
         return setParameters(self.sim,row,verbose=self.verbose)
+    def getRoulette(self,precision=None,verbose=None):
+        if verbose is None: verbose = self.verbose
+        sim = self.sim
+        if self.param.get( "centred" ):
+            centrepoint = self.centrepoint
+        else:
+            centrepoint = (0,0)
+        maxm = self.param.get( ( "simulator", "nterms" ), 16 )
+        xireference = self.param.get( "xireference", True )
+
+        releta = sim.getRelativeEta(centrepoint=centrepoint)
+        offset = sim.getOffset(centrepoint=centrepoint)
+        if verbose: print( "[getRoulette] ", offset, centrepoint )
+
+        xioffset = sim.getXiOffset(centrepoint)
+        if xireference:
+            xi = sim.getXi()
+        else:
+            xi = centrepoint
+        
+        relcols = [ "centreX", "centreY",
+                   "reletaX", "reletaY",
+                   "offsetX", "offsetY",
+                   "xiX", "xiY" ]
+        r1 = pd.Series(
+                { "filename" : self.param.get( "filename" )
+                , "source" : self.param.get( "source" )
+                , "x" : self.param.get( "x" )
+                , "y" : self.param.get( "y" )
+                , "sigma" : self.param.get( "sigma" )
+                , "sigma2" : self.param.get( "sigma2" )
+                , "theta" : self.param.get( "theta" )
+                } )
+        r2 = pd.Series(
+              [ centrepoint[0], centrepoint[1], releta[0], releta[1],
+               offset[0], offset[1], xioffset[0], xioffset[1] ],
+              index=relcols ) 
+        rparser = RouletteParser()
+        rp = RouletteParset( sim.getAmplitudeFile() )
+        r1 = pd.concat( [ r1, r2, rp.getAlphaBetas(xi,maxm) ] )
+        if verbose > 1:
+            print( f"New row (verbosity={verbose})" )
+            print( r1 )
+        return r1
     def getData(self,verbose=None):
         if verbose is None: verbose = self.verbose
         sim = self.sim
@@ -64,11 +109,10 @@ class SimImage(GenericSim):
         else:
             if verbose: print( "[getData] not centred" )
             centrepoint = (0,0)
-        maxm = self.param.get( "nterms", 16 )
+        maxm = self.param.get( ( "simulator", "nterms" ), 16 )
         xireference = self.param.get( "xireference", True )
         if verbose > 0:
             print( "[datagen.py] Finding Alpha/beta; centrepoint=", centrepoint )
-        # r = pd.Series([ row[x] for x in self.outcols ], index=self.outcols )
         releta = sim.getRelativeEta(centrepoint=centrepoint)
         if verbose > 2: print( "[SimImage.getData] ", centrepoint )
         offset = sim.getOffset(centrepoint=centrepoint)
@@ -99,8 +143,7 @@ class SimImage(GenericSim):
               [ centrepoint[0], centrepoint[1], releta[0], releta[1],
                offset[0], offset[1], xioffset[0], xioffset[1] ],
               index=relcols ) 
-        r3 = pd.Series( ab, index=getMSheaders(maxm)) 
-        r1 = pd.concat( [ r1, r2, r3 ] )
+        r1 = pd.concat( [ r1, r2, ab ] )
         if verbose > 1:
             print( f"New row (verbosity={verbose})" )
             print( r1 )

@@ -154,11 +154,6 @@ def getMS(minm,maxm=None):
         minm = 0
     return [ (m,s) for m in range(minm,maxm+1)
                                     for s in range(1-m%2,m+2,2) ]
-def getMSheaders(maxm): 
-    if maxm is None:
-        raise RuntimeError( "None argument to getMSheaders()." )
-    r = [ ( f"alpha[{m}][{s}]", f"beta[{m}][{s}]") for (m,s) in getMS(maxm) ]
-    return [ x for p in r for x in p ]
 
 maxmlist = [ 50, 100, 200 ]
 def getFileName(maxm):
@@ -241,6 +236,7 @@ class CosmoSim(cs.CosmoSim):
         if self.verbose > 2:
             print ( "[getOffset] r=", a )
         return (a[0],a[1])
+
     def getAlphaBetas(self,maxm=2,pt=None):
         """
         Get the roulette amplitudes for a given point in the source plane.
@@ -248,14 +244,14 @@ class CosmoSim(cs.CosmoSim):
         if self.verbose>1:
             print ( "[getAlphaBetas] pt=", pt, "in Planar Co-ordinates"  )
         if pt == None:
-           r = [ (self.getAlphaXi(m,s),self.getBetaXi(m,s)) for (m,s) in getMS(maxm) ]
+           ab1 = { f"alpha[{m}][{s}]" : self.getAlphaXi(m,s) for (m,s) in getMS(maxm) }
+           ab2   { f"beta[{m}][{s}]" : self.getBetaXi(m,s) for (m,s) in getMS(maxm) }
         else:
             (x,y) = pt
             # Scaling is done in getAlpha/getBeta
-            r = [ (self.getAlpha(x,y,m,s),self.getBeta(x,y,m,s)) 
-                    for (m,s) in getMS(maxm) ]
-        return [ x for p in r for x in p ]
-
+            ab1 = { f"alpha[{m}][{s}]" : self.getAlpha(x,y,m,s) for (m,s) in getMS(maxm) }
+            ab2 = { f"beta[{m}][{s}]" : self.getBeta(x,y,m,s) for (m,s) in getMS(maxm) }
+        return pd.concat( [ pd.Series( ab1 ), pd.Series( ab2 ) ] )
     def close(self):
         """
         Terminate the worker thread.
@@ -407,4 +403,8 @@ class CosmoSim(cs.CosmoSim):
             raise e
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
-
+    def getAmplitudeFile(self):
+        fn = self.param.get( ( "lens", "amplitudefile" ) )
+        if fn is None: 
+            raise NotImplemented( "Not implemented lookup of default amplitudes file." )
+        return fn

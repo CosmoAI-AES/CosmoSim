@@ -9,6 +9,7 @@ than in C++/symengine.
 """
 
 import sympy
+from .. import getMS
 
 def eval1(expr,x,y,g,precision=64):
     """
@@ -35,9 +36,20 @@ class RouletteParser:
             m,s,a,b = x
             self.alpha[(m,s)] = a
             self.beta[(m,s)] = b
-     def alphaXi(self,m,s,x,y,g):
+     def getAlpha(self,x,y,g,m,s):
          """get `alpha[m][s]` for Einstein radius `g` at the point (`x`,`y`). """
          return eval1(self.alpha[(m,s)],x,y,g)
-     def betaXi(self,m,s,x,y,g):
+     def getBeta(self,x,y,g,m,s):
          """get `beta[m][s]` for Einstein radius `g` at the point (`x`,`y`). """
          return eval1(self.beta[(m,s)],x,y,g)
+     def getAlphaBetas(self,pt,maxm=5):
+        """
+        Get the roulette amplitudes for a given point in the source plane.
+        """
+        if self.verbose>1:
+            print ( "[getAlphaBetas] pt=", pt, "in Planar Co-ordinates"  )
+        (x,y) = pt
+        # Scaling is done in getAlpha/getBeta
+        ab1 = { f"alpha[{m}][{s}]" : self.getAlpha(x,y,g,m,s) for (m,s) in getMS(maxm) }
+        ab2 = { f"beta[{m}][{s}]" : self.getBeta(x,y,g,m,s) for (m,s) in getMS(maxm) }
+        return pd.concat( [ pd.Series( ab1 ), pd.Series( ab2 ) ] )
