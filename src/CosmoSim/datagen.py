@@ -56,7 +56,7 @@ class SimImage(GenericSim):
         """
         if self.verbose: print( "[SimImage] setParameters()" )
         return setParameters(self.sim,row,verbose=self.verbose)
-    def getRoulette(self,precision=None,verbose=None):
+    def getRoulette(self,precision=None,fn=None,verbose=None):
         if verbose is None: verbose = self.verbose
         sim = self.sim
         if self.param.get( "centred" ):
@@ -94,7 +94,9 @@ class SimImage(GenericSim):
                offset[0], offset[1], xioffset[0], xioffset[1] ],
               index=relcols ) 
         rparser = RouletteParser()
-        rp = RouletteParset( sim.getAmplitudeFile() )
+        if fn is None:
+            fn = sim.getAmplitudeFile() 
+        rp = RouletteParset( fn )
         r1 = pd.concat( [ r1, r2, rp.getAlphaBetas(xi,maxm) ] )
         if verbose > 1:
             print( f"New row (verbosity={verbose})" )
