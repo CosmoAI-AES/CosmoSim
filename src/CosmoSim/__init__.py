@@ -10,6 +10,7 @@ to make the python API more streamlined.
 
 import CosmoSim.CosmoSimPy as cs
 import numpy as np
+import pandas as pd
 import threading as th
 import os, sys
 from .CLI import Arguments
@@ -244,13 +245,17 @@ class CosmoSim(cs.CosmoSim):
         if self.verbose>1:
             print ( "[getAlphaBetas] pt=", pt, "in Planar Co-ordinates"  )
         if pt == None:
-           ab1 = { f"alpha[{m}][{s}]" : self.getAlphaXi(m,s) for (m,s) in getMS(maxm) }
-           ab2   { f"beta[{m}][{s}]" : self.getBetaXi(m,s) for (m,s) in getMS(maxm) }
+           ab1 = { f"alpha[{m}][{s}]" : self.getAlphaXi(m,s) 
+                   for (m,s) in getMS(maxm) }
+           ab2 = { f"beta[{m}][{s}]" : self.getBetaXi(m,s) 
+                   for (m,s) in getMS(maxm) }
         else:
             (x,y) = pt
             # Scaling is done in getAlpha/getBeta
-            ab1 = { f"alpha[{m}][{s}]" : self.getAlpha(x,y,m,s) for (m,s) in getMS(maxm) }
-            ab2 = { f"beta[{m}][{s}]" : self.getBeta(x,y,m,s) for (m,s) in getMS(maxm) }
+            ab1 = { f"alpha[{m}][{s}]" : self.getAlpha(x,y,m,s) 
+                    for (m,s) in getMS(maxm) }
+            ab2 = { f"beta[{m}][{s}]" : self.getBeta(x,y,m,s) 
+                    for (m,s) in getMS(maxm) }
         return pd.concat( [ pd.Series( ab1 ), pd.Series( ab2 ) ] )
     def close(self):
         """

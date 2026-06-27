@@ -20,7 +20,7 @@ from . import CosmoSim,__version__
 
 from .CLI.Simulator import GenericSim
 from .CLI.Arguments import setParameters,Parameters
-from .CLI.Parser import RouletteParser
+from .Roulettes.Parser import RouletteParser
 
 import pandas as pd
 
