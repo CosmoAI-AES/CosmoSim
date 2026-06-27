@@ -72,7 +72,7 @@ class SimImage(GenericSim):
 
         xioffset = sim.getXiOffset(centrepoint)
         if xireference:
-            xi = sim.getXi()
+            xi = sim.getNu()
         else:
             xi = centrepoint
         
@@ -93,10 +93,10 @@ class SimImage(GenericSim):
               [ centrepoint[0], centrepoint[1], releta[0], releta[1],
                offset[0], offset[1], xioffset[0], xioffset[1] ],
               index=relcols ) 
-        rparser = RouletteParser()
         if fn is None:
-            fn = sim.getAmplitudeFile() 
-        rp = RouletteParset( fn )
+            fn = self.getAmplitudeFile() 
+        g = self.param.get( ( "lens", "einsteinradius" ) ),
+        rp = RouletteParser( fn, g, verbose=self.verbose )
         r1 = pd.concat( [ r1, r2, rp.getAlphaBetas(xi,maxm) ] )
         if verbose > 1:
             print( f"New row (verbosity={verbose})" )
@@ -239,6 +239,11 @@ class SimImage(GenericSim):
         fn = os.path.join(self.directory,"kappa-" + str(self.name) + ".svg" ) 
         plt.savefig( fn )
         plt.close()
+    def getAmplitudeFile(self):
+        fn = self.param.get( ( "lens", "amplitudefile" ) )
+        if fn is None: 
+            raise NotImplemented( "Not implemented lookup of default amplitudes file." )
+        return fn
 
 def makeSingle(param=None,name=None,outcols=None,sim=None,verbose=0):
     """Process a single parameter set, given either as a pandas row or

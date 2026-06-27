@@ -408,8 +408,3 @@ class CosmoSim(cs.CosmoSim):
             raise e
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
-    def getAmplitudeFile(self):
-        fn = self.param.get( ( "lens", "amplitudefile" ) )
-        if fn is None: 
-            raise NotImplemented( "Not implemented lookup of default amplitudes file." )
-        return fn

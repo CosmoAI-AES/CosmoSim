@@ -9,6 +9,9 @@ than in C++/symengine.
 """
 
 import sympy
+from sympy.parsing.sympy_parser import parse_expr
+
+import numpy as np
 import pandas as pd
 from .. import getMS
 
@@ -26,15 +29,26 @@ def eval1(expr,x,y,g,precision=64):
 class RouletteParser:
     """ Parse, manage, and evaluate algebraic expressions for roulette amplitudes.
     """
-    def __init__(self,fn,verbosity=1):
+    def __init__(self,fn,g=None,verbose=1):
+        self.verbose = verbose
         with open(fn, 'r') as f:
-            if verbosity: print( "Opened file", fn ) 
+            if verbose: print( "Opened file", fn ) 
             c = f.read()
-        cs = [ x.split(":") for x in c.split() ]
+        cs = [ x.split(":") for x in c.split( "\n" ) if x != "" ]
+        print( cs[:2] )
         self.alpha = {}
         self.beta = {}
+        self.einstein = g
         for x in cs:
-            m,s,a,b = x
+            try:
+                m,s,a,b = x
+                m = int( m )
+                s = int( s )
+                a = parse_expr( a )
+                b = parse_expr( b )
+            except:
+                print( x )
+                raise RuntimeException( "Parse error in amplitudes file." )
             self.alpha[(m,s)] = a
             self.beta[(m,s)] = b
     def getAlpha(self,x,y,g,m,s):
@@ -43,14 +57,19 @@ class RouletteParser:
     def getBeta(self,x,y,g,m,s):
          """get `beta[m][s]` for Einstein radius `g` at the point (`x`,`y`). """
          return eval1(self.beta[(m,s)],x,y,g)
-    def getAlphaBetas(self,pt,maxm=5):
+    def getAlphaBetas(self,pt,g=None,maxm=5):
         """
         Get the roulette amplitudes for a given point in the source plane.
         """
         if self.verbose>1:
             print ( "[getAlphaBetas] pt=", pt, "in Planar Co-ordinates"  )
-        (x,y) = pt
+        try:
+            (x,y) = (pt[0],pt[1])
+        except:
+            (x,y) = np.array(pt)
         # Scaling is done in getAlpha/getBeta
+        if g is None:
+            g = self.einstein
         ab1 = { f"alpha[{m}][{s}]" : self.getAlpha(x,y,g,m,s) for (m,s) in getMS(maxm) }
         ab2 = { f"beta[{m}][{s}]" : self.getBeta(x,y,g,m,s) for (m,s) in getMS(maxm) }
         return pd.concat( [ pd.Series( ab1 ), pd.Series( ab2 ) ] )
