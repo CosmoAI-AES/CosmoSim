@@ -82,7 +82,7 @@ def cworker(q,psidiff,diff1,vars):
                   (-1)**i
                   * diff1[(m+n-i-j,j+i)]
                   for i in range(m+1) for j in range(n+1) ] ) 
-        # res = sympy.expand( res )    # This is too slow
+        res = sympy.expand( res )    # This is too slow
         # res = sympy.simplify( res )  # This is too slow
         print( "II. (circular)", os.getpid(), m, n )
         psidiff[(m,n)] = res
