@@ -39,13 +39,10 @@ def firstworker(q,resDict,maxm=6):
         # `q.task_done()` is called.  Hence the queue will not be
         # empty if the current job should spawn new ones. 
     print ( "I.", os.getpid(),"returning" )
-def secondworker(q,psidiff,diff1,vars,circular=False ):
-    print ( os.getpid(),"working" )
+def secondworker(q,psidiff,diff1,vars):
+    print ( "secondworker", os.getpid(),"working" )
     cont = True
-    if circular:
-        theta = 0
-    else:
-        theta = symbols("p",real=True)
+    theta = symbols("p",real=True)
     x,y = vars
     x1,y1 = symbols("x1 y1",real=True)
     while cont:
@@ -70,6 +67,29 @@ def secondworker(q,psidiff,diff1,vars,circular=False ):
         print ( "II.", os.getpid(), "completes" )
         cont = False
     print ( "II.", os.getpid(),"returning" )
+def cworker(q,psidiff,diff1,vars):
+    print ( "cworker", os.getpid(),"working" )
+    cont = True
+    x,y = vars
+    while cont:
+      try:
+        m,n = q.get(False)   # does not block
+        res = sum( [
+                  binomial( m, i )*
+                  binomial( n, j )*
+                  1**(m-i+j)*
+                  0**(n-j+i)*
+                  (-1)**i
+                  * diff1[(m+n-i-j,j+i)]
+                  for i in range(m+1) for j in range(n+1) ] ) 
+        res = sympy.expand( res )    # This is too slow
+        # res = sympy.simplify( res )  # This is too slow
+        print( "II. (circular)", os.getpid(), m, n )
+        psidiff[(m,n)] = res
+      except queue.Empty:
+        print ( "II. (circular)", os.getpid(), "completes" )
+        cont = False
+    print ( "II. (circular)", os.getpid(),"returning" )
 
 def thirdworker(q,ampdict,indict, var=[] ):
     print ( os.getpid(),"working" )
@@ -143,7 +163,7 @@ class RouletteManager():
         for k in self.diff1.keys():
            q.put( k )
         # All jobs are submitted before the Pool starts
-        pool = mp.Pool(nproc, secondworker,(q,psidiff,self.diff1,self.vars))
+        pool = mp.Pool(nproc, self.secondworker,(q,psidiff,self.diff1,self.vars))
 
         pool.close()
         pool.join()
@@ -181,7 +201,6 @@ class RouletteManager():
         print( "Time spent:", time.time() - start)
         return rdict
 
-def cworker(*a,**kw): return secondworker( *a, circular=True, **kw )
 
 def main(f=thirdworker):
     parser = argparse.ArgumentParser(description='Generate roulette amplitude formulæ for CosmoSim.')
