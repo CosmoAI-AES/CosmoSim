@@ -13,6 +13,14 @@ of pointmass lenses, treating them as a special case.  It is released
 only to keep a record for comparing this legacy implemetation to the
 new modular implementation, before the legacy code is removed.
 
+### Added
+
++ SimImage.getRoulette() to evaluate roulette amplitudes from python
+  in arbitrary precision.
++ Alternative calculation of amplitude formulæ, based on the SIE calculation
+  but exploiting the symmetry of circular lenses.
+
+
 ## 3.0.5 - 2026-06-25
 
 Version 3.0 will be the last version using the old amplitudes.py
