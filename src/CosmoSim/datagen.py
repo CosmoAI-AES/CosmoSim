@@ -81,8 +81,7 @@ class SimImage(GenericSim):
                    "offsetX", "offsetY",
                    "xiX", "xiY" ]
         r1 = pd.Series(
-                { "filename" : self.param.get( "filename" )
-                , "source" : self.param.get( "source" )
+                { "source" : self.param.get( "source" )
                 , "x" : self.param.get( "x" )
                 , "y" : self.param.get( "y" )
                 , "sigma" : self.param.get( "sigma" )
@@ -98,6 +97,7 @@ class SimImage(GenericSim):
         g = self.param.get( ( "lens", "einsteinradius" ) ),
         rp = RouletteParser( fn, g, verbose=self.verbose )
         r1 = pd.concat( [ r1, r2, rp.getAlphaBetas(xi,maxm) ] )
+        r1.name = self.param.get( "filename" )
         if verbose > 1:
             print( f"New row (verbosity={verbose})" )
             print( r1 )
