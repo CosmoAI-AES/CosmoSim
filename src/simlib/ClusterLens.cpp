@@ -94,7 +94,6 @@ std::string ClusterLens::idString() {
 };
 
 double ClusterLens::getAlphaXi( int m, int s ) {
-   // std::cout << "[ClusterLens::getAlphaXi] ("<<m<<","<<s<<") "<< alphas_val[m][s] <<std::endl;
    return alphas_val[m][s] ;
 }
 double ClusterLens::getBetaXi( int m, int s ) {
