@@ -1,17 +1,6 @@
 # CosmoSim Change Log
 
-## 3.2.0 - 2026-??
-
-Version 3.2 will remove the old point mass simulator in favour of
-the purely modular version.  The code is massively refactored with
-more consistent parameter handling and modularisation.
-
-## 3.1.0 - 2026-??
-
-Version 3.1 will be the last version including the old implementation
-of pointmass lenses, treating them as a special case.  It is released
-only to keep a record for comparing this legacy implemetation to the
-new modular implementation, before the legacy code is removed.
+## 3.1.0b1 - 2026-06-29
 
 ### Added
 
@@ -19,7 +8,6 @@ new modular implementation, before the legacy code is removed.
   in arbitrary precision.
 + Alternative calculation of amplitude formulæ, based on the SIE calculation
   but exploiting the symmetry of circular lenses.
-
 
 ## 3.0.5 - 2026-06-25
 
