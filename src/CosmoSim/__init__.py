@@ -147,14 +147,6 @@ def makeSource(param,verbose=1):
         print( "makeSource() returns" )
     return r 
 
-def getMS(minm,maxm=None):
-    if minm is None:
-        raise RuntimeError( "None argument to getMS()." )
-    if maxm is None:
-        maxm = minm
-        minm = 0
-    return [ (m,s) for m in range(minm,maxm+1)
-                                    for s in range(1-m%2,m+2,2) ]
 
 maxmlist = [ 50, 100, 200 ]
 def getFileName(maxm):
