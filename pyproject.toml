@@ -41,17 +41,22 @@ Homepage = "https://github.com/CosmoAI-AES/CosmoSim"
 Issues = "https://github.com/CosmoAI-AES/CosmoSim/issues"
 
 [tool.cibuildwheel]
-build = [ "*-manylinux_x86_64", "*-manylinux_i686", "*-macosx_*", "*-win_*64" ]
-skip = [ "cp314t-win_*64" ]
+# "*-win_amd64" (not "*-win_*64"): the latter also matches "*-win_arm64",
+# which we do not cross-compile here.
+build = [ "*-manylinux_x86_64", "*-manylinux_i686", "*-macosx_*", "*-win_amd64" ]
+skip = [ "cp314t-win_amd64" ]
 
 [tool.cibuildwheel.windows]
+# CosmoSim's C++ only uses cv::imread (imgcodecs), so OpenCV video I/O is not
+# needed.  Disable opencv's with_ffmpeg so the wheel build does NOT compile the
+# flaky ffmpeg + libaom-av1 source tree on MSVC (the cause of the historically
+# erratic Windows builds).  skbuild-conan cannot pass conan options directly, so
+# the option is injected into the skbuild_conan_py profile it reuses; see
+# Setup/conan_win_profile.py.
 before-all = [
     "pipx install conan",
-    "conan profile detect --name skbuild_conan_py ",
-    "echo 'CONAN START' ",
-    "conan install --profile:all=skbuild_conan_py --requires=libaom-av1/3.6.1",
-    "conan install --profile:all=skbuild_conan_py --requires=ffmpeg/7.1.1 --build=missing",
-    "echo 'CONAN DONE' "
+    "conan profile detect --name skbuild_conan_py --force",
+    "python Setup/conan_win_profile.py",
     ]
 [tool.cibuildwheel.linux]
 before-all = [ "yum -y install libva-devel libvdpau-devel xkeyboard-config-devel libfontenc-devel libXaw-devel libXcomposite-devel libXcursor-devel libXdmcp-devel libXtst-devel libXinerama-devel libxkbfile-devel libXrandr-devel libXres-devel libXScrnSaver-devel xcb-util-wm-devel xcb-util-image-devel xcb-util-keysyms-devel xcb-util-renderutil-devel libXdamage-devel libXxf86vm-devel libXv-devel xcb-util-devel libuuid-devel xcb-util-cursor-devel perl perl-IPC-Cmd perl-Digest-SHA",

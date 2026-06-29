@@ -3,7 +3,7 @@ echo $0
 echo $1
 
 rootdir=`( while test ! -d .git ; do cd .. ; done ; pwd )`
-export PATH=$rootdir/python/:$PATH
+export PATH=$rootdir/RegressionTest/bin/:$PATH
 export PYTHONPATH=$rootdir/src:$PYTHONPATH
 
 echo rootdir: $rootdir

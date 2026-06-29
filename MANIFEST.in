@@ -4,7 +4,7 @@ exclude __pycache__
 recursive-exclude .github/ *
 recursive-exclude Legacy/ *
 recursive-exclude Notes/ *
-recursive-exclude test/ *
+recursive-exclude Test/ *
 recursive-exclude _skbuild/ *
 recursive-exclude build/ *
 recursive-exclude tmp/ *

@@ -94,6 +94,7 @@ void CosmoSim::diagnostics() {
 
 void CosmoSim::setFile( int key, std::string fn ) {
     filename[key] = fn ;
+    if (DEBUG) std::cout << "[CosmoSim.cpp] setFile " << fn << " (" << key << ")\n" ;
 } 
 std::string CosmoSim::getFile( int key ) {
     return filename[key] ;
@@ -158,9 +159,10 @@ void CosmoSim::initLens() {
           lens = psilens = new SIS() ;
           psilens->setFile(filename[CSIM_PSI_SIS]) ;
           break ;
-       case CSIM_NOPSI_PM:
+       case CSIM_PSI_PM:
           lens = psilens = new PointMass() ;
-          if (DEBUG>1) std::cout << "CSIM_NOPSI_PM\n" ;
+          psilens->setFile(filename[CSIM_PSI_PM]) ;
+          if (DEBUG>1) std::cout << "CSIM_PSI_PM\n" ;
           break ;
        case CSIM_NOPSI:
           if (DEBUG) std::cout << "[initLens] Point Mass or No Lens (" 

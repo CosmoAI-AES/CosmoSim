@@ -168,7 +168,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
        .value( "SIE", CSIM_PSI_SIE )
        .value( "SIS", CSIM_PSI_SIS )
        .value( "Cluster", CSIM_PSI_CLUSTER )
-       .value( "PM", CSIM_NOPSI_PM ) 
+       .value( "PM", CSIM_PSI_PM ) 
        .value( "NoPsi", CSIM_NOPSI ) ;
     pybind11::enum_<SourceSpec>(m, "SourceSpec") 
        .value( "Sphere", CSIM_SOURCE_SPHERE )

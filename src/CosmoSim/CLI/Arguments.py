@@ -136,44 +136,6 @@ paramap = {
         "index" : ( "management", "index" ),
         }
 
-"""
-CLI options to be refactored into TOML structure.
-+ [source] -> position is implicit
-
-+ [position]
-        "x" : 1,
-        "y" : 1,
-        "phi" : 45,
-        # r is equal to x
-
-            
-+ [masking] not yet in TOML
-    "maskradius" : None,
-    "mask" : False,
-    "showmask" : False,
-    "maskscale" : 0.9,
-
-+ Not implemented yet
-        "cluster" : None,
-
-CLI options never used in main parameter structure
-    "toml" : None,        # Source
-    "amplitudes" : None,  # Amplitudes file
-    "mldata" : False,
-    "csvfile" : None,
-    "outfile" : None,
-    "name" : "test",
-
-CLI options currently unsupported
-    "psiplot" : False,
-    "kappaplot" : False,
-    "family" : False,
-    "components" : 6,
-    "join" : False,
-    "apparent" : False, 
-    "actual" : False, 
-"""
-
 def getConfig( data, verbose=0 ):
       cfg = skel.copy()
       if verbose: print( "[getConfig]", data )
