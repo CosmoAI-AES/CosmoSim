@@ -128,18 +128,18 @@ def rndsource(toml,einstein=50,verbose=1):
         )
 
 def rndlens(toml,verbose=1):
-    einsteinR = uniform( toml["lens"], "einstein", (10,50) )
+    einsteinradius = uniform( toml["lens"], "einstein", (10,50) )
     orientation = uniform( toml["lens"], "orientation", rng=None )
     ellipseratio = uniform( toml["lens"], "ellipseratio", rng=None )
 
     return pd.Series(
-        data=[  einsteinR, ellipseratio, orientation ],
-        index=[ "einsteinR", "ellipseratio", "orientation" ]
+        data=[  einsteinradius, ellipseratio, orientation ],
+        index=[ "einsteinradius", "ellipseratio", "orientation" ]
         )
 
 def lensSpec(toml,verbose=0):
     param = rndlens(toml,verbose)
-    eR = param["einsteinR"]
+    eR = param["einsteinradius"]
     c = toml.get( ("cluster","maxrelativelocation"), 1.2 )
     rmax = c*eR
     phi = random.uniform(0,359)
@@ -201,7 +201,7 @@ def getline(toml,idx=0,fn=None,verbose=1):
         cfg = lensmodes(toml)
         if cfg is not None: c["lens"] = random.choice( cfg )
         l =  rndlens( toml, verbose )
-        eR = l["einsteinR"]
+        eR = l["einsteinradius"]
     s = rndsource( toml, einstein=eR, verbose=verbose )
 
     return pd.concat( [ r, l, s ] )

@@ -94,9 +94,10 @@ class SimImage(GenericSim):
               index=relcols ) 
         if fn is None:
             fn = self.getAmplitudeFile() 
-        g = self.param.get( ( "lens", "einsteinradius" ) ),
-        rp = RouletteParser( fn, g, verbose=self.verbose )
-        r1 = pd.concat( [ r1, r2, rp.getAlphaBetas(xi,maxm) ] )
+        g = self.param.get( ( "lens", "einsteinradius" ) )
+        if verbose: print( "Einstein radius", g )
+        rp = RouletteParser( fn, g=g, verbose=self.verbose )
+        r1 = pd.concat( [ r1, r2, rp.getAlphaBetas(xi,maxm=maxm) ] )
         r1.name = self.param.get( "filename" )
         if verbose > 1:
             print( f"New row (verbosity={verbose})" )

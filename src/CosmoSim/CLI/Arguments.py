@@ -108,7 +108,6 @@ paramap = {
         "orientation" : ( "lens", "orientation" ),
         "ratio" : ( "lens", "ellipseratio" ), # relabelled
         "ellipseratio" : ( "lens", "ellipseratio" ), # duplicate
-        "einsteinR" : ( "lens", "einsteinR" ), 
         "cluster" : ( "lens", "cluster" ), 
 
         "sigma" :  ( "source", "sigma" ),
@@ -303,8 +302,8 @@ def setParameters(sim,row,verbose=1):
     if row.get("sampled",None) != None:
         if verbose>1: print( row )
         sim.setSampled( row.get( "sampled" ) )
-    if row.get("einsteinR",None) != None:
-        sim.setEinsteinR( row.get( "einsteinR" ) )
+    if row.get("einsteinradius",None) != None:
+        sim.setEinsteinR( row.get( "einsteinradius" ) )
     if row.get("ellipseratio",None) != None:
         sim.setRatio( row.get( "ellipseratio" ) )
     if row.get("orientation",None) != None:
