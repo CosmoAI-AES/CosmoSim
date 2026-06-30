@@ -401,6 +401,10 @@ cv::Point2d SimulatorModel::getRelativeEta( cv::Point2d xi1 ) {
    return releta ;
 }
 
+cv::Point2d SimulatorModel::getOffsetPy( double x, double y ) {
+   return SimulatorModel::getOffset( cv::Point2d(x,y) ) ;
+}
+
 cv::Point2d SimulatorModel::getOffset( cv::Point2d xi1 ) {
    cv::Point2d releta, eta, r ; 
    double dx = lens->psiXvalue( xi1.x, xi1.y ),
