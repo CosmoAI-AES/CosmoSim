@@ -9,6 +9,7 @@ gravitational lensing.
 from tkinter import *
 from tkinter import ttk
 
+from ..CosmoSimPy import setDebug
 from .CosmoSim import CosmoSim
 from . import Controller as cont
 from . import View as view
@@ -76,6 +77,7 @@ class Window(Tk):
 
 if __name__ == "__main__":
     print( "CosmoGUI starting." )
+    setDebug( 2 )
 
     sim = CosmoSim()
     win = Window(sim)

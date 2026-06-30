@@ -16,25 +16,24 @@ LightProfileSpec = cs.LightProfileSpec
 Point = cs.Point 
 
 lensDict = {
-        "SIS" : PsiSpec.SIS,
         "PM" : PsiSpec.PM,
-        "Cluster" : PsiSpec.Cluster,
+        "SIS" : PsiSpec.SIS,
         "SIE" : PsiSpec.SIE,
+        "Cluster" : PsiSpec.Cluster,
+        }
+lensValues = {
+        "PM" : PsiSpec.PM,
+        "SIS" : PsiSpec.SIS,
+        "SIE" : PsiSpec.SIE,
+        }
+modelValues = {
+        "Raytrace" : ModelSpec.Raytrace,
+        "Roulette" : ModelSpec.Roulette,
         }
 modelDict = {
         "Raytrace" : ModelSpec.Raytrace,
         "Roulette" : ModelSpec.Roulette,
         "RouletteRegenerator" : ModelSpec.RouletteRegenerator,
-        }
-modelValues = {
-        "Sampled Roulette SIS" : (ModelSpec.Roulette,PsiSpec.SIS,True),
-        "Sampled Roulette SIE" : (ModelSpec.Roulette,PsiSpec.SIE,True),
-        "Sampled Raytrace SIS" : (ModelSpec.Raytrace,PsiSpec.SIS,True),
-        "Sampled Raytrace SIE" : (ModelSpec.Raytrace,PsiSpec.SIE,True),
-        "Roulette SIS" : (ModelSpec.Roulette,PsiSpec.SIS,False),
-        "Roulette SIE" : (ModelSpec.Roulette,PsiSpec.SIE,False),
-        "Raytrace SIS" : (ModelSpec.Raytrace,PsiSpec.SIS,False),
-        "Raytrace SIE" : (ModelSpec.Raytrace,PsiSpec.SIE,False),
         }
 
 # Note that the source names are looked up in two dictionaries,

@@ -65,20 +65,6 @@ class CosmoSim(cs.CosmoSim):
     def setModelMode(self,s):
         if self.verbose: print( f"setModelMode({s})")
         return super().setModelMode( int( modelDict[s] ) ) 
-    def setConfigMode(self,s,verbose=None):
-        """
-        Set lens and simulation models based on the config string.
-        """
-        if verbose is None: 
-            verbose = self.verbose
-        if verbose > 1: 
-            print( f"setConfigMode({s})")
-        (model,lens,sampleMode) = modelValues[s]
-        if verbose > 1:
-            print( f"[setConfigMode] modelValues[{s}]:", (model,lens,sampleMode) )
-        self.setSampled( sampleMode ) 
-        super().setLensMode( int( lens ) ) 
-        return super().setModelMode( int( model ) ) 
     def setSampled(self,s):
         if self.verbose: print( f"[setSampled] {s}" )
         if s is not None:
@@ -108,6 +94,7 @@ class CosmoSim(cs.CosmoSim):
         """
         if self.verbose: print( "CosmoSim.runSimulator() [python]" )
         self.simEvent.set()
+        if self.verbose: print( "CosmoSim.runSimulator() triggered event" )
 
     def getApparentImage(self,reflines=True):
         """
@@ -143,6 +130,6 @@ class CosmoSim(cs.CosmoSim):
         if im.shape[2] == 1:
             im.shape = im.shape[:2]
         if im.shape[0]*im.shape[1] == 0:
-            raise RuntimeError( "Image with no pixels" )
+            print( "[getDistortedImage] No image yet" )
         return np.maximum(im,self.bgcolour)
 
