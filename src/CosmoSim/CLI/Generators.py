@@ -202,8 +202,8 @@ class ClusterLens(cs.ClusterLens):
         self.lenslist.append( l )
 
 def setParameters(sim,row,verbose=1):
-    if row.get("einsteinR",None) != None:
-        sim.setEinsteinR( row.get( "einsteinR" ) )
+    if row.get("einsteinradius",None) != None:
+        sim.setEinsteinR( row.get( "einsteinradius" ) )
     if row.get("ellipseratio",None) != None:
         sim.setRatio( row.get( "ellipseratio" ) )
     if row.get("orientation",None) != None:

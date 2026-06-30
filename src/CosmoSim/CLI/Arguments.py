@@ -108,7 +108,6 @@ paramap = {
         "orientation" : ( "lens", "orientation" ),
         "ratio" : ( "lens", "ellipseratio" ), # relabelled
         "ellipseratio" : ( "lens", "ellipseratio" ), # duplicate
-        "einsteinR" : ( "lens", "einsteinR" ), 
         "cluster" : ( "lens", "cluster" ), 
 
         "sigma" :  ( "source", "sigma" ),
