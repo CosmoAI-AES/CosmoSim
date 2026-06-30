@@ -49,7 +49,7 @@ class SimImage(GenericSim):
         xireference = self.param.get( "xireference", True )
 
         releta = sim.getRelativeEta(centrepoint=centrepoint)
-        offset = sim.getOffset(centrepoint=centrepoint)
+        offset = sim.getOffset(centrepoint[0],centrepoint[1])
         if verbose: print( "[getRoulette] ", offset, centrepoint )
 
         xioffset = sim.getXiOffset(centrepoint)
