@@ -12,8 +12,6 @@ Subclasses shoulded override the constructor, calling the superclass constructor
 first and `initSim()` last.  In the middle, the `self.sim` must be set with a
 backend simulator.
 
-The `setParameters()` method must also be overridden.
-
 The `initSim` method reconfigures the backend simulator, and generates the 
 distorted image.
 Since the object retains much of the simulation data, extensive information
@@ -27,8 +25,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from ..CosmoSimPy import setDebug
-from .. import CosmoSim
+from .. import setDebug
 from ..Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
 from .Arguments import CosmoParser, Parameters
 
@@ -36,7 +33,7 @@ class GenericSim:
     """
     This is a generic superclass for shared methods.
     """
-    def __init__(self,param=None,name=None,outcols=None,verbose=1):
+    def __init__(self,param=None,outcols=None,verbose=1):
         """
         Normally the constructor should be overridden, calling the superclass
         constructor first and `initSim()` last.
@@ -49,62 +46,37 @@ class GenericSim:
 
         self.outcols = outcols
 
-        self.name = name
         if param is None: 
             if verbose: print( "[GenericSim] No parameters given. Using defaults" )
             param = Parameters()
         self.param = param
-        self.directory = param.get( "directory" )
-        if self.directory:
-            if self.verbose > 1: print( "[GenericSim] directory", self.param )
-            os.makedirs( self.directory, exist_ok=True )
         if self.verbose > 2:
             print( "[GenericSim]", self.param )
 
         if self.verbose > 2:
             print( "[GenericSim] xireference =", self.param.get( "xireference" ) )
-
-    def setParameters(self,row):
+    def runSim(self):
         """
-        Reset parameters in the backend simulator, using the given data row.
-        This is an auxiliary for `initSim()` and will normally have to be 
-        overridden depending on the class of the backend simulator.
+        Run the simulator in the present state.
         """
-        raise NotImplementedError()
-    def initSim(self,row=None):
-        """
-        Run the simulator with the given data row.
-        """
-        if row is None: row = self.param
-        if self.verbose > 1: print( "[initSim] using row" )
-        self.setParameters( row )
-        if self.verbose: print( f"[initSim] type(row)={type(row)}" )
-        # self.param.setRow( row )
-        fn = row.get( "filename" )
-        if fn is None: fn = row.name
-        if self.verbose > 1: print( "filename", fn )
-        name = fn.split(".")[0]
-        self.name = name
-
-        if self.verbose>1: print( "[initSim] item name:", self.name )
-
-        self.runSim()
-
+        self.sim.update()
         self.image = self.getDistortedImage( )
+
         (self.centreimage,self.centrepoint) = centreImage(self.image)
         if self.verbose: 
-            print( f"[Simulator] Centre Point ({self.centrepoint[0]:.2f},{self.centrepoint[1]:.2f})",
+            print( "[Simulator] Centre Point",
+                f"({self.centrepoint[0]:.2f},{self.centrepoint[1]:.2f})",
                 "(Centre of Luminence in Planar Co-ordinates)" )
+
     def getDistortedImage(self):
-        return  self.sim.getDistortedImage( 
-                         critical=self.param.get( "criticalcurves" ),
-                         showmask=self.param.get( "showmask" ) ) 
-    def runSim(self):
-        if self.verbose>2: print( "[runSim]" )
-        self.sim.makeSource( self.param )
-        if self.verbose > 1: print ( "[GenericSim] ready for runSim()\n" ) ;
-        self.sim.runSim()
-        if self.verbose > 1: print ( "[GenericSim] runSim() completed\n" ) ;
+        """
+        Get the distorted image from the simulator.
+        """
+        im = np.array(self.sim.getDistorted(),copy=False)
+        if len(im.shape) > 2 and im.shape[-1] == 1:
+            im.shape = im.shape[:2]
+        self.image = im
+        return  im
     def getActualImage(self):
         param = self.param
         try:
@@ -161,15 +133,11 @@ class GenericSim:
         if reflines:
             drawAxes(im)
         return im
-    def saveImage(self,name=None):
+    def saveImage(self):
         im = self.getImage()
-        if name is None:
-            name = self.name
-        if self.directory is None:
-            if self.verbose: print( "[saveImage] No directory" )
-            fn = str(name) + ".png"
-        else:
-            if self.verbose: print( "[saveImage] Directory", self.directory )
-            fn = os.path.join(self.directory, str(name) + ".png" )
-        if self.verbose: print( "[saveImage]", fn )
+        fn = self.param.get( ( "management", "filename" ), "test.png" )
+        dir = self.param.get( ( "dataset", "directory" ) )
+        if dir is not None:
+            fn = os.path.join(dir, fn )
+        if self.verbose: print( "[saveImage] saving to", fn)
         cv.imwrite(fn,im)

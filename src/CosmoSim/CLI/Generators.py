@@ -8,31 +8,43 @@ Fanctions to create lenses, sources, and simulators.
 """
 
 from .. import CosmoSimPy as cs
+from .. import getPathFN
+from ..Sources import *
 from CosmoSim.Dictionary import *
 import numpy as np
 import os, sys
 
-def getSourceFileName():
-    """
-    Get the filename for an image source.
-    """
-    dir = os.path.dirname(os.path.abspath(__file__))
-    return( os.path.join( dir, f"einstein.png" ) )
 
-def getSimulator(param,verbose=1):
+def getSimulator(param,lens=None,source=None,verbose=1):
+    """Factory function to create a back end simulator according
+    to the paramters object provided.
+    The lens must be given to instantiate closed form point mass
+    simulators, but is otherwise optional.
+    The source is optional.
+    """
     model = param.get( ( "simulator", "model" ), None )
     if model is None:
         raise RuntimeError( "[getSimulator] No simulator model" )
     elif model == "Raytrace":
         sim = cs.RaytraceModel()
+        if lens is not None:
+            sim.setLens( lens )
     elif model == "Roulette":
         sim = cs.RouletteModel()
+        if lens is not None:
+            sim.setLens( lens )
     elif model == "Point Mass (exact)":
-        raise NotImplemented( "The exact PointMass model has not been implemented" )
+        sim = cs.PointMassExact(lens)
+        if lens is None:
+            raise RuntimeError( "Closed form simulators require a lens." )
     elif model == "Point Mass (roulettes)":
-        raise NotImplemented( "The roulettes PointMass model has not been implemented" )
+        sim = cs.PointMassRoulette(lens)
+        if lens is None:
+            raise RuntimeError( "Closed form simulators require a lens." )
     else:
         raise RuntimeError( f"[getSimulator] Unknown model: {model}" )
+    if source is not None:
+        sim.setSource( source )
     msk = param.get( "mask", None )
     if msk is not None:
         if verbose: print( "[getSimulator] sets mask", msk )
@@ -43,6 +55,11 @@ def getSimulator(param,verbose=1):
     return sim
 
 def makeSourceConstellation(src,size,verbose=1):
+    """
+    Factory function to create a Source Constellation comprising several
+    galaxies.  This is an auxiliary for `getSource`.
+    """
+
     ss = src.split(";")
     sl = [ x.split("/") for x in ss ]
     if verbose:
@@ -71,63 +88,105 @@ def makeSourceConstellation(src,size,verbose=1):
         print( "makeSourceConstellation() returns" )
     return constellation
 
-def makeSource(param,verbose=1):
-    """
-    Factory function to create a Source object given the parameter list.
-    """
-    size = int( param.get( "imagesize" ) )
-    src = param.get("source")
-    ltprf0 = param.get( "lightprofile", None )
-    if verbose:
-        print( f"[makeSource] src={src}, ltprf0={ltprf0}, verbose={verbose}" )
-    if src.find("/") < 0:
-       mode = sourceDict[src]
-       if ltprf0 is None:
-           ltprf = lightProfileDict.get( src, LightProfileSpec.Gaussian ) 
-           if verbose > 1: print( "[makeSource] Lightprofile:", src, ltprf )
-       else:
-           ltprf = lightProfileDict.get( ltprf0, LightProfileSpec.Gaussian ) 
-           if verbose > 1: print( "[makeSource] Lightprofile:", ltprf0, ltprf )
-       if verbose:
-          print( f"[makeSource] mode={mode}, ltprf={ltprf}" )
-       if mode == sourceDict.get( "Spherical" ):
-           nsersic = float(param.get("n_sersic",4))
-           luminosity = float(param.get("luminosity",10))
-           if verbose > 1: 
-               print( "[makeSource] Spherical Source - "
-                     + f"n_sersic={nsersic}, luminosity={luminosity}" )
-           r = SphericalSource( size, float(param.get( "sigma" )),
-                               nsersic, luminosity, ltprf=ltprf,
-                               verbose=verbose)
-       elif mode == sourceDict.get( "Ellipsoid" ):
-           r = cs.EllipsoidSource( size, float(param.get( "sigma" )),
-                   float(param.get( "sigma2" )),
-                   float(param.get( "theta" ))*np.pi/180, ltprf)
-       elif mode == sourceDict.get( "Triangle" ):
-           r = cs.TriangleSource( size, float(param.get( "sigma" )),
-                   float(param.get( "theta" ))*np.pi/180 )
-       elif mode == sourceDict.get( "Iamge (Einstein)" ):
-           r = cs.ImageSource( getSourceFileName( ) )
-       else:
-           raise Exception( "Unknown Source Mode" )
+def getLens(param,verbose=1):
+    lensmode = param.get( ( "lens", "mode" ), None )
+    cluster = param.get( ( "lens", "cluster" ), None )
+    if cluster is not None:
+        lens = ClusterLens( cluster, verbose=verbose )
+    elif lensmode == "PointMass":
+        lens = cs.PointMass()
+        lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
+    elif lensmode == "SIS":
+        lens = cs.SIS()
+        lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
+        fn = param.get( ( "lens", "roulettefile" ) )
+        if fn is None: fn = getPathFN( "sis50.txt" )
+        lens.setFile( fn )
+    elif lensmode == "SIE":
+        lens = cs.SIE()
+        lens.setRatio( param.get( ( "lens", "ellipseratio" ) ) )
+        lens.setOrientation( param.get( ( "lens", "orientation" ) ) )
+        lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
+        fn = param.get( ( "lens", "roulettefile" ) )
+        if fn is None: fn = getPathFN( "sie05.txt" )
+        lens.setFile( fn )
+    elif lensmode is None:
+        if verbose: print( "[getLens] No lens" )
     else:
-        r = makeSourceConstellation(src,size)
-        if verbose:
-            print( "[makeSource] - makeSourceConstellation() has returned" )
-    if verbose>1:
-        print( "makeSource() returns" )
-    return r 
+        raise RuntimeError( "[getLens] Unknown lens specification" )
+    fn = param.get( ( "lens", "amplitudefile" ) )
+    if fn is not None:
+        lens.setFile( fn )
+    lens.initAlphasBetas()
+    smp = param.get( ( "simulator", "sampled"), None )
+    if smp is not None:
+        size = param.get( ( "simulator", "imagesize" ), 512 )
+        if verbose>1: print( "[getLens] Sampled mode is", smp )
+        if smp: lens = SampledPsiFunctionLens( lens, size )
+    return lens
 
-class SphericalSource(cs.SphericalSource):
-    """Spherical source model.
-    This is a wrapper around the C++ class to provide default
-    arguments to the constructor.
-    """
-    def __init__( self, size, sigma, idx=0, lum=0,
-                 ltprf=LightProfileSpec.Gaussian,
-                 verbose=1 ):
-        super().__init__( size, sigma, idx, lum, ltprf )
-        if verbose: print( "[SphericalSource] constructor done" )
+class SampledPsiFunctionLens(cs.SampledPsiFunctionLens):
+    def __init__(self,lens,size,verbose=1):
+        self.lens = lens
+        return super().__init__( lens, size )
+class ClusterLens(cs.ClusterLens):
+    def __init__(self,s,fn=None,verbose=1):
+        """
+        Factory function to create a cluster lens.
+        This is an auxiliary for `getLens()`.
+        """
+        super().__init__()
+        self.verbose = verbose
+        if self.verbose: print( f"[CosmoSim/py] setCluster({s})")
+
+        ll = [ x.split("/") for x in s.split(";") ]
+        self.lenslist = []
+        cluster = cs.ClusterLens()
+        for lens in ll:
+            lenstype = lens[0]
+            lensparam = [ float(x) for x in lens[1:] ]
+            if self.verbose: print( lenstype, ":", lensparam )
+            self.fn = fn
+            sys.stdout.flush()
+            nl = len(lensparam)
+            if nl < 3:
+                raise Exception( f"Too few parameters for constituent lens" )
+            x, y = lensparam[0], lensparam[1] ;
+            if lenstype == "SIS":
+                l = cs.SIS()
+                print( "Cluster - SIS", fn )
+                if fn is None: fn = getPathFN( "sis50.txt" )
+                print( "Cluster - SIS", fn )
+                l.setFile( fn )
+                print( "Cluster - SIS", fn )
+            elif lenstype == "SIE":
+                l = cs.SIE()
+                if nl < 5:
+                    raise Exception( f"Too few parameters for SIE lens" )
+                l.setRatio( lensparam[3] )
+                l.setOrientation( lensparam[4] )
+                if fn is None: fn = getPathFN( "sie05.txt" )
+                l.setFile( fn )
+            elif lenstype == "PointMass":
+                l = cs.PointMass()
+                if fn is None: fn = getPathFN( "pm50.txt" )
+                l.setFile( fn )
+            else:
+                raise Exception( f"Lens Type not Supported {lenstype}" )
+            if verbose > 1: 
+                print( "[ClusterLens] component lens instantiated" )
+                print( "[ClusterLens]", lensparam  )
+            l.setEinsteinR( lensparam[2] )
+            self.addLens( l, x, y )
+            if verbose > 1: print( "[ClusterLens] Done one component lens" )
+        if self.verbose: print( f"[CosmoSim/py] setCluster calls setLens")
+    def addLens(self,l,x,y):
+        if self.verbose > 1:
+            print( "[ClusterLens] addLens", (x,y), l )
+        super().addLens( l, x, y )
+        if self.verbose > 1:
+            print( "[ClusterLens] addLens done" )
+        self.lenslist.append( l )
 
 class RouletteRegenerator(cs.RouletteRegenerator):
     """
@@ -147,25 +206,6 @@ class RouletteRegenerator(cs.RouletteRegenerator):
         self.setSource( self._src )
         if self.verbose>1:
             print( "RouletteRegenerator.makeSource() returns" )
-    def getDistortedImage(self,reflines=False,critical=False,mask=False,showmask=False):
-        """
-        Return the Distorted Image from the simulator as a numpy array.
-        """
-        try:
-            if mask: self.maskImage()
-            if showmask: self.showMask()
-        except:
-            print( "Masking not supported for this lens model." )
-        try:
-            im = np.array(self.getDistorted(),copy=False)
-        except Exception as e:
-            print( "self", type(self) )
-            print( "reflines", reflines )
-            print( "critical", critical )
-            im = np.array(self.getDistorted(),copy=False)
-            raise e
-        if im.shape[2] == 1 : im.shape = im.shape[:2]
-        return np.maximum(im,self.bgcolour)
 
 class SourceConstellation(cs.SourceConstellation):
     def __init__(self,size,verbose=1):

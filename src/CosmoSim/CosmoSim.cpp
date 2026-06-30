@@ -1,5 +1,4 @@
-/* (C) 2022-23: Hans Georg Schaathun <georg@schaathun.net> */
-
+/* (C) 2022-26: Hans Georg Schaathun <georg@schaathun.net> */
 
 #include "CosmoSim.h"
 
@@ -21,29 +20,12 @@ CosmoSim::CosmoSim() {
    rPos = -1 ;
 }
 CosmoSim::~CosmoSim() {
-   if (DEBUG) {
-      std::cout << "[CosmoSim] Destructor\n" ;
-   }
-   /*
-   if (this->lens != NULL) {
-      delete this->lens ;
-      if (this->lens == this->psilens) this->psilens = NULL ;
-      this->lens = NULL ;
-   }
-   if (DEBUG>2) std::cout << "[CosmoSim] Destructor 1\n" ;
-   if (this->psilens != NULL) {
-      delete this->psilens ;
-      this->psilens = NULL ;
-   }
-   if (DEBUG>2) std::cout << "[CosmoSim] Destructor 2\n" ;
-   */
+   if (DEBUG) std::cout << "[CosmoSim] Destructor\n" ;
    if (this->sim != NULL) {
       delete this->sim ;
       this->sim = NULL ;
    }
-   if (DEBUG>1) {
-      std::cout << "[CosmoSim] Destructor - destructed\n" ;
-   }
+   if (DEBUG>1) std::cout << "[CosmoSim] Destructor - destructed\n" ;
 }
 
 cv::Point2d CosmoSim::getRelativeEta( double x, double y ) {
@@ -60,15 +42,11 @@ cv::Point2d CosmoSim::getNu( ) {
 } ;
 
 double CosmoSim::getAlphaXi( int m, int s ) {
-
-   // cv::Point2d xi = lens->getXi( sim->getEta() ) ;
    cv::Point2d xi = sim->getXi() ;
    if (DEBUG>1) std::cout << "[getAlphaXi] xi = " << xi << std::endl ;
    return getAlpha( xi.x, xi.y, m, s ) ;
-
 }
 double CosmoSim::getBetaXi( int m, int s ) {
-   // cv::Point2d xi = lens->getXi( sim->getEta() ) ;
    cv::Point2d xi = sim->getXi( ) ;
    if (DEBUG>1) std::cout << "[getBetaXi] xi = " << xi << std::endl ;
    return getBeta( xi.x, xi.y, m, s ) ;
@@ -306,20 +284,7 @@ bool CosmoSim::runSim() {
    if (DEBUG) std::cout << "[runSim] completes\n" ;
    return true ;
 }
-bool CosmoSim::moveSim( double rot, double scale ) { 
-   cv::Point2d xi = sim->getNu(), xi1 ;
-   xi1 = cv::Point2d( 
-           xi.x*cos(rot) - xi.y*sin(rot),
-           xi.x*sin(rot) + xi.y*cos(rot)
-         );
-   xi1 *= scale ;
-   Py_BEGIN_ALLOW_THREADS
-   if ( sim == NULL )
-      throw std::logic_error("Simulator not initialised") ;
-   sim->update( xi1 ) ;
-   Py_END_ALLOW_THREADS
-   return true ;
-}
+
 cv::Mat CosmoSim::getSource(bool refLinesMode) {
    if ( NULL == sim )
       throw std::bad_function_call() ;
@@ -347,12 +312,6 @@ cv::Mat CosmoSim::getActual(bool refLinesMode, bool causticMode) {
    }
    if (causticMode) {
       sim->drawCaustics( im ) ;
-      /*
-      cv::Mat caus = sim->getCaustic( ) ;
-      cv::Mat im2 ;
-      cv::addWeighted(im,1,caus,1,0,im2) ;
-      im = im2 ;
-      */
    }
    return im ;
 }

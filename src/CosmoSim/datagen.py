@@ -6,7 +6,6 @@ Generate an image for given parameters.
 """
 
 import tomllib as tl
-from cascadict import CascaDict
 
 import sys
 import os
@@ -14,26 +13,20 @@ import matplotlib.pyplot as plt
 from .dataset import datasetgen
 
 from .Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
-from . import CosmoSim,__version__
 
-from .CLI.Arguments import setParameters,Parameters
-from .CLI.Parser import RouletteParser
+from .CLI.Arguments import Parameters
 from .CLI.SimImage import SimImage
 
 import pandas as pd
 
-def makeSingle(param=None,name=None,outcols=None,sim=None,verbose=0):
+def makeSingle(param=None,outcols=None,verbose=0):
     """Process a single parameter set, given either as a pandas row or
     just as args parsed from the command line.
     """
     if param is None: param = Parameters()
     if verbose: print( f"[makeSingle] verbose={verbose}" )
-    imsim = SimImage(param=param,name=name,outcols=outcols,sim=sim,verbose=verbose)
+    imsim = SimImage(param=param,outcols=outcols,verbose=verbose)
     imsim.saveImage()
-    if param.get( "join" ): imsim.join()
-    if param.get( "family" ): imsim.family()
-    if param.get( "psiplot" ): imsim.psiplot()
-    if param.get( "kappaplot" ): imsim.kappaplot()
     if param.get( "apparent" ): imsim.getApparent()
     if param.get( "actual" ): imsim.getActual()
     if verbose: print( "makeSingle() returns" )
@@ -54,15 +47,13 @@ def datagen(args,param=None):
     outcols = list(frame.columns)
     print( "columns:", outcols )
     dfs = []
-    sim = CosmoSim(fn=args.amplitudes,verbose=args.verbose)
     for index,row in frame.iterrows():
         if args.verbose:
             print( "[datagen] Processing", index )
         param.setRow( row )
-        imsim = makeSingle(param,name=args.name,outcols=outcols,sim=sim,verbose=args.verbose)
+        imsim = makeSingle(param,outcols=outcols,verbose=args.verbose)
         if args.outfile:
             dfs.append( imsim.getData() )
-    imsim.close()
     df = pd.DataFrame( dfs )
     if args.outfile:
            if args.mldata:
@@ -76,8 +67,7 @@ def datagen(args,param=None):
                    except:
                        print( "No column", c )
            df.to_csv(args.outfile, sep=",", index=False)
-    print( "ready to close simulator" )
-    print( "simulator closed" )
+    print( "simulator done" )
 
 if __name__ == "__main__":
     sys.exit( "[CosmoSim] datagen - deprecated." )
