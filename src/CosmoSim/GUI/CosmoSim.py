@@ -8,27 +8,12 @@ The root module provides wrappers around most of the C++ classes,
 to make the python API more streamlined.
 """
 
-from .. import CosmoSimPy as cs
+from .. import CosmoSimPy as cs, getPathFN
 from ..Sources import *
 from ..Dictionary import *
 import numpy as np
 import threading as th
 import os, sys
-
-maxmlist = [ 50, 100, 200 ]
-
-def getFileName(maxm):
-    """
-    Get the filename for the amplitudes files.
-    The argument `maxm` is the maximum number of terms (nterms) to be
-    used in the simulator.
-    """
-    dir = os.path.dirname(os.path.abspath(__file__))
-    for m in maxmlist:
-        m0 = m
-        if maxm <= m:
-            return( os.path.join( dir, f"sis{m}.txt" ) )
-    raise Exception( f"Cannot support m > {m0}." )
 
 class CosmoSim(cs.CosmoSim):
     """
@@ -41,10 +26,10 @@ class CosmoSim(cs.CosmoSim):
         super().__init__(*a,**kw)
         self.verbose = verbose
         if self.verbose>1: print( f"[CosmoSim] init (verbose={self.verbose}) ..." )
-        dir = os.path.dirname(os.path.abspath(__file__))
         if fn == None:
-            super().setFile( PsiSpec.SIS, getFileName( maxm ) )
-            super().setFile( PsiSpec.SIE, os.path.join( dir, "sie05.txt" ) )
+            super().setFile( PsiSpec.PM, getPathFN( "pm50.txt" ) )
+            super().setFile( PsiSpec.SIS, getPathFN( "sis50.txt" ) )
+            super().setFile( PsiSpec.SIE, getPathFN( "sie05.txt" ) )
         else:
             if verbose: print( "Amplitudes file:", fn )
             super().setFile( PsiSpec.SIS, fn )
@@ -155,6 +140,9 @@ class CosmoSim(cs.CosmoSim):
             print( "critical", critical )
             im = np.array(self.getDistorted(),copy=False)
             raise e
-        if im.shape[2] == 1 : im.shape = im.shape[:2]
+        if im.shape[2] == 1:
+            im.shape = im.shape[:2]
+        if im.shape[0]*im.shape[1] == 0:
+            raise RuntimeError( "Image with no pixels" )
         return np.maximum(im,self.bgcolour)
 
