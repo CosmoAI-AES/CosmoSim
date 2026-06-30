@@ -55,7 +55,7 @@ def psiPM():
     # g is the Einstein radius and (x,y) coordinates in the lens plane
     x, y = symbols('x, y', real=True)
     g = symbols("g", positive=True, real=True)
-    psi = g ** 2 * log(x ** 2 + y ** 2)
+    psi = g ** 2 * log( sqrt ( x ** 2 + y ** 2 ) )
     alpha = sympy.factor(diff(psi, x))
     beta = sympy.factor(diff(psi, y))
     return (psi,alpha,beta,x,y)

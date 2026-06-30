@@ -1,4 +1,4 @@
-index,filename,source,model,lens,sampled,x,y,einsteinR,sigma,sigma2,theta,nterms
+index,filename,source,model,lens,sampled,x,y,einsteinradius,sigma,sigma2,theta,nterms
 ss021,sampled-raytrace-sis-s021.png,s,Raytrace,SIS,true,24,-68,96.0,21,0,0,16
 ss022,sampled-raytrace-sis-s022.png,s,Raytrace,SIS,true,35,-29,6.0,43,0,0,16
 ss023,sampled-raytrace-sis-s023.png,s,Raytrace,SIS,true,57,-47,100.0,47,0,0,16
