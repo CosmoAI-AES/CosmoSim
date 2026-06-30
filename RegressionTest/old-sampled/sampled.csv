@@ -1,4 +1,4 @@
-index,filename,source,config,chi,x,y,einsteinR,sigma,sigma2,theta,nterms
+index,filename,source,config,chi,x,y,einsteinradius,sigma,sigma2,theta,nterms
 sss01,sampled-roulette-sis-s01.png,s,ss,50,24,-68,96.0,21,0,0,16
 sss04,sampled-roulette-sis-s04.png,s,ss,50,-60,-50,50.0,5,0,0,16
 sss05,sampled-roulette-sis-s05.png,s,ss,50,-20,-3,96.0,27,0,0,16
