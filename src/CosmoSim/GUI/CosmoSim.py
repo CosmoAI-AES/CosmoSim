@@ -9,6 +9,7 @@ to make the python API more streamlined.
 """
 
 from .. import CosmoSimPy as cs
+from ..Sources import *
 from ..Dictionary import *
 import numpy as np
 import threading as th
@@ -57,9 +58,9 @@ class CosmoSim(cs.CosmoSim):
     def makeSource(self,param):
         if param.get( "imagesize" ) == None:
            param.__setitem__( "imagesize", self.getImageSize() )
-        self._src = makeSource(param,verbose=self.verbose)
+        self._src = getSource(param,verbose=self.verbose)
         if self.verbose:
-            print( f"CosmoSim.makeSource() returns (verbose={self.verbose})" )
+            print( f"CosmoSim.getSource() returns (verbose={self.verbose})" )
     def close(self):
         """
         Terminate the worker thread.

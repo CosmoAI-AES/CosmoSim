@@ -33,4 +33,3 @@ def getSourceFileName():
 def getPathFN(fn):
     dir = os.path.dirname(os.path.abspath(__file__))
     return  os.path.join( dir, fn )
-
