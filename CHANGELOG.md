@@ -1,6 +1,11 @@
 # CosmoSim Change Log
 
-## 3.1.0b1 - 2026-06-29
+## 3.1.0 - 2026-06-30
+
+### Fixed
+
++ Fixed bug in the lens potential of Point Mass in 
+  libamplitudes.py
 
 ### Added
 
