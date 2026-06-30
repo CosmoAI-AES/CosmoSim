@@ -76,8 +76,7 @@ def datagen(args,param=None):
                    except:
                        print( "No column", c )
            df.to_csv(args.outfile, sep=",", index=False)
-    print( "ready to close simulator" )
-    print( "simulator closed" )
+    print( "simulator done" )
 
 if __name__ == "__main__":
     sys.exit( "[CosmoSim] datagen - deprecated." )

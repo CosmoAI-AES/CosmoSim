@@ -7,8 +7,8 @@ import pandas as pd
 from .Arguments import Parameters
 from .Simulator import GenericSim 
 
-from CosmoSim.RouletteAmplitudes import RouletteAmplitudes 
-# from .Generators import RouletteRegenerator, getSource
+from ..RouletteAmplitudes import RouletteAmplitudes 
+from .Generators import RouletteRegenerator
 
 class Resim(GenericSim):
     """
