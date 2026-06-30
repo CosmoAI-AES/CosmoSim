@@ -43,6 +43,11 @@ def getSimulator(param,verbose=1):
     return sim
 
 def makeSourceConstellation(src,size,verbose=1):
+    """
+    Factory function to create a Source Constellation comprising several
+    galaxies.  This is an auxiliary for `getSource`.
+    """
+
     ss = src.split(";")
     sl = [ x.split("/") for x in ss ]
     if verbose:
@@ -117,6 +122,52 @@ def makeSource(param,verbose=1):
     if verbose>1:
         print( "makeSource() returns" )
     return r 
+
+class SampledPsiFunctionLens(cs.SampledPsiFunctionLens):
+    def __init__(self,lens,size,verbose=1):
+        self.lens = lens
+        return super().__init__( lens, size )
+class ClusterLens(cs.ClusterLens):
+    def __init__(self,s,verbose=1):
+        """
+        Factory function to create a cluster lens.
+        This is an auxiliary for `getLens()`.
+        """
+        self.verbose = verbose
+        if self.verbose: print( f"[CosmoSim/py] setCluster({s})")
+
+        ll = [ x.split("/") for x in s.split(";") ]
+        self.lenslist = []
+        cluster = cs.ClusterLens()
+        for lens in ll:
+            lenstype = lens[0]
+            lensparam = [ float(x) for x in lens[1:] ]
+            if self.verbose: print( lenstype, ":", lensparam )
+            sys.stdout.flush()
+            nl = len(lensparam)
+            if nl < 3:
+                raise Exception( f"Too few parameters for constituent lens" )
+            x, y = lensparam[0], lensparam[1] ;
+            if lenstype == "SIS":
+                l = cs.SIS()
+                l.setFile( super().getFile( PsiSpec.SIS ) )
+            elif lenstype == "SIE":
+                l = cs.SIE()
+                if nl < 5:
+                    raise Exception( f"Too few parameters for SIE lens" )
+                l.setRatio( lensparam[3] )
+                l.setOrientation( lensparam[4] )
+                l.setFile( super().getFile( PsiSpec.SIE ) )
+            elif lenstype == "PointMass":
+                l = cs.PointMass()
+            else:
+                raise Exception( f"Lens Type not Supported {lenstype}" )
+            l.setEinsteinR( lensparam[2] )
+            self.addLens( l, x, y )
+        if self.verbose: print( f"[CosmoSim/py] setCluster calls setLens")
+    def addLens(self,l,x,y):
+        super().addLens( l, x, y )
+        self.lenslist.append( l )
 
 class SphericalSource(cs.SphericalSource):
     """Spherical source model.
