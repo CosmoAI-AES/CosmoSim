@@ -1,28 +1,36 @@
 # CosmoSim Change Log
 
-## 3.2.0 - 2026-??
-
-Version 3.2 will remove the old point mass simulator in favour of
-the purely modular version.  The code is massively refactored with
-more consistent parameter handling and modularisation.
-
-## 3.1.0 - 2026-??
-
-Version 3.1 will be the last version including the old implementation
-of pointmass lenses, treating them as a special case.  It is released
-only to keep a record for comparing this legacy implemetation to the
-new modular implementation, before the legacy code is removed.
+## 3.1.0 - 2026-06-30
 
 ### Fixed
 
-+ Fixed the calculation of roulettes amplitudes to use rational numbers
-  rather than floating point until final evaluation.
++ Fixed bug in the lens potential of Point Mass in 
+  libamplitudes.py
 
-## 3.0.4 - 2026-06-24
+### Added
+
++ SimImage.getRoulette() to evaluate roulette amplitudes from python
+  in arbitrary precision.
++ Alternative calculation of amplitude formulæ, based on the SIE calculation
+  but exploiting the symmetry of circular lenses.
+
+## 3.0.5 - 2026-06-25
 
 Version 3.0 will be the last version using the old amplitudes.py
 script which accidentally introduce floating point numbers prematurely
 into the roulettes amplitudes.
+
+### Changed
+
++ CosmoSim.Roulettes uses rational numbers instead of floating point.
+  The generated amplitudes formulæ have not been changed.
+
+### Fixed
+
++ Forcing version numbers, hoping to make it run on MacOS.
+
+## 3.0.4 - 2026-06-24
+
 
 ### Added
 

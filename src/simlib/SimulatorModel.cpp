@@ -199,7 +199,7 @@ void SimulatorModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& ds
     // (row,col) are pixel co-ordinates
     double maskRadius = getMaskRadius() ;
     cv::Point2d xi = getXi() ;
-    if (DEBUG) {
+    if (DEBUG>1) {
        std::cout << "[SimulatorModel::distort] refXi=" 
                  << xi << " begin=" << begin << "; end=" << end << std::endl ;
     }

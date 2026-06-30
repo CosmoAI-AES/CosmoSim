@@ -44,7 +44,7 @@ cv::Point2d RouletteModel::getDistortedPos(double r, double theta) const {
 
     cv::Point2d rpt = cv::Point2d( nu1, nu2 ) ;
 
-    if ( DEBUG && (r < 2) ) {
+    if ( (DEBUG>1) && (r < 2) ) {
        std::string s = lens == NULL ? "No lens" : lens->idString() ;
        std::cout << "[getDistortedPos(" << DEBUG << ")] nu=" << rpt << 
           " theta=" << theta << " r=" << r 
