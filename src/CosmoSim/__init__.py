@@ -9,10 +9,7 @@ to make the python API more streamlined.
 """
 
 from . import CosmoSimPy as cs
-import numpy as np
-import pandas as pd
-import threading as th
-import os, sys
+import os
 
 from .CLI import Arguments
 
@@ -23,12 +20,6 @@ setDebug = cs.setDebug
 
 __version__ = "3.2.0b1"
 
-def getSourceFileName():
-    """
-    Get the filename for an image source.
-    """
-    dir = os.path.dirname(os.path.abspath(__file__))
-    return( os.path.join( dir, f"einstein.png" ) )
 
 def getPathFN(fn):
     dir = os.path.dirname(os.path.abspath(__file__))

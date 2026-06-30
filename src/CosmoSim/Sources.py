@@ -2,6 +2,14 @@
 
 from . import CosmoSimPy as cs
 from .Dictionary import *
+import numpy as np
+
+def getSourceFileName():
+    """
+    Get the filename for an image source.
+    """
+    dir = os.path.dirname(os.path.abspath(__file__))
+    return( os.path.join( dir, f"einstein.png" ) )
 
 def getSource(param,verbose=1):
     """

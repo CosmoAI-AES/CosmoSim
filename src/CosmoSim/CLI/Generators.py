@@ -8,7 +8,7 @@ Fanctions to create lenses, sources, and simulators.
 """
 
 from .. import CosmoSimPy as cs
-from .. import getSourceFileName, getPathFN, getSource
+from .. import getPathFN
 from ..Sources import *
 from CosmoSim.Dictionary import *
 import numpy as np
