@@ -9,13 +9,10 @@ to make the python API more streamlined.
 """
 
 from .CLI import Arguments
-<<<<<<< HEAD
 from . import CosmoSimPy
 
 import os
-=======
 from .Dictionary import *
->>>>>>> master
 
 Parameters = Arguments.Parameters
 setDebug = CosmoSimPy.setDebug
@@ -174,16 +171,6 @@ def getFileName(maxm):
         if maxm <= m:
             return( os.path.join( dir, f"sis{m}.txt" ) )
     raise Exception( f"Cannot support m > {m0}." )
->>>>>>> master
-def getSourceFileName():
-    """
-    Get the filename for an image source.
-    """
-    dir = os.path.dirname(os.path.abspath(__file__))
-    return( os.path.join( dir, f"einstein.png" ) )
-<<<<<<< HEAD
-=======
-    
 
 class SourceConstellation(cs.SourceConstellation):
     def __init__(self,size,verbose=1):
@@ -411,7 +398,6 @@ class CosmoSim(cs.CosmoSim):
             raise e
         if im.shape[2] == 1 : im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
->>>>>>> master
 
 def getPathFN(fn):
     dir = os.path.dirname(os.path.abspath(__file__))
