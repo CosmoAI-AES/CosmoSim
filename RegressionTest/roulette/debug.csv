@@ -1,4 +1,4 @@
-index,filename,source,config,chi,x,y,einsteinR,sigma,sigma2,theta,nterms
+index,filename,source,config,chi,x,y,einsteinradius,sigma,sigma2,theta,nterms
 ss01,roulette-sis-s01.png,s,fs,50,24,-68,96.0,21,0,0,16
 ss03,roulette-sis-s03.png,s,fs,50,57,-47,100.0,47,0,0,16
 ss04,roulette-sis-s04.png,s,fs,50,-60,-50,50.0,5,0,0,16
