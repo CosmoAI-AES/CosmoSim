@@ -8,10 +8,8 @@ Generate an image for given parameters.
 import tomllib as tl
 from cascadict import CascaDict
 
-import cv2 as cv
 import sys
 import os
-import numpy as np
 import matplotlib.pyplot as plt
 from .dataset import datasetgen
 

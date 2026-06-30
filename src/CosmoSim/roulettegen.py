@@ -5,9 +5,7 @@
 Generate an image for given parameters.
 """
 
-import cv2 as cv
 import sys
-import numpy as np
 import pandas as pd
 
 from .Image import drawAxes
