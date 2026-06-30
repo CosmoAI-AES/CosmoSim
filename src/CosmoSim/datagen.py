@@ -16,7 +16,8 @@ from .dataset import datasetgen
 from .Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
 from . import CosmoSim,__version__
 
-from .CLI.Arguments import setParameters,Parameters
+from .CLI.Generators import setParameters
+from .CLI.Arguments import Parameters
 from .CLI.Parser import RouletteParser
 from .CLI.SimImage import SimImage
 

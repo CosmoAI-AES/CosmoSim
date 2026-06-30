@@ -12,7 +12,7 @@ from ..Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, 
 # from .Generators import getSimulator, getLens, getSource
 
 from .Simulator import GenericSim
-from .Arguments import Parameters, setParameters
+from .Generators import setParameters
 
 def getMS(minm,maxm=None):
     if minm is None:
