@@ -103,7 +103,7 @@ def getLens(param,verbose=1):
         if fn is None: fn = getPathFN( "sie05.txt" )
         lens.setFile( fn )
     elif lensmode is None:
-        if verbose: print( "[getLens] No lens" )
+        raise RuntimeError( "[getLens] No lens" )
     else:
         raise RuntimeError( "[getLens] Unknown lens specification" )
     fn = param.get( ( "lens", "amplitudefile" ) )

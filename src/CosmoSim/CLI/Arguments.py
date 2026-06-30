@@ -80,16 +80,15 @@ class Parameters:
     def __setitem__(self,key,v):
         self._row[key] = v
 
-skel = { "simulator" : { "imagesize": 512 }
+skel = { "simulator" : { "imagesize": 512, "model" : "Raytrace" }
         , "source" : { "sigma" : 10, "sigma2" : 20, "theta" : 45 }
-         , "lens" : {}
+        , "lens" : { "mode" : "SIS" }
          , "dataset" : {}
          , "annotation" : {}
          , "management" : { "maxcount" : None ,"filename" : "test.png" },
          }
 
 paramap = {
-        "config" : ( "simulator", "config" ), # renamed
         "lens" : ( "lens", "mode" ),
         "model" : ( "simulator", "model" ),
         "sampled" : ( "simulator", "sampled" ),
@@ -207,7 +206,6 @@ class CosmoParser(argparse.ArgumentParser):
     self.add_argument('-E', '--einsteinradius', type=float, default=20, help="Einstein radius")
     self.add_argument('-r', '--ratio', type=float, help="Ratio (usually Elliptic eccentricity)")
     self.add_argument('--orientation', default=0, type=float, help="Orientation of the lens")
-    self.add_argument('--config', type=str, help="Configuration (Model and Lens)")
 
     # Other parameters
     self.add_argument('-n', '--nterms', type=int,
