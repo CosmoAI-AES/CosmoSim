@@ -32,7 +32,6 @@ def main(args,cfg):
            datagen(args,param)
     else:
         imsim = makeSingle(param,verbose=args.verbose)
-        imsim.close()
 
 if __name__ == "__main__":
     print( "[CosmoSim] batch generator ..." )
