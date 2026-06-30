@@ -21,8 +21,6 @@ public:
 
     virtual double getAlphaXi( int m, int s ) ; /* Not implemented */
     virtual double getBetaXi( int m, int s ) ; /* Not implemented */
-    virtual double getAlphaPy( double, double, int m, int s ) ; 
-    virtual double getBetaPy( double, double, int m, int s ) ; 
     virtual double getAlpha( cv::Point2d xi, int m, int s ) ; /* Not implemented */
     virtual double getBeta( cv::Point2d xi, int m, int s ) ; /* Not implemented */
 

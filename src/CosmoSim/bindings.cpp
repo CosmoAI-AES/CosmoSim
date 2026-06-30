@@ -89,8 +89,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("psiYvalue", &Lens::psiYvalue)
         .def("criticalXi", &Lens::criticalXi)
         .def("caustic", &Lens::caustic)
-        .def("getAlphaPy", &Lens::getAlphaPy)
-        .def("getBetaPy", &Lens::getBetaPy)
         ;
     py::class_<PsiFunctionLens,Lens>(m, "PsiFunctionLens")
         .def(py::init<>())

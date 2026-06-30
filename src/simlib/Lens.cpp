@@ -82,11 +82,3 @@ double Lens::psiYvalue( double x, double y ) const { throw NotImplemented() ; }
 std::string Lens::idString() {
    return "Lens (Superclass)" ;
 };
-
-double Lens::getAlphaPy( double x, double y, int m, int s ) {
-  return  Lens::getAlpha( cv::Point2d(x,y), int m, int s ) ;
-}
-double Lens::getBetaPy( double x, double y, int m, int s ) {
-  return  Lens::getBeta( cv::Point2d(x,y), int m, int s ) ;
-}
-
