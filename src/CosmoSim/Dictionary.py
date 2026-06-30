@@ -45,17 +45,6 @@ modelValues = {
         "Raytrace SIS" : (ModelSpec.Raytrace,PsiSpec.SIS,False),
         "Raytrace SIE" : (ModelSpec.Raytrace,PsiSpec.SIE,False),
         }
-configDict = modelValues.copy()
-configDict["p"] = configDict["Point Mass (exact)"]
-configDict["r"] = configDict["Point Mass (roulettes)"]
-configDict["ss"] = configDict["Sampled Roulette SIS"]
-configDict["pss"] = configDict["Sampled Raytrace SIS"]
-configDict["fs"] = configDict["Roulette SIS"]
-configDict["rs"] = configDict["Raytrace SIS"]
-configDict["srousie"] = configDict["Sampled Roulette SIE"]
-configDict["sraysie"] = configDict["Sampled Raytrace SIE"]
-configDict["rousie"] = configDict["Roulette SIE"]
-configDict["raysie"] = configDict["Raytrace SIE"]
 
 # Note that the source names are looked up in two dictionaries,
 # both the `sourceDict` and the `lightProfileDict`.
