@@ -33,8 +33,8 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("getActual", &CosmoSim::getActual)
         .def("getApparent", &CosmoSim::getSource)
         .def("getDistorted", &CosmoSim::getDistorted)
-        .def("runSim", &CosmoSim::runSim)
         .def("moveSim", &CosmoSim::moveSim)
+        .def("runSim", &CosmoSim::runSim)
         .def("diagnostics", &CosmoSim::diagnostics)
         .def("maskImage", &CosmoSim::maskImage)
         .def("showMask", &CosmoSim::showMask)
@@ -90,6 +90,10 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("criticalXi", &Lens::criticalXi)
         .def("caustic", &Lens::caustic)
         ;
+    py::class_<SampledLens,Lens>(m, "SampledLens") ;
+    py::class_<SampledPsiFunctionLens,SampledLens,Lens>(m, "SampledPsiFunctionLens") 
+        .def(py::init<PsiFunctionLens *>())
+        .def(py::init<PsiFunctionLens *,int>()) ;
     py::class_<PsiFunctionLens,Lens>(m, "PsiFunctionLens")
         .def(py::init<>())
         .def("calculateAlphaBeta", &PsiFunctionLens::calculateAlphaBeta)
@@ -101,6 +105,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setOrientation", &SIE::setOrientation)
         .def("setRatio", &SIE::setRatio)
         .def("setFile", &PsiFunctionLens::setFile)
+        .def("initAlphasBetas", &PsiFunctionLens::initAlphasBetas)
         ;
     py::class_<SIS,PsiFunctionLens>(m, "SIS")
         .def(py::init<>())
@@ -130,12 +135,15 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("psiValue", &ClusterLens::psiValue)
         .def("psiXvalue", &ClusterLens::psiXvalue)
         .def("psiYvalue", &ClusterLens::psiYvalue)
+        .def("initAlphasBetas", &ClusterLens::initAlphasBetas)
         ;
 
     py::class_<SimulatorModel>(m, "SimulatorModel")
         .def(py::init<>())
         .def("update", py::overload_cast<>(&SimulatorModel::update))
         .def("setSource", &SimulatorModel::setSource)
+        .def("setXY", &SimulatorModel::setXY)
+        .def("setPolar", &SimulatorModel::setPolar)
         .def("setNterms", &SimulatorModel::setNterms)
         .def("setMaskMode", &SimulatorModel::setMaskMode)
         .def("setBGColour", &SimulatorModel::setBGColour)
@@ -153,6 +161,9 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setCentrePy", &RouletteRegenerator::setCentrePy)
         .def("setAlphaXi", &RouletteRegenerator::setAlphaXi)
         .def("setBetaXi", &RouletteRegenerator::setBetaXi) ;
+
+    py::class_<RaytraceModel,SimulatorModel>(m, "RaytraceModel")
+        .def(py::init<>()) ;
 
     pybind11::enum_<PsiSpec>(m, "PsiSpec") 
        .value( "SIE", CSIM_PSI_SIE )
