@@ -79,14 +79,14 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("calculateAlphaBeta", &Lens::calculateAlphaBeta)
         .def("getAlphaXi", &Lens::getAlphaXi)
         .def("getBetaXi", &Lens::getBetaXi)
-        .def("getAlpha", &Lens::getAlpha)
-        .def("getBeta", &Lens::getBeta)
         .def("getXi", &Lens::getXi)
         .def("psiValue", &Lens::psiValue)
         .def("psiXvalue", &Lens::psiXvalue)
         .def("psiYvalue", &Lens::psiYvalue)
         .def("criticalXi", &Lens::criticalXi)
         .def("caustic", &Lens::caustic)
+        .def("getAlpha", &Lens::getAlphaPy)
+        .def("getBeta", &Lens::getBetaPy)
         ;
     py::class_<SampledLens,Lens>(m, "SampledLens") ;
     py::class_<SampledPsiFunctionLens,SampledLens,Lens>(m, "SampledPsiFunctionLens") 
@@ -150,16 +150,13 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("getActual", &SimulatorModel::getActual)
         .def("getApparent", &SimulatorModel::getApparent)
         .def("getDistorted", &SimulatorModel::getDistorted) 
+        .def("getRelativeEta", &SimulatorModel::getRelativeEtaPy)
+        .def("getOffset", &SimulatorModel::getOffsetPy)
+        .def("getNu", &SimulatorModel::getNu)
         .def("setLens", &SimulatorModel::setLens) ;
     py::class_<RouletteModel,SimulatorModel>(m, "RouletteModel")
         .def(py::init<>())
         .def("setLens", &RouletteModel::setLens) ;
-    py::class_<RotatedModel,SimulatorModel>(m, "RotatedModel")
-        .def(py::init<PsiFunctionLens *>()) ;
-    py::class_<PointMassExact,RotatedModel,SimulatorModel>(m, "PointMassExact")
-        .def(py::init<PsiFunctionLens *>()) ;
-    py::class_<PointMassRoulette,RotatedModel,SimulatorModel>(m, "PointMassRoulette")
-        .def(py::init<PsiFunctionLens *>()) ;
     py::class_<RouletteRegenerator,RouletteModel>(m, "RouletteRegenerator")
         .def(py::init<>())
         .def("setCentrePy", &RouletteRegenerator::setCentrePy)
@@ -184,8 +181,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
        .value( "Raytrace", CSIM_MODEL_RAYTRACE )
        .value( "Roulette", CSIM_MODEL_ROULETTE  )
        .value( "RouletteRegenerator", CSIM_MODEL_ROULETTE_REGEN  )
-       .value( "PointMassExact", CSIM_MODEL_POINTMASS_EXACT )
-       .value( "PointMassRoulettes", CSIM_MODEL_POINTMASS_ROULETTE ) 
        .value( "NoModel", CSIM_NOMODEL  )  ;
     pybind11::enum_<LightProfileSpec>(m, "LightProfileSpec") 
        .value( "Gaussian", CSIM_LIGHT_GAUSSIAN )

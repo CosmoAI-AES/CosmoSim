@@ -38,6 +38,11 @@ class SimImage(GenericSim):
         if self.verbose: print( f"[SimImage] init (verbose={self.verbose}) ..." )
         self.initSim()
         self.runSim()
+    def getXiOffset(self,centrepoint):
+        nu = self.sim.getNu()
+        a = np.array(nu)
+        return ( a[0] - centrepoint[0], a[1] - centrepoint[1] )
+
     def getRoulette(self,precision=None,fn=None,verbose=None):
         if verbose is None: verbose = self.verbose
         sim = self.sim
@@ -48,11 +53,11 @@ class SimImage(GenericSim):
         maxm = self.param.get( ( "simulator", "nterms" ), 16 )
         xireference = self.param.get( "xireference", True )
 
-        releta = sim.getRelativeEta(centrepoint=centrepoint)
-        offset = sim.getOffset(centrepoint=centrepoint)
+        releta = np.array(sim.getRelativeEta(centrepoint[0],centrepoint[1]))
+        offset = np.array(sim.getOffset(centrepoint[0],centrepoint[1]))
         if verbose: print( "[getRoulette] ", offset, centrepoint )
 
-        xioffset = sim.getXiOffset(centrepoint)
+        xioffset = self.getXiOffset(centrepoint)
         if xireference:
             xi = sim.getNu()
         else:
@@ -120,19 +125,19 @@ class SimImage(GenericSim):
         xireference = self.param.get( "xireference", True )
         if verbose > 0:
             print( "[datagen.py] Finding Alpha/beta; centrepoint=", centrepoint )
-        releta = sim.getRelativeEta(centrepoint=centrepoint)
+        releta = np.array(sim.getRelativeEta(centrepoint[0],centrepoint[1]))
         if verbose > 2: print( "[SimImage.getData] ", centrepoint )
-        offset = sim.getOffset(centrepoint=centrepoint)
+        offset = np.array(sim.getOffset(centrepoint[0],centrepoint[1]))
         if verbose: print( "[getData] ", offset, centrepoint )
-        xioffset = sim.getXiOffset(centrepoint)
+        xioffset = self.getXiOffset(centrepoint)
         if xireference:
             if verbose>1:
                 print( "[xireference=True] nterms =", maxm )
-            ab = sim.getAlphaBetas(maxm)
+            ab = self.getAlphaBetas(maxm)
         else:
             if verbose>1:
                 print( "[xireference=False] nterms =", maxm )
-            ab = sim.getAlphaBetas(maxm,pt=centrepoint)
+            ab = self.getAlphaBetas(maxm,pt=centrepoint)
         relcols = [ "centreX", "centreY",
                    "reletaX", "reletaY",
                    "offsetX", "offsetY",
@@ -214,3 +219,23 @@ class SimImage(GenericSim):
         if fn is None: 
             raise NotImplemented( "Not implemented lookup of default amplitudes file." )
         return fn
+    def getAlphaBetas(self,maxm=2,pt=None):
+        """
+        Get the roulette amplitudes for a given point in the source plane.
+        """
+        if self.verbose>1:
+            print ( "[getAlphaBetas] pt=", pt, "in Planar Co-ordinates"  )
+        if pt == None:
+           ab1 = { f"alpha[{m}][{s}]" : self.lens.getAlphaXi(m,s) 
+                   for (m,s) in getMS(maxm) }
+           ab2 = { f"beta[{m}][{s}]" : self.lens.getBetaXi(m,s)
+                   for (m,s) in getMS(maxm) }
+        else:
+            (x,y) = pt
+            # Scaling is done in getAlpha/getBeta
+            ab1 = { f"alpha[{m}][{s}]" : self.lens.getAlphaPy(x,y,m,s)
+                    for (m,s) in getMS(maxm) }
+            ab2 = { f"beta[{m}][{s}]" : self.lens.getBetaPy(x,y,m,s)
+                    for (m,s) in getMS(maxm) }
+        return pd.concat( [ pd.Series( ab1 ), pd.Series( ab2 ) ] )
+

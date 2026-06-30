@@ -16,34 +16,24 @@ LightProfileSpec = cs.LightProfileSpec
 Point = cs.Point 
 
 lensDict = {
-        "SIS" : PsiSpec.SIS,
         "PM" : PsiSpec.PM,
-        "Cluster" : PsiSpec.Cluster,
+        "SIS" : PsiSpec.SIS,
         "SIE" : PsiSpec.SIE,
+        "Cluster" : PsiSpec.Cluster,
+        }
+lensValues = {
+        "PM" : PsiSpec.PM,
+        "SIS" : PsiSpec.SIS,
+        "SIE" : PsiSpec.SIE,
+        }
+modelValues = {
+        "Raytrace" : ModelSpec.Raytrace,
+        "Roulette" : ModelSpec.Roulette,
         }
 modelDict = {
         "Raytrace" : ModelSpec.Raytrace,
         "Roulette" : ModelSpec.Roulette,
         "RouletteRegenerator" : ModelSpec.RouletteRegenerator,
-        "Point Mass (exact)" : ModelSpec.PointMassExact,
-        "Point Mass (roulettes)" : ModelSpec.PointMassRoulettes,
-
-        "ray" : ModelSpec.Raytrace,
-        "rou" : ModelSpec.Roulette,
-        "pmx" : ModelSpec.PointMassExact,
-        "pmr" : ModelSpec.PointMassRoulettes,
-        }
-modelValues = {
-        "Point Mass (exact)" : (ModelSpec.PointMassExact,PsiSpec.PM,False),
-        "Point Mass (roulettes)" : (ModelSpec.PointMassRoulettes,PsiSpec.PM,False),
-        "Sampled Roulette SIS" : (ModelSpec.Roulette,PsiSpec.SIS,True),
-        "Sampled Roulette SIE" : (ModelSpec.Roulette,PsiSpec.SIE,True),
-        "Sampled Raytrace SIS" : (ModelSpec.Raytrace,PsiSpec.SIS,True),
-        "Sampled Raytrace SIE" : (ModelSpec.Raytrace,PsiSpec.SIE,True),
-        "Roulette SIS" : (ModelSpec.Roulette,PsiSpec.SIS,False),
-        "Roulette SIE" : (ModelSpec.Roulette,PsiSpec.SIE,False),
-        "Raytrace SIS" : (ModelSpec.Raytrace,PsiSpec.SIS,False),
-        "Raytrace SIE" : (ModelSpec.Raytrace,PsiSpec.SIE,False),
         }
 
 # Note that the source names are looked up in two dictionaries,

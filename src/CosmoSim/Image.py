@@ -2,7 +2,10 @@
 # (C) 2022-26: Hans Georg Schaathun <georg@schaathun.net> 
 
 """
-Post-processing functions for images.
+Helper functions for images including post-processing and viewing.
+
+The viewing functions are adapted primarily for use in Jupyter
+Notebook and may or may not work in other use cases.
 """
 
 import numpy as np

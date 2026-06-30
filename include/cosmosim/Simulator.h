@@ -62,8 +62,10 @@ protected:
 public:
     SimulatorModel();
     virtual ~SimulatorModel();
+    cv::Point2d getOffsetPy( double, double ) ;
     cv::Point2d getOffset( cv::Point2d ) ;
     cv::Point2d getRelativeEta( cv::Point2d ) ;
+    cv::Point2d getRelativeEtaPy( double, double ) ;
 
     void update();
     void update( cv::Point2d );
@@ -107,32 +109,6 @@ public:
     void drawCaustics( cv::Mat ) ;
 
 };
-
-class RotatedModel : public SimulatorModel { 
-public:
-    RotatedModel( PsiFunctionLens *l );
-protected:
-    virtual void updateApparentAbs() ;
-    virtual cv::Mat getApparent() const ;
-    virtual void updateInner();
-    PsiFunctionLens *pmlens ;
-};
-
-class PointMassExact : public RotatedModel { 
-public:
-    using RotatedModel::RotatedModel ;
-protected:
-    virtual cv::Point2d getDistortedPos(double r, double theta) const;
-};
-
-
-class PointMassRoulette: public RotatedModel { 
-public:
-    using RotatedModel::RotatedModel ;
-protected:
-    virtual cv::Point2d getDistortedPos(double r, double theta) const;
-};
-
 
 class RaytraceModel : public SimulatorModel { 
 public:

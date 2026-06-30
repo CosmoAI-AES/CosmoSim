@@ -30,7 +30,7 @@ void SampledPsiFunctionLens::updatePsi( cv::Size size ) {
 
    gradient( -psi, psiX, psiY ) ;
 
-   std::cout << "[SampledPsiFunctionLens] (" << size << ") updatePsi() returns\n" ;
+   if (DEBUG) std::cout << "[SampledPsiFunctionLens] (" << size << ") updatePsi() returns\n" ;
    return ; 
 }
 double SampledPsiFunctionLens::criticalXi( double phi ) const {

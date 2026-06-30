@@ -1,10 +1,17 @@
 # CosmoSim Change Log
 
-## 3.2.0 - unreleased
+## 3.2.0b2 - 2026-07-01
 
 ### Changed
 
 + Refactored to instantiate objects in python and simplify API.
++ Removed the closed form simulators for point mass lenses, 
+  leaving only the modular model.
+
+### Fixed
+
++ Fixed the memory leak arising from multiple instances of the
+  backend simulator.
 
 ## 3.1.0 - 2026-06-30
 

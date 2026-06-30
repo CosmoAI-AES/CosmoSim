@@ -390,6 +390,9 @@ void SimulatorModel::setLens( Lens *l ) {
    lens = l ;
 }
 
+cv::Point2d SimulatorModel::getRelativeEtaPy( double x, double y ) {
+   return this->SimulatorModel::getRelativeEta( cv::Point2d( x, y ) ) ;
+}
 cv::Point2d SimulatorModel::getRelativeEta( cv::Point2d xi1 ) {
    // returns $\vec\eta''$
    cv::Point2d releta ;
@@ -399,6 +402,10 @@ cv::Point2d SimulatorModel::getRelativeEta( cv::Point2d xi1 ) {
              << "; releta=" << releta << std::endl ;
    }
    return releta ;
+}
+
+cv::Point2d SimulatorModel::getOffsetPy( double x, double y ) {
+   return SimulatorModel::getOffset( cv::Point2d(x,y) ) ;
 }
 
 cv::Point2d SimulatorModel::getOffset( cv::Point2d xi1 ) {

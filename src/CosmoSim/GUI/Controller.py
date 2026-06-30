@@ -10,7 +10,7 @@ from tkinter import *
 from tkinter import ttk
 import math
 
-from .. import modelValues, sourceValues
+from ..Dictionary import *
 
 # Classes
 class FloatSlider:
@@ -182,7 +182,6 @@ class SourcePane(ttk.Frame):
            "n_sersic": self.nslider.get(),
            "luminosity": self.Lslider.get()
            }
-        print( "[Controller.py] Push source parameters", p )
         self.sim.makeSource(p)
         print( "[Controller.py] makeSource has returned" )
         if runsim: self.sim.runSimulator()
@@ -239,33 +238,58 @@ class LensPane(ttk.Frame):
         """
         super().__init__(root, *a, **kw)
         self.sim = sim 
-        self.modelValues = list(modelValues.keys())
 
-        modeVar = StringVar()
-        self.lensVar = modeVar
-        modeVar.set( self.modelValues[0] )
+        self.lensValues = list(lensValues.keys())
+        lensVar = StringVar()
+        lensVar.set( self.lensValues[0] )
+        self.lensVar = lensVar
+
+        self.modelValues = list(modelValues.keys())
+        simVar = StringVar()
+        simVar.set( self.modelValues[0] )
+        self.simVar = simVar
+
+        self.sampleVar = BooleanVar()
+        self.sampleVar.set( False )
+
+        self.simLabel = ttk.Label( self, text="Simulator Model",
+                style="Std.TLabel" )
+        self.simSelector = ttk.Combobox( self, 
+                textvariable=simVar,
+                values=self.modelValues )
+
         self.lensLabel = ttk.Label( self, text="Lens Model",
                 style="Std.TLabel" )
         self.lensSelector = ttk.Combobox( self, 
-                textvariable=modeVar,
-                values=self.modelValues )
+                textvariable=lensVar,
+                values=self.lensValues )
+
+        self.sampleButton = ttk.Checkbutton(self,
+                onvalue=True, offvalue=False,
+                variable=self.sampleVar,
+                text="Sampled lens" )
+        self.sampleButton.grid( column=1, row=2 )
+
+        self.simLabel.grid(column=0, row=0, sticky=E )
+        self.simSelector.grid(column=1, row=0)
+        self.simSelector.set( self.modelValues[0] )
         self.lensLabel.grid(column=0, row=1, sticky=E )
         self.lensSelector.grid(column=1, row=1)
-        self.lensSelector.set( self.modelValues[0] )
+        self.lensSelector.set( self.lensValues[0] )
 
         self.einsteinSlider = IntSlider( self,
-            text="Einstein Radius", row=2,
+            text="Einstein Radius", row=3,
             default=20 )
         self.ratioSlider = FloatSlider( self,
-            text="Ellipticity", row=3,
+            text="Ellipticity", row=4,
             fromval=0,
             toval=1,
             default=1 )
         self.orientationSlider = IntSlider( self, 
                 toval=360,
-                text="Lens Orientation", row=4, default=45 )
+                text="Lens Orientation", row=5, default=45 )
         self.ntermsSlider = IntSlider( self, 
-            text="Number of Terms (Roulettes only)", row=6,
+            text="Number of Terms (Roulettes only)", row=7,
             toval=50,
             default=16 )
         self.einsteinSlider.var.trace_add( "write", self.push ) 
@@ -276,17 +300,19 @@ class LensPane(ttk.Frame):
         self.maskModeVar = BooleanVar()
         self.maskModeVar.set( False )
 
-        print ( "Ready to push parameters to Simulator" )
-
         self.push(runsim=False)
         print ( "Pushed parameters to Simulator" )
         self.maskModeVar.trace_add( "write",self.push )
-        modeVar.trace_add("write", self.push) 
+        lensVar.trace_add("write", self.push) 
+        simVar.trace_add("write", self.push) 
+        self.sampleVar.trace_add("write", self.push) 
     def getMaskModeVar(self):
         return self.maskModeVar
     def push(self,*a,runsim=True):
         print( "[CosmoGUI] Push lens parameters" )
-        self.sim.setConfigMode(self.lensVar.get())
+        self.sim.setSampled(self.sampleVar.get())
+        self.sim.setLensMode(self.lensVar.get())
+        self.sim.setModelMode(self.simVar.get())
         self.sim.setNterms( self.ntermsSlider.get() )
         self.sim.setEinsteinR( self.einsteinSlider.get())
         self.sim.setRatio( self.ratioSlider.get())

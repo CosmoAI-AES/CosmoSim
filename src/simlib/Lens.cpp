@@ -19,6 +19,11 @@ cv::Point2d Lens::getXi( cv::Point2d eta ) {
       if (DEBUG) std::cout
 	   << "[Lens] Fix pt it'n " << count
            << "; xi0=" << xi0 << "; Delta eta = " << x << ", " << y << "\n" ;
+      if ( std::isnan( x ) ) x = 0 ;
+      if ( std::isnan( y ) ) y = 0 ;
+      if ( std::isinf( x ) || std::isinf( y ) ) {
+         cont = 0 ; break ;
+      }
       xi1 = eta + cv::Point2d( x, y ) ;
       dist = cv::norm( cv::Mat(xi1-xi0), cv::NORM_L2 ) ;
       if ( dist < threshold ) cont = 0 ;
@@ -82,3 +87,11 @@ double Lens::psiYvalue( double x, double y ) const { throw NotImplemented() ; }
 std::string Lens::idString() {
    return "Lens (Superclass)" ;
 };
+
+double Lens::getAlphaPy( double x, double y, int m, int s ) {
+  return  Lens::getAlpha( cv::Point2d(x,y), m, s ) ;
+}
+double Lens::getBetaPy( double x, double y, int m, int s ) {
+  return  Lens::getBeta( cv::Point2d(x,y), m, s ) ;
+}
+
