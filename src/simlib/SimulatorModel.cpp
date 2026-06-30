@@ -292,6 +292,8 @@ void SimulatorModel::setNterms(int n) {
 
 /* Set the actual positions in the source plane using Cartesian Coordinates */
 void SimulatorModel::setXY( double X, double Y ) {
+   if (DEBUG>2) std::cout << "[SimulatorModel::setXY] (" << x 
+                        << ", " << y << ")" << std::endl ;
 
     eta = cv::Point2d( X, Y ) ;
 
