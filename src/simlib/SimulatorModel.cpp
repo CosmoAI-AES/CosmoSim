@@ -269,8 +269,6 @@ void SimulatorModel::setBGColour(int b) { bgcolour = b ; }
 
 /* B. Source model setter */
 void SimulatorModel::setSource(Source *src) {
-    // if ( source != NULL ) delete source ;
-    // delete segfaults on object created in python
     if ( DEBUG ) {
       if ( NULL == src ) {
          std::cout << "[SimulatorModel::setSource] NULL source\n" ;
@@ -292,8 +290,8 @@ void SimulatorModel::setNterms(int n) {
 
 /* Set the actual positions in the source plane using Cartesian Coordinates */
 void SimulatorModel::setXY( double X, double Y ) {
-   if (DEBUG>2) std::cout << "[SimulatorModel::setXY] (" << x 
-                        << ", " << y << ")" << std::endl ;
+   if (DEBUG>2) std::cout << "[SimulatorModel::setXY] (" << X
+                        << ", " << Y << ")" << std::endl ;
 
     eta = cv::Point2d( X, Y ) ;
 
