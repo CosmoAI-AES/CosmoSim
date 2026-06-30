@@ -14,7 +14,7 @@ import pandas as pd
 import threading as th
 import os, sys
 from .CLI import Arguments
-from .CLI.Generators import makeSource, makeSourceConstellation
+from .CLI.Generators import getSource, makeSourceConstellation
 from .Dictionary import *
 
 Parameters = Arguments.Parameters
@@ -67,7 +67,7 @@ class CosmoSim(cs.CosmoSim):
     def makeSource(self,param):
         if param.get( "imagesize" ) == None:
            param.__setitem__( "imagesize", self.getImageSize() )
-        self._src = makeSource(param,verbose=self.verbose)
+        self._src = getSource(param,verbose=self.verbose)
         if self.verbose:
             print( f"CosmoSim.makeSource() returns (verbose={self.verbose})" )
     def getRelativeEta(self,centrepoint):

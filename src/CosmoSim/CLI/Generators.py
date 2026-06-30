@@ -76,7 +76,7 @@ def makeSourceConstellation(src,size,verbose=1):
         print( "makeSourceConstellation() returns" )
     return constellation
 
-def makeSource(param,verbose=1):
+def getSource(param,verbose=1):
     """
     Factory function to create a Source object given the parameter list.
     """
@@ -84,22 +84,22 @@ def makeSource(param,verbose=1):
     src = param.get("source")
     ltprf0 = param.get( "lightprofile", None )
     if verbose:
-        print( f"[makeSource] src={src}, ltprf0={ltprf0}, verbose={verbose}" )
+        print( f"[getSource] src={src}, ltprf0={ltprf0}, verbose={verbose}" )
     if src.find("/") < 0:
        mode = sourceDict[src]
        if ltprf0 is None:
            ltprf = lightProfileDict.get( src, LightProfileSpec.Gaussian ) 
-           if verbose > 1: print( "[makeSource] Lightprofile:", src, ltprf )
+           if verbose > 1: print( "[getSource] Lightprofile:", src, ltprf )
        else:
            ltprf = lightProfileDict.get( ltprf0, LightProfileSpec.Gaussian ) 
-           if verbose > 1: print( "[makeSource] Lightprofile:", ltprf0, ltprf )
+           if verbose > 1: print( "[getSource] Lightprofile:", ltprf0, ltprf )
        if verbose:
-          print( f"[makeSource] mode={mode}, ltprf={ltprf}" )
+          print( f"[getSource] mode={mode}, ltprf={ltprf}" )
        if mode == sourceDict.get( "Spherical" ):
            nsersic = float(param.get("n_sersic",4))
            luminosity = float(param.get("luminosity",10))
            if verbose > 1: 
-               print( "[makeSource] Spherical Source - "
+               print( "[getSource] Spherical Source - "
                      + f"n_sersic={nsersic}, luminosity={luminosity}" )
            r = SphericalSource( size, float(param.get( "sigma" )),
                                nsersic, luminosity, ltprf=ltprf,
@@ -118,10 +118,48 @@ def makeSource(param,verbose=1):
     else:
         r = makeSourceConstellation(src,size)
         if verbose:
-            print( "[makeSource] - makeSourceConstellation() has returned" )
+            print( "[getSource] - makeSourceConstellation() has returned" )
     if verbose>1:
-        print( "makeSource() returns" )
+        print( "getSource() returns" )
     return r 
+
+def getLens(param,verbose=1):
+    lensmode = param.get( ( "lens", "mode" ), None )
+    cluster = param.get( ( "lens", "cluster" ), None )
+    if cluster is not None:
+        lens = ClusterLens( cluster, verbose=verbose )
+    elif lensmode == "PointMass":
+        lens = cs.PointMass()
+        lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
+    elif lensmode == "SIS":
+        lens = cs.SIS()
+        lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
+        fn = param.get( ( "lens", "roulettefile" ) )
+        if fn is None: fn = getPathFN( "sis50.txt" )
+        lens.setFile( fn )
+    elif lensmode == "SIE":
+        lens = cs.SIE()
+        lens.setRatio( param.get( ( "lens", "ellipseratio" ) ) )
+        lens.setOrientation( param.get( ( "lens", "orientation" ) ) )
+        lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
+        fn = param.get( ( "lens", "roulettefile" ) )
+        if fn is None: fn = getPathFN( "sie05.txt" )
+        lens.setFile( fn )
+    elif lensmode is None:
+        if verbose: print( "[getLens] No lens" )
+    else:
+        raise RuntimeError( "[getLens] Unknown lens specification" )
+    fn = param.get( ( "lens", "amplitudefile" ) )
+    if fn is not None:
+        lens.setFile( fn )
+    lens.initAlphasBetas()
+    smp = param.get( ( "simulator", "sampled"), None )
+    if smp is not None:
+        size = param.get( ( "simulator", "imagesize" ), 512 )
+        if verbose>1: print( "[getLens] Sampled mode is", smp )
+        if smp: lens = SampledPsiFunctionLens( lens, size )
+    return lens
+
 
 class SampledPsiFunctionLens(cs.SampledPsiFunctionLens):
     def __init__(self,lens,size,verbose=1):
@@ -233,7 +271,7 @@ class RouletteRegenerator(cs.RouletteRegenerator):
     def makeSource(self,param):
         if param.get( "imagesize" ) is None:
             raise Exception( "Image size not specified" )
-        self._src = makeSource(param,verbose=self.verbose)
+        self._src = getSource(param,verbose=self.verbose)
         self.setSource( self._src )
         if self.verbose>1:
             print( "RouletteRegenerator.makeSource() returns" )
