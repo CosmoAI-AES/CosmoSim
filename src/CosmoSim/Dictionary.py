@@ -25,17 +25,8 @@ modelDict = {
         "Raytrace" : ModelSpec.Raytrace,
         "Roulette" : ModelSpec.Roulette,
         "RouletteRegenerator" : ModelSpec.RouletteRegenerator,
-        "Point Mass (exact)" : ModelSpec.PointMassExact,
-        "Point Mass (roulettes)" : ModelSpec.PointMassRoulettes,
-
-        "ray" : ModelSpec.Raytrace,
-        "rou" : ModelSpec.Roulette,
-        "pmx" : ModelSpec.PointMassExact,
-        "pmr" : ModelSpec.PointMassRoulettes,
         }
 modelValues = {
-        "Point Mass (exact)" : (ModelSpec.PointMassExact,PsiSpec.PM,False),
-        "Point Mass (roulettes)" : (ModelSpec.PointMassRoulettes,PsiSpec.PM,False),
         "Sampled Roulette SIS" : (ModelSpec.Roulette,PsiSpec.SIS,True),
         "Sampled Roulette SIE" : (ModelSpec.Roulette,PsiSpec.SIE,True),
         "Sampled Raytrace SIS" : (ModelSpec.Raytrace,PsiSpec.SIS,True),

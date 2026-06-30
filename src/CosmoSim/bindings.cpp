@@ -154,12 +154,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
     py::class_<RouletteModel,SimulatorModel>(m, "RouletteModel")
         .def(py::init<>())
         .def("setLens", &RouletteModel::setLens) ;
-    py::class_<RotatedModel,SimulatorModel>(m, "RotatedModel")
-        .def(py::init<PsiFunctionLens *>()) ;
-    py::class_<PointMassExact,RotatedModel,SimulatorModel>(m, "PointMassExact")
-        .def(py::init<PsiFunctionLens *>()) ;
-    py::class_<PointMassRoulette,RotatedModel,SimulatorModel>(m, "PointMassRoulette")
-        .def(py::init<PsiFunctionLens *>()) ;
     py::class_<RouletteRegenerator,RouletteModel>(m, "RouletteRegenerator")
         .def(py::init<>())
         .def("setCentrePy", &RouletteRegenerator::setCentrePy)
@@ -184,8 +178,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
        .value( "Raytrace", CSIM_MODEL_RAYTRACE )
        .value( "Roulette", CSIM_MODEL_ROULETTE  )
        .value( "RouletteRegenerator", CSIM_MODEL_ROULETTE_REGEN  )
-       .value( "PointMassExact", CSIM_MODEL_POINTMASS_EXACT )
-       .value( "PointMassRoulettes", CSIM_MODEL_POINTMASS_ROULETTE ) 
        .value( "NoModel", CSIM_NOMODEL  )  ;
     pybind11::enum_<LightProfileSpec>(m, "LightProfileSpec") 
        .value( "Gaussian", CSIM_LIGHT_GAUSSIAN )

@@ -33,14 +33,6 @@ def getSimulator(param,lens=None,source=None,verbose=1):
         sim = cs.RouletteModel()
         if lens is not None:
             sim.setLens( lens )
-    elif model == "Point Mass (exact)":
-        sim = cs.PointMassExact(lens)
-        if lens is None:
-            raise RuntimeError( "Closed form simulators require a lens." )
-    elif model == "Point Mass (roulettes)":
-        sim = cs.PointMassRoulette(lens)
-        if lens is None:
-            raise RuntimeError( "Closed form simulators require a lens." )
     else:
         raise RuntimeError( f"[getSimulator] Unknown model: {model}" )
     if source is not None:

@@ -19,8 +19,6 @@ enum SourceSpec { CSIM_SOURCE_SPHERE,
 enum ModelSpec { CSIM_MODEL_RAYTRACE,
                   CSIM_MODEL_ROULETTE,
                   CSIM_MODEL_ROULETTE_REGEN,
-                  CSIM_MODEL_POINTMASS_EXACT,
-                  CSIM_MODEL_POINTMASS_ROULETTE,
                   CSIM_NOMODEL } ;
 enum PsiSpec    { CSIM_PSI_SIS,
                   CSIM_PSI_SIE,
@@ -31,7 +29,7 @@ enum PsiSpec    { CSIM_PSI_SIS,
 class CosmoSim {
 private:
     int size=512, basesize=512 ;
-    int modelmode=CSIM_MODEL_POINTMASS_EXACT ;
+    int modelmode=CSIM_MODEL_RAYTRACE ;
     double ellipseratio=0.5, orientation=0, einsteinR=20 ;
     int sampledlens = 0, modelchanged = 1 ;
     int lensmode=CSIM_PSI_PM ;

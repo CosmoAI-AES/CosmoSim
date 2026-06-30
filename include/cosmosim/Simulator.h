@@ -108,32 +108,6 @@ public:
 
 };
 
-class RotatedModel : public SimulatorModel { 
-public:
-    RotatedModel( PsiFunctionLens *l );
-protected:
-    virtual void updateApparentAbs() ;
-    virtual cv::Mat getApparent() const ;
-    virtual void updateInner();
-    PsiFunctionLens *pmlens ;
-};
-
-class PointMassExact : public RotatedModel { 
-public:
-    using RotatedModel::RotatedModel ;
-protected:
-    virtual cv::Point2d getDistortedPos(double r, double theta) const;
-};
-
-
-class PointMassRoulette: public RotatedModel { 
-public:
-    using RotatedModel::RotatedModel ;
-protected:
-    virtual cv::Point2d getDistortedPos(double r, double theta) const;
-};
-
-
 class RaytraceModel : public SimulatorModel { 
 public:
     using SimulatorModel::SimulatorModel ;
