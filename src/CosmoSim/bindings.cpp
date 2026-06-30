@@ -154,6 +154,12 @@ PYBIND11_MODULE(CosmoSimPy, m) {
     py::class_<RouletteModel,SimulatorModel>(m, "RouletteModel")
         .def(py::init<>())
         .def("setLens", &RouletteModel::setLens) ;
+    py::class_<RotatedModel,SimulatorModel>(m, "RotatedModel")
+        .def(py::init<PsiFunctionLens *>()) ;
+    py::class_<PointMassExact,RotatedModel,SimulatorModel>(m, "PointMassExact")
+        .def(py::init<PsiFunctionLens *>()) ;
+    py::class_<PointMassRoulette,RotatedModel,SimulatorModel>(m, "PointMassRoulette")
+        .def(py::init<PsiFunctionLens *>()) ;
     py::class_<RouletteRegenerator,RouletteModel>(m, "RouletteRegenerator")
         .def(py::init<>())
         .def("setCentrePy", &RouletteRegenerator::setCentrePy)

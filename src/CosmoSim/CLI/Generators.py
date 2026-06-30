@@ -23,9 +23,9 @@ def getSimulator(param,verbose=1):
     elif model == "Roulette":
         sim = cs.RouletteModel()
     elif model == "Point Mass (exact)":
-        raise NotImplemented( "The exact PointMass model has not been implemented" )
+        sim = cs.PointMassExact(getLens(param,verbose=verbose))
     elif model == "Point Mass (roulettes)":
-        raise NotImplemented( "The roulettes PointMass model has not been implemented" )
+        sim = cs.PointMassRoulette(getLens(param,verbose=verbose))
     else:
         raise RuntimeError( f"[getSimulator] Unknown model: {model}" )
     msk = param.get( "mask", None )
