@@ -13,7 +13,7 @@ from sympy.parsing.sympy_parser import parse_expr
 
 import numpy as np
 import pandas as pd
-from .. import getMS
+from .SimImage import getMS
 
 def eval1(expr,x,y,g,precision=64):
     """

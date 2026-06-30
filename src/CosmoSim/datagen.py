@@ -18,9 +18,9 @@ from .dataset import datasetgen
 from .Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
 from . import CosmoSim,__version__
 
-from .CLI.Simulator import GenericSim
 from .CLI.Arguments import setParameters,Parameters
-from .Roulettes.Parser import RouletteParser
+from .CLI.Parser import RouletteParser
+from .CLI.SimImage import SimImage
 
 import pandas as pd
 

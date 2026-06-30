@@ -14,7 +14,7 @@ from .Image import drawAxes
 from .datagen import crop
 
 from .CLI.Arguments import Parameters
-from .CLI.Simulator import GenericSim 
+from .CLI.Resim import Resim 
 
 from .RouletteAmplitudes import RouletteAmplitudes 
 from . import RouletteRegenerator

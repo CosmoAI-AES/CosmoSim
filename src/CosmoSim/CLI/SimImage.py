@@ -9,10 +9,10 @@ import pandas as pd
 
 from ..Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
 
-from .Generators import getSimulator, getLens, getSource
+# from .Generators import getSimulator, getLens, getSource
 
 from .Simulator import GenericSim
-from .Arguments import Parameters
+from .Arguments import Parameters, setParameters
 
 def getMS(minm,maxm=None):
     if minm is None:

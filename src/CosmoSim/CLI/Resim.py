@@ -8,7 +8,7 @@ from .Arguments import Parameters
 from .Simulator import GenericSim 
 
 from CosmoSim.RouletteAmplitudes import RouletteAmplitudes 
-from .Generators import RouletteRegenerator, getSource
+# from .Generators import RouletteRegenerator, getSource
 
 class Resim(GenericSim):
     """
