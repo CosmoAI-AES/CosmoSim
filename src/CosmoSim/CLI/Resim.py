@@ -54,7 +54,7 @@ class Resim(GenericSim):
         if fn is None: fn = row.name
         if self.verbose > 1: print( "[initSim] item ", fn)
 
-        if self.verbose>2: print( "[setParameters]" )
+        if self.verbose>2: print( "[initSim]" )
         maxm = self.coefs.getNterms()
         
         if self.xireference:

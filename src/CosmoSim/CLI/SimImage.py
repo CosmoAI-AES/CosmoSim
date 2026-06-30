@@ -90,11 +90,10 @@ class SimImage(GenericSim):
         Initialise the simulator, using the settings from the `param` attribute.
         """
         param = self.param
-        self.sim = getSimulator(self.param,verbose=self.verbose)
         self.src = getSource(self.param,verbose=self.verbose)
         self.lens = getLens(self.param,verbose=self.verbose)
-        self.sim.setLens( self.lens )
-        self.sim.setSource( self.src )
+        self.sim = getSimulator(self.param,lens=self.lens,source=self.src,
+                                verbose=self.verbose)
         if param.get("y") is not None:
             if self.verbose > 1:
                 print( "[initSim] XY", param.get( "x" ), param.get( "y" ) )

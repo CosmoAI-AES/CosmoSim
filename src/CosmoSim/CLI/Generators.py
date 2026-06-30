@@ -14,20 +14,36 @@ import numpy as np
 import os, sys
 
 
-def getSimulator(param,verbose=1):
+def getSimulator(param,lens=None,source=None,verbose=1):
+    """Factory function to create a back end simulator according
+    to the paramters object provided.
+    The lens must be given to instantiate closed form point mass
+    simulators, but is otherwise optional.
+    The source is optional.
+    """
     model = param.get( ( "simulator", "model" ), None )
     if model is None:
         raise RuntimeError( "[getSimulator] No simulator model" )
     elif model == "Raytrace":
         sim = cs.RaytraceModel()
+        if lens is not None:
+            sim.setLens( lens )
     elif model == "Roulette":
         sim = cs.RouletteModel()
+        if lens is not None:
+            sim.setLens( lens )
     elif model == "Point Mass (exact)":
-        sim = cs.PointMassExact(getLens(param,verbose=verbose))
+        sim = cs.PointMassExact(lens)
+        if lens is None:
+            raise RuntimeError( "Closed form simulators require a lens." )
     elif model == "Point Mass (roulettes)":
-        sim = cs.PointMassRoulette(getLens(param,verbose=verbose))
+        sim = cs.PointMassRoulette(lens)
+        if lens is None:
+            raise RuntimeError( "Closed form simulators require a lens." )
     else:
         raise RuntimeError( f"[getSimulator] Unknown model: {model}" )
+    if source is not None:
+        sim.setSource( source )
     msk = param.get( "mask", None )
     if msk is not None:
         if verbose: print( "[getSimulator] sets mask", msk )
@@ -160,11 +176,12 @@ class SampledPsiFunctionLens(cs.SampledPsiFunctionLens):
         self.lens = lens
         return super().__init__( lens, size )
 class ClusterLens(cs.ClusterLens):
-    def __init__(self,s,verbose=1):
+    def __init__(self,s,fn=None,verbose=1):
         """
         Factory function to create a cluster lens.
         This is an auxiliary for `getLens()`.
         """
+        super().__init__()
         self.verbose = verbose
         if self.verbose: print( f"[CosmoSim/py] setCluster({s})")
 
@@ -175,6 +192,7 @@ class ClusterLens(cs.ClusterLens):
             lenstype = lens[0]
             lensparam = [ float(x) for x in lens[1:] ]
             if self.verbose: print( lenstype, ":", lensparam )
+            self.fn = fn
             sys.stdout.flush()
             nl = len(lensparam)
             if nl < 3:
@@ -182,37 +200,39 @@ class ClusterLens(cs.ClusterLens):
             x, y = lensparam[0], lensparam[1] ;
             if lenstype == "SIS":
                 l = cs.SIS()
-                l.setFile( super().getFile( PsiSpec.SIS ) )
+                print( "Cluster - SIS", fn )
+                if fn is None: fn = getPathFN( "sis50.txt" )
+                print( "Cluster - SIS", fn )
+                l.setFile( fn )
+                print( "Cluster - SIS", fn )
             elif lenstype == "SIE":
                 l = cs.SIE()
                 if nl < 5:
                     raise Exception( f"Too few parameters for SIE lens" )
                 l.setRatio( lensparam[3] )
                 l.setOrientation( lensparam[4] )
-                l.setFile( super().getFile( PsiSpec.SIE ) )
+                if fn is None: fn = getPathFN( "sie05.txt" )
+                l.setFile( fn )
             elif lenstype == "PointMass":
                 l = cs.PointMass()
+                if fn is None: fn = getPathFN( "pm50.txt" )
+                l.setFile( fn )
             else:
                 raise Exception( f"Lens Type not Supported {lenstype}" )
+            if verbose > 1: 
+                print( "[ClusterLens] component lens instantiated" )
+                print( "[ClusterLens]", lensparam  )
             l.setEinsteinR( lensparam[2] )
             self.addLens( l, x, y )
+            if verbose > 1: print( "[ClusterLens] Done one component lens" )
         if self.verbose: print( f"[CosmoSim/py] setCluster calls setLens")
     def addLens(self,l,x,y):
+        if self.verbose > 1:
+            print( "[ClusterLens] addLens", (x,y), l )
         super().addLens( l, x, y )
+        if self.verbose > 1:
+            print( "[ClusterLens] addLens done" )
         self.lenslist.append( l )
-
-def setParameters(sim,row,verbose=1):
-    if row.get("einsteinradius",None) != None:
-        sim.setEinsteinR( row.get( "einsteinradius" ) )
-    if row.get("ellipseratio",None) != None:
-        sim.setRatio( row.get( "ellipseratio" ) )
-    if row.get("orientation",None) != None:
-        sim.setOrientation( row.get( "orientation" ) )
-    if row.get("imagesize",None) != None:
-        sim.setImageSize( row.get( "imagesize" ) )
-        sim.setResolution( row.get( "imagesize" ) )
-    if row.get("nterms",None) != None:
-        sim.setNterms( row.get( "nterms" ) )
 
 class SphericalSource(cs.SphericalSource):
     """Spherical source model.
