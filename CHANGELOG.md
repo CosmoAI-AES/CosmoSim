@@ -1,5 +1,11 @@
 # CosmoSim Change Log
 
+## 3.2.0 - unreleased
+
+### Changed
+
++ Refactored to instantiate objects in python and simplify API.
+
 ## 3.1.0 - 2026-06-30
 
 ### Fixed
