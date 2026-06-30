@@ -14,6 +14,7 @@ import pandas as pd
 import threading as th
 import os, sys
 from .CLI import Arguments
+from .CLI.Generators import makeSource, makeSourceConstellation
 from .Dictionary import *
 
 Parameters = Arguments.Parameters
@@ -21,132 +22,6 @@ Parameters = Arguments.Parameters
 import traceback
 
 __version__ = "3.1.0"
-
-class SphericalSource(cs.SphericalSource):
-    """Spherical source model.
-    This is a wrapper around the C++ class to provide default
-    arguments to the constructor.
-    """
-    def __init__( self, size, sigma, idx=0, lum=0,
-                 ltprf=LightProfileSpec.Gaussian,
-                 verbose=1 ):
-        super().__init__( size, sigma, idx, lum, ltprf )
-        if verbose: print( "[SphericalSource] constructor done" )
-
-class RouletteRegenerator(cs.RouletteRegenerator):
-    """
-    The roulette regenerator simulates gravitational lenses based
-    on pre-computed roulette amplitudes.
-
-    This class is a wrapper around the corresponding C++ class.
-    """
-    def __init__(self,*a,verbose=1,**kw):
-        super().__init__(*a,**kw)
-        self.verbose = verbose
-        self.bgcolour = 0
-    def makeSource(self,param):
-        if param.get( "imagesize" ) is None:
-            raise Exception( "Image size not specified" )
-        self._src = makeSource(param,verbose=self.verbose)
-        self.setSource( self._src )
-        if self.verbose>1:
-            print( "RouletteRegenerator.makeSource() returns" )
-    def getDistortedImage(self,reflines=False,critical=False,mask=False,showmask=False):
-        """
-        Return the Distorted Image from the simulator as a numpy array.
-        """
-        try:
-            if mask: self.maskImage()
-            if showmask: self.showMask()
-        except:
-            print( "Masking not supported for this lens model." )
-        try:
-            im = np.array(self.getDistorted(),copy=False)
-        except Exception as e:
-            print( "self", type(self) )
-            print( "reflines", reflines )
-            print( "critical", critical )
-            im = np.array(self.getDistorted(),copy=False)
-            raise e
-        if im.shape[2] == 1 : im.shape = im.shape[:2]
-        return np.maximum(im,self.bgcolour)
-
-def makeSourceConstellation(src,size,verbose=1):
-    ss = src.split(";")
-    sl = [ x.split("/") for x in ss ]
-    if verbose:
-        print( "makeSourceConstellation: src=", src, "size=", size, "sl=", sl )
-    constellation = SourceConstellation(size)
-    for s in sl:
-        mode = sourceDict[s[0]]
-        ltprf = lightProfileDict.get( s[0], LightProfileSpec.Gaussian ) 
-        if mode == sourceDict.get( "Spherical" ):
-            constituent = SphericalSource( size, float(s[3]), float(s[6]),
-                                          float(s[7]), ltprf=ltprf,
-                                          verbose=verbose )
-
-        elif mode == sourceDict.get( "Ellipsoid" ):
-            constituent = cs.EllipsoidSource( size, float(s[3]),
-                    float(s[4]), float(s[5])*np.pi/180, ltprf=ltprf)
-        elif mode == sourceDict.get( "Triangle" ):
-            constituent = cs.TriangleSource( size, float(s[3]), float(s[4])*np.pi/180 )
-        elif mode == sourceDict.get( "Iamge (Einstein)" ):
-            constituent = cs.ImageSource( getSourceFileName( ) )
-        else:
-            raise Exception( "Unknown Source Mode" )
-
-        constellation.addSource( constituent, float(s[1]), float(s[2]))
-    if verbose>1:
-        print( "makeSourceConstellation() returns" )
-    return constellation
-
-def makeSource(param,verbose=1):
-    """
-    Factory function to create a Source object given the parameter list.
-    """
-    size = int( param.get( "imagesize" ) )
-    src = param.get("source")
-    ltprf0 = param.get( "lightprofile", None )
-    if verbose:
-        print( f"[makeSource] src={src}, ltprf0={ltprf0}, verbose={verbose}" )
-    if src.find("/") < 0:
-       mode = sourceDict[src]
-       if ltprf0 is None:
-           ltprf = lightProfileDict.get( src, LightProfileSpec.Gaussian ) 
-           if verbose > 1: print( "[makeSource] Lightprofile:", src, ltprf )
-       else:
-           ltprf = lightProfileDict.get( ltprf0, LightProfileSpec.Gaussian ) 
-           if verbose > 1: print( "[makeSource] Lightprofile:", ltprf0, ltprf )
-       if verbose:
-          print( f"[makeSource] mode={mode}, ltprf={ltprf}" )
-       if mode == sourceDict.get( "Spherical" ):
-           nsersic = float(param.get("n_sersic",4))
-           luminosity = float(param.get("luminosity",10))
-           if verbose > 1: 
-               print( "[makeSource] Spherical Source - "
-                     + f"n_sersic={nsersic}, luminosity={luminosity}" )
-           r = SphericalSource( size, float(param.get( "sigma" )),
-                               nsersic, luminosity, ltprf=ltprf,
-                               verbose=verbose)
-       elif mode == sourceDict.get( "Ellipsoid" ):
-           r = cs.EllipsoidSource( size, float(param.get( "sigma" )),
-                   float(param.get( "sigma2" )),
-                   float(param.get( "theta" ))*np.pi/180, ltprf)
-       elif mode == sourceDict.get( "Triangle" ):
-           r = cs.TriangleSource( size, float(param.get( "sigma" )),
-                   float(param.get( "theta" ))*np.pi/180 )
-       elif mode == sourceDict.get( "Iamge (Einstein)" ):
-           r = cs.ImageSource( getSourceFileName( ) )
-       else:
-           raise Exception( "Unknown Source Mode" )
-    else:
-        r = makeSourceConstellation(src,size)
-        if verbose:
-            print( "[makeSource] - makeSourceConstellation() has returned" )
-    if verbose>1:
-        print( "makeSource() returns" )
-    return r 
-
 
 maxmlist = [ 50, 100, 200 ]
 def getFileName(maxm):
@@ -161,23 +36,7 @@ def getFileName(maxm):
         if maxm <= m:
             return( os.path.join( dir, f"sis{m}.txt" ) )
     raise Exception( f"Cannot support m > {m0}." )
-def getSourceFileName():
-    """
-    Get the filename for an image source.
-    """
-    dir = os.path.dirname(os.path.abspath(__file__))
-    return( os.path.join( dir, f"einstein.png" ) )
-    
 
-class SourceConstellation(cs.SourceConstellation):
-    def __init__(self,size,verbose=1):
-        self._sources = []
-        self.verbose = 1
-        if verbose: print( "SourceConstellation.__init__" )
-        super().__init__(size)
-    def addSource(self,src,*a):
-        self._sources.append(src)
-        return super().addSource(src,*a)
 class CosmoSim(cs.CosmoSim):
     """
     Simulator for gravitational lensing.

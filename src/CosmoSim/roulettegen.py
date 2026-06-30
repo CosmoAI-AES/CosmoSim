@@ -15,7 +15,7 @@ from .CLI.Arguments import Parameters
 from .CLI.Resim import Resim 
 
 from .RouletteAmplitudes import RouletteAmplitudes 
-from . import RouletteRegenerator
+from .CLI.Generators import RouletteRegenerator
 
 
 def processResim(frame,param,sim=None,maxcount=None,verbose=0):
