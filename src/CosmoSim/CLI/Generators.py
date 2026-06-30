@@ -169,6 +169,45 @@ class ClusterLens(cs.ClusterLens):
         super().addLens( l, x, y )
         self.lenslist.append( l )
 
+def setParameters(sim,row,verbose=1):
+    if verbose > 2:
+       print( "[CLI.Arguments] setParameters()" )
+       print( row ) 
+    if row.get("y") is not None:
+        if verbose > 1:
+            print( "[setParameters] XY", row.get( "x" ), row.get( "y" ) )
+        sim.setXY( row.get( "x" ), row.get( "y" ) )
+    elif row.get("phi",None) != None:
+        if verbose > 1: print( "Polar", row.get( "x" ), row.get( "phi" ) )
+        sim.setPolar( row.get( "x" ), row.get( "phi" ) )
+    if row.get("config",None) != None:
+        try:
+           sim.setConfigMode( row.get( "config" ) )
+        except KeyError as e:
+            print( f"config={row.get( "config" )}" )
+            raise e
+    elif row.get("cluster",None) != None:
+        if verbose > 1: print( "setCluster from CSV" )
+        sim.setCluster( row.get( "cluster" ) )
+    elif row.get("lens",None) != None:
+        sim.setLensMode( row.get( "lens" ) )
+    if row.get("model",None) != None:
+        sim.setModelMode( row.get( "model" ) )
+    if row.get("sampled",None) != None:
+        if verbose>1: print( row )
+        sim.setSampled( row.get( "sampled" ) )
+    if row.get("einsteinradius",None) != None:
+        sim.setEinsteinR( row.get( "einsteinradius" ) )
+    if row.get("ellipseratio",None) != None:
+        sim.setRatio( row.get( "ellipseratio" ) )
+    if row.get("orientation",None) != None:
+        sim.setOrientation( row.get( "orientation" ) )
+    if row.get("imagesize",None) != None:
+        sim.setImageSize( row.get( "imagesize" ) )
+        sim.setResolution( row.get( "imagesize" ) )
+    if row.get("nterms",None) != None:
+        sim.setNterms( row.get( "nterms" ) )
+
 class SphericalSource(cs.SphericalSource):
     """Spherical source model.
     This is a wrapper around the C++ class to provide default
