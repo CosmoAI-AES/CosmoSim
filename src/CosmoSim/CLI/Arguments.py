@@ -235,8 +235,6 @@ class CosmoParser(argparse.ArgumentParser):
     self.add_argument('-a', '--actual',action='store_true',help="write actual image")
 
     # Output file names
-    self.add_argument('-N', '--name', default="test",
-            help="simulation name")
     self.add_argument('-D', '--directory',default="./",
             help="directory path (for output files)")
 

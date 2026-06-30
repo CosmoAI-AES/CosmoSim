@@ -9,7 +9,7 @@ gravitational lensing.
 from tkinter import *
 from tkinter import ttk
 
-from CosmoSim import CosmoSim
+from .CosmoSim import CosmoSim
 from . import Controller as cont
 from . import View as view
 

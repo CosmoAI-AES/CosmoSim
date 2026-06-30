@@ -9,10 +9,10 @@ import pandas as pd
 
 from ..Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
 
-# from .Generators import getSimulator, getLens, getSource
+from .Generators import getSimulator, getLens, getSource
 
 from .Simulator import GenericSim
-from .Generators import setParameters
+from .Arguments import Parameters
 
 def getMS(minm,maxm=None):
     if minm is None:
@@ -22,39 +22,22 @@ def getMS(minm,maxm=None):
         minm = 0
     return [ (m,s) for m in range(minm,maxm+1)
                                     for s in range(1-m%2,m+2,2) ]
-
 class SimImage(GenericSim):
     """
     This class simulates a single image.
     Once the simulation has been run, various kinds of image and metadata can be
     retrieved from the object.
     """
-    def __init__(self,param,sim=None,**kw):
+    def __init__(self,param,**kw):
+        """
+        In the present implementation, all the parameters must be passed as 
+        a `Parameters` object.  The settings cannot be updated in an exising
+        instance.
+        """
         super().__init__(param,**kw)
         if self.verbose: print( f"[SimImage] init (verbose={self.verbose}) ..." )
-
-        if sim is None:
-            self.sim = CosmoSim( fn=param.get( ( "lens","amplitudefile" ) )
-                               , verbose=self.verbose )
-        else:
-            self.sim = sim
-        msk = self.param.get( "mask", None )
-        if msk is not None:
-            if self.verbose: print( "[SimImage] sets mask", msk )
-            self.sim.setMaskMode( msk )
         self.initSim()
-        if self.verbose>2:
-            print( "[SimImage] Verbosity", self.verbose )
-
-    def close(self):
-        self.sim.close()
-    def setParameters(self,row):
-        """
-        Reset parameters in the underlying `CosmoSim` simulator, using the
-        given data row.
-        """
-        if self.verbose: print( "[SimImage] setParameters()" )
-        return setParameters(self.sim,row,verbose=self.verbose)
+        self.runSim()
     def getRoulette(self,precision=None,fn=None,verbose=None):
         if verbose is None: verbose = self.verbose
         sim = self.sim
@@ -102,7 +85,30 @@ class SimImage(GenericSim):
             print( f"New row (verbosity={verbose})" )
             print( r1 )
         return r1
+    def initSim(self):
+        """
+        Initialise the simulator, using the settings from the `param` attribute.
+        """
+        param = self.param
+        self.sim = getSimulator(self.param,verbose=self.verbose)
+        self.src = getSource(self.param,verbose=self.verbose)
+        self.lens = getLens(self.param,verbose=self.verbose)
+        self.sim.setLens( self.lens )
+        self.sim.setSource( self.src )
+        if param.get("y") is not None:
+            if self.verbose > 1:
+                print( "[initSim] XY", param.get( "x" ), param.get( "y" ) )
+            self.sim.setXY( param.get( "x" ), param.get( "y" ) )
+        elif param.get("phi",None) != None:
+            if self.verbose > 1: 
+                print( "[initSim] Polar", param.get( "x" ), param.get( "phi" ) )
+            self.sim.setPolar( param.get( "x" ), param.get( "phi" ) )
+
     def getData(self,verbose=None):
+        """
+        Get the data generated from the simulation, particularly the roulette
+        amplitudes.  The return value is a pandas `Series` object.
+        """
         if verbose is None: verbose = self.verbose
         sim = self.sim
         if self.param.get( "centred" ):
@@ -150,41 +156,6 @@ class SimImage(GenericSim):
             print( f"New row (verbosity={verbose})" )
             print( r1 )
         return r1
-    def join(self):
-        """
-        Merge images simulated different reference points for
-        the roulette expansion.  This has not been tested since the early
-        work where we tried to get accurate simulations using roulette. 
-        """
-        # sim.setMaskMode(False)
-        sim = self.sim
-        maskscale = float(self.param.get( "maskscale" ))
-        criticalcurves = self.param.get( "criticalcurves" )
-        nc = int(self.param.get( "components" ))
-        sim.runSim()
-        print ( "[datagen.py] runSim() completed\n" ) ;
-        sim.maskImage(maskscale)
-        joinim = sim.getDistortedImage(critical=criticalcurves)
-        for i in range(1,nc):
-           sim.moveSim(rot=2*i*np.pi/nc,scale=1)
-           sim.maskImage(maskscale)
-           im = sim.getDistortedImage(critical=criticalcurves)
-           joinim = np.maximum(joinim,im)
-        fn = os.path.join(self.directory,"join-" + str(self.name) + ".png" ) 
-        if self.param.get( "reflines" ):
-            drawAxes(joinim)
-        cv.imwrite(fn,joinim)
-    def family(self):
-        """
-        Run a family of simulations with different reference points for
-        the roulette expansion.  This has not been tested since the early
-        work where we tried to get accurate simulations using roulette. 
-        """
-        sim = self.sim
-        self.moveImage(rot=-np.pi/4,scale=1,name=f"{self.name}-45+1")
-        self.moveImage(rot=+np.pi/4,scale=1,name=f"{self.name}+45+1")
-        self.moveImage(rot=0,scale=-1,name=f"{self.name}+0-1")
-        self.moveImage(rot=0,scale=2,name=f"{self.name}+0+2")
     def moveImage(self,rot,scale,name):
         """
         Simulate with a different reference point.  This only makes
@@ -244,4 +215,3 @@ class SimImage(GenericSim):
         if fn is None: 
             raise NotImplemented( "Not implemented lookup of default amplitudes file." )
         return fn
-
