@@ -199,8 +199,8 @@ def getline(toml,idx=0,fn=None,verbose=1):
             raise RuntimeError( "[dataset.py] Singleton or malformed cluster lens" )
     else:
         cfg = lensmodes(toml)
-        if cfg is not None: c["lens"] = random.choice( cfg )
         l =  rndlens( toml, verbose )
+        if cfg is not None: l["lens"] = random.choice( cfg )
         eR = l["einsteinradius"]
     s = rndsource( toml, einstein=eR, verbose=verbose )
 
