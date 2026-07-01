@@ -200,7 +200,7 @@ def getline(toml,idx=0,fn=None,verbose=1):
     else:
         cfg = lensmodes(toml)
         l =  rndlens( toml, verbose )
-        if cfg is not None: l["mode"] = random.choice( cfg )
+        if cfg is not None: l["lens"] = random.choice( cfg )
         eR = l["einsteinradius"]
     s = rndsource( toml, einstein=eR, verbose=verbose )
 
