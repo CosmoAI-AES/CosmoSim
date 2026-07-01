@@ -1,5 +1,14 @@
 # CosmoSim Change Log
 
+## 3.1.2b1 - 2026-06-30
+
+Fixed a bug which prevented dataset generation with model/lens specification
+(as opposed to the config parameter).
+
+## 3.1.1 - 2026-06-30
+
+No working change.
+
 ## 3.1.0 - 2026-06-30
 
 ### Fixed
