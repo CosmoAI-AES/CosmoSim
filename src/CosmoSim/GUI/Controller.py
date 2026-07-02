@@ -317,11 +317,13 @@ class LensPane(ttk.Frame):
         return self.maskModeVar
     def push(self,*a,runsim=True):
         print( "[CosmoGUI] Push lens parameters" )
-        self.sim.setNterms( self.ntermsSlider.get() )
-        self.sim.setEinsteinR( self.einsteinSlider.get())
-        self.sim.setRatio( self.ratioSlider.get())
-        self.sim.setOrientation( self.orientationSlider.get())
-        self.sim.setMaskMode( self.maskModeVar.get())
+        self.sim.setLensParameters(
+            { "nterms" : self.ntermsSlider.get() 
+             , "einsteinradius" : self.einsteinSlider.get()
+             , "ellipseratio" : self.ratioSlider.get()
+             , "orientation" : self.orientationSlider.get()
+             , "maskmode" : self.maskModeVar.get()
+             } )
         if runsim: self.sim.runSimulator()
 class PosPane(ttk.Frame):
     """

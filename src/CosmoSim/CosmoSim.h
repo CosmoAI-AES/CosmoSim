@@ -46,8 +46,6 @@ private:
     // LightProfileSpec lightprf = LightProfileSpec::CSIM_LIGHT_GAUSSIAN ;
 
     void initLens() ;
-    void configLens() ;
-    std::string filename[10], sourcefile = "einstein.png" ;
 
     Lens *lens = NULL ;
     PsiFunctionLens *psilens = NULL ;
@@ -56,35 +54,11 @@ public:
     CosmoSim();
     ~CosmoSim();
 
-    void setFile(int,std::string) ;
-    std::string getFile(int) ;
-    void setXY(double, double) ;
-    void setPolar(int, int) ;
-    void setNterms(int);
-    void setMaskRadius(double);
-    void setImageSize(int);
-    int getImageSize();
     void setResolution(int);
-
-    void setModelMode(int);
-    void setLensMode(int);
-    void setLens(PsiFunctionLens*);
-    void setSampled(int);
-    void setEinsteinR(double);
-    void setRatio(double);
-    void setOrientation(double);
-    // void setLightProfile(LightProfileSpec);
 
     bool runSim();
 
-    void maskImage(double) ;
-    void showMask() ;
-
-    cv::Mat getActual(bool,bool) ;
     cv::Mat getDistorted(bool,bool) ;
-
-    cv::Point2d getOffset( double x, double y ) ;
-    cv::Point2d getRelativeEta( double x, double y ) ;
 
 };
 

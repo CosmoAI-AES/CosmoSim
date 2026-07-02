@@ -28,120 +28,6 @@ CosmoSim::~CosmoSim() {
    if (DEBUG>1) std::cout << "[CosmoSim] Destructor - destructed\n" ;
 }
 
-cv::Point2d CosmoSim::getRelativeEta( double x, double y ) {
-   // Input (x,y) is the centre point $\nu$
-   return sim->getRelativeEta( cv::Point2d( x,y ) ) ; 
-} ;
-cv::Point2d CosmoSim::getOffset( double x, double y ) {
-   // Input (x,y) is the centre point $\nu$ 
-   if (DEBUG>2) std::cout << "[CosmoSim::getOffset] " << x << "," << y << std::endl ;
-   return sim->getOffset( cv::Point2d( x,y ) ) ; 
-} ;
-
-void CosmoSim::setFile( int key, std::string fn ) {
-    filename[key] = fn ;
-    if (DEBUG) std::cout << "[CosmoSim.cpp] setFile " << fn << " (" << key << ")\n" ;
-} 
-std::string CosmoSim::getFile( int key ) {
-    return filename[key] ;
-} 
-
-void CosmoSim::setNterms(int c) { nterms = c ; }
-void CosmoSim::setMaskRadius(double c) { maskRadius = c ; }
-void CosmoSim::setXY( double x, double y) { xPos = x ; yPos = y ; rPos = -1 ; }
-void CosmoSim::setPolar(int r, int theta) { rPos = r ; thetaPos = theta ; }
-
-void CosmoSim::setModelMode(int m) { 
-   if ( modelmode != m ) {
-      if (DEBUG) std::cout << "[CosmoSim.cpp] setModelMode(" << modelmode 
-         << " -> " << m << ")\n" ;
-      modelmode = m ; 
-      modelchanged = 1 ;
-   }
-}
-void CosmoSim::setLensMode(int m) { 
-   if ( lensmode != m ) {
-      if (DEBUG) std::cout << "[CosmoSim.cpp] setLensMode(" << lensmode 
-         << " -> " << m << ")\n" ;
-      lensmode = m ; 
-      modelchanged = 1 ;
-   } else {
-      if (DEBUG) std::cout << "[CosmoSim.cpp] setLensMode(" << lensmode << ") unchanged\n" ;
-   }
-}
-void CosmoSim::setLens(PsiFunctionLens *l) { 
-   if (DEBUG) std::cout << "[CosmoSim::setLens]\n" ;
-   lensmode = CSIM_PSI_CLUSTER ; 
-   modelchanged = 1 ;
-   lens = psilens = l ;
-   if (DEBUG) std::cout << "[CosmoSim::setLens] returning\n" ;
-}
-void CosmoSim::setSampled(int m) { 
-   if (DEBUG) std::cout << "[CosmoSim.cpp] setSampled(" << m << " -> " << m << ")\n" ;
-   if ( sampledlens != m ) {
-      sampledlens = m ; 
-      modelchanged = 1 ;
-   }
-}
-void CosmoSim::initLens() {
-   if (DEBUG) std::cout << "[initLens] ellipseratio = " << ellipseratio << "\n" ;
-   if ( ! modelchanged ) return ;
-   if ( sim ) {
-      if (DEBUG) std::cout << "[initLens] delete sim\n" ;
-      delete sim ;
-   }
-   if (DEBUG) std::cout << "switch( lensmode )\n" ;
-   switch ( lensmode ) {
-       case CSIM_PSI_CLUSTER:
-          std::cout << "[initLens] ClusterLens - no further init\n" ;
-          break ;
-       case CSIM_PSI_SIE:
-          lens = psilens = new SIE() ;
-          psilens->setFile(filename[CSIM_PSI_SIE]) ;
-          break ;
-       case CSIM_PSI_SIS:
-          lens = psilens = new SIS() ;
-          psilens->setFile(filename[CSIM_PSI_SIS]) ;
-          break ;
-       case CSIM_PSI_PM:
-          lens = psilens = new PointMass() ;
-          psilens->setFile(filename[CSIM_PSI_PM]) ;
-          if (DEBUG>1) std::cout << "CSIM_PSI_PM\n" ;
-          break ;
-       case CSIM_NOPSI:
-          if (DEBUG) std::cout << "[initLens] Point Mass or No Lens (" 
-                << lensmode << ")\n" ;
-          lens = psilens = NULL ;
-          break ;
-       default:
-         std::cerr << "No such lens model!\n" ;
-         throw NotImplemented();
-   }
-   if (DEBUG) std::cout << "[initLens] instantiated lens\n" ;
-
-   if (DEBUG) std::cout << "switch( modelmode )\n" ;
-   switch ( modelmode ) {
-       case CSIM_MODEL_RAYTRACE:
-         if (DEBUG) std::cout << "Running Raytrace Lens (mode=" << modelmode << ")\n" ;
-         sim = new RaytraceModel() ;
-         sim->setLens(lens) ;
-         break ;
-       case CSIM_MODEL_ROULETTE:
-         if (DEBUG) std::cout << "Running Roulette Lens (mode=" << modelmode << ")\n" ;
-         sim = new RouletteModel() ;
-         sim->setLens(lens) ;
-         break ;
-       case CSIM_NOMODEL:
-         std::cerr << "Specified No Model.\n" ;
-         throw NotImplemented();
-       default:
-         std::cerr << "No such lens mode!\n" ;
-         throw NotImplemented();
-    }
-    modelchanged = 0 ;
-    if (DEBUG) std::cout  << "[initLens] returning \n" ;
-    return ;
-}
 
 void CosmoSim::configLens() {
    // Set lens parameters
@@ -165,13 +51,7 @@ void CosmoSim::configLens() {
      if (DEBUG) std::cout << "[CosmoSim.configLens] no sampling\n" ;
    }
 }
-void CosmoSim::setEinsteinR(double r) { einsteinR = r ; }
-void CosmoSim::setRatio(double r) { 
-   ellipseratio = r ; 
-}
-void CosmoSim::setOrientation(double r) { orientation = r ; }
-void CosmoSim::setImageSize(int sz ) { size = sz ; }
-int CosmoSim::getImageSize() { return size ; }
+
 void CosmoSim::setResolution(int sz ) { 
    basesize = sz ; 
 }
@@ -212,33 +92,6 @@ bool CosmoSim::runSim() {
 
    if (DEBUG) std::cout << "[runSim] completes\n" ;
    return true ;
-}
-
-cv::Mat CosmoSim::getActual(bool refLinesMode, bool causticMode) {
-   if ( NULL == sim )
-      throw std::bad_function_call() ;
-   cv::Mat im = sim->getActual() ;
-   if ( basesize < size ) {
-      cv::Mat ret(cv::Size(basesize, basesize), im.type(),
-                  cv::Scalar::all(255));
-      cv::resize(im,ret,cv::Size(basesize,basesize) ) ;
-      im = ret ;
-   } else {
-      im = im.clone() ;
-   }
-   if (refLinesMode) {
-      refLines(im) ;
-   }
-   if (causticMode) {
-      sim->drawCaustics( im ) ;
-   }
-   return im ;
-}
-void CosmoSim::maskImage( double scale ) {
-          sim->maskImage( scale ) ;
-}
-void CosmoSim::showMask() {
-          sim->markMask() ;
 }
 
 cv::Mat CosmoSim::getDistorted(bool refLinesMode, bool criticalCurvesMode ) {
