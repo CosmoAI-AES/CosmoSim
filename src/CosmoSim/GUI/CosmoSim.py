@@ -35,6 +35,7 @@ class CosmoSim(cs.CosmoSim):
                  }
         self.bgcolour = 0
         self.imagesize = 512
+        self.resolution = self.imagesize
         self._sampling = False
 
         self.lensparam = 
@@ -69,10 +70,8 @@ class CosmoSim(cs.CosmoSim):
     def setImageSize(self, size ):
         if sz is not None: self.imagesize = size
     def setImageParaemeters(self, param=None ):
-        if param is None:
-            param = self.imgparam = param
-        else:
-            self.imgparam = param
+        self.resolution = param.get( "resolution", self.resolution )
+        self.bgcolour = param.get( "bgcolour", self.bgcolour )
 
     def setLensParameters(self, param=None ):
         if param is None:
@@ -203,8 +202,8 @@ class CosmoSim(cs.CosmoSim):
         Return the Actual Image from the simulator as a numpy array.
         """
         im = self._sim.getActual()
-        if self.basesize < self.size:
-            im = cv.resize( im, ( basesize, basesize ) )
+        if self.resolution < self.imagesize:
+            im = cv.resize( im, ( self.resolution, self.resolution ) )
         else:
             im.clone()
         if reflines:
