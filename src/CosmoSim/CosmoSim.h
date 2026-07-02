@@ -75,14 +75,11 @@ public:
     void setOrientation(double);
     // void setLightProfile(LightProfileSpec);
 
-    int setSource( Source *src ) ;
-
     bool runSim();
 
     void maskImage(double) ;
     void showMask() ;
 
-    cv::Mat getSource(bool) ;
     cv::Mat getActual(bool,bool) ;
     cv::Mat getDistorted(bool,bool) ;
 

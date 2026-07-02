@@ -175,12 +175,6 @@ int CosmoSim::getImageSize() { return size ; }
 void CosmoSim::setResolution(int sz ) { 
    basesize = sz ; 
 }
-int CosmoSim::setSource( Source *src ) {
-    if (DEBUG) std::cout  << "[setSource]\n" ;
-    srcmode = CSIM_SOURCE_EXTERN ;
-    this->src = src ;
-    return 1 ; 
-}
 bool CosmoSim::runSim() { 
    if (DEBUG) std::cout  << "[runSim] starting \n" ;
 
@@ -220,16 +214,6 @@ bool CosmoSim::runSim() {
    return true ;
 }
 
-cv::Mat CosmoSim::getSource(bool refLinesMode) {
-   if ( NULL == sim )
-      throw std::bad_function_call() ;
-   cv::Mat im = sim->getSource() ;
-   if (refLinesMode) {
-      im = im.clone() ;
-      refLines(im) ;
-   }
-   return im ;
-}
 cv::Mat CosmoSim::getActual(bool refLinesMode, bool causticMode) {
    if ( NULL == sim )
       throw std::bad_function_call() ;

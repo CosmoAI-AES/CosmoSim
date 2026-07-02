@@ -44,12 +44,29 @@ class CosmoSim(cs.CosmoSim):
         self._simThread = th.Thread(target=self.simThread)
         self._simThread.start()
 
+    def setLensParameters(self
+                          , nterms=None
+                          , einsteinR=None
+                          , ratio=None
+                          , orientation=None
+                          , maskmode=None):
+        if einsteinR is not None:
+              self._psilens.setEinsteinR( einsteinR )
+        if ratio is not None:
+              self._psilens.setRatio( ratio )
+        if orientation is not None:
+              self._psilens.setOrientation( orientation )
+        if nterms is not None:
+              self._sim.setNterms( nterms )
+        if maskmode is not None:
+              self._sim.setMaskMode( maskmode )
     def makeSource(self,param):
         if param.get( "imagesize" ) == None:
            param.__setitem__( "imagesize", self.getImageSize() )
         self._src = getSource(param,verbose=self.verbose)
+        self._sim.setSource( self._src )
         if self.verbose:
-            print( f"CosmoSim.getSource() returns (verbose={self.verbose})" )
+            print( f"GUI.CosmoSim.makeSource() returns (verbose={self.verbose})" )
 
     def setLensMode(self,lensmode,*a,**kw):
         if lensmode == PsiSpec.PM:
@@ -117,9 +134,7 @@ class CosmoSim(cs.CosmoSim):
                self.runSim()
                self.updateEvent.set()
     def runSim(self):
-        self._src_ = self._src
-        self.setSource( self._src_ )
-        return super().runSim()
+        return self._sim.update()
     def runSimulator(self):
         """
         Run the simulator; that is, tell it that the parameters
