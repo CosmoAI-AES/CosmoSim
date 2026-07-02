@@ -21,6 +21,12 @@ to store the parameters. E.g.
 python -m CosmoSim --rnd --toml dataset.toml 
 ```
 
+## 3.1.2 - 2026-07-01
+
+## Fixed
+
++ Possible to run `--rnd` without `--csvfile`
+
 ## 3.1.1 - 2026-07-01
 
 Fixed a bug to have dataset work with model/lens specification instead of
