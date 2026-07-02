@@ -10,6 +10,7 @@ to make the python API more streamlined.
 
 from .. import CosmoSimPy as cs, getPathFN
 from ..Sources import *
+from ..Lens import *
 from ..Dictionary import *
 import numpy as np
 import threading as th
@@ -22,30 +23,68 @@ class CosmoSim(cs.CosmoSim):
     it wraps functions returning images, to convert the data to 
     numpy arrays.
     """
-    def __init__(self,*a,maxm=50,fn=None,verbose=1,**kw):
+    def __init__(self,*a,maxm=50,verbose=1,**kw):
         super().__init__(*a,**kw)
         self.verbose = verbose
         if self.verbose>1: print( f"[CosmoSim] init (verbose={self.verbose}) ..." )
-        if fn == None:
-            super().setFile( PsiSpec.PM, getPathFN( "pm50.txt" ) )
-            super().setFile( PsiSpec.SIS, getPathFN( "sis50.txt" ) )
-            super().setFile( PsiSpec.SIE, getPathFN( "sie05.txt" ) )
-        else:
-            if verbose: print( "Amplitudes file:", fn )
-            super().setFile( PsiSpec.SIS, fn )
-            super().setFile( PsiSpec.SIE, fn )
+
+        self.amplitudefiles =
+                 { PsiSpec.PM : getPathFN( "pm50.txt" ) )
+                 , PsiSpec.SIS : getPathFN( "sis50.txt" ) )
+                 , PsiSpec.SIE : getPathFN( "sie05.txt" ) )
+                 }
+        self.bgcolour = 0
+        self.imagesize = 512
+        self._sampling = False
+
+        # Set up thread management
         self._continue = True
         self.updateEvent = th.Event()
         self.simEvent = th.Event()
         self._simThread = th.Thread(target=self.simThread)
         self._simThread.start()
-        self.bgcolour = 0
+
     def makeSource(self,param):
         if param.get( "imagesize" ) == None:
            param.__setitem__( "imagesize", self.getImageSize() )
         self._src = getSource(param,verbose=self.verbose)
         if self.verbose:
             print( f"CosmoSim.getSource() returns (verbose={self.verbose})" )
+
+    def setLensMode(self,lensmode,*a,**kw):
+        if lensmode == PsiSpec.PM:
+            lens = PointMass()
+        elif lensmode == PsiSpec.SIS:
+            lens = SIS()
+        elif lensmode == PsiSpec.SIE:
+            lens = SIE()
+        else:
+            raise RuntimeError( "Invalid lens mode" )
+        lens.setFile( self.amplitudefiles[lensmode] )
+        self._psilens = lens
+        self.setSampled()
+    def setSampled(self,sampling=None,**kw):
+        if sampling is None:
+            sampling = self._sampling
+        else:
+            self._sampling = sampling
+        if sampling:
+            size = self.imagesize
+            if self.verbose>1: print( f"[initLens] Sampling (imagesize {size})" )
+            self._lens = SampledPsiFunctionLens( self._psilens, size )
+        else:
+            self._lens = self._psilens
+
+    def initSim(self,model,*a,**kw):
+        if model == ModelSpec.Raytrace:
+            sim = RaytraceModel()
+        elif model == ModelSpec.Roulette:
+            sim = RouletteModel()
+        else:
+            raise RuntimeError( "Invalid simulator mode" )
+        sim.setLens( self._lens )
+        self._sim = sim
+
     def close(self):
         """
         Terminate the worker thread.
@@ -59,16 +98,11 @@ class CosmoSim(cs.CosmoSim):
         return self.updateEvent
     def maskImage(self,scale=1):
         return super().maskImage( float(scale) )
-    def setLensMode(self,s):
-        if self.verbose: print( f"setLensMode({s})")
-        return super().setLensMode( int( lensDict[s] ) ) 
+
     def setModelMode(self,s):
         if self.verbose: print( f"setModelMode({s})")
         return super().setModelMode( int( modelDict[s] ) ) 
-    def setSampled(self,s):
-        if self.verbose: print( f"[setSampled] {s}" )
-        if s is not None:
-            super().setSampled( int( s ) ) 
+
     def setBGColour(self,s):
         self.bgcolour = s
     def simThread(self):

@@ -10,6 +10,7 @@ Fanctions to create lenses, sources, and simulators.
 from .. import CosmoSimPy as cs
 from .. import getPathFN
 from ..Sources import *
+from ..Lens import *
 from CosmoSim.Dictionary import *
 import numpy as np
 import os, sys
@@ -117,10 +118,6 @@ def getLens(param,verbose=1):
         if smp: lens = SampledPsiFunctionLens( lens, size )
     return lens
 
-class SampledPsiFunctionLens(cs.SampledPsiFunctionLens):
-    def __init__(self,lens,size,verbose=1):
-        self.lens = lens
-        return super().__init__( lens, size )
 class ClusterLens(cs.ClusterLens):
     def __init__(self,s,fn=None,verbose=1):
         """

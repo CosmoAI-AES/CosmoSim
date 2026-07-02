@@ -18,6 +18,9 @@ def getSourceFileName():
 def getSource(param,verbose=1):
     """
     Factory function to create a Source object given the parameter list.
+
+    The argument `param` can be either a flat dict or CSV row or a
+    `Parameters` object.
     """
     size = int( param.get( "imagesize" ) )
     src = param.get("source")

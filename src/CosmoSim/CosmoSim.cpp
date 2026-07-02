@@ -37,58 +37,6 @@ cv::Point2d CosmoSim::getOffset( double x, double y ) {
    if (DEBUG>2) std::cout << "[CosmoSim::getOffset] " << x << "," << y << std::endl ;
    return sim->getOffset( cv::Point2d( x,y ) ) ; 
 } ;
-cv::Point2d CosmoSim::getNu( ) {
-   return sim->getNu() ;
-} ;
-
-double CosmoSim::getAlphaXi( int m, int s ) {
-   cv::Point2d xi = sim->getXi() ;
-   if (DEBUG>1) std::cout << "[getAlphaXi] xi = " << xi << std::endl ;
-   return getAlpha( xi.x, xi.y, m, s ) ;
-}
-double CosmoSim::getBetaXi( int m, int s ) {
-   cv::Point2d xi = sim->getXi( ) ;
-   if (DEBUG>1) std::cout << "[getBetaXi] xi = " << xi << std::endl ;
-   return getBeta( xi.x, xi.y, m, s ) ;
-}
-double CosmoSim::getAlpha(
-      double x, double y, int m, int s 
- ) {
-      double r ;
-      cv::Point2d xi = cv::Point2d( x, y ) ;
-      if ( NULL != psilens )
-          r = psilens->getAlpha( xi, m, s ) ;
-      else if ( NULL != lens )
-          r = lens->getAlpha( xi, m, s ) ;
-      else throw NotSupported();
-      return r ;
-}
-double CosmoSim::getBeta( 
-      double x, double y, int m, int s 
-) {
-      double r ;
-      cv::Point2d xi = cv::Point2d( x, y ) ;
-      if ( NULL != psilens )
-          r = psilens->getBeta( xi, m, s ) ;
-      else if ( NULL != lens )
-          r = lens->getBeta( xi, m, s ) ;
-      else throw NotSupported();
-      return r ;
-}
-
-void CosmoSim::diagnostics() {
-   if ( src ) {
-      cv::Mat im = src->getImage() ;
-      if (DEBUG) std::cout << "Source Image " << im.rows << "x" << im.cols 
-         << "x" << im.channels() << "\n" ;
-   }
-   if ( sim ) {
-      cv::Mat im = sim->getDistorted() ;
-      if (DEBUG) std::cout << "Distorted Image " << im.rows << "x" << im.cols 
-         << "x" << im.channels() << "\n" ;
-   }
-   return ;
-}
 
 void CosmoSim::setFile( int key, std::string fn ) {
     filename[key] = fn ;
@@ -135,8 +83,6 @@ void CosmoSim::setSampled(int m) {
       modelchanged = 1 ;
    }
 }
-void CosmoSim::setMaskMode(bool b) { maskmode = b ; }
-void CosmoSim::setBGColour(int b) { bgcolour = b ; }
 void CosmoSim::initLens() {
    if (DEBUG) std::cout << "[initLens] ellipseratio = " << ellipseratio << "\n" ;
    if ( ! modelchanged ) return ;

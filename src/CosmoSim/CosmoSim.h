@@ -65,7 +65,6 @@ public:
     void setImageSize(int);
     int getImageSize();
     void setResolution(int);
-    void setBGColour(int);
 
     void setModelMode(int);
     void setLensMode(int);
@@ -79,23 +78,16 @@ public:
     int setSource( Source *src ) ;
 
     bool runSim();
-    void diagnostics();
 
     void maskImage(double) ;
     void showMask() ;
-    void setMaskMode(bool) ;
 
     cv::Mat getSource(bool) ;
     cv::Mat getActual(bool,bool) ;
     cv::Mat getDistorted(bool,bool) ;
 
     cv::Point2d getOffset( double x, double y ) ;
-    cv::Point2d getNu( ) ;
     cv::Point2d getRelativeEta( double x, double y ) ;
-    double getAlpha( double x, double y, int m, int s ) ;
-    double getBeta( double x, double y, int m, int s ) ;
-    double getAlphaXi( int m, int s ) ;
-    double getBetaXi( int m, int s ) ;
 
 };
 

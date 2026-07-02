@@ -303,16 +303,20 @@ class LensPane(ttk.Frame):
         self.push(runsim=False)
         print ( "Pushed parameters to Simulator" )
         self.maskModeVar.trace_add( "write",self.push )
-        lensVar.trace_add("write", self.push) 
-        simVar.trace_add("write", self.push) 
-        self.sampleVar.trace_add("write", self.push) 
+        lensVar.trace_add("write", lambda *_ : 
+            ( self.sim.setLensMode(self.lensVar.get())
+            ,  self.sim.runSimulator() )
+        simVar.trace_add("write", lambda *_ : 
+            ( self.sim.setModelMode(self.simVar.get())
+            ,  self.sim.runSimulator() )
+        self.sampleVar.trace_add("write", lambda *_ : 
+            ( self.sim.setSampled(self.sampleVar.get())
+            ,  self.sim.runSimulator() )
+            )
     def getMaskModeVar(self):
         return self.maskModeVar
     def push(self,*a,runsim=True):
         print( "[CosmoGUI] Push lens parameters" )
-        self.sim.setSampled(self.sampleVar.get())
-        self.sim.setLensMode(self.lensVar.get())
-        self.sim.setModelMode(self.simVar.get())
         self.sim.setNterms( self.ntermsSlider.get() )
         self.sim.setEinsteinR( self.einsteinSlider.get())
         self.sim.setRatio( self.ratioSlider.get())
