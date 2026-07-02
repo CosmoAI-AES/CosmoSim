@@ -13,6 +13,19 @@
 + Fixed the memory leak arising from multiple instances of the
   backend simulator.
 
+## 3.1.2b1 - 2026-07-01
+
+Fixed a bug to allow image generation from a TOML file without a CSV file
+to store the parameters. E.g.
+```
+python -m CosmoSim --rnd --toml dataset.toml 
+```
+
+## 3.1.1 - 2026-07-01
+
+Fixed a bug to have dataset work with model/lens specification instead of
+config.
+
 ## 3.1.0 - 2026-06-30
 
 ### Fixed

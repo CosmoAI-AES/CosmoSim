@@ -28,7 +28,7 @@ def main(args,cfg):
             os.makedirs( args.directory, exist_ok=True )
     if args.roulette:
             rgen(args,param)
-    elif args.csvfile:
+    elif args.rnd or args.csvfile:
            datagen(args,param)
     else:
         imsim = makeSingle(param,verbose=args.verbose)

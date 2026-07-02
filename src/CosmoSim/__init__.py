@@ -20,7 +20,6 @@ setDebug = cs.setDebug
 
 __version__ = "3.2.0b2"
 
-
 def getPathFN(fn):
     dir = os.path.dirname(os.path.abspath(__file__))
     return  os.path.join( dir, fn )
