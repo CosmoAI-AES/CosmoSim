@@ -45,11 +45,10 @@ class CosmoSim(cs.CosmoSim):
              , "maskmode" : False
              } 
 
-        self.makeSource( { "source" : "SphericalSource"
-                          , "sigma" : 10
-                          } )
-        self.setLensMode( PsiSpec.SIS )
-        self.setModelMode( ModelSpec.Raytrace )
+        self.srcparam = { "source" : "SphericalSource", "sigma" : 10 } )
+        self.lensmode = PsiSpec.SIS 
+        self.simmode = ModelSpec.Raytrace 
+        self.initialise()
 
         # Set up thread management
         self._continue = True
@@ -58,25 +57,51 @@ class CosmoSim(cs.CosmoSim):
         self._simThread = th.Thread(target=self.simThread)
         self._simThread.start()
 
+    def initialise(self):
+        """
+        Reinstantiate source, lens and simulator.
+        """
+        self.makeSource( )
+        self.setLensMode( self.lensmode )
+        self.setModelMode( self.simmode )
+
+
+    def setImageSize(self, size ):
+        if sz is not None: self.imagesize = size
+    def setImageParaemeters(self, param=None ):
+        if param is None:
+            param = self.imgparam = param
+        else:
+            self.imgparam = param
 
     def setLensParameters(self, param=None ):
         if param is None:
             param = self.lensparam = param
         else:
             self.lensparam = param
-        if param.get( "einsteinR", None ) is not None:
+        einsteinR = param.get( "einsteinR", None )
+        if einsteinR is not None:
               self._psilens.setEinsteinR( einsteinR )
-        if param.get( "ratio", None ) is not None:
+        ration = param.get( "ratio", None ) 
+        if ratio is not None:
               self._psilens.setRatio( ratio )
-        if param.get( "orientation", None ) is not None:
+        orientation = param.get( "orientation", None ) 
+        if orientation is not None:
               self._psilens.setOrientation( orientation )
-        if param.get( "nterms", None ) is not None:
+        nterms = param.get( "nterms", None ) 
+        if nterms is not None:
               self._sim.setNterms( nterms )
-        if param.get( "maskmode", None ) is not None:
-              self._sim.setMaskMode( maskmode )
-        if param.get( "maskradius", None ) is not None:
-              self._sim.setMaskRadius( maskradius )
-    def makeSource(self,param):
+        mm = param.get( "maskmode", None ) 
+        if mm is not None:
+              self._sim.setMaskMode( mm )
+        mr = param.get( "maskradius", None )
+        if mr is not None:
+              self._sim.setMaskRadius( mr )
+    def makeSource(self,param=None):
+        if param is None:
+            param = self.param
+        else:
+            self.param = param
         if param.get( "imagesize" ) == None:
            param.__setitem__( "imagesize", self.imagesize )
         self._src = getSource(param,verbose=self.verbose)
@@ -87,6 +112,7 @@ class CosmoSim(cs.CosmoSim):
     def setXY(self,x,y): return self._sim.setXY(x,y)
     def setPolar(self,x,y): return self._sim.setPolar(x,y)
     def setLensMode(self,lensmode,*a,**kw):
+        self.lensmode = lensmode
         if lensmode == PsiSpec.PM:
             lens = PointMass()
         elif lensmode == PsiSpec.SIS:
@@ -136,6 +162,7 @@ class CosmoSim(cs.CosmoSim):
         return super().maskImage( float(scale) )
 
     def setModelMode(self,s):
+        self.simmode = s
         if self.verbose: print( f"setModelMode({s})")
         return super().setModelMode( int( modelDict[s] ) ) 
 
