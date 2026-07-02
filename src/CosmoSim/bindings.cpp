@@ -1,12 +1,33 @@
-/* (C) 2024: Hans Georg Schaathun <georg@schaathun.net> */
+/* (C) 2026: Hans Georg Schaathun <georg@schaathun.net> */
 
-#include "CosmoSim.h"
+#include "cosmosim/Roulette.h"
 #include "cosmosim/Simulator.h"
+#include "cosmosim/Source.h"
+#include "cosmosim/Lens.h"
+
+#include <opencv2/opencv.hpp>
 
 #include <pybind11/pybind11.h>
+
 #ifndef DEBUG
 #define DEBUG debug
 #endif
+
+
+enum SourceSpec { CSIM_SOURCE_SPHERE,
+                  CSIM_SOURCE_ELLIPSE,
+                  CSIM_SOURCE_IMAGE,
+                  CSIM_SOURCE_TRIANGLE,
+                  CSIM_SOURCE_EXTERN } ;
+enum ModelSpec { CSIM_MODEL_RAYTRACE,
+                  CSIM_MODEL_ROULETTE,
+                  CSIM_MODEL_ROULETTE_REGEN,
+                  CSIM_NOMODEL } ;
+enum PsiSpec    { CSIM_PSI_SIS,
+                  CSIM_PSI_SIE,
+                  CSIM_PSI_CLUSTER,
+                  CSIM_PSI_PM,
+                  CSIM_NOPSI } ;
 namespace py = pybind11;
 
 PYBIND11_MODULE(CosmoSimPy, m) {
@@ -16,43 +37,6 @@ PYBIND11_MODULE(CosmoSimPy, m) {
     m.def("setDebug", [](int val) { 
 	  if (DEBUG) std::cout << "[setDebug] " << val << std::endl ;
 	  debug  = val; });
-
-    py::class_<CosmoSim>(m, "CosmoSim")
-        .def(pybind11::init<>())
-        .def("setLensMode", &CosmoSim::setLensMode)
-        .def("setModelMode", &CosmoSim::setModelMode)
-        .def("setSampled", &CosmoSim::setSampled)
-        .def("setEinsteinR", &CosmoSim::setEinsteinR)
-        .def("setRatio", &CosmoSim::setRatio)
-        .def("setOrientation", &CosmoSim::setOrientation)
-        .def("setNterms", &CosmoSim::setNterms)
-        .def("setMaskRadius", &CosmoSim::setMaskRadius)
-        .def("setXY", &CosmoSim::setXY)
-        .def("setPolar", &CosmoSim::setPolar)
-        .def("getActual", &CosmoSim::getActual)
-        .def("getApparent", &CosmoSim::getSource)
-        .def("getDistorted", &CosmoSim::getDistorted)
-        .def("runSim", &CosmoSim::runSim)
-        .def("diagnostics", &CosmoSim::diagnostics)
-        .def("maskImage", &CosmoSim::maskImage)
-        .def("showMask", &CosmoSim::showMask)
-        .def("setMaskMode", &CosmoSim::setMaskMode)
-        .def("setImageSize", &CosmoSim::setImageSize)
-        .def("getImageSize", &CosmoSim::getImageSize)
-        .def("setResolution", &CosmoSim::setResolution)
-        .def("setBGColour", &CosmoSim::setBGColour)
-        .def("setFile", &CosmoSim::setFile)
-        .def("getFile", &CosmoSim::getFile)
-        .def("setSource", &CosmoSim::setSource)
-        .def("getAlpha", &CosmoSim::getAlpha)
-        .def("getBeta", &CosmoSim::getBeta)
-        .def("getAlphaXi", &CosmoSim::getAlphaXi)
-        .def("getBetaXi", &CosmoSim::getBetaXi)
-        .def("getOffset", &CosmoSim::getOffset)
-        .def("getNu", &CosmoSim::getNu)
-        .def("getRelativeEta", &CosmoSim::getRelativeEta)
-        .def("setLens", &CosmoSim::setLens)
-        ;
 
     py::class_<Source>(m, "Source")
         .def(py::init<int>())

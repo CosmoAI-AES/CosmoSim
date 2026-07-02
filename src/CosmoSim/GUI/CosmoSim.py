@@ -16,7 +16,7 @@ import numpy as np
 import threading as th
 import os, sys
 
-class CosmoSim(cs.CosmoSim):
+class CosmoSim:
     """
     Simulator for gravitational lensing.
     This wraps the CosmoSim library written in C++.  In particular,
