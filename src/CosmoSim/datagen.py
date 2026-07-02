@@ -265,12 +265,10 @@ def makeSingle(param=None,name=None,outcols=None,sim=None,verbose=0):
 
 def datagen(args,param=None):
 
-    if not args.csvfile:
-        raise RuntimeError( "CSV file needed for batch mode" )
     if args.rnd:
-        if not args.csvfile:
-            raise Exception("The --rnd option also requires --csvfile")
         frame = datasetgen(args.toml,args.csvfile)
+    elif not args.csvfile:
+        raise RuntimeError( "CSV file needed for batch mode" )
     else:
         print( "Load CSV file:", args.csvfile )
         frame = pd.read_csv(args.csvfile)
