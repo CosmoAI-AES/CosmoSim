@@ -17,6 +17,8 @@ import random
 import argparse
 import pandas as pd
 
+from CLI.Generators import getLens
+
 def isnumeric(x): return isinstance(x, numbers.Number )
 def fromPolar(R,phi): 
         x = R*np.cos(np.pi*phi/180)
@@ -41,7 +43,12 @@ def lensmodes(toml):
         r = toml["lens"].get( "modes", None )
     if isinstance(r, str): r = [ r ] 
     return r
-
+def configs(toml):
+    r = toml["simulator"].get( "config", None )
+    if r is None:
+        r = toml["simulator"].get( "configs", None )
+    if isinstance(r, str): r = [ r ] 
+    return r
 def srcmode(toml):
     r = toml["source"].get( "mode", [ "e" ] )
     if isinstance(r, str): r = [ r ] 
@@ -78,7 +85,7 @@ def exponential(toml,key,rng=(0,50),lam=0.8):
     except:
         return None
 
-def rndsource(toml,einstein=50,verbose=1):
+def rndsource(toml,einstein=50,lens=None,verbose=1):
 
     src = random.choice( srcmode(toml) )
 
@@ -100,6 +107,15 @@ def rndsource(toml,einstein=50,verbose=1):
         R =  random.uniform(rmin,rmax)
 
         # Cartesian Co-ordinates
+        (x,y) = fromPolar(R,phi)
+    elif coor == "critical":
+        phi = uniform( toml["position"], "phi", (0,359) )
+        if lens is None:
+            raise RuntimeError( "Cannot use critical curve without a known lens." )
+        einstein = lens.criticalXi( phi )
+        rmin = toml["position"].get( "r-min", 1 )
+        rel = toml.get( "r-relativemax", 1.2 )
+        R =  random.uniform(rmin,rel*einstein)
         (x,y) = fromPolar(R,phi)
     elif coor == "relative":
         # Polar coordinates relative to the Einstein radius.
@@ -173,6 +189,8 @@ def getline(toml,idx=0,fn=None,verbose=1):
 
     cfg = simodels(toml) 
     if cfg is not None: r["model"] = random.choice( cfg )
+    cfg = configs(toml)
+    if cfg is not None: r["config"] = random.choice( cfg )
 
     nterms = toml["simulator"].get( "nterms", None )
     if nterms is not None: r["nterms"] : nterms
@@ -195,7 +213,14 @@ def getline(toml,idx=0,fn=None,verbose=1):
         l =  rndlens( toml, verbose )
         if cfg is not None: l["lens"] = random.choice( cfg )
         eR = l["einsteinradius"]
-    s = rndsource( toml, einstein=eR, verbose=verbose )
+    coor = toml["source"].get( "position", "cartesian" )
+    if coor == "critical":
+        raise NotImplementedError( )
+        lcfg = { "lens" : dict(l) }
+        lens = getLens( lcfg )
+        s = rndsource( toml, lens=lens, verbose=verbose )
+    else:
+        s = rndsource( toml, einstein=eR, verbose=verbose )
 
     return pd.concat( [ r, l, s ] )
 
@@ -211,6 +236,7 @@ def readtoml(infile,verbose=1):
 def datasetgen(infile,outfile=None,verbose=1):
     toml = readtoml(infile,verbose)
     if verbose > 0:
+       print( "[datasetgen]", configs(toml))
        print( "[datasetgen]", srcmode(toml))
     if verbose > 1:
        print(toml)
