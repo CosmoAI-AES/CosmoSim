@@ -91,6 +91,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
     py::class_<SampledLens,Lens>(m, "SampledLens") ;
     py::class_<SampledPsiFunctionLens,SampledLens,Lens>(m, "SampledPsiFunctionLens") 
         .def(py::init<PsiFunctionLens *>())
+        .def("criticalXi", &SampledPsiFunctionLens::criticalXi)
         .def(py::init<PsiFunctionLens *,int>()) ;
     py::class_<PsiFunctionLens,Lens>(m, "PsiFunctionLens")
         .def(py::init<>())
@@ -100,8 +101,8 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("getAlpha", &PsiFunctionLens::getAlpha)
         .def("getBeta", &PsiFunctionLens::getBeta)
         .def("setEinsteinR", &PsiFunctionLens::setEinsteinR)
-        .def("setOrientation", &SIE::setOrientation)
-        .def("setRatio", &SIE::setRatio)
+        .def("setOrientation", &PsiFunctionLens::setOrientation)
+        .def("setRatio", &PsiFunctionLens::setRatio)
         .def("setFile", &PsiFunctionLens::setFile)
         .def("initAlphasBetas", &PsiFunctionLens::initAlphasBetas)
         ;
@@ -110,7 +111,8 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("psiValue", &SIS::psiValue)
         .def("psiXvalue", &SIS::psiXvalue)
         .def("psiYvalue", &SIS::psiYvalue)
-        .def("getXi", &ClusterLens::getXi)
+        .def("getXi", &SIS::getXi)
+        .def("criticalXi", &SIS::criticalXi)
         ;
     py::class_<SIE,PsiFunctionLens>(m, "SIE")
         .def(py::init<>())
@@ -118,6 +120,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("psiXvalue", &SIE::psiXvalue)
         .def("psiYvalue", &SIE::psiYvalue)
         .def("getXi", &ClusterLens::getXi)
+        .def("criticalXi", &SIE::criticalXi)
         ;
     py::class_<PointMass,PsiFunctionLens>(m, "PointMass")
         .def(py::init<>())
