@@ -229,12 +229,12 @@ class CosmoSim:
         except:
             print( "Masking not supported for this lens model." )
         try:
-            im = np.array(self.getDistorted(reflines,critical),copy=False)
+            im = np.array(self._sim.getDistorted(reflines,critical),copy=False)
         except Exception as e:
             print( "self", type(self) )
             print( "reflines", reflines )
             print( "critical", critical )
-            im = np.array(self.getDistorted(),copy=False)
+            im = np.array(self._sim.getDistorted(),copy=False)
             raise e
         if im.shape[2] == 1:
             im.shape = im.shape[:2]
