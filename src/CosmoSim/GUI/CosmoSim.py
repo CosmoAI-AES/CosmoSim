@@ -13,6 +13,7 @@ from ..Sources import *
 from ..Lens import *
 from ..Dictionary import *
 from ..CosmoSimPy import RouletteModel,RaytraceModel
+from ..Image import drawAxes
 import numpy as np
 import threading as th
 import os, sys
@@ -209,13 +210,13 @@ class CosmoSim:
         im = self._sim.getActual()
         if self.resolution < self.imagesize:
             im = cv.resize( im, ( self.resolution, self.resolution ) )
-        else:
-            im.clone()
-        if reflines:
-            csimg.drawAxes( im )
         if caustics:
             sim.drawCaustics( im )
-        if im.shape[2] == 1 : im.shape = im.shape[:2]
+        im = np.array(im)
+        if reflines:
+            csimg.drawAxes( im )
+        if im.shape[2] == 1 :
+            im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
     def showMask(self): return self._sim.markMask()
     def maskImage(self,scale): return self._sim.maskImage( scale )
@@ -228,14 +229,14 @@ class CosmoSim:
             if showmask: self.showMask()
         except:
             print( "Masking not supported for this lens model." )
-        try:
-            im = np.array(self._sim.getDistorted(reflines,critical),copy=False)
-        except Exception as e:
-            print( "self", type(self) )
-            print( "reflines", reflines )
-            print( "critical", critical )
-            im = np.array(self._sim.getDistorted(),copy=False)
-            raise e
+        im = self._sim.getDistorted()
+        if self.resolution < self.imagesize:
+            im = cv.resize( im, ( self.resolution, self.resolution ) )
+        if critical:
+            self._sim.drawCritical( im )
+        im = np.array(im)
+        if reflines:
+            drawAxes( im )
         if im.shape[2] == 1:
             im.shape = im.shape[:2]
         if im.shape[0]*im.shape[1] == 0:
