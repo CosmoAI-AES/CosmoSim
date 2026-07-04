@@ -13,7 +13,6 @@ include src/CosmoSim/*.pyd
 recursive-include RegressionTest *
 recursive-include src *
 recursive-include include *
-recursive-include python *
 recursive-include Setup *
 recursive-include Datasets *
 include setup.py
