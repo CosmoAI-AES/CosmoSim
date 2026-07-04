@@ -73,13 +73,13 @@ class CosmoSim:
 
     def setLensParameters(self, param=None ):
         if param is None:
-            param = self.lensparam = param
+            param = self.lensparam 
         else:
             self.lensparam = param
         einsteinR = param.get( "einsteinR", None )
         if einsteinR is not None:
               self._psilens.setEinsteinR( einsteinR )
-        ration = param.get( "ratio", None ) 
+        ratio = param.get( "ratio", None ) 
         if ratio is not None:
               self._psilens.setRatio( ratio )
         orientation = param.get( "orientation", None ) 
@@ -118,9 +118,9 @@ class CosmoSim:
             lens = SIE()
         else:
             raise RuntimeError( "Invalid lens mode" )
+        self._psilens = lens
         self.setLensParameters()
         lens.setFile( self.amplitudefiles[lensmode] )
-        self._psilens = lens
         self.setSampled()
     def setSampled(self,sampling=None,**kw):
         if sampling is None:
