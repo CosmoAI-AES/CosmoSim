@@ -8,6 +8,9 @@ from . import CosmoSimPy as cs
 from .Dictionary import *
 import numpy as np
 
+SIS = cs.SIS
+SIE = cs.SIE
+
 def getSourceFileName():
     """
     Get the filename for an image source.

@@ -228,10 +228,10 @@ class LensPane(ttk.Frame):
         self.maskModeVar.trace_add( "write",self.push )
         lensVar.trace_add("write", lambda *_ : 
             ( self.sim.setLensMode(self.lensVar.get())
-            ,  self.sim.runSimulator() )
+            ,  self.sim.runSimulator() ) )
         simVar.trace_add("write", lambda *_ : 
             ( self.sim.setModelMode(self.simVar.get())
-            ,  self.sim.runSimulator() )
+            ,  self.sim.runSimulator() ) )
         self.sampleVar.trace_add("write", lambda *_ : 
             ( self.sim.setSampled(self.sampleVar.get())
             ,  self.sim.runSimulator() )

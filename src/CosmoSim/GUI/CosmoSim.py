@@ -28,25 +28,23 @@ class CosmoSim:
         self.verbose = verbose
         if self.verbose>1: print( f"[CosmoSim] init (verbose={self.verbose}) ..." )
 
-        self.amplitudefiles =
-                 { PsiSpec.PM : getPathFN( "pm50.txt" ) )
-                 , PsiSpec.SIS : getPathFN( "sis50.txt" ) )
-                 , PsiSpec.SIE : getPathFN( "sie05.txt" ) )
+        self.amplitudefiles = { PsiSpec.PM : getPathFN( "pm50.txt" )
+                 , PsiSpec.SIS : getPathFN( "sis50.txt" )
+                 , PsiSpec.SIE : getPathFN( "sie05.txt" )
                  }
         self.bgcolour = 0
         self.imagesize = 512
         self.resolution = self.imagesize
         self._sampling = False
 
-        self.lensparam = 
-            { "nterms" : 5
+        self.lensparam = { "nterms" : 5
              , "einsteinradius" : 30
              , "ellipseratio" : 0.6
              , "orientation" : 45
              , "maskmode" : False
              } 
 
-        self.srcparam = { "source" : "SphericalSource", "sigma" : 10 } )
+        self.srcparam = { "source" : "Spherical", "sigma" : 10 }
         self.lensmode = PsiSpec.SIS 
         self.simmode = ModelSpec.Raytrace 
         self.initialise()
@@ -62,9 +60,9 @@ class CosmoSim:
         """
         Reinstantiate source, lens and simulator.
         """
-        self.makeSource( )
         self.setLensMode( self.lensmode )
         self.setModelMode( self.simmode )
+        self.makeSource( )
 
 
     def setImageSize(self, size ):
@@ -98,9 +96,9 @@ class CosmoSim:
               self._sim.setMaskRadius( mr )
     def makeSource(self,param=None):
         if param is None:
-            param = self.param
+            param = self.srcparam
         else:
-            self.param = param
+            self.srcparam = param
         if param.get( "imagesize" ) == None:
            param.__setitem__( "imagesize", self.imagesize )
         self._src = getSource(param,verbose=self.verbose)
