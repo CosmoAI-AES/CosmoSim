@@ -65,6 +65,16 @@ class CosmoSim:
         self.makeSource( )
 
 
+    def setSimParameters(self, size ):
+        nterms = param.get( "nterms", None ) 
+        if nterms is not None:
+              self._sim.setNterms( nterms )
+        mm = param.get( "maskmode", None ) 
+        if mm is not None:
+              self._sim.setMaskMode( mm )
+        mr = param.get( "maskradius", None )
+        if mr is not None:
+              self._sim.setMaskRadius( mr )
     def setImageSize(self, size ):
         if sz is not None: self.imagesize = size
     def setImageParaemeters(self, param=None ):
@@ -85,15 +95,6 @@ class CosmoSim:
         orientation = param.get( "orientation", None ) 
         if orientation is not None:
               self._psilens.setOrientation( orientation )
-        nterms = param.get( "nterms", None ) 
-        if nterms is not None:
-              self._sim.setNterms( nterms )
-        mm = param.get( "maskmode", None ) 
-        if mm is not None:
-              self._sim.setMaskMode( mm )
-        mr = param.get( "maskradius", None )
-        if mr is not None:
-              self._sim.setMaskRadius( mr )
     def makeSource(self,param=None):
         if param is None:
             param = self.srcparam
@@ -161,7 +162,7 @@ class CosmoSim:
     def setModelMode(self,s):
         self.simmode = s
         if self.verbose: print( f"setModelMode({s})")
-        return super().setModelMode( int( modelDict[s] ) ) 
+        return self.initSim( int( modelDict[s] ) ) 
 
     def setBGColour(self,s):
         self.bgcolour = s

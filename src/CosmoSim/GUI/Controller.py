@@ -215,9 +215,9 @@ class LensPane(ttk.Frame):
             text="Number of Terms (Roulettes only)", row=7,
             toval=50,
             default=16 )
-        self.einsteinSlider.var.trace_add( "write", self.push ) 
-        self.ratioSlider.var.trace_add( "write", self.push ) 
-        self.orientationSlider.var.trace_add( "write", self.push ) 
+        self.einsteinSlider.var.trace_add( "write", self.pushLens ) 
+        self.ratioSlider.var.trace_add( "write", self.pushLens ) 
+        self.orientationSlider.var.trace_add( "write", self.pushLens ) 
         self.ntermsSlider.var.trace_add( "write", self.push ) 
 
         self.maskModeVar = BooleanVar()
@@ -238,13 +238,18 @@ class LensPane(ttk.Frame):
             )
     def getMaskModeVar(self):
         return self.maskModeVar
-    def push(self,*a,runsim=True):
+    def pushLens(self,*a,runsim=True):
         print( "[CosmoGUI] Push lens parameters" )
         self.sim.setLensParameters(
-            { "nterms" : self.ntermsSlider.get() 
-             , "einsteinradius" : self.einsteinSlider.get()
+            { "einsteinradius" : self.einsteinSlider.get()
              , "ellipseratio" : self.ratioSlider.get()
              , "orientation" : self.orientationSlider.get()
+             } )
+        if runsim: self.sim.runSimulator()
+    def push(self,*a,runsim=True):
+        print( "[CosmoGUI] Push lens parameters" )
+        self.sim.setSimParameters(
+            { "nterms" : self.ntermsSlider.get() 
              , "maskmode" : self.maskModeVar.get()
              } )
         if runsim: self.sim.runSimulator()
