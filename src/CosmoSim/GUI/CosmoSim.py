@@ -12,6 +12,7 @@ from .. import CosmoSimPy as cs, getPathFN
 from ..Sources import *
 from ..Lens import *
 from ..Dictionary import *
+from ..CosmoSimPy import RouletteModel,RaytraceModel
 import numpy as np
 import threading as th
 import os, sys
@@ -37,11 +38,12 @@ class CosmoSim:
         self.resolution = self.imagesize
         self._sampling = False
 
-        self.lensparam = { "nterms" : 5
-             , "einsteinradius" : 30
+        self.simparam = { "nterms" : 5
+             , "maskmode" : False
+             } 
+        self.lensparam = { "einsteinradius" : 30
              , "ellipseratio" : 0.6
              , "orientation" : 45
-             , "maskmode" : False
              } 
 
         self.srcparam = { "source" : "Spherical", "sigma" : 10 }
@@ -65,7 +67,11 @@ class CosmoSim:
         self.makeSource( )
 
 
-    def setSimParameters(self, size ):
+    def setSimParameters(self, param ):
+        if param is None:
+            param = self.simparam 
+        else:
+            self.simparam = param
         nterms = param.get( "nterms", None ) 
         if nterms is not None:
               self._sim.setNterms( nterms )
@@ -162,7 +168,7 @@ class CosmoSim:
     def setModelMode(self,s):
         self.simmode = s
         if self.verbose: print( f"setModelMode({s})")
-        return self.initSim( int( modelDict[s] ) ) 
+        return self.initSim( s ) 
 
     def setBGColour(self,s):
         self.bgcolour = s
