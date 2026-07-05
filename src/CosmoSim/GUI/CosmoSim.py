@@ -139,9 +139,9 @@ class CosmoSim:
             if self.verbose:
                 print( "[setLensParameters] new parameters" )
                 print( param )
-        einsteinR = param.get( "einsteinR", None )
-        if einsteinR is not None:
-              self._psilens.setEinsteinR( einsteinR )
+        einsteinradius = param.get( "einsteinradius", None )
+        if einsteinradius is not None:
+              self._psilens.setEinsteinR( einsteinradius )
         ratio = param.get( "ratio", None ) 
         if ratio is not None:
               self._psilens.setRatio( ratio )
