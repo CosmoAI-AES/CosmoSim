@@ -113,7 +113,8 @@ class GenericSim:
         x, y = pt
         convradius = np.sqrt( x*x + y*y )
         im = annotateCircle( im, pt, radius=convradius, colour=( 64, 64, 255 ) )
-        if cropsize is None: cropsize = self.param.get( "cropsize" )
+        if cropsize is None:
+            cropsize = self.param.get( "cropsize" )
         if cropsize:
             im = crop(im,int( cropsize ), verbose=self.verbose  )
         return im
@@ -122,12 +123,14 @@ class GenericSim:
         if centred is None:
             centred = self.param.get( "centred" )
             if verbose: print( "[getImage] centring from parameters:", centred )
-        if reflines is None: reflines = self.param.get( "reflines" )
+        if reflines is None:
+            reflines = self.param.get( "reflines" )
         if centred:
             im = self.centreimage.copy()
         else:
             im = self.image.copy()
-        if cropsize is None: cropsize = self.param.get( "cropsize" )
+        if cropsize is None:
+            cropsize = self.param.get( "cropsize" )
         if cropsize:
             im = crop(im,int( cropsize ), verbose=self.verbose  )
         if reflines:

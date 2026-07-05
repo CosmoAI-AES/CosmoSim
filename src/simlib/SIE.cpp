@@ -6,6 +6,10 @@
 #include "cosmosim/Lens.h"
 #include "simaux.h"
 
+std::string SIE::idString() {
+   return "SIE" ;
+};
+
 double SIE::psifunctionPolar( double R, double phi ) const {
    /* ellipseratio = f */
 

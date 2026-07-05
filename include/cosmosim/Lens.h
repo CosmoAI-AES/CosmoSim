@@ -59,6 +59,8 @@ public:
     virtual void updatePsi( cv::Size ) ;
     virtual void updatePsi( ) ;
     cv::Mat getPsi( ) const ;
+
+    virtual std::string idString() ;
 } ;
 
 
@@ -90,6 +92,8 @@ public:
     void setOrientation( double ) ;
     double getOrientation( ) const ;
     void setRatio( double ) ;
+
+    virtual std::string idString() ;
 } ;
 
 class SampledPsiFunctionLens : public SampledLens {
@@ -101,6 +105,7 @@ class SampledPsiFunctionLens : public SampledLens {
       virtual void updatePsi( cv::Size ) ;
       virtual double criticalXi( double ) const ;
       virtual cv::Point2d caustic( double phi ) const ;
+
 } ;
 
 class PointMass : public PsiFunctionLens { 
@@ -113,6 +118,7 @@ public:
     virtual double psiYvalue( double, double ) const ;
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
+    virtual std::string idString() ;
 };
 class SIS : public PsiFunctionLens { 
 
@@ -127,6 +133,7 @@ public:
 
     virtual double criticalXi( double ) const ;
     virtual cv::Point2d caustic( double ) const ;
+    virtual std::string idString() ;
 };
 
 class SIE : public PsiFunctionLens { 
@@ -145,6 +152,7 @@ public:
     virtual double criticalXi( double ) const ;
     virtual cv::Point2d caustic( double ) const ;
 
+    virtual std::string idString() ;
 };
 
 class ClusterLens : public PsiFunctionLens {

@@ -10,88 +10,9 @@ from tkinter import *
 from tkinter import ttk
 import math
 
+from .Widgets import *
 from ..Dictionary import *
 
-# Classes
-class FloatSlider:
-    """
-    A slider for integer values with label.
-    """
-    def __init__(self,root,text,row=1,fromval=0,toval=100,var=None,
-            resolution=0.01, default=0):
-        """
-        Set up the slider with the following parameters:
-
-        :param root: parent widget
-        :param text: label text
-        :param row: row number in the parent grid
-        :param fromval: lower bound on the range
-        :param toval: upper bound on the range
-        :param var: variable object to use for the value 
-                    (IntVar instanceby default)
-        :param resolution: resolution of the variable (default 1)
-        """
-        if var == None:
-            self.var = DoubleVar()
-        else:
-            self.var = var
-        self.var.set( default )
-        self.label = ttk.Label( root, text=text,
-                style="Std.TLabel" )
-        self.slider = Scale( root, length=250, variable=self.var,
-                resolution=resolution,
-                digits=3,
-                orient=HORIZONTAL,
-                from_=fromval, to=toval )
-        self.label.grid(row=row,column=0,sticky=E)
-        self.slider.grid(row=row,column=1)
-        # self.val = ttk.Label( root, textvariable=self.var )
-        # self.val.grid(row=row,column=2)
-    def get(self):
-        "Get the value of the slider."
-        return self.var.get()
-    def set(self,v): 
-        "Set the value of the slider."
-        return self.var.get(v)
-class IntSlider:
-    """
-    A slider for integer values with label.
-    """
-    def __init__(self,root,text,row=1,fromval=0,toval=100,var=None,
-            resolution=1, default=0):
-        """
-        Set up the slider with the following parameters:
-
-        :param root: parent widget
-        :param text: label text
-        :param row: row number in the parent grid
-        :param fromval: lower bound on the range
-        :param toval: upper bound on the range
-        :param var: variable object to use for the value 
-                    (IntVar instanceby default)
-        :param resolution: resolution of the variable (default 1)
-        """
-        if var == None:
-            self.var = IntVar()
-        else:
-            self.var = var
-        self.var.set( default )
-        self.label = ttk.Label( root, text=text,
-                style="Std.TLabel" )
-        self.slider = Scale( root, length=250, variable=self.var,
-                resolution=resolution,
-                orient=HORIZONTAL,
-                from_=fromval, to=toval )
-        self.label.grid(row=row,column=0,sticky=E)
-        self.slider.grid(row=row,column=1)
-        # self.val = ttk.Label( root, textvariable=self.var )
-        # self.val.grid(row=row,column=2)
-    def get(self):
-        "Get the value of the slider."
-        return self.var.get()
-    def set(self,v): 
-        "Set the value of the slider."
-        return self.var.get(v)
 class Controller(ttk.Frame):
     """
     Pane with widgets to control the various parameters for the simulation.
@@ -205,7 +126,7 @@ class ResolutionPane(ttk.Frame):
             fromval=16,
             toval=1024,
             default=512 )
-        self.sizeSlider.var.trace_add( "write", self.push ) 
+        self.sizeSlider.var.trace_add( "write", self.push )
         self.resolutionSlider = IntSlider( self, 
             text="Image Resolution", row=2,
             fromval=16,
@@ -220,9 +141,12 @@ class ResolutionPane(ttk.Frame):
         self.bgSlider.var.trace_add( "write", self.push ) 
     def push(self,*a,runsim=True):
         print( "[CosmoGUI] Push image resolution" )
-        self.sim.setImageSize( self.sizeSlider.get())
-        self.sim.setResolution( self.resolutionSlider.get())
-        self.sim.setBGColour( self.bgSlider.get())
+        p = { "resolution" : self.resolutionSlider.get()
+             , "bgcolour" : self.bgSlider.get()
+             , "imagesize" : self.sizeSlider.get()
+             } 
+        print( p )
+        self.sim.setImageParameters( p )
         if runsim: self.sim.runSimulator()
 
 class LensPane(ttk.Frame):
@@ -292,9 +216,9 @@ class LensPane(ttk.Frame):
             text="Number of Terms (Roulettes only)", row=7,
             toval=50,
             default=16 )
-        self.einsteinSlider.var.trace_add( "write", self.push ) 
-        self.ratioSlider.var.trace_add( "write", self.push ) 
-        self.orientationSlider.var.trace_add( "write", self.push ) 
+        self.einsteinSlider.var.trace_add( "write", self.pushLens ) 
+        self.ratioSlider.var.trace_add( "write", self.pushLens ) 
+        self.orientationSlider.var.trace_add( "write", self.pushLens ) 
         self.ntermsSlider.var.trace_add( "write", self.push ) 
 
         self.maskModeVar = BooleanVar()
@@ -303,21 +227,32 @@ class LensPane(ttk.Frame):
         self.push(runsim=False)
         print ( "Pushed parameters to Simulator" )
         self.maskModeVar.trace_add( "write",self.push )
-        lensVar.trace_add("write", self.push) 
-        simVar.trace_add("write", self.push) 
-        self.sampleVar.trace_add("write", self.push) 
+        lensVar.trace_add("write", lambda *_ : 
+            ( self.sim.setLensMode(lensValues[self.lensVar.get()])
+            ,  self.sim.runSimulator() ) )
+        simVar.trace_add("write", lambda *_ : 
+            ( self.sim.setModelMode(self.simVar.get())
+            ,  self.sim.runSimulator() ) )
+        self.sampleVar.trace_add("write", lambda *_ : 
+            ( self.sim.setSampled(self.sampleVar.get())
+            ,  self.sim.runSimulator() )
+            )
     def getMaskModeVar(self):
         return self.maskModeVar
+    def pushLens(self,*a,runsim=True):
+        print( "[CosmoGUI] Push lens parameters" )
+        self.sim.setLensParameters(
+            { "einsteinradius" : self.einsteinSlider.get()
+             , "ellipseratio" : self.ratioSlider.get()
+             , "orientation" : self.orientationSlider.get()
+             } )
+        if runsim: self.sim.runSimulator()
     def push(self,*a,runsim=True):
         print( "[CosmoGUI] Push lens parameters" )
-        self.sim.setSampled(self.sampleVar.get())
-        self.sim.setLensMode(self.lensVar.get())
-        self.sim.setModelMode(self.simVar.get())
-        self.sim.setNterms( self.ntermsSlider.get() )
-        self.sim.setEinsteinR( self.einsteinSlider.get())
-        self.sim.setRatio( self.ratioSlider.get())
-        self.sim.setOrientation( self.orientationSlider.get())
-        self.sim.setMaskMode( self.maskModeVar.get())
+        self.sim.setSimParameters(
+            { "nterms" : self.ntermsSlider.get() 
+             , "maskmode" : self.maskModeVar.get()
+             } )
         if runsim: self.sim.runSimulator()
 class PosPane(ttk.Frame):
     """

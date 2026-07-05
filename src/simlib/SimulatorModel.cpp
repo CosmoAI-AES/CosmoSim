@@ -44,6 +44,7 @@ cv::Mat SimulatorModel::getApparent() const {
    return source->getImage() ;
 }
 cv::Mat SimulatorModel::getDistorted() const {
+   if (DEBUG) std::cout << "[SimulatorModel::getDistorted()]\n" ;
    return imgDistorted ;
 }
 
@@ -388,6 +389,7 @@ void SimulatorModel::setXi( cv::Point2d xi1 ) {
 }
 void SimulatorModel::setLens( Lens *l ) {
    lens = l ;
+   if (DEBUG) std::cout << "[SimulatorMode::setLens] " << lens->idString() << std::endl ;
 }
 
 cv::Point2d SimulatorModel::getRelativeEtaPy( double x, double y ) {

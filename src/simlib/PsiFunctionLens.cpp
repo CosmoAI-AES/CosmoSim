@@ -6,6 +6,10 @@
 #include <symengine/parser.h>
 #include <fstream>
 
+std::string PsiFunctionLens::idString() {
+   return "PsiFunctionLens" ;
+};
+
 void PsiFunctionLens::initAlphasBetas() {
 
     auto x = SymEngine::symbol("x");

@@ -10,42 +10,199 @@ to make the python API more streamlined.
 
 from .. import CosmoSimPy as cs, getPathFN
 from ..Sources import *
+from ..Lens import *
 from ..Dictionary import *
+from ..CosmoSimPy import RouletteModel,RaytraceModel
+from ..Image import drawAxes
 import numpy as np
 import threading as th
 import os, sys
 
-class CosmoSim(cs.CosmoSim):
+class CosmoSim:
     """
     Simulator for gravitational lensing.
     This wraps the CosmoSim library written in C++.  In particular,
     it wraps functions returning images, to convert the data to 
     numpy arrays.
     """
-    def __init__(self,*a,maxm=50,fn=None,verbose=1,**kw):
+    def __init__(self,*a,maxm=50,verbose=1,**kw):
         super().__init__(*a,**kw)
         self.verbose = verbose
         if self.verbose>1: print( f"[CosmoSim] init (verbose={self.verbose}) ..." )
-        if fn == None:
-            super().setFile( PsiSpec.PM, getPathFN( "pm50.txt" ) )
-            super().setFile( PsiSpec.SIS, getPathFN( "sis50.txt" ) )
-            super().setFile( PsiSpec.SIE, getPathFN( "sie05.txt" ) )
-        else:
-            if verbose: print( "Amplitudes file:", fn )
-            super().setFile( PsiSpec.SIS, fn )
-            super().setFile( PsiSpec.SIE, fn )
+
+        # Default parameters
+        self.amplitudefiles = { PsiSpec.PM : getPathFN( "pm50.txt" )
+                 , PsiSpec.SIS : getPathFN( "sis50.txt" )
+                 , PsiSpec.SIE : getPathFN( "sie05.txt" )
+                 }
+        self.bgcolour = 0
+        self.imagesize = 512
+        self.resolution = self.imagesize
+        self._sampling = False
+
+        self.simparam = { "nterms" : 5
+             , "maskmode" : False
+             } 
+        self.lensparam = { "einsteinradius" : 30
+             , "ellipseratio" : 0.6
+             , "orientation" : 45
+             } 
+        self.srcparam = { "source" : "Spherical", "sigma" : 10 }
+
+        # Instantiate simulator and objects
+        self._sim = None
+        self.setLensMode( PsiSpec.SIS )
+        self.makeSource( )
+        self.setModelMode( "Raytrace" )
+
+        # Set up thread management
         self._continue = True
         self.updateEvent = th.Event()
         self.simEvent = th.Event()
         self._simThread = th.Thread(target=self.simThread)
         self._simThread.start()
-        self.bgcolour = 0
-    def makeSource(self,param):
-        if param.get( "imagesize" ) == None:
-           param.__setitem__( "imagesize", self.getImageSize() )
-        self._src = getSource(param,verbose=self.verbose)
+
+    # Simulator
+    def setModelMode(self,model):
+        """
+        Instantiate the simulator using the given model.
+        It assumes that the lens and source have already been instantiated.
+        """
+        
+        simmode = modelValues[model]
         if self.verbose:
-            print( f"CosmoSim.getSource() returns (verbose={self.verbose})" )
+            print( f"[setModelMode ({model})] instantiate new simulator")
+
+        if simmode == ModelSpec.Raytrace:
+            sim = RaytraceModel()
+        elif simmode == ModelSpec.Roulette:
+            sim = RouletteModel()
+        else:
+            raise RuntimeError( "Invalid simulator mode" )
+        self._sim = sim
+        self.setSimParameters()
+        sim.setLens( self._lens )
+        sim.setSource( self._src )
+        if self.verbose:
+            print( f"[setModelMode ({model})] returns")
+    def setSimParameters(self, param=None ):
+        if param is None:
+            param = self.simparam 
+        else:
+            self.simparam = param
+        nterms = param.get( "nterms", None ) 
+        if nterms is not None:
+              self._sim.setNterms( nterms )
+        mm = param.get( "maskmode", None ) 
+        if mm is not None:
+              self._sim.setMaskMode( mm )
+        mr = param.get( "maskradius", None )
+        if mr is not None:
+              self._sim.setMaskRadius( mr )
+    def setImageParameters(self, param=None ):
+        self.resolution = param.get( "resolution", self.resolution )
+        self.bgcolour = param.get( "bgcolour", self.bgcolour )
+        self.imagesize = param.get( "imagesize", self.imagesize )
+
+    # Lens
+    def setLensMode(self,lensmode,*a,**kw):
+        """
+        Instantiate a new lens of the given mode.
+        If a simulator is defined, the new lens is added thereto.
+        """
+        if self.verbose:
+            print( f"[setLensMode({lensmode})] instantiate" )
+        if lensmode == PsiSpec.PM:
+            lens = PointMass()
+        elif lensmode == PsiSpec.SIS:
+            lens = SIS()
+        elif lensmode == PsiSpec.SIE:
+            lens = SIE()
+        else:
+            raise RuntimeError( "Invalid lens mode" )
+        self._psilens = lens
+        lens.setFile( self.amplitudefiles[lensmode] )
+        self.setLensParameters()
+        if self._sim is not None:
+            if self.verbose:
+                print( f"[setLensMode({lensmode})] add lens to simulator" )
+            self._sim.setLens( lens )
+        if self.verbose:
+            print( f"[setLensMode({lensmode})] returns" )
+    def setLensParameters(self, param=None ):
+        if param is None:
+            param = self.lensparam 
+            if self.verbose:
+                print( "[setLensParameters]", param )
+        else:
+            self.lensparam = param
+            if self.verbose:
+                print( "[setLensParameters] new parameters" )
+                print( param )
+        einsteinradius = param.get( "einsteinradius", None )
+        if einsteinradius is not None:
+              self._psilens.setEinsteinR( einsteinradius )
+        ratio = param.get( "ratio", None ) 
+        if ratio is not None:
+              self._psilens.setRatio( ratio )
+        orientation = param.get( "orientation", None ) 
+        if orientation is not None:
+              self._psilens.setOrientation( orientation )
+        self.setSampled()
+        if self.verbose:
+            print( "[setLensParameters] returns" )
+    def setSampled(self,sampling=None,**kw):
+        """
+        If `sampling` is given, the setting is updated.
+        Then, if sampling is true, a sampled lens is created.
+        The lens attribute is updated; if there is no sampled lens,
+        it is set equal to `psilens`.
+        """
+        if sampling is None:
+            sampling = self._sampling
+        else:
+            self._sampling = sampling
+        if sampling:
+            size = self.imagesize
+            if self.verbose>1: print( f"[initLens] Sampling (imagesize {size})" )
+            self._lens = SampledPsiFunctionLens( self._psilens, size )
+        else:
+            self._lens = self._psilens
+
+    # Source
+    def makeSource(self,param=None):
+        """
+        Instantiate a new source according to the given parameters `param`.
+        If a simulator is defined, the new source is added thereto.
+        """
+        if param is None:
+            param = self.srcparam
+        else:
+            self.srcparam = param
+        if param.get( "imagesize" ) == None:
+           param.__setitem__( "imagesize", self.imagesize )
+        self._src = getSource(param,verbose=self.verbose)
+        if self._sim is not None:
+            if self.verbose:
+                print( f"GUI.CosmoSim.makeSource() add source to simulator" )
+
+            self._sim.setSource( self._src )
+        if self.verbose:
+            print( f"GUI.CosmoSim.makeSource() returns (verbose={self.verbose})" )
+
+    # Source Position
+    def setXY(self,x,y):
+        """
+        Set the source position using Cartesian Coordinates.
+        """
+        return self._sim.setXY(x,y)
+    def setPolar(self,x,y): 
+        """
+        Set the source position using Polar Coordinates.
+        """
+        return self._sim.setPolar(x,y)
+
+
     def close(self):
         """
         Terminate the worker thread.
@@ -59,16 +216,8 @@ class CosmoSim(cs.CosmoSim):
         return self.updateEvent
     def maskImage(self,scale=1):
         return super().maskImage( float(scale) )
-    def setLensMode(self,s):
-        if self.verbose: print( f"setLensMode({s})")
-        return super().setLensMode( int( lensDict[s] ) ) 
-    def setModelMode(self,s):
-        if self.verbose: print( f"setModelMode({s})")
-        return super().setModelMode( int( modelDict[s] ) ) 
-    def setSampled(self,s):
-        if self.verbose: print( f"[setSampled] {s}" )
-        if s is not None:
-            super().setSampled( int( s ) ) 
+
+
     def setBGColour(self,s):
         self.bgcolour = s
     def simThread(self):
@@ -80,12 +229,8 @@ class CosmoSim(cs.CosmoSim):
             self.simEvent.wait()
             if self._continue:
                self.simEvent.clear()
-               self.runSim()
+               self._sim.update()
                self.updateEvent.set()
-    def runSim(self):
-        self._src_ = self._src
-        self.setSource( self._src_ )
-        return super().runSim()
     def runSimulator(self):
         """
         Run the simulator; that is, tell it that the parameters
@@ -96,37 +241,42 @@ class CosmoSim(cs.CosmoSim):
         self.simEvent.set()
         if self.verbose: print( "CosmoSim.runSimulator() triggered event" )
 
-    def getApparentImage(self,reflines=True):
-        """
-        Return the Apparent Image from the simulator as a numpy array.
-        """
-        im = np.array(self.getApparent(reflines),copy=False)
-        if im.shape[2] == 1 : im.shape = im.shape[:2]
-        return np.maximum(im,self.bgcolour)
     def getActualImage(self,reflines=True,caustics=False):
         """
         Return the Actual Image from the simulator as a numpy array.
         """
-        im = np.array(self.getActual(reflines,caustics),copy=True)
-        if im.shape[2] == 1 : im.shape = im.shape[:2]
+        im = self._sim.getActual()
+        if self.resolution < self.imagesize:
+            im = cv.resize( im, ( self.resolution, self.resolution ) )
+        if caustics:
+            sim.drawCaustics( im )
+        im = np.array(im)
+        if reflines:
+            csimg.drawAxes( im )
+        if im.shape[2] == 1 :
+            im.shape = im.shape[:2]
         return np.maximum(im,self.bgcolour)
+    def showMask(self): return self._sim.markMask()
+    def maskImage(self,scale): return self._sim.maskImage( scale )
     def getDistortedImage(self,reflines=False,critical=False,mask=False,showmask=False):
         """
         Return the Distorted Image from the simulator as a numpy array.
         """
+        if self.verbose:
+            print( "[getDistortedImage] Einstein Radius", self._psilens.getEinsteinR() )
         try:
             if mask: self.maskImage()
             if showmask: self.showMask()
         except:
             print( "Masking not supported for this lens model." )
-        try:
-            im = np.array(self.getDistorted(reflines,critical),copy=False)
-        except Exception as e:
-            print( "self", type(self) )
-            print( "reflines", reflines )
-            print( "critical", critical )
-            im = np.array(self.getDistorted(),copy=False)
-            raise e
+        im = self._sim.getDistorted()
+        if self.resolution < self.imagesize:
+            im = cv.resize( im, ( self.resolution, self.resolution ) )
+        if critical:
+            self._sim.drawCritical( im )
+        im = np.array(im)
+        if reflines:
+            drawAxes( im )
         if im.shape[2] == 1:
             im.shape = im.shape[:2]
         if im.shape[0]*im.shape[1] == 0:

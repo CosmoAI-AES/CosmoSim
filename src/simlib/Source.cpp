@@ -23,6 +23,10 @@ Source::Source(int sz) :
 }
 Source::Source() : Source(512) {}
 
+std::string Source::idString() {
+   return "Source (Superclass)" ;
+};
+
 /* Getters for the images */
 cv::Mat Source::getImage() { 
    if (DEBUG) std::cout << "[Source::getImage()]\n" << std::flush ;

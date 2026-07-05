@@ -5,11 +5,16 @@
 
 #define norm(x,y) sqrt( x*x + y*y ) 
 
+std::string SIS::idString() {
+   return "SIS" ;
+};
+
+
 cv::Point2d SIS::getXi( cv::Point2d eta ) {
    cv::Point2d r = eta + cv::Point2d( 
          psiXvalue(eta.x, eta.y ),
          psiYvalue(eta.x, eta.y ) ) ;
-   if (DEBUG) std::cout << "[Lens::getXi] " << eta << " -> " << r << "\n" ;
+   if (DEBUG) std::cout << "[SIS::getXi] " << eta << " -> " << r << "\n" ;
    return r ;
 }
 

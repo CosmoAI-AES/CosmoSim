@@ -21,6 +21,9 @@ EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2 ) :
         EllipsoidSource(sz,sig1,sig2,0,CSIM_LIGHT_GAUSSIAN)
 { }
 
+std::string EllipsoidSource::idString() {
+   return "Ellipsoid  Source" ;
+};
 
 /* Draw the source image.  The sourceSize is interpreted as the standard deviation in a Sersic or Gaussian distribution */
 void EllipsoidSource::drawSource(int begin, int end, cv::Mat& dst) {
