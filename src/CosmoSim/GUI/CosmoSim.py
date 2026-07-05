@@ -100,6 +100,10 @@ class CosmoSim:
         if orientation is not None:
               self._psilens.setOrientation( orientation )
     def makeSource(self,param=None):
+        """
+        Instantiate a new source according to the given parameters `param`.
+        If a simulator is defined, the new source is added thereto.
+        """
         if param is None:
             param = self.srcparam
         else:
@@ -115,6 +119,12 @@ class CosmoSim:
     def setXY(self,x,y): return self._sim.setXY(x,y)
     def setPolar(self,x,y): return self._sim.setPolar(x,y)
     def setLensMode(self,lensmode,*a,**kw):
+        """
+        Instantiate a new lens of the given mode.
+        If a simulator is defined, the new lens is added thereto.
+        """
+        if self.verbose:
+            print( "[setLensMode({lensmode})] instantiate" )
         self.lensmode = lensmode
         if lensmode == PsiSpec.PM:
             lens = PointMass()
@@ -125,9 +135,16 @@ class CosmoSim:
         else:
             raise RuntimeError( "Invalid lens mode" )
         self._psilens = lens
+        if self._sim is not None:
+            if self.verbose:
+                print( "[setLensMode({lensmode})] instantiate" )
+            self._sim.setLens( lens )
+        self._lens = lens
         self.setLensParameters()
         lens.setFile( self.amplitudefiles[lensmode] )
         self.setSampled()
+        if self.verbose:
+            print( "[setLensMode({lensmode})] returns" )
     def setSampled(self,sampling=None,**kw):
         if sampling is None:
             sampling = self._sampling
@@ -156,7 +173,8 @@ class CosmoSim:
 
     def setModelMode(self,model):
         self.simmode = model
-        if self.verbose: print( f"setModelMode({model})")
+        if self.verbose:
+            print( f"[setModelMode ({model})] instantiate new simulator")
 
         if model == ModelSpec.Raytrace:
             sim = RaytraceModel()
@@ -167,6 +185,8 @@ class CosmoSim:
         sim.setLens( self._lens )
         sim.setSource( self._src )
         self._sim = sim
+        if self.verbose:
+            print( f"[setModelMode ({model})] returns")
 
     def setBGColour(self,s):
         self.bgcolour = s
