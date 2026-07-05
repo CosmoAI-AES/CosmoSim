@@ -49,12 +49,11 @@ class CosmoSim:
 
         self.srcparam = { "source" : "Spherical", "sigma" : 10 }
         self.lensmode = PsiSpec.SIS 
-        self.simmode = ModelSpec.Raytrace 
         self._sim = None
 
         self.setLensMode( self.lensmode )
         self.makeSource( )
-        self.setModelMode( self.simmode )
+        self.setModelMode( "Raytrace" )
 
         # Set up thread management
         self._continue = True
@@ -183,13 +182,13 @@ class CosmoSim:
         return super().maskImage( float(scale) )
 
     def setModelMode(self,model):
-        self.simmode = model
+        simmode = modelValues[model]
         if self.verbose:
             print( f"[setModelMode ({model})] instantiate new simulator")
 
-        if model == ModelSpec.Raytrace:
+        if simmode == ModelSpec.Raytrace:
             sim = RaytraceModel()
-        elif model == ModelSpec.Roulette:
+        elif simmode == ModelSpec.Roulette:
             sim = RouletteModel()
         else:
             raise RuntimeError( "Invalid simulator mode" )

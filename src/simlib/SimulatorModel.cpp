@@ -44,6 +44,7 @@ cv::Mat SimulatorModel::getApparent() const {
    return source->getImage() ;
 }
 cv::Mat SimulatorModel::getDistorted() const {
+   if (DEBUG) std::cout << "[SimulatorModel::getDistorted()]\n" ;
    return imgDistorted ;
 }
 
