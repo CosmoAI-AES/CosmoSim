@@ -17,7 +17,7 @@ import random
 import argparse
 import pandas as pd
 
-from CLI.Generators import getLens
+from .CLI.Generators import getLens
 
 def isnumeric(x): return isinstance(x, numbers.Number )
 def fromPolar(R,phi): 
