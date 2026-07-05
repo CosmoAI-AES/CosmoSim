@@ -30,6 +30,7 @@ class CosmoSim:
         self.verbose = verbose
         if self.verbose>1: print( f"[CosmoSim] init (verbose={self.verbose}) ..." )
 
+        # Default parameters
         self.amplitudefiles = { PsiSpec.PM : getPathFN( "pm50.txt" )
                  , PsiSpec.SIS : getPathFN( "sis50.txt" )
                  , PsiSpec.SIE : getPathFN( "sie05.txt" )
@@ -46,12 +47,11 @@ class CosmoSim:
              , "ellipseratio" : 0.6
              , "orientation" : 45
              } 
-
         self.srcparam = { "source" : "Spherical", "sigma" : 10 }
-        self.lensmode = PsiSpec.SIS 
-        self._sim = None
 
-        self.setLensMode( self.lensmode )
+        # Instantiate simulator and objects
+        self._sim = None
+        self.setLensMode( PsiSpec.SIS )
         self.makeSource( )
         self.setModelMode( "Raytrace" )
 
@@ -104,6 +104,7 @@ class CosmoSim:
         orientation = param.get( "orientation", None ) 
         if orientation is not None:
               self._psilens.setOrientation( orientation )
+        self.setSampled()
         if self.verbose:
             print( "[setLensParameters] returns" )
     def makeSource(self,param=None):
@@ -135,7 +136,6 @@ class CosmoSim:
         """
         if self.verbose:
             print( f"[setLensMode({lensmode})] instantiate" )
-        self.lensmode = lensmode
         if lensmode == PsiSpec.PM:
             lens = PointMass()
         elif lensmode == PsiSpec.SIS:
@@ -145,17 +145,22 @@ class CosmoSim:
         else:
             raise RuntimeError( "Invalid lens mode" )
         self._psilens = lens
+        self.setLensParameters()
+        lens.setFile( self.amplitudefiles[lensmode] )
+        self.setSampled()
         if self._sim is not None:
             if self.verbose:
                 print( f"[setLensMode({lensmode})] add lens to simulator" )
             self._sim.setLens( lens )
-        self._lens = lens
-        self.setLensParameters()
-        lens.setFile( self.amplitudefiles[lensmode] )
-        self.setSampled()
         if self.verbose:
             print( f"[setLensMode({lensmode})] returns" )
     def setSampled(self,sampling=None,**kw):
+        """
+        If `sampling` is given, the setting is updated.
+        Then, if sampling is true, a sampled lens is created.
+        The lens attribute is updated; if there is no sampled lens,
+        it is set equal to `psilens`.
+        """
         if sampling is None:
             sampling = self._sampling
         else:
