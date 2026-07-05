@@ -1,6 +1,6 @@
 /* (C) 2026: Hans Georg Schaathun <georg@schaathun.net> */
 
-#define pi std::numbers::pi
+#define pi 3.141592
 
 inline double sersic( double n_sersic, double luminosity, 
                double sigma1, double sigma2, 
@@ -15,7 +15,7 @@ inline double sersic( double n_sersic, double luminosity,
 
    auto I_eff = L*std::pow(bn, 2.0 * n_sersic)
               / (2 * pi * sigma1*sigma2*n_sersic * std::exp(bn)
-              * std::tgamma(2.0*n)) ;
+              * std::tgamma(2.0*n_sersic)) ;
 
    auto value = round(I_eff*std::exp(-bn*((std::pow(r/re, 1.0/n_sersic))-1.0)));
 
