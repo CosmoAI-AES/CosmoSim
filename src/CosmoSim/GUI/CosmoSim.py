@@ -29,6 +29,10 @@ class CosmoSim:
         super().__init__(*a,**kw)
         self.verbose = verbose
         if self.verbose>1: print( f"[CosmoSim] init (verbose={self.verbose}) ..." )
+        if self.verbose > 3:
+            cs.setDebug( self.verbose - 3 )
+        else:
+            cs.setDebug( 0 )
 
         self.amplitudefiles = { PsiSpec.PM : getPathFN( "pm50.txt" )
                  , PsiSpec.SIS : getPathFN( "sis50.txt" )
@@ -86,6 +90,8 @@ class CosmoSim:
         self.bgcolour = param.get( "bgcolour", self.bgcolour )
 
     def setLensParameters(self, param=None ):
+        if self.verbose:
+            print( "[setLensParameters]", param )
         if param is None:
             param = self.lensparam 
         else:
@@ -99,6 +105,8 @@ class CosmoSim:
         orientation = param.get( "orientation", None ) 
         if orientation is not None:
               self._psilens.setOrientation( orientation )
+        if self.verbose:
+            print( "[setLensParameters] returns" )
     def makeSource(self,param=None):
         """
         Instantiate a new source according to the given parameters `param`.
