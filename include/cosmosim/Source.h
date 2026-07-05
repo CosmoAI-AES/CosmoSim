@@ -26,6 +26,7 @@ public:
     Source() ;
     virtual ~Source();
     virtual cv::Mat getImage() ;
+    virtual std::string idString() ;
 
 protected:
     virtual void drawParallel(cv::Mat &img) ;
@@ -56,6 +57,7 @@ private:
 
 public:
     SphericalSource(int,double,double,double,LightProfileSpec) ;
+    virtual std::string idString() ;
 
 protected:
     virtual void drawSource(int, int, cv::Mat &) ;
@@ -70,6 +72,7 @@ private:
 public:
     EllipsoidSource(int,double,double) ;
     EllipsoidSource(int,double,double,double,LightProfileSpec) ;
+    virtual std::string idString() ;
 
 protected:
     virtual void drawSource(int, int, cv::Mat &) ;

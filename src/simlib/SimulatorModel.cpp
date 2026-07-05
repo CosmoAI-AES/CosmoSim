@@ -388,8 +388,8 @@ void SimulatorModel::setXi( cv::Point2d xi1 ) {
    etaOffset = getOffset( xi1 ) ;
 }
 void SimulatorModel::setLens( Lens *l ) {
-   if (DEBUG) std::cout << "[SimulatorMode::setLens]\n" ;
    lens = l ;
+   if (DEBUG) std::cout << "[SimulatorMode::setLens] " << lens->idString() << std::endl ;
 }
 
 cv::Point2d SimulatorModel::getRelativeEtaPy( double x, double y ) {

@@ -79,13 +79,13 @@ class CosmoSim:
             sim = RouletteModel()
         else:
             raise RuntimeError( "Invalid simulator mode" )
+        self._sim = sim
         self.setSimParameters()
         sim.setLens( self._lens )
         sim.setSource( self._src )
-        self._sim = sim
         if self.verbose:
             print( f"[setModelMode ({model})] returns")
-    def setSimParameters(self, param ):
+    def setSimParameters(self, param=None ):
         if param is None:
             param = self.simparam 
         else:
@@ -262,6 +262,8 @@ class CosmoSim:
         """
         Return the Distorted Image from the simulator as a numpy array.
         """
+        if self.verbose:
+            print( "[getDistortedImage] Einstein Radius", self._psilens.getEinsteinR() )
         try:
             if mask: self.maskImage()
             if showmask: self.showMask()

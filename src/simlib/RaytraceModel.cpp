@@ -21,7 +21,10 @@ cv::Point2d RaytraceModel::calculateEta( cv::Point2d xi ) {
 }
 void RaytraceModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) {
 
-    // std::cout << "[RaytraceModel] distort().\n" ;
+    if (DEBUG) {
+       std::cout << "[RaytraceModel] distort() " << lens->idString() 
+          << " (" << source->idString() << ")\n" ;
+    }
     for (int row = begin; row < end; row++) {
         for (int col = 0; col < dst.cols; col++) {
 

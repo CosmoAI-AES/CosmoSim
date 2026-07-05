@@ -6,6 +6,10 @@
 #include "cosmosim/Lens.h"
 #include "simaux.h"
 
+std::string PointMass::idString() {
+   return "PointMass" ;
+};
+
 double PointMass::psiValue( double x, double y ) const {
    double s = einsteinR*einsteinR ;
    s *= log( sqrt( x*x + y*y ) ) ;

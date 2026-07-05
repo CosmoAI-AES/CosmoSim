@@ -19,6 +19,10 @@ SphericalSource::SphericalSource(int sz, double sig, double idx, double lum, Lig
 	}
 }
 
+std::string SphericalSource::idString() {
+   return "Spherical Source" ;
+};
+
 /* Draw the source image.  The sourceSize is interpreted as the standard deviation in a Gaussian distribution */
 void SphericalSource::drawSource(int begin, int end, cv::Mat& dst) {
     for (int row = begin; row < end; row++) {

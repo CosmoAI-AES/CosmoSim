@@ -5,6 +5,9 @@
 #include "cosmosim/Lens.h"
 #include "simaux.h"
 
+std::string SampledLens::idString() {
+   return "SampledLens (Generic)" ;
+};
 
 void SampledLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
 
@@ -108,3 +111,4 @@ double SampledLens::getAlphaXi( int m, int s ) {
 double SampledLens::getBetaXi( int m, int s ) {
    return betas_val[m][s] ;
 }
+
