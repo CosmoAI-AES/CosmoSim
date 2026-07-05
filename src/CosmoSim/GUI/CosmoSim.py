@@ -62,8 +62,29 @@ class CosmoSim:
         self._simThread = th.Thread(target=self.simThread)
         self._simThread.start()
 
+    # Simulator
+    def setModelMode(self,model):
+        """
+        Instantiate the simulator using the given model.
+        It assumes that the lens and source have already been instantiated.
+        """
+        
+        simmode = modelValues[model]
+        if self.verbose:
+            print( f"[setModelMode ({model})] instantiate new simulator")
 
-
+        if simmode == ModelSpec.Raytrace:
+            sim = RaytraceModel()
+        elif simmode == ModelSpec.Roulette:
+            sim = RouletteModel()
+        else:
+            raise RuntimeError( "Invalid simulator mode" )
+        self.setSimParameters()
+        sim.setLens( self._lens )
+        sim.setSource( self._src )
+        self._sim = sim
+        if self.verbose:
+            print( f"[setModelMode ({model})] returns")
     def setSimParameters(self, param ):
         if param is None:
             param = self.simparam 
@@ -78,13 +99,36 @@ class CosmoSim:
         mr = param.get( "maskradius", None )
         if mr is not None:
               self._sim.setMaskRadius( mr )
-    def setImageSize(self, size ):
-        if sz is not None: self.imagesize = size
     def setImageParameters(self, param=None ):
         self.resolution = param.get( "resolution", self.resolution )
         self.bgcolour = param.get( "bgcolour", self.bgcolour )
         self.imagesize = param.get( "imagesize", self.imagesize )
 
+    # Lens
+    def setLensMode(self,lensmode,*a,**kw):
+        """
+        Instantiate a new lens of the given mode.
+        If a simulator is defined, the new lens is added thereto.
+        """
+        if self.verbose:
+            print( f"[setLensMode({lensmode})] instantiate" )
+        if lensmode == PsiSpec.PM:
+            lens = PointMass()
+        elif lensmode == PsiSpec.SIS:
+            lens = SIS()
+        elif lensmode == PsiSpec.SIE:
+            lens = SIE()
+        else:
+            raise RuntimeError( "Invalid lens mode" )
+        self._psilens = lens
+        lens.setFile( self.amplitudefiles[lensmode] )
+        self.setLensParameters()
+        if self._sim is not None:
+            if self.verbose:
+                print( f"[setLensMode({lensmode})] add lens to simulator" )
+            self._sim.setLens( lens )
+        if self.verbose:
+            print( f"[setLensMode({lensmode})] returns" )
     def setLensParameters(self, param=None ):
         if param is None:
             param = self.lensparam 
@@ -107,6 +151,25 @@ class CosmoSim:
         self.setSampled()
         if self.verbose:
             print( "[setLensParameters] returns" )
+    def setSampled(self,sampling=None,**kw):
+        """
+        If `sampling` is given, the setting is updated.
+        Then, if sampling is true, a sampled lens is created.
+        The lens attribute is updated; if there is no sampled lens,
+        it is set equal to `psilens`.
+        """
+        if sampling is None:
+            sampling = self._sampling
+        else:
+            self._sampling = sampling
+        if sampling:
+            size = self.imagesize
+            if self.verbose>1: print( f"[initLens] Sampling (imagesize {size})" )
+            self._lens = SampledPsiFunctionLens( self._psilens, size )
+        else:
+            self._lens = self._psilens
+
+    # Source
     def makeSource(self,param=None):
         """
         Instantiate a new source according to the given parameters `param`.
@@ -127,50 +190,18 @@ class CosmoSim:
         if self.verbose:
             print( f"GUI.CosmoSim.makeSource() returns (verbose={self.verbose})" )
 
-    def setXY(self,x,y): return self._sim.setXY(x,y)
-    def setPolar(self,x,y): return self._sim.setPolar(x,y)
-    def setLensMode(self,lensmode,*a,**kw):
+    # Source Position
+    def setXY(self,x,y):
         """
-        Instantiate a new lens of the given mode.
-        If a simulator is defined, the new lens is added thereto.
+        Set the source position using Cartesian Coordinates.
         """
-        if self.verbose:
-            print( f"[setLensMode({lensmode})] instantiate" )
-        if lensmode == PsiSpec.PM:
-            lens = PointMass()
-        elif lensmode == PsiSpec.SIS:
-            lens = SIS()
-        elif lensmode == PsiSpec.SIE:
-            lens = SIE()
-        else:
-            raise RuntimeError( "Invalid lens mode" )
-        self._psilens = lens
-        self.setLensParameters()
-        lens.setFile( self.amplitudefiles[lensmode] )
-        self.setSampled()
-        if self._sim is not None:
-            if self.verbose:
-                print( f"[setLensMode({lensmode})] add lens to simulator" )
-            self._sim.setLens( lens )
-        if self.verbose:
-            print( f"[setLensMode({lensmode})] returns" )
-    def setSampled(self,sampling=None,**kw):
+        return self._sim.setXY(x,y)
+    def setPolar(self,x,y): 
         """
-        If `sampling` is given, the setting is updated.
-        Then, if sampling is true, a sampled lens is created.
-        The lens attribute is updated; if there is no sampled lens,
-        it is set equal to `psilens`.
+        Set the source position using Polar Coordinates.
         """
-        if sampling is None:
-            sampling = self._sampling
-        else:
-            self._sampling = sampling
-        if sampling:
-            size = self.imagesize
-            if self.verbose>1: print( f"[initLens] Sampling (imagesize {size})" )
-            self._lens = SampledPsiFunctionLens( self._psilens, size )
-        else:
-            self._lens = self._psilens
+        return self._sim.setPolar(x,y)
+
 
     def close(self):
         """
@@ -186,22 +217,6 @@ class CosmoSim:
     def maskImage(self,scale=1):
         return super().maskImage( float(scale) )
 
-    def setModelMode(self,model):
-        simmode = modelValues[model]
-        if self.verbose:
-            print( f"[setModelMode ({model})] instantiate new simulator")
-
-        if simmode == ModelSpec.Raytrace:
-            sim = RaytraceModel()
-        elif simmode == ModelSpec.Roulette:
-            sim = RouletteModel()
-        else:
-            raise RuntimeError( "Invalid simulator mode" )
-        sim.setLens( self._lens )
-        sim.setSource( self._src )
-        self._sim = sim
-        if self.verbose:
-            print( f"[setModelMode ({model})] returns")
 
     def setBGColour(self,s):
         self.bgcolour = s
