@@ -85,9 +85,10 @@ class CosmoSim:
               self._sim.setMaskRadius( mr )
     def setImageSize(self, size ):
         if sz is not None: self.imagesize = size
-    def setImageParaemeters(self, param=None ):
+    def setImageParameters(self, param=None ):
         self.resolution = param.get( "resolution", self.resolution )
         self.bgcolour = param.get( "bgcolour", self.bgcolour )
+        self.imagesize = param.get( "imagesize", self.imagesize )
 
     def setLensParameters(self, param=None ):
         if self.verbose:
@@ -120,6 +121,9 @@ class CosmoSim:
            param.__setitem__( "imagesize", self.imagesize )
         self._src = getSource(param,verbose=self.verbose)
         if self._sim is not None:
+            if self.verbose:
+                print( f"GUI.CosmoSim.makeSource() add source to simulator" )
+
             self._sim.setSource( self._src )
         if self.verbose:
             print( f"GUI.CosmoSim.makeSource() returns (verbose={self.verbose})" )
@@ -132,7 +136,7 @@ class CosmoSim:
         If a simulator is defined, the new lens is added thereto.
         """
         if self.verbose:
-            print( "[setLensMode({lensmode})] instantiate" )
+            print( f"[setLensMode({lensmode})] instantiate" )
         self.lensmode = lensmode
         if lensmode == PsiSpec.PM:
             lens = PointMass()
@@ -145,14 +149,14 @@ class CosmoSim:
         self._psilens = lens
         if self._sim is not None:
             if self.verbose:
-                print( "[setLensMode({lensmode})] instantiate" )
+                print( f"[setLensMode({lensmode})] add lens to simulator" )
             self._sim.setLens( lens )
         self._lens = lens
         self.setLensParameters()
         lens.setFile( self.amplitudefiles[lensmode] )
         self.setSampled()
         if self.verbose:
-            print( "[setLensMode({lensmode})] returns" )
+            print( f"[setLensMode({lensmode})] returns" )
     def setSampled(self,sampling=None,**kw):
         if sampling is None:
             sampling = self._sampling
@@ -219,13 +223,6 @@ class CosmoSim:
         self.simEvent.set()
         if self.verbose: print( "CosmoSim.runSimulator() triggered event" )
 
-    def getApparentImage(self,reflines=True):
-        """
-        Return the Apparent Image from the simulator as a numpy array.
-        """
-        im = np.array(self.getApparent(reflines),copy=False)
-        if im.shape[2] == 1 : im.shape = im.shape[:2]
-        return np.maximum(im,self.bgcolour)
     def getActualImage(self,reflines=True,caustics=False):
         """
         Return the Actual Image from the simulator as a numpy array.

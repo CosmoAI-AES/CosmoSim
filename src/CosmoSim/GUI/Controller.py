@@ -126,8 +126,7 @@ class ResolutionPane(ttk.Frame):
             fromval=16,
             toval=1024,
             default=512 )
-        self.sizeSlider.var.trace_add( "write" 
-            , lambda *_ : ( self.sizeSlider.get(),  self.sim.initialise() ) )
+        self.sizeSlider.var.trace_add( "write", self.push )
         self.resolutionSlider = IntSlider( self, 
             text="Image Resolution", row=2,
             fromval=16,
@@ -142,10 +141,12 @@ class ResolutionPane(ttk.Frame):
         self.bgSlider.var.trace_add( "write", self.push ) 
     def push(self,*a,runsim=True):
         print( "[CosmoGUI] Push image resolution" )
-        self.sim.setImageParameters(
-              { "resolution" : self.resolutionSlider.get()
-               , "bgcolour" : self.bgSlider.get()
-               } )
+        p = { "resolution" : self.resolutionSlider.get()
+             , "bgcolour" : self.bgSlider.get()
+             , "imagesize" : self.sizeSlider.get()
+             } 
+        print( p )
+        self.sim.setImageParameters( p )
         if runsim: self.sim.runSimulator()
 
 class LensPane(ttk.Frame):
@@ -227,7 +228,7 @@ class LensPane(ttk.Frame):
         print ( "Pushed parameters to Simulator" )
         self.maskModeVar.trace_add( "write",self.push )
         lensVar.trace_add("write", lambda *_ : 
-            ( self.sim.setLensMode(self.lensVar.get())
+            ( self.sim.setLensMode(lensValues[self.lensVar.get()])
             ,  self.sim.runSimulator() ) )
         simVar.trace_add("write", lambda *_ : 
             ( self.sim.setModelMode(self.simVar.get())

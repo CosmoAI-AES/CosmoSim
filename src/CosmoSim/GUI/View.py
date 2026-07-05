@@ -16,8 +16,9 @@ import sys
 
 
 class ImageCanvas(Canvas):
-    def __init__(self,parent,image=None,**kwargs):
+    def __init__(self,parent,image=None,verbose=1,**kwargs):
         super().__init__(parent,**kwargs)
+        self.verbose = verbose
         self.height = self.winfo_reqheight()
         self.width = self.winfo_reqwidth()
         if None != image:
@@ -38,7 +39,8 @@ class ImageCanvas(Canvas):
            im = self.origimage 
         size = self.height 
         self.im = im.resize((size,size), Image.NEAREST)
-        print( "Image resized", size )
+        if self.verbose > 1:
+            print( "Image resized", size )
         self.img =  ImageTk.PhotoImage(image=self.im)
         self.itemconfig(self.imageCanvas, image=self.img)
 
