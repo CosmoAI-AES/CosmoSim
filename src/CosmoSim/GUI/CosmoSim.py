@@ -29,10 +29,6 @@ class CosmoSim:
         super().__init__(*a,**kw)
         self.verbose = verbose
         if self.verbose>1: print( f"[CosmoSim] init (verbose={self.verbose}) ..." )
-        if self.verbose > 3:
-            cs.setDebug( self.verbose - 3 )
-        else:
-            cs.setDebug( 0 )
 
         self.amplitudefiles = { PsiSpec.PM : getPathFN( "pm50.txt" )
                  , PsiSpec.SIS : getPathFN( "sis50.txt" )
@@ -91,12 +87,15 @@ class CosmoSim:
         self.imagesize = param.get( "imagesize", self.imagesize )
 
     def setLensParameters(self, param=None ):
-        if self.verbose:
-            print( "[setLensParameters]", param )
         if param is None:
             param = self.lensparam 
+            if self.verbose:
+                print( "[setLensParameters]", param )
         else:
             self.lensparam = param
+            if self.verbose:
+                print( "[setLensParameters] new parameters" )
+                print( param )
         einsteinR = param.get( "einsteinR", None )
         if einsteinR is not None:
               self._psilens.setEinsteinR( einsteinR )

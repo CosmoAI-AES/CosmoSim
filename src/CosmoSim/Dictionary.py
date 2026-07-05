@@ -17,12 +17,13 @@ Point = cs.Point
 
 lensDict = {
         "PM" : PsiSpec.PM,
+        "PointMass" : PsiSpec.PM,
         "SIS" : PsiSpec.SIS,
         "SIE" : PsiSpec.SIE,
         "Cluster" : PsiSpec.Cluster,
         }
 lensValues = {
-        "PM" : PsiSpec.PM,
+        "PointMass" : PsiSpec.PM,
         "SIS" : PsiSpec.SIS,
         "SIE" : PsiSpec.SIE,
         }

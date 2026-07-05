@@ -10,6 +10,7 @@ import numpy as np
 
 SIS = cs.SIS
 SIE = cs.SIE
+PointMass = cs.PointMass
 
 def getSourceFileName():
     """
