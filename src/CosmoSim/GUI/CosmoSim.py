@@ -50,7 +50,11 @@ class CosmoSim:
         self.srcparam = { "source" : "Spherical", "sigma" : 10 }
         self.lensmode = PsiSpec.SIS 
         self.simmode = ModelSpec.Raytrace 
-        self.initialise()
+        self._sim = None
+
+        self.setLensMode( self.lensmode )
+        self.makeSource( )
+        self.setModelMode( self.simmode )
 
         # Set up thread management
         self._continue = True
@@ -59,13 +63,6 @@ class CosmoSim:
         self._simThread = th.Thread(target=self.simThread)
         self._simThread.start()
 
-    def initialise(self):
-        """
-        Reinstantiate source, lens and simulator.
-        """
-        self.setLensMode( self.lensmode )
-        self.setModelMode( self.simmode )
-        self.makeSource( )
 
 
     def setSimParameters(self, param ):
@@ -110,7 +107,8 @@ class CosmoSim:
         if param.get( "imagesize" ) == None:
            param.__setitem__( "imagesize", self.imagesize )
         self._src = getSource(param,verbose=self.verbose)
-        self._sim.setSource( self._src )
+        if self._sim is not None:
+            self._sim.setSource( self._src )
         if self.verbose:
             print( f"GUI.CosmoSim.makeSource() returns (verbose={self.verbose})" )
 
@@ -142,16 +140,6 @@ class CosmoSim:
         else:
             self._lens = self._psilens
 
-    def initSim(self,model,*a,**kw):
-        if model == ModelSpec.Raytrace:
-            sim = RaytraceModel()
-        elif model == ModelSpec.Roulette:
-            sim = RouletteModel()
-        else:
-            raise RuntimeError( "Invalid simulator mode" )
-        sim.setLens( self._lens )
-        self._sim = sim
-
     def close(self):
         """
         Terminate the worker thread.
@@ -166,10 +154,19 @@ class CosmoSim:
     def maskImage(self,scale=1):
         return super().maskImage( float(scale) )
 
-    def setModelMode(self,s):
-        self.simmode = s
-        if self.verbose: print( f"setModelMode({s})")
-        return self.initSim( s ) 
+    def setModelMode(self,model):
+        self.simmode = model
+        if self.verbose: print( f"setModelMode({model})")
+
+        if model == ModelSpec.Raytrace:
+            sim = RaytraceModel()
+        elif model == ModelSpec.Roulette:
+            sim = RouletteModel()
+        else:
+            raise RuntimeError( "Invalid simulator mode" )
+        sim.setLens( self._lens )
+        sim.setSource( self._src )
+        self._sim = sim
 
     def setBGColour(self,s):
         self.bgcolour = s
@@ -182,10 +179,8 @@ class CosmoSim:
             self.simEvent.wait()
             if self._continue:
                self.simEvent.clear()
-               self.runSim()
+               self._sim.update()
                self.updateEvent.set()
-    def runSim(self):
-        return self._sim.update()
     def runSimulator(self):
         """
         Run the simulator; that is, tell it that the parameters
