@@ -5,6 +5,7 @@
 ### Changed
 
 + Refactored to instantiate objects in python and simplify API.
+  Removed the CosmoSim class implemented in C++.
 + Removed the closed form simulators for point mass lenses, 
   leaving only the modular model.
 
