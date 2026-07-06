@@ -36,11 +36,9 @@ cpptests:
 	cd roulettegen ; $(MAKE) alltests
 
 baselines:
-	cd exactpm ; $(MAKE) baseline`date "+%Y%m%d"`
 	cd raytrace ; $(MAKE) baseline`date "+%Y%m%d"` 
 	cd roulette ; $(MAKE) baseline`date "+%Y%m%d"` 
 	cd old-sampled ; $(MAKE) baseline`date "+%Y%m%d"` 
-	cd roulettepm ; $(MAKE) baseline`date "+%Y%m%d"`
 	cd new-roulette ; $(MAKE)  baseline`date "+%Y%m%d"`
 	cd new-raytrace ; $(MAKE)  baseline`date "+%Y%m%d"`
 	cd sampled-roulette ; $(MAKE)  baseline`date "+%Y%m%d"`
