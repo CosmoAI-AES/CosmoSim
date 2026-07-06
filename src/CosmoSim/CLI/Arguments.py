@@ -226,16 +226,21 @@ class CosmoParser(argparse.ArgumentParser):
                       help="centre image")
     self.add_argument('--maskradius',
             help="Set explicit masking radius")
-    self.add_argument('-M', '--mask',action='store_true',
+    self.add_argument('-M', '--mask',
+                      action=argparse.BooleanOptionalAction, 
             help="Mask out the convergence circle")
-    self.add_argument('-m', '--showmask',action='store_true',
+    self.add_argument('-m', '--showmask',
+                      action=argparse.BooleanOptionalAction, 
             help="Mark the convergence circle")
     self.add_argument('-O', '--maskscale',default="0.9",
             help="Scaling factor for the mask radius")
     self.add_argument('-F', '--amplitudes',help="Amplitudes file")
-    self.add_argument('-A', '--apparent',action='store_true',help="write apparent image")
-    self.add_argument('--mldata',action='store_true',help="Make roulette output for ML without redundant colums")
-    self.add_argument('-a', '--actual',action='store_true',help="write actual image")
+    self.add_argument('--mldata',
+                      action=argparse.BooleanOptionalAction, 
+                      help="Make roulette output for ML without redundant colums")
+    self.add_argument('-a', '--actual',
+                      action=argparse.BooleanOptionalAction, 
+                      help="write actual image")
 
     # Output file names
     self.add_argument('-D', '--directory',default="./",
