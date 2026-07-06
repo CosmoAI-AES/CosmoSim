@@ -79,7 +79,7 @@ class SimImage(GenericSim):
                 , "offsetX" : offset[0]
                 , "offsetY" : offset[1]
                 , "xiX" : xioffset[0]
-                , "xiY"  : xioffset[1] ]
+                , "xiY"  : xioffset[1] 
                 } )
         if fn is None:
             fn = self.getAmplitudeFile() 
@@ -152,12 +152,12 @@ class SimImage(GenericSim):
                 , "lensY" : -centrepoint[1]
                 , "centreX" : centrepoint[0]
                 , "centreY" : centrepoint[1]
-                ,  reletaX" : releta[0]
+                , "reletaX" : releta[0]
                 , "reletaY" : releta[1]
                 , "offsetX" : offset[0]
                 , "offsetY" : offset[1]
                 , "xiX" : xioffset[0]
-                , "xiY"  : xioffset[1] ]
+                , "xiY"  : xioffset[1]
                 } )
         r1 = pd.concat( [ r1, r2, ab ] )
         if verbose > 1:
