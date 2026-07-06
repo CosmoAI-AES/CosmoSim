@@ -123,7 +123,7 @@ void SimulatorModel::drawCritical( cv::Mat img ) {
 void SimulatorModel::updateInner( ) {
     cv::Mat imgApparent = getApparent() ;
 
-    if (DEBUG) std::cout << "[SimulatorModel::updateInner()] R=" << getEtaAbs() << "\n" ;
+    if (DEBUG) std::cout << "[SimulatorModel::updateInner()] eta=" << getEta() << "\n" ;
     if ( DEBUG>1 ) {
       std::cout << "[SimulatorModel::updateInner()] xi=" << getXi()   
               << "; eta=" << getEta() << "; etaOffset=" << etaOffset << "\n" ;
@@ -349,9 +349,7 @@ double SimulatorModel::getXiAbs() const {
 cv::Point2d SimulatorModel::getNu() const { 
    return nu ;
 }
-double SimulatorModel::getNuAbs() const { 
-   return sqrt( nu.x*nu.x + nu.y*nu.y ) ;
-}
+
 /** Get the source position $\beta$
  */
 cv::Point2d SimulatorModel::getEta() const {
@@ -361,9 +359,7 @@ cv::Point2d SimulatorModel::getEta() const {
 double SimulatorModel::getEtaSquare() const {
    return eta.x*eta.x + eta.y*eta.y ;
 }
-double SimulatorModel::getEtaAbs() const {
-   return sqrt( eta.x*eta.x + eta.y*eta.y ) ;
-}
+
 double SimulatorModel::getMaskRadius() const { 
    // return 1024*1024 ; 
    if ( maskRadius > 0 ) {

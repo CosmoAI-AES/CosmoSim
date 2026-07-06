@@ -74,9 +74,13 @@ class SimImage(GenericSim):
                 , "sigma" : self.param.get( "sigma" )
                 , "sigma2" : self.param.get( "sigma2" )
                 , "theta" : self.param.get( "theta" )
+                , "lensX" : -centrepoint[0]
+                , "lensY" : -centrepoint[1]
+                , "centreX" : centrepoint[0]
+                , "centreY" : centrepoint[1]
                 } )
         r2 = pd.Series(
-              [ centrepoint[0], centrepoint[1], releta[0], releta[1],
+              [ releta[0], releta[1],
                offset[0], offset[1], xioffset[0], xioffset[1] ],
               index=relcols ) 
         if fn is None:
