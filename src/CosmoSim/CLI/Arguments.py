@@ -210,7 +210,7 @@ class CosmoParser(argparse.ArgumentParser):
 
     # Other parameters
     self.add_argument('-n', '--nterms', type=int,
-                      help="Number of Roulettes terms", default=15)
+                      help="Number of Roulettes terms")
     self.add_argument('-Z', '--imagesize', type=int, default=512, help="image size for calculations")
     self.add_argument('-z', '--cropsize', type=int, help="Final image size")
 
