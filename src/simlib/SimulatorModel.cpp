@@ -381,7 +381,7 @@ void SimulatorModel::setXi( cv::Point2d xi1 ) {
    // etaOffset is the difference between source point corresponding to the
    // reference point in the lens plane and the actual source centre
    if (DEBUG>2) std::cout << "[setXi] " << xi1 << std::endl ;
-   etaOffset = getOffset( xi1 ) ;
+   etaOffset = getOffset( ) ;
 }
 void SimulatorModel::setLens( Lens *l ) {
    lens = l ;
@@ -402,24 +402,20 @@ cv::Point2d SimulatorModel::getRelativeEta( cv::Point2d xi1 ) {
    return releta ;
 }
 
-cv::Point2d SimulatorModel::getOffsetPy( double x, double y ) {
-   return SimulatorModel::getOffset( cv::Point2d(x,y) ) ;
-}
-
-cv::Point2d SimulatorModel::getOffset( cv::Point2d xi1 ) {
+cv::Point2d SimulatorModel::getOffset( ) {
    cv::Point2d releta, eta, r ; 
-   double dx = lens->psiXvalue( xi1.x, xi1.y ),
-	  dy = lens->psiYvalue( xi1.x, xi1.y ) ;
+   double dx = lens->psiXvalue( referenceXi.x, referenceXi.y ),
+	  dy = lens->psiYvalue( referenceXi.x, referenceXi.y ) ;
 
    dx = isnan( dx ) ? 0 : dx ;
    dy = isnan( dy ) ? 0 : dx ;
 
-   releta = xi1 - cv::Point2d( dx, dy ) ;
+   releta = referenceXi - cv::Point2d( dx, dy ) ;
    eta = getEta() ;
    r = releta - eta ;
 
    if (DEBUG) {
-     std::cout << "[getOffset] eta=" << eta << "; xi1=" << xi1
+     std::cout << "[getOffset] eta=" << eta << "; referenceXi=" << referenceXi
              << "; releta=" << releta 
              << "; return " << r << std::endl ;
    }

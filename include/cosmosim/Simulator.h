@@ -60,8 +60,7 @@ protected:
 public:
     SimulatorModel();
     virtual ~SimulatorModel();
-    cv::Point2d getOffsetPy( double, double ) ;
-    cv::Point2d getOffset( cv::Point2d ) ;
+    cv::Point2d getOffset( ) ;
     cv::Point2d getRelativeEta( cv::Point2d ) ;
     cv::Point2d getRelativeEtaPy( double, double ) ;
 

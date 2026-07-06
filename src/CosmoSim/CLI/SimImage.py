@@ -54,7 +54,7 @@ class SimImage(GenericSim):
         xireference = self.param.get( "xireference", True )
 
         releta = np.array(sim.getRelativeEta(centrepoint[0],centrepoint[1]))
-        offset = np.array(sim.getOffset(centrepoint[0],centrepoint[1]))
+        offset = np.array(sim.getOffset())
         if verbose: print( "[getRoulette] ", offset, centrepoint )
 
         xioffset = self.getXiOffset(centrepoint)
@@ -74,7 +74,7 @@ class SimImage(GenericSim):
                 , "lensY" : -centrepoint[1]
                 , "centreX" : centrepoint[0]
                 , "centreY" : centrepoint[1]
-                ,  reletaX" : releta[0]
+                , "reletaX" : releta[0]
                 , "reletaY" : releta[1]
                 , "offsetX" : offset[0]
                 , "offsetY" : offset[1]
@@ -129,7 +129,7 @@ class SimImage(GenericSim):
             print( "[datagen.py] Finding Alpha/beta; centrepoint=", centrepoint )
         releta = np.array(sim.getRelativeEta(centrepoint[0],centrepoint[1]))
         if verbose > 2: print( "[SimImage.getData] ", centrepoint )
-        offset = np.array(sim.getOffset(centrepoint[0],centrepoint[1]))
+        offset = np.array(sim.getOffset())
         if verbose: print( "[getData] ", offset, centrepoint )
         xioffset = self.getXiOffset(centrepoint)
         if xireference:
