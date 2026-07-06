@@ -191,8 +191,9 @@ class CosmoParser(argparse.ArgumentParser):
             help="simulation model")
     self.add_argument('-S', '--source',
             default="Spherical", help="source model")
-    self.add_argument('-G', '--sampled', action=argparse.BooleanOptionalAction,
-            default=None, help="Sample the lens model")
+    self.add_argument('-G', '--sampled',
+                      action=argparse.BooleanOptionalAction, 
+                      help="Sample the lens model")
 
     # Model Parameters
     self.add_argument('-x', '--x', type=float, default=0, help="x coordinate")
@@ -214,11 +215,15 @@ class CosmoParser(argparse.ArgumentParser):
     self.add_argument('-z', '--cropsize', type=int, help="Final image size")
 
     # Output configuration 
-    self.add_argument('-R', '--reflines',action='store_true',
-            help="Add reference (axes) lines")
-    self.add_argument( '--criticalcurves',action='store_true',
-            help="Add critical curves to the distorted image")
-    self.add_argument('-C', '--centred',action='store_true', help="centre image")
+    self.add_argument('-R', '--reflines',
+                      action=argparse.BooleanOptionalAction,
+                      help="Add reference (axes) lines")
+    self.add_argument( '--criticalcurves',
+                      action=argparse.BooleanOptionalAction,
+                      help="Add critical curves to the distorted image")
+    self.add_argument('-C', '--centred',
+                      action=argparse.BooleanOptionalAction, 
+                      help="centre image")
     self.add_argument('--maskradius',
             help="Set explicit masking radius")
     self.add_argument('-M', '--mask',action='store_true',
