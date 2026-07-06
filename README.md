@@ -76,51 +76,12 @@ axes cross.
 Further documentation and examples are found on the 
 [web site](https://cosmoai-aes.github.io/),
 
-
 ## Versions
 
 + The imortant git branches are
     - develop is the current state of the art
-    - pypitest is used for final testing with automatic deployment
-      to the PyPI test index.
     - master should be the last stable version
 + Releases
     - v-test-* are test releases, used to debug workflows.  Please ignore.
-    - see the releases on githun and CHANGELOG.md
-+ Prior to v2.0.0 some releases have been tagged, but not registered
-as releases in github.
-    - v0.1.0, v0.2.0, v1.0.0 are versions made by the u/g students
-      Spring 2022.
-    - v1.0.1 is cleaned up to be able to build v1.0.0
-
-## Caveats
-
-The simulator makes numerical calculations and there will always
-be approximation errors.
-
-1.  The images generated from the same parameters have changed slightly
-    between version.  Some changes are because some unfortunate uses of
-    integers and single-precision numbers have later been avoided, and some 
-    simply because the order of calculation has changed.
-1.  The SIS model is implemented in two versions, one rotating
-    to have the source on the x-axis and one working directly with
-    arbitrary position.  Difference are not perceptible by visual
-    comparison, but the difference image shows noticeable difference.
-
-
-## Contributors
-
-The initial prototype was an undergraduate
-[final year project](https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/3003634)
-by Ingebrigtsen, Remøy, Westbø, Nedreberg, and Austnes (2022).
-The software includes both a GUI simulator for interactive experimentation, 
-and a command line interface for batch generation of datasets.
-
-+ **Idea and Current Maintainance** Hans Georg Schaathun <hasc@ntnu.no>
-+ **Mathematical Models** Ben David Normann
-+ **Initial Prototype** Simon Ingebrigtsen, Sondre Westbø Remøy,
-  Einar Leite Austnes, and Simon Nedreberg Runde
-+ **Other Contributors** Lars Ivar Hatledal, Oda Hjemli
-
-
+    - see the releases on github and CHANGELOG.md
 
