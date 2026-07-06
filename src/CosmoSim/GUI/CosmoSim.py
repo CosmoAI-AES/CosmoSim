@@ -51,6 +51,9 @@ class CosmoSim:
 
         # Instantiate simulator and objects
         self._sim = None
+        self._lens = None
+        self._psilens = None
+        self._src = None
         self.setLensMode( PsiSpec.SIS )
         self.makeSource( )
         self.setModelMode( "Raytrace" )
@@ -120,13 +123,14 @@ class CosmoSim:
             lens = SIE()
         else:
             raise RuntimeError( "Invalid lens mode" )
+        self._psilens_ = self._psilens # backup to prevent garbage collection
         self._psilens = lens
         lens.setFile( self.amplitudefiles[lensmode] )
         self.setLensParameters()
         if self._sim is not None:
             if self.verbose:
                 print( f"[setLensMode({lensmode})] add lens to simulator" )
-            self._sim.setLens( lens )
+            self._sim.setLens( self._lens )
         if self.verbose:
             print( f"[setLensMode({lensmode})] returns" )
     def setLensParameters(self, param=None ):
@@ -162,6 +166,7 @@ class CosmoSim:
             sampling = self._sampling
         else:
             self._sampling = sampling
+        self._lens_ = self._lens  # Prevent garbage collection
         if sampling:
             size = self.imagesize
             if self.verbose>1: print( f"[initLens] Sampling (imagesize {size})" )
@@ -181,6 +186,7 @@ class CosmoSim:
             self.srcparam = param
         if param.get( "imagesize" ) == None:
            param.__setitem__( "imagesize", self.imagesize )
+        self._src_ = self._src # backup to prevent garbage collection
         self._src = getSource(param,verbose=self.verbose)
         if self._sim is not None:
             if self.verbose:
