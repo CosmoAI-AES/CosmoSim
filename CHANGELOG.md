@@ -1,11 +1,13 @@
 # CosmoSim Change Log
 
-## 3.2.0b2 - 2026-07-01
+## 3.2.0b4 - 2026-07-06
 
 ### Changed
 
 + Refactored to instantiate objects in python and simplify API.
   Removed the CosmoSim class implemented in C++.
++ Parameterised the Sersic profile for ellipsoid sources and made
+  it analogous to the Spherical one.
 + Removed the closed form simulators for point mass lenses, 
   leaving only the modular model.
 
@@ -13,6 +15,7 @@
 
 + Fixed the memory leak arising from multiple instances of the
   backend simulator.
++ Fixed the definition of offset in the CSV output.
 
 ## 3.1.2b1 - 2026-07-01
 
