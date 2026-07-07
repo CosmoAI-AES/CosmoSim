@@ -71,9 +71,8 @@ private:
     LightProfileSpec lightprofile ;
 
 public:
-    EllipsoidSource(int,double,double) ;
     EllipsoidSource(int,double,double,double,LightProfileSpec) ;
-    EllipsoidSource(int,double,double,double,double,double,LightProfileSpec) ;
+    EllipsoidSource(int,double,double,double,LightProfileSpec,double,double) ;
     virtual std::string idString() ;
 
 protected:

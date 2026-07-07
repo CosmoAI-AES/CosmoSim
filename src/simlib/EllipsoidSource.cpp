@@ -4,11 +4,13 @@
 #include <thread>
 #include <stdexcept>
 
-EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2, double thet, LightProfileSpec lightprf) :
+EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2, double thet, LightProfileSpec lightprf, double luminosity, double nsersic) :
         sigma1(sig1),
         sigma2(sig2),
         theta(thet),
         lightprofile(lightprf),
+        luminosity(luminosity),
+        n_sersic(nsersic),
         Source::Source(sz)
 { if (DEBUG) std::cout << "[EllipsoidSource ] sz=" << sz
                        << "; sigma1=" << sig1
@@ -17,9 +19,21 @@ EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2, double thet,
                        << "; lightprf=" << lightprf
 		       << std::endl ;
 }
-EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2 ) :
-        EllipsoidSource(sz,sig1,sig2,0,CSIM_LIGHT_GAUSSIAN)
-{ }
+EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2, double thet, LightProfileSpec lightprf) :
+        sigma1(sig1),
+        sigma2(sig2),
+        theta(thet),
+        lightprofile(lightprf),
+        luminosity(15),
+        n_sersic(4),
+        Source::Source(sz)
+{ if (DEBUG) std::cout << "[EllipsoidSource ] sz=" << sz
+                       << "; sigma1=" << sig1
+                       << "; sigma2=" << sig2
+                       << "; theta=" << thet
+                       << "; lightprf=" << lightprf
+		       << std::endl ;
+}
 
 std::string EllipsoidSource::idString() {
    return "Ellipsoid  Source" ;
@@ -38,7 +52,7 @@ void EllipsoidSource::drawSource(int begin, int end, cv::Mat& dst) {
               dst.at<uchar>(row, col) = value;
             } else if (lightprofile == LightProfileSpec::CSIM_LIGHT_SERSIC) {
                 auto q = sigma2/sigma1;
-                int n = 4;  // Sersic index
+                int n = n_sersic;  // Sersic index
                 auto re = 10*sigma1; // effective radius
                 auto r = std::sqrt(std::pow(x/q, 2)+std::pow(y, 2));
                 auto bn = 1.992*n - 0.3271;
