@@ -1,6 +1,6 @@
 # CosmoSim Change Log
 
-## 3.2.0b4 - 2026-07-06
+## 3.2.0b5 - 2026-07-07
 
 ### Changed
 
@@ -16,8 +16,6 @@
 + Fixed the memory leak arising from multiple instances of the
   backend simulator.
 + Fixed the definition of offset in the CSV output.
-
-## 3.1.2b1 - 2026-07-01
 
 Fixed a bug to allow image generation from a TOML file without a CSV file
 to store the parameters. E.g.
