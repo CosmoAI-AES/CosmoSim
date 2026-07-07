@@ -1,6 +1,7 @@
 /* (C) 2022: Hans Georg Schaathun <georg@schaathun.net> */
 
 #include "cosmosim/Simulator.h"
+#include "sersic"
 #include <thread>
 #include <stdexcept>
 
@@ -51,16 +52,8 @@ void EllipsoidSource::drawSource(int begin, int end, cv::Mat& dst) {
 			  - (y*y)/(sigma2*sigma2) ) ) );
               dst.at<uchar>(row, col) = value;
             } else if (lightprofile == LightProfileSpec::CSIM_LIGHT_SERSIC) {
-                auto q = sigma2/sigma1;
-                int n = n_sersic;  // Sersic index
-                auto re = 10*sigma1; // effective radius
-                auto r = std::sqrt(std::pow(x/q, 2)+std::pow(y, 2));
-                auto bn = 1.992*n - 0.3271;
-                auto value = round(std::exp(-bn*((std::pow(r/re, 1.0/n))-1.0)));
-                if (value > 255) {
-                    value = 255;
-                }
-                dst.at<uchar>(row, col) = (uchar)value;
+	      dst.at<uchar>(row, col) =
+                   sersic( n_sersic, luminosity, sigma1, sigma2, x, y ) ;
             }  else {
 	       throw std::runtime_error( "Unknown light profile." );
 	    }
