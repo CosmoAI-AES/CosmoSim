@@ -1,9 +1,8 @@
 /* (C) 2022: Hans Georg Schaathun <georg@schaathun.net> */
 
-/* The Source class implements the source model for the gravitational lensing simulator.
- * Currently it implements a Spherical, Gaussian mass,
- * It should be turned into an abstract class, with subclasses for each
- * of a range of source models.
+/* The image source takes an arbitrary image to use as the source.
+ * This is mainly for show, sporting an photo of Einstein in the tool
+ * implementations.
  */
 
 #include "cosmosim/Source.h"

@@ -1,9 +1,8 @@
-/* (C) 2022: Hans Georg Schaathun <georg@schaathun.net> */
+/* (C) 2022-26: Hans Georg Schaathun <georg@schaathun.net> */
 
-/* The Source class implements the source model for the gravitational lensing simulator.
- * Currently it implements a Spherical, Gaussian mass,
- * It should be turned into an abstract class, with subclasses for each
- * of a range of source models.
+/* The Source represents the distant galaxy which is seen through the
+ * gravitational lens.  The Source class is an abstract class.
+ * Subclasses need to override `drawSource()`.
  */
 
 #include "cosmosim/Source.h"
