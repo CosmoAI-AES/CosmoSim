@@ -159,7 +159,7 @@ class SimImage(GenericSim):
                 , "xiX" : xioffset[0]
                 , "xiY"  : xioffset[1]
                 } )
-        r1 = pd.concat( [ r1, r2, ab ] )
+        r1 = pd.concat( [ r1, ab ] )
         if verbose > 1:
             print( f"New row (verbosity={verbose})" )
             print( r1 )

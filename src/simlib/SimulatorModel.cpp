@@ -12,16 +12,12 @@ namespace py = pybind11;
 
 int debug = 0 ;
 
-
 SimulatorModel::SimulatorModel() :
         nterms(10),
         source(NULL)
 { }
 
-SimulatorModel::~SimulatorModel() {
-    // delete source ;
-    // delete segfaults on object created in python
-}
+SimulatorModel::~SimulatorModel() { }
 
 /* Getters for the images */
 cv::Mat SimulatorModel::getActual() const {
