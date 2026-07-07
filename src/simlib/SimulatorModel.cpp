@@ -123,7 +123,7 @@ void SimulatorModel::drawCritical( cv::Mat img ) {
 void SimulatorModel::updateInner( ) {
     cv::Mat imgApparent = getApparent() ;
 
-    if (DEBUG) std::cout << "[SimulatorModel::updateInner()] R=" << getEtaAbs() << "\n" ;
+    if (DEBUG) std::cout << "[SimulatorModel::updateInner()] eta=" << getEta() << "\n" ;
     if ( DEBUG>1 ) {
       std::cout << "[SimulatorModel::updateInner()] xi=" << getXi()   
               << "; eta=" << getEta() << "; etaOffset=" << etaOffset << "\n" ;
@@ -349,9 +349,7 @@ double SimulatorModel::getXiAbs() const {
 cv::Point2d SimulatorModel::getNu() const { 
    return nu ;
 }
-double SimulatorModel::getNuAbs() const { 
-   return sqrt( nu.x*nu.x + nu.y*nu.y ) ;
-}
+
 /** Get the source position $\beta$
  */
 cv::Point2d SimulatorModel::getEta() const {
@@ -361,9 +359,7 @@ cv::Point2d SimulatorModel::getEta() const {
 double SimulatorModel::getEtaSquare() const {
    return eta.x*eta.x + eta.y*eta.y ;
 }
-double SimulatorModel::getEtaAbs() const {
-   return sqrt( eta.x*eta.x + eta.y*eta.y ) ;
-}
+
 double SimulatorModel::getMaskRadius() const { 
    // return 1024*1024 ; 
    if ( maskRadius > 0 ) {
@@ -385,7 +381,7 @@ void SimulatorModel::setXi( cv::Point2d xi1 ) {
    // etaOffset is the difference between source point corresponding to the
    // reference point in the lens plane and the actual source centre
    if (DEBUG>2) std::cout << "[setXi] " << xi1 << std::endl ;
-   etaOffset = getOffset( xi1 ) ;
+   etaOffset = getOffset( ) ;
 }
 void SimulatorModel::setLens( Lens *l ) {
    lens = l ;
@@ -406,24 +402,20 @@ cv::Point2d SimulatorModel::getRelativeEta( cv::Point2d xi1 ) {
    return releta ;
 }
 
-cv::Point2d SimulatorModel::getOffsetPy( double x, double y ) {
-   return SimulatorModel::getOffset( cv::Point2d(x,y) ) ;
-}
-
-cv::Point2d SimulatorModel::getOffset( cv::Point2d xi1 ) {
+cv::Point2d SimulatorModel::getOffset( ) {
    cv::Point2d releta, eta, r ; 
-   double dx = lens->psiXvalue( xi1.x, xi1.y ),
-	  dy = lens->psiYvalue( xi1.x, xi1.y ) ;
+   double dx = lens->psiXvalue( referenceXi.x, referenceXi.y ),
+	  dy = lens->psiYvalue( referenceXi.x, referenceXi.y ) ;
 
    dx = isnan( dx ) ? 0 : dx ;
    dy = isnan( dy ) ? 0 : dx ;
 
-   releta = xi1 - cv::Point2d( dx, dy ) ;
+   releta = referenceXi - cv::Point2d( dx, dy ) ;
    eta = getEta() ;
    r = releta - eta ;
 
    if (DEBUG) {
-     std::cout << "[getOffset] eta=" << eta << "; xi1=" << xi1
+     std::cout << "[getOffset] eta=" << eta << "; referenceXi=" << referenceXi
              << "; releta=" << releta 
              << "; return " << r << std::endl ;
    }

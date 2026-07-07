@@ -53,17 +53,14 @@ protected:
     virtual void calculateAlphaBeta() ;
     virtual cv::Point2d getDistortedPos(double r, double theta) const ;
 
-    double getNuAbs() const ;
     double getXiAbs() const ;
-    double getEtaAbs() const ;
     double getEtaSquare() const ;
     cv::Point2d getEta() const ;
 
 public:
     SimulatorModel();
     virtual ~SimulatorModel();
-    cv::Point2d getOffsetPy( double, double ) ;
-    cv::Point2d getOffset( cv::Point2d ) ;
+    cv::Point2d getOffset( ) ;
     cv::Point2d getRelativeEta( cv::Point2d ) ;
     cv::Point2d getRelativeEtaPy( double, double ) ;
 

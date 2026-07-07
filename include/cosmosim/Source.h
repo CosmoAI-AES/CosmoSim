@@ -67,11 +67,13 @@ class EllipsoidSource : public Source {
 
 private:
     double sigma1, sigma2, theta ;
+    double n_sersic, luminosity;
     LightProfileSpec lightprofile ;
 
 public:
     EllipsoidSource(int,double,double) ;
     EllipsoidSource(int,double,double,double,LightProfileSpec) ;
+    EllipsoidSource(int,double,double,double,double,double,LightProfileSpec) ;
     virtual std::string idString() ;
 
 protected:
