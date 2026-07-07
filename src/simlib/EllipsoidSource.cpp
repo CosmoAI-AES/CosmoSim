@@ -1,7 +1,7 @@
 /* (C) 2022: Hans Georg Schaathun <georg@schaathun.net> */
 
 #include "cosmosim/Simulator.h"
-#include "sersic"
+#include "sersic.h"
 #include <thread>
 #include <stdexcept>
 
