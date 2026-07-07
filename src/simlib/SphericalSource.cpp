@@ -39,7 +39,7 @@ void SphericalSource::drawSource(int begin, int end, cv::Mat& dst) {
                 float bn = 1.992*n_sersic - 0.3271;
                 float F = luminosity * std::pow(10, 3);
                 float pi = 3.141592;
-                float I_eff = F*std::pow(bn, 2.0 * n_sersic)/(2 * pi * std::pow(re, 2.0) * n_sersic * std::exp(bn) * std::tgamma(2.0 * n_sersic));
+                float I_eff = F*std::pow(bn, 2.0 * n_sersic)/(2 * pi * std::pow(sigma, 2.0) * n_sersic * std::exp(bn) * std::tgamma(2.0 * n_sersic));
                 float value = round(I_eff*std::exp(-bn*((std::pow(r/re, 1.0/n_sersic))-1.0)));
                 if (value > 255) {
                     value = 255;
