@@ -191,8 +191,9 @@ class CosmoParser(argparse.ArgumentParser):
             help="simulation model")
     self.add_argument('-S', '--source',
             default="Spherical", help="source model")
-    self.add_argument('-G', '--sampled', action=argparse.BooleanOptionalAction,
-            default=None, help="Sample the lens model")
+    self.add_argument('-G', '--sampled',
+                      action=argparse.BooleanOptionalAction, 
+                      help="Sample the lens model")
 
     # Model Parameters
     self.add_argument('-x', '--x', type=float, default=0, help="x coordinate")
@@ -209,28 +210,37 @@ class CosmoParser(argparse.ArgumentParser):
 
     # Other parameters
     self.add_argument('-n', '--nterms', type=int,
-                      help="Number of Roulettes terms", default=15)
+                      help="Number of Roulettes terms")
     self.add_argument('-Z', '--imagesize', type=int, default=512, help="image size for calculations")
     self.add_argument('-z', '--cropsize', type=int, help="Final image size")
 
     # Output configuration 
-    self.add_argument('-R', '--reflines',action='store_true',
-            help="Add reference (axes) lines")
-    self.add_argument( '--criticalcurves',action='store_true',
-            help="Add critical curves to the distorted image")
-    self.add_argument('-C', '--centred',action='store_true', help="centre image")
+    self.add_argument('-R', '--reflines',
+                      action=argparse.BooleanOptionalAction,
+                      help="Add reference (axes) lines")
+    self.add_argument( '--criticalcurves',
+                      action=argparse.BooleanOptionalAction,
+                      help="Add critical curves to the distorted image")
+    self.add_argument('-C', '--centred',
+                      action=argparse.BooleanOptionalAction, 
+                      help="centre image")
     self.add_argument('--maskradius',
             help="Set explicit masking radius")
-    self.add_argument('-M', '--mask',action='store_true',
+    self.add_argument('-M', '--mask',
+                      action=argparse.BooleanOptionalAction, 
             help="Mask out the convergence circle")
-    self.add_argument('-m', '--showmask',action='store_true',
+    self.add_argument('-m', '--showmask',
+                      action=argparse.BooleanOptionalAction, 
             help="Mark the convergence circle")
     self.add_argument('-O', '--maskscale',default="0.9",
             help="Scaling factor for the mask radius")
     self.add_argument('-F', '--amplitudes',help="Amplitudes file")
-    self.add_argument('-A', '--apparent',action='store_true',help="write apparent image")
-    self.add_argument('--mldata',action='store_true',help="Make roulette output for ML without redundant colums")
-    self.add_argument('-a', '--actual',action='store_true',help="write actual image")
+    self.add_argument('--mldata',
+                      action=argparse.BooleanOptionalAction, 
+                      help="Make roulette output for ML without redundant colums")
+    self.add_argument('-a', '--actual',
+                      action=argparse.BooleanOptionalAction, 
+                      help="write actual image")
 
     # Output file names
     self.add_argument('-D', '--directory',default="./",
@@ -246,7 +256,8 @@ class CosmoParser(argparse.ArgumentParser):
 
     self.add_argument('--maxcount',
             help="Maximum number of images to process")
-    self.add_argument('--xireference',default=True, action=argparse.BooleanOptionalAction,
+    self.add_argument('--xireference',
+                      action=argparse.BooleanOptionalAction,
             help="Use apparent position as reference for roulette amplitudes")
     # Command mode
     self.add_argument('--rnd', action='store_true',

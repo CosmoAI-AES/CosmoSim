@@ -63,10 +63,6 @@ class SimImage(GenericSim):
         else:
             xi = centrepoint
         
-        relcols = [ "centreX", "centreY",
-                   "reletaX", "reletaY",
-                   "offsetX", "offsetY",
-                   "xiX", "xiY" ]
         r1 = pd.Series(
                 { "source" : self.param.get( "source" )
                 , "x" : self.param.get( "x" )
@@ -74,17 +70,23 @@ class SimImage(GenericSim):
                 , "sigma" : self.param.get( "sigma" )
                 , "sigma2" : self.param.get( "sigma2" )
                 , "theta" : self.param.get( "theta" )
+                , "lensX" : -centrepoint[0]
+                , "lensY" : -centrepoint[1]
+                , "centreX" : centrepoint[0]
+                , "centreY" : centrepoint[1]
+                , "reletaX" : releta[0]
+                , "reletaY" : releta[1]
+                , "offsetX" : offset[0]
+                , "offsetY" : offset[1]
+                , "xiX" : xioffset[0]
+                , "xiY"  : xioffset[1] 
                 } )
-        r2 = pd.Series(
-              [ centrepoint[0], centrepoint[1], releta[0], releta[1],
-               offset[0], offset[1], xioffset[0], xioffset[1] ],
-              index=relcols ) 
         if fn is None:
             fn = self.getAmplitudeFile() 
         g = self.param.get( ( "lens", "einsteinradius" ) )
         if verbose: print( "Einstein radius", g )
         rp = RouletteParser( fn, g=g, verbose=self.verbose )
-        r1 = pd.concat( [ r1, r2, rp.getAlphaBetas(xi,maxm=maxm) ] )
+        r1 = pd.concat( [ r1,  rp.getAlphaBetas(xi,maxm=maxm) ] )
         r1.name = self.param.get( "filename" )
         if verbose > 1:
             print( f"New row (verbosity={verbose})" )
@@ -138,23 +140,25 @@ class SimImage(GenericSim):
             if verbose>1:
                 print( "[xireference=False] nterms =", maxm )
             ab = self.getAlphaBetas(maxm,pt=centrepoint)
-        relcols = [ "centreX", "centreY",
-                   "reletaX", "reletaY",
-                   "offsetX", "offsetY",
-                   "xiX", "xiY" ]
+
         r1 = pd.Series(
-                { "filename" : self.param.get( "filename" )
-                , "source" : self.param.get( "source" )
+                { "source" : self.param.get( "source" )
                 , "x" : self.param.get( "x" )
                 , "y" : self.param.get( "y" )
                 , "sigma" : self.param.get( "sigma" )
                 , "sigma2" : self.param.get( "sigma2" )
                 , "theta" : self.param.get( "theta" )
+                , "lensX" : -centrepoint[0]
+                , "lensY" : -centrepoint[1]
+                , "centreX" : centrepoint[0]
+                , "centreY" : centrepoint[1]
+                , "reletaX" : releta[0]
+                , "reletaY" : releta[1]
+                , "offsetX" : offset[0]
+                , "offsetY" : offset[1]
+                , "xiX" : xioffset[0]
+                , "xiY"  : xioffset[1]
                 } )
-        r2 = pd.Series(
-              [ centrepoint[0], centrepoint[1], releta[0], releta[1],
-               offset[0], offset[1], xioffset[0], xioffset[1] ],
-              index=relcols ) 
         r1 = pd.concat( [ r1, r2, ab ] )
         if verbose > 1:
             print( f"New row (verbosity={verbose})" )

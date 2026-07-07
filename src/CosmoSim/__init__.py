@@ -18,7 +18,7 @@ from .Dictionary import *
 Parameters = Arguments.Parameters
 setDebug = cs.setDebug
 
-__version__ = "3.2.0b3"
+__version__ = "3.2.0b4"
 
 def getPathFN(fn):
     dir = os.path.dirname(os.path.abspath(__file__))
