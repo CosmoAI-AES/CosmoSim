@@ -34,7 +34,7 @@ void SphericalSource::drawSource(int begin, int end, cv::Mat& dst) {
                 dst.at<uchar>(row, col) = (uchar)value;
             } 
             else if (lightprofile == LightProfileSpec::CSIM_LIGHT_SERSIC) {
-                float re = sigma; // effective radius
+                float re = 10*sigma; // effective radius
                 float r = std::sqrt(std::pow(x, 2)+std::pow(y, 2)); //source position
                 float bn = 1.992*n_sersic - 0.3271;
                 float F = luminosity * std::pow(10, 3);
