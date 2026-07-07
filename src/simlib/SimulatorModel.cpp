@@ -20,8 +20,14 @@ SimulatorModel::SimulatorModel() :
 SimulatorModel::~SimulatorModel() { }
 
 /* Getters for the images */
+
+/** Get the actual source image, as if there were no lens.
+ * This intended for visualiastion, showing the source in its
+ * proper position. 
+ */
+
 cv::Mat SimulatorModel::getActual() const {
-   cv::Mat imgApparent = getSource() ;
+   cv::Mat imgApparent = getApparent() ;
    cv::Mat imgActual 
         = cv::Mat::zeros(imgApparent.size(), imgApparent.type());
    cv::Mat tr = (cv::Mat_<double>(2,3) << 1, 0, getEta().x, 0, 1, -getEta().y);
@@ -29,13 +35,10 @@ cv::Mat SimulatorModel::getActual() const {
    return imgActual ; 
 
 }
-cv::Mat SimulatorModel::getSource() const {
-   if (DEBUG) std::cout << "[SimulatorModel::getSource()]\n" ;
-   if ( NULL == source ) {
-       if (DEBUG) std::cout << "[SimulatorModel::getSource()] Source not defined.\n" ;
-   }
-   return source->getImage() ;
-}
+
+/** Get the source image centred at the origin in the middle of the image.
+ * This is the image used for calculation of the distorted image.
+ */
 cv::Mat SimulatorModel::getApparent() const {
    return source->getImage() ;
 }
@@ -69,7 +72,7 @@ cv::Mat SimulatorModel::getCaustic() {
    return img ;
 }
 cv::Mat SimulatorModel::getCritical() {
-   cv::Mat src = getSource() ;
+   cv::Mat src = getApparent() ;
    cv::Mat img = cv::Mat::zeros(src.size(), src.type());
    drawCritical( img ) ;
    return img ;

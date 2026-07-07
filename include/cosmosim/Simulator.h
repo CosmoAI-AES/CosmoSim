@@ -70,7 +70,6 @@ public:
     /* Getters (images) */
     cv::Mat getActual() const ;
     virtual cv::Mat getApparent() const ;
-    cv::Mat getSource() const ;
     cv::Mat getDistorted() const ;
 
     /* Getters (Parameters) */
