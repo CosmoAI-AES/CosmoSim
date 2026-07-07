@@ -5,13 +5,13 @@
 #include <thread>
 #include <stdexcept>
 
-EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2, double thet, double idx, double lum, LightProfileSpec lightprf) :
+EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2, double thet, LightProfileSpec lightprf, double luminosity, double nsersic) :
         sigma1(sig1),
         sigma2(sig2),
         theta(thet),
-        n_sersic(idx),
-        luminosity(lum),
         lightprofile(lightprf),
+        luminosity(luminosity),
+        n_sersic(nsersic),
         Source::Source(sz)
 { if (DEBUG) std::cout << "[EllipsoidSource ] sz=" << sz
                        << "; sigma1=" << sig1
@@ -20,12 +20,21 @@ EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2, double thet,
                        << "; lightprf=" << lightprf
 		       << std::endl ;
 }
-EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2 ) :
-        EllipsoidSource(sz,sig1,sig2,0,CSIM_LIGHT_GAUSSIAN)
-{ }
 EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2, double thet, LightProfileSpec lightprf) :
-        EllipsoidSource(sz,sig1,sig2,0,4,10,lightprf)
-{ }
+        sigma1(sig1),
+        sigma2(sig2),
+        theta(thet),
+        lightprofile(lightprf),
+        luminosity(15),
+        n_sersic(4),
+        Source::Source(sz)
+{ if (DEBUG) std::cout << "[EllipsoidSource ] sz=" << sz
+                       << "; sigma1=" << sig1
+                       << "; sigma2=" << sig2
+                       << "; theta=" << thet
+                       << "; lightprf=" << lightprf
+		       << std::endl ;
+}
 
 std::string EllipsoidSource::idString() {
    return "Ellipsoid  Source" ;
@@ -43,7 +52,7 @@ void EllipsoidSource::drawSource(int begin, int end, cv::Mat& dst) {
 			  - (y*y)/(sigma2*sigma2) ) ) );
               dst.at<uchar>(row, col) = value;
             } else if (lightprofile == LightProfileSpec::CSIM_LIGHT_SERSIC) {
-                dst.at<uchar>(row, col) =
+	      dst.at<uchar>(row, col) =
                    sersic( n_sersic, luminosity, sigma1, sigma2, x, y ) ;
             }  else {
 	       throw std::runtime_error( "Unknown light profile." );

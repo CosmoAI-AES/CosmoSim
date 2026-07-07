@@ -33,9 +33,8 @@ void SphericalSource::drawSource(int begin, int end, cv::Mat& dst) {
             if (lightprofile == LightProfileSpec::CSIM_LIGHT_GAUSSIAN) {
                 auto value = (uchar)round(255 * exp((-x * x - y * y) / (2.0*sigma*sigma)));
                 dst.at<uchar>(row, col) = (uchar)value;
-            } 
-            else if (lightprofile == LightProfileSpec::CSIM_LIGHT_SERSIC) {
-                dst.at<uchar>(row, col) =
+            } else if (lightprofile == LightProfileSpec::CSIM_LIGHT_SERSIC) {
+	       dst.at<uchar>(row, col) =
                    sersic( n_sersic, luminosity, sigma, sigma, x, y ) ;
             }
         }
