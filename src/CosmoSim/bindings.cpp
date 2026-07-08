@@ -13,7 +13,6 @@
 #define DEBUG debug
 #endif
 
-
 enum SourceSpec { CSIM_SOURCE_SPHERE,
                   CSIM_SOURCE_ELLIPSE,
                   CSIM_SOURCE_IMAGE,
@@ -134,9 +133,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setMaskMode", &SimulatorModel::setMaskMode)
         .def("setBGColour", &SimulatorModel::setBGColour)
         .def("setMaskRadius", &SimulatorModel::setMaskRadius)
-        // .def("maskImage", &SimulatorModel::maskImage)
         .def("getActual", &SimulatorModel::getActual)
-        .def("getApparent", &SimulatorModel::getApparent)
         .def("getDistorted", &SimulatorModel::getDistorted) 
         .def("getRelativeEta", &SimulatorModel::getRelativeEtaPy)
         .def("getOffset", &SimulatorModel::getOffset)

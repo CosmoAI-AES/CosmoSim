@@ -25,7 +25,6 @@ SimulatorModel::~SimulatorModel() { }
  * This intended for visualiastion, showing the source in its
  * proper position. 
  */
-
 cv::Mat SimulatorModel::getActual() const {
    cv::Mat imgApparent = getApparent() ;
    cv::Mat imgActual 
@@ -425,8 +424,6 @@ cv::Point2d SimulatorModel::getOffset( ) {
 }
 
 void SimulatorModel::updateApparentAbs( ) {
-    cv::Mat im = getActual() ; 
-      // This looks redundant but it may be required to compute the source image.
     cv::Point2d xi1 = lens->getXi( getEta() ) ;
     setNu( xi1 ) ;
 }

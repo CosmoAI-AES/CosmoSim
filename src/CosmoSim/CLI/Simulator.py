@@ -78,6 +78,9 @@ class GenericSim:
         self.image = im
         return  im
     def getActualImage(self):
+        """
+        Get the source image to file.
+        """
         param = self.param
         try:
            return self.sim.getActualImage( reflines=param.get( "reflines" ) )
@@ -87,17 +90,15 @@ class GenericSim:
            if im.shape[2] == 1 : im.shape = im.shape[:2]
            return im
     def getActual(self):
+        """
+        Write the source image to file.
+        """
         param = self.param
         name = self.name
         fn = os.path.join(param.get("directory"),"actual-" + str(name) + ".png" ) 
         im = self.sim.getActualImage( reflines=param.get( "reflines" ) )
         cv.imwrite(fn,im)
-    def getApparent(self):
-        param = self.param
-        name = self.name
-        fn = os.path.join(param.get("directory"),"apparent-" + str(name) + ".png" ) 
-        im = self.sim.getApparentImage( reflines=param.get( "reflines" ) )
-        cv.imwrite(fn,im)
+
     def getAnnotated(self,centred=None,cropsize=None):
         """
         Get an image with annotations showing key points and the convergence ring.

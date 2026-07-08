@@ -31,7 +31,6 @@ def processResim(frame,param,maxcount=None,verbose=0):
         imsim.saveImage()
 
         if param.get( "actual" ): imsim.getActual()
-        if param.get( "apparent" ): imsim.getApparent()
 
         if maxcount is not None:
             count += 1

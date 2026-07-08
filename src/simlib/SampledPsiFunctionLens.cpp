@@ -12,7 +12,6 @@ SampledPsiFunctionLens::SampledPsiFunctionLens( PsiFunctionLens *psilens, int si
 
 void SampledPsiFunctionLens::updatePsi( cv::Size size ) { 
 
-   // cv::Mat im = getApparent() ;
    int nrows = size.height ;
    int ncols = size.width ;
 

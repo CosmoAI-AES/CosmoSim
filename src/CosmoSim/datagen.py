@@ -27,7 +27,6 @@ def makeSingle(param=None,outcols=None,verbose=0):
     if verbose: print( f"[makeSingle] verbose={verbose}" )
     imsim = SimImage(param=param,outcols=outcols,verbose=verbose)
     imsim.saveImage()
-    if param.get( "apparent" ): imsim.getApparent()
     if param.get( "actual" ): imsim.getActual()
     if verbose: print( "makeSingle() returns" )
     return imsim
