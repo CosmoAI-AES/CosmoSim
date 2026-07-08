@@ -86,16 +86,16 @@ def getLens(param,verbose=1):
     cluster = param.get( ( "lens", "cluster" ), None )
     if cluster is not None:
         lens = ClusterLens( cluster, verbose=verbose )
-    elif lensmode == "PointMass":
+    elif lensDict[lensmode] == PsiSpec.PM:
         lens = cs.PointMass()
         lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
-    elif lensmode == "SIS":
+    elif lensDict[lensmode] == PsiSpec.SIS:
         lens = cs.SIS()
         lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
         fn = param.get( ( "lens", "roulettefile" ) )
         if fn is None: fn = getPathFN( "sis50.txt" )
         lens.setFile( fn )
-    elif lensmode == "SIE":
+    elif lensDict[lensmode] == PsiSpec.SIE:
         lens = cs.SIE()
         lens.setRatio( param.get( ( "lens", "ellipseratio" ) ) )
         lens.setOrientation( param.get( ( "lens", "orientation" ) ) )
