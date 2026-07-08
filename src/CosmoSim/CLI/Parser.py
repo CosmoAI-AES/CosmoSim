@@ -29,8 +29,9 @@ def eval1(expr,x,y,g,precision=64):
 class RouletteParser:
     """ Parse, manage, and evaluate algebraic expressions for roulette amplitudes.
     """
-    def __init__(self,fn,g=None,verbose=1):
+    def __init__(self,fn,g=None,precision=64,verbose=1):
         self.verbose = verbose
+        self.precision = precision
         with open(fn, 'r') as f:
             if verbose: print( "Opened file", fn ) 
             c = f.read()
@@ -53,10 +54,10 @@ class RouletteParser:
             self.beta[(m,s)] = b
     def getAlpha(self,x,y,g,m,s):
          """get `alpha[m][s]` for Einstein radius `g` at the point (`x`,`y`). """
-         return eval1(self.alpha[(m,s)],x,y,g)
+         return eval1(self.alpha[(m,s)],x,y,g,precision=self.precision)
     def getBeta(self,x,y,g,m,s):
          """get `beta[m][s]` for Einstein radius `g` at the point (`x`,`y`). """
-         return eval1(self.beta[(m,s)],x,y,g)
+         return eval1(self.beta[(m,s)],x,y,g,precision=self.precision)
     def getAlphaBetas(self,pt,g=None,maxm=5):
         """
         Get the roulette amplitudes for a given point in the source plane.
