@@ -431,6 +431,10 @@ void SimulatorModel::updateApparentAbs( ) {
 void SimulatorModel::setMaskRadius( double r ) {
    maskRadius = r ;
 }
+
+/* Get the source position corresponding to the given observed position
+ * (r,theta) in polar co-ordinates.  This is a helper for `distort()`.
+ */
 cv::Point2d SimulatorModel::getDistortedPos(double r, double theta) const {
    throw NotImplemented() ; 
 }
