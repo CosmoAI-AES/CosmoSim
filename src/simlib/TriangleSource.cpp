@@ -6,20 +6,12 @@ TriangleSource::TriangleSource( int sz, double sig, double thet ) :
         sigma(sig),
         theta(thet),
         Source::Source(sz)
-{ }
+{
+      imgApparent = cv::Mat(size, size, CV_8UC3, cv::Scalar(0, 0, 0)) ;
+}
 TriangleSource::TriangleSource( int sz, double sig ) :
         TriangleSource(sz,sig,0)
 { }
-
-/* Getters for the images */
-cv::Mat TriangleSource::getImage() { 
-   if ( ! drawn ) {
-      imgApparent = cv::Mat(size, size, CV_8UC3, cv::Scalar(0, 0, 0)) ;
-      drawParallel( imgApparent ) ;
-      drawn = 1 ;
-   }
-   return imgApparent ; 
-}
 
 
 void TriangleSource::drawSource(int begin, int end, cv::Mat& dst) {

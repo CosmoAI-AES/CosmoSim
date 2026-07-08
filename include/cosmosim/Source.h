@@ -89,7 +89,6 @@ private:
 public:
     TriangleSource(int,double) ;
     TriangleSource(int,double,double) ;
-    virtual cv::Mat getImage() ;
 
 protected:
     virtual void drawSource(int, int, cv::Mat &) ;
