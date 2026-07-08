@@ -34,7 +34,7 @@ def makeSingle(param=None,outcols=None,verbose=0):
 def datagen(args,param=None):
 
     if args.rnd:
-        frame = datasetgen(args.toml,args.csvfile)
+        frame = datasetgen(args.toml,args.csvfile,verbose=args.verbose)
     elif not args.csvfile:
         raise RuntimeError( "CSV file needed for batch mode" )
     else:

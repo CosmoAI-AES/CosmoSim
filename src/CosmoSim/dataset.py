@@ -17,6 +17,8 @@ import random
 import argparse
 import pandas as pd
 
+from . import Parameters
+from .Dictionary import *
 from .CLI.Generators import getLens
 
 def isnumeric(x): return isinstance(x, numbers.Number )
@@ -199,7 +201,7 @@ def getline(toml,idx=0,fn=None,verbose=1):
     cluster = toml.get( "cluster", None ) 
     if cluster:
         nc = toml["cluster"].get( "count", 1 )
-        if verbose > 1: print( "[getline]", toml["cluster"] )
+        if verbose > 1: print( "[getline] Cluster", toml["cluster"] )
         if nc > 1:
             ls0 = [ lensSpec(toml,verbose=verbose) for i in range(nc) ]
             ls1 = [ lensSpec2String( x, verbose=verbose ) for x in ls0 ]
@@ -208,14 +210,17 @@ def getline(toml,idx=0,fn=None,verbose=1):
             l = pd.Series( { "cluster" : ";".join( ls1 ) } )
         else:
             raise RuntimeError( "[dataset.py] Singleton or malformed cluster lens" )
+        if verbose > 1: print( "[getline] Cluster", l)
     else:
         cfg = lensmodes(toml)
         l =  rndlens( toml, verbose )
         if cfg is not None: l["lens"] = random.choice( cfg )
         eR = l["einsteinradius"]
+        if verbose > 1: print( "[getline] Singleton lens", l )
     coor = toml["source"].get( "position", "cartesian" )
     if coor == "critical":
-        lcfg = { "lens" : dict(l) }
+        lcfg = Parameters( { "lens" : dict(l) } )
+        if verbose > 1: print( "[getline] Critical positioning", lcfg )
         lens = getLens( lcfg )
         s = rndsource( toml, lens=lens, verbose=verbose )
     else:
@@ -241,7 +246,7 @@ def datasetgen(infile,outfile=None,verbose=1):
        print(toml)
 
     n = toml["simulator"].get( "size", 10000 )
-    df = pd.DataFrame( [ getline(toml,i+1) for i in range(n) ] )
+    df = pd.DataFrame( [ getline(toml,i+1,verbose=verbose) for i in range(n) ] )
     if outfile:
         if verbose:
             print( "[datasetgen] Output", outfile )
