@@ -64,7 +64,8 @@ class SimImage(GenericSim):
             xi = centrepoint
         
         r1 = pd.Series(
-                { "source" : self.param.get( "source" )
+                { "filename" : self.param.get( "filename" )
+                , "source" : self.param.get( "source" )
                 , "x" : self.param.get( "x" )
                 , "y" : self.param.get( "y" )
                 , "sigma" : self.param.get( "sigma" )
@@ -142,7 +143,8 @@ class SimImage(GenericSim):
             ab = self.getAlphaBetas(maxm,pt=centrepoint)
 
         r1 = pd.Series(
-                { "source" : self.param.get( "source" )
+                { "filename" : self.param.get( "filename" )
+                , "source" : self.param.get( "source" )
                 , "x" : self.param.get( "x" )
                 , "y" : self.param.get( "y" )
                 , "sigma" : self.param.get( "sigma" )
