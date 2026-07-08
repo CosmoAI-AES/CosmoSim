@@ -5,12 +5,13 @@
 # generator.
 
 [simulator]
-configs = [ "raysie" ]
+model = "Raytrace"
 size = 10
 nterms = 4
 
 
 [lens]
+mode = "SIE"
 chi = 50
 einstein-min = 1
 einstein-max = 39
