@@ -1,7 +1,7 @@
 # (C) 2026: Hans Georg Schaathun <georg@schaathun.net> 
 
 """
-Functions to create source objects.
+Factory functions for source objects.
 """
 
 from . import CosmoSimPy as cs
