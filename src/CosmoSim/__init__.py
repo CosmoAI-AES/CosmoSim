@@ -21,5 +21,9 @@ setDebug = cs.setDebug
 __version__ = "3.2.0b6"
 
 def getPathFN(fn):
+    """
+    Get the absolute path name for file given relative to the location of
+    the referencing file.
+    """
     dir = os.path.dirname(os.path.abspath(__file__))
     return  os.path.join( dir, fn )

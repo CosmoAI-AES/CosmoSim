@@ -14,12 +14,20 @@ import argparse
 import matplotlib.pyplot as plt
 
 def imshow(im,title=None):
+    """
+    Show a greyscale image with an optional title.
+    This works directly in Juyter Lab.  
+    """
     plt.imshow(im,cmap="grey", vmin=0, vmax=255)
     if title is not None:
         plt.title( title )
     plt.axis( "off" )
 
 def showImages(ims,size=(1,3),titles=None):
+    """
+    Show several images as subfigures.  The size argument is the number of images,
+    as (rows,columns).
+    """
     (x,y) = size
     fig = plt.figure(figsize=(5*y, 5*x))
     fig.tight_layout(pad=0.0)
@@ -30,6 +38,11 @@ def showImages(ims,size=(1,3),titles=None):
         imshow(im,t)
 
 def imageCompare(im1,im2,title1=None,title2=None,axiscross=False):
+    """
+    Plot two images plus their difference image.
+    If `axiscross` is true, an axis cross marking the centre of the image
+    is added to the two original images, but not to the difference image.
+    """
     diff = imageDiff(im1,im2)
     if axiscross:
         im1 = im1.copy()
@@ -41,6 +54,10 @@ def imageCompare(im1,im2,title1=None,title2=None,axiscross=False):
                , titles=[ title1, "Difference", title2 ] )
 
 def imageCoordinate( pt, im ):
+    """
+    Translate a Cartesian point to image co-ordinates in the given image.
+    Only the size of the image is relevant.  The origin is the centre of the image.
+    """
     nrows, ncols = im.shape[:2]
     (x,y) = pt
     return (  round(x + ncols/2), round(nrows/2 - y) )
@@ -108,6 +125,10 @@ def centreImage(im):
   return (centred,pt)
 
 def translateImage(im,pt):
+    """Translate the image so that `pt` becomes the new centre.
+    The point `pt` is given as Cartesian coordinates relative to the
+    centre of the image.
+    """
     (ym,xm) = pt
     R = np.float32( [ [ 1, 0, -ym ], [ 0, 1, xm ] ] )
     if len(im.shape) > 2:
@@ -117,6 +138,10 @@ def translateImage(im,pt):
     return cv2.warpAffine(im,R,(n,m))
 
 def crop(im,cropsize=256,verbose=1):
+    """
+    Crop the image `im` to size cropsize x cropsize, keeping the centre of
+    the image.
+    """
     if verbose: print( f"[crop] cropsize={cropsize}" )
     (m,n) = im.shape[:2]
     if cropsize < min(m,n):
@@ -133,32 +158,34 @@ def crop(im,cropsize=256,verbose=1):
     return im
 
 def drawAxes(im):
-  m,n = im.shape[:2]
-  if m == 0:
-      raise Exception( "Image has zero height." )
-  if n == 0:
-      raise Exception( "Image has zero width." )
-  im[int(round(m/2)),:] = 127
-  im[:,(round(n/2))] = 127
-  return im
+    """Draw an axis cross on the `im` marking the centre of the image."""
+    m,n = im.shape[:2]
+    if m == 0:
+        raise Exception( "Image has zero height." )
+    if n == 0:
+        raise Exception( "Image has zero width." )
+    im[int(round(m/2)),:] = 127
+    im[:,(round(n/2))] = 127
+    return im
+
+def imageDiff(im1,im2):
+    """
+    Return the difference image of im1 and im2, scaling pixel values so that 
+    zero difference becomes uniform greyscale.
+    """
+    return ( (im1.astype(float) - im2.astype(float) + 256)/2 ).astype(np.uint8)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser( prog = 'Test Image Centring')
     parser.add_argument('-i', '--infile', default="test.png", help="Input file")
-    parser.add_argument('-o', '--oldversion', default="test-old.png", help="Output file using old version")
-    parser.add_argument('-n', '--newversion', default="test-new.png", help="Output file using new version")
-    parser.add_argument('-R', '--withaxes', default="test-orig.png", help="Output for original image with axes")
+    parser.add_argument('-o', '--outfile', default="test-centre.png", help="Output file for centred file.")
+    parser.add_argument('-R', '--withaxes', default="test-axes.png", help="Output file with axes")
     args = parser.parse_args()
     im = cv2.imread( args.infile )
-    im1 = centreImage(im,False)[0]
-    im2 = centreImage(im,True)[0]
+    im1 = centreImage(im)[0]
     drawAxes(im)
     drawAxes(im1)
-    drawAxes(im2)
-    cv2.imwrite( args.oldversion, im1 )
-    cv2.imwrite( args.newversion, im2 )
+    cv2.imwrite( args.outfile, im1 )
     cv2.imwrite( args.withaxes, im )
-
-def imageDiff(im1,im2):
-    return ( (im1.astype(float) - im2.astype(float) + 256)/2 ).astype(np.uint8)
 
