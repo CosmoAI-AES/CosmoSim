@@ -215,7 +215,6 @@ def getline(toml,idx=0,fn=None,verbose=1):
         eR = l["einsteinradius"]
     coor = toml["source"].get( "position", "cartesian" )
     if coor == "critical":
-        raise NotImplementedError( )
         lcfg = { "lens" : dict(l) }
         lens = getLens( lcfg )
         s = rndsource( toml, lens=lens, verbose=verbose )
