@@ -1,6 +1,6 @@
 # CosmoSim Change Log
 
-## 3.2.0b6 - 2026-07-08
+## 3.2.0b7 - 2026-07-09
 
 ### Changed
 
