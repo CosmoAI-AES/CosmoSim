@@ -19,6 +19,7 @@ clean alltests:
 	cd roulettegen-old ; $(MAKE) $@
 	cd roulettegen ; $(MAKE) $@
 	cd sersic ; $(MAKE) $@
+	cd rouletteoutput ; $(MAKE) $@
 	cd amplitudes ; $(MAKE) $@
 
 cpptests:
@@ -36,6 +37,7 @@ cpptests:
 	cd roulettegen-old ; $(MAKE) alltests
 	cd roulettegen ; $(MAKE) alltests
 	cd sersic ; $(MAKE) $@
+	cd rouletteoutput ; $(MAKE) $@
 
 baselines:
 	cd raytrace ; $(MAKE) baseline`date "+%Y%m%d"` 

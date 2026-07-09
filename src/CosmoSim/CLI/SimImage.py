@@ -8,20 +8,13 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from ..Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
+from .. import getMS
 
 from .Generators import getSimulator, getLens, getSource
 
 from .Simulator import GenericSim
 from .Arguments import Parameters
 
-def getMS(minm,maxm=None):
-    if minm is None:
-        raise RuntimeError( "None argument to getMS()." )
-    if maxm is None:
-        maxm = minm
-        minm = 0
-    return [ (m,s) for m in range(minm,maxm+1)
-                                    for s in range(1-m%2,m+2,2) ]
 class SimImage(GenericSim):
     """
     This class simulates a single image.
@@ -43,28 +36,49 @@ class SimImage(GenericSim):
         a = np.array(nu)
         return ( a[0] - centrepoint[0], a[1] - centrepoint[1] )
 
-    def getRoulette(self,precision=None,fn=None,verbose=None):
+    def getData(self,precision=None,verbose=None):
+        """
+        Get the data generated from the simulation, particularly the roulette
+        amplitudes.  The return value is a pandas `Series` object.
+        """
         if verbose is None: verbose = self.verbose
         sim = self.sim
         if self.param.get( "centred" ):
+            if verbose: print( "[getData] centred" )
             centrepoint = self.centrepoint
         else:
+            if verbose: print( "[getData] not centred" )
             centrepoint = (0,0)
         maxm = self.param.get( ( "simulator", "nterms" ), 16 )
         xireference = self.param.get( "xireference", True )
 
         releta = np.array(sim.getRelativeEta(centrepoint[0],centrepoint[1]))
         offset = np.array(sim.getOffset())
-        if verbose: print( "[getRoulette] ", offset, centrepoint )
+        if verbose: print( "[getData] ", offset, centrepoint )
 
         xioffset = self.getXiOffset(centrepoint)
-        if xireference:
-            xi = sim.getNu()
+        if verbose>1:
+            print( f"[xireference={xireference}] nterms={maxm}, precision={precision}" )
+        if precision is None:
+            if xireference:
+                ab = self.getAlphaBetas(maxm)
+            else:
+                ab = self.getAlphaBetas(maxm,pt=centrepoint)
         else:
-            xi = centrepoint
-        
+            if xireference:
+                xi = sim.getNu()
+            else:
+                xi = centrepoint
+            if fn is None:
+                fn = self.getAmplitudeFile() 
+            g = self.param.get( ( "lens", "einsteinradius" ) )
+            if verbose: print( "Einstein radius", g )
+            rp = RouletteParser( fn, g=g, verbose=self.verbose )
+            ab = rp.getAlphaBetas(xi,maxm=maxm)
+
         r1 = pd.Series(
-                { "source" : self.param.get( "source" )
+                { "filename" : self.param.get( "filename" )
+                , "source" : self.param.get( "source" )
                 , "x" : self.param.get( "x" )
                 , "y" : self.param.get( "y" )
                 , "sigma" : self.param.get( "sigma" )
@@ -79,15 +93,11 @@ class SimImage(GenericSim):
                 , "offsetX" : offset[0]
                 , "offsetY" : offset[1]
                 , "xiX" : xioffset[0]
-                , "xiY"  : xioffset[1] 
+                , "xiY"  : xioffset[1]
                 } )
-        if fn is None:
-            fn = self.getAmplitudeFile() 
-        g = self.param.get( ( "lens", "einsteinradius" ) )
-        if verbose: print( "Einstein radius", g )
-        rp = RouletteParser( fn, g=g, verbose=self.verbose )
-        r1 = pd.concat( [ r1,  rp.getAlphaBetas(xi,maxm=maxm) ] )
+        r1 = pd.concat( [ r1, ab ] )
         r1.name = self.param.get( "filename" )
+
         if verbose > 1:
             print( f"New row (verbosity={verbose})" )
             print( r1 )
@@ -110,60 +120,6 @@ class SimImage(GenericSim):
                 print( "[initSim] Polar", param.get( "x" ), param.get( "phi" ) )
             self.sim.setPolar( param.get( "x" ), param.get( "phi" ) )
 
-    def getData(self,verbose=None):
-        """
-        Get the data generated from the simulation, particularly the roulette
-        amplitudes.  The return value is a pandas `Series` object.
-        """
-        if verbose is None: verbose = self.verbose
-        sim = self.sim
-        if self.param.get( "centred" ):
-            if verbose: print( "[getData] centred" )
-            centrepoint = self.centrepoint
-        else:
-            if verbose: print( "[getData] not centred" )
-            centrepoint = (0,0)
-        maxm = self.param.get( ( "simulator", "nterms" ), 16 )
-        xireference = self.param.get( "xireference", True )
-        if verbose > 0:
-            print( "[datagen.py] Finding Alpha/beta; centrepoint=", centrepoint )
-        releta = np.array(sim.getRelativeEta(centrepoint[0],centrepoint[1]))
-        if verbose > 2: print( "[SimImage.getData] ", centrepoint )
-        offset = np.array(sim.getOffset())
-        if verbose: print( "[getData] ", offset, centrepoint )
-        xioffset = self.getXiOffset(centrepoint)
-        if xireference:
-            if verbose>1:
-                print( "[xireference=True] nterms =", maxm )
-            ab = self.getAlphaBetas(maxm)
-        else:
-            if verbose>1:
-                print( "[xireference=False] nterms =", maxm )
-            ab = self.getAlphaBetas(maxm,pt=centrepoint)
-
-        r1 = pd.Series(
-                { "source" : self.param.get( "source" )
-                , "x" : self.param.get( "x" )
-                , "y" : self.param.get( "y" )
-                , "sigma" : self.param.get( "sigma" )
-                , "sigma2" : self.param.get( "sigma2" )
-                , "theta" : self.param.get( "theta" )
-                , "lensX" : -centrepoint[0]
-                , "lensY" : -centrepoint[1]
-                , "centreX" : centrepoint[0]
-                , "centreY" : centrepoint[1]
-                , "reletaX" : releta[0]
-                , "reletaY" : releta[1]
-                , "offsetX" : offset[0]
-                , "offsetY" : offset[1]
-                , "xiX" : xioffset[0]
-                , "xiY"  : xioffset[1]
-                } )
-        r1 = pd.concat( [ r1, ab ] )
-        if verbose > 1:
-            print( f"New row (verbosity={verbose})" )
-            print( r1 )
-        return r1
     def moveImage(self,rot,scale,name):
         """
         Simulate with a different reference point.  This only makes
@@ -191,33 +147,6 @@ class SimImage(GenericSim):
         cv.imwrite(fn,im)
         return im
 
-    def psiplot(self):
-        a = self.sim.getPsiMap()
-        if self.verbose:
-            print("[SimImage] psiplot", a.shape, a.dtype)
-            print(a)
-        sys.stdout.flush()
-        nx,ny = a.shape
-        X, Y = np.meshgrid( range(nx), range(ny) )
-        hf = plt.figure()
-        ha = hf.add_subplot(111, projection='3d')
-        ha.plot_surface(X, Y, a)
-        fn = os.path.join(self.directory,"psi-" + str(self.name) + ".svg" ) 
-        plt.savefig( fn )
-        plt.close()
-    def kappaplot(self):
-        a = self.sim.getMassMap()
-        if self.verbose:
-            print("[SimImage] kappaplot", a.shape, a.dtype)
-            print(a)
-        nx,ny = a.shape
-        X, Y = np.meshgrid( range(nx), range(ny) )
-        hf = plt.figure()
-        ha = hf.add_subplot(111, projection='3d')
-        ha.plot_surface(X, Y, a)
-        fn = os.path.join(self.directory,"kappa-" + str(self.name) + ".svg" ) 
-        plt.savefig( fn )
-        plt.close()
     def getAmplitudeFile(self):
         fn = self.param.get( ( "lens", "amplitudefile" ) )
         if fn is None: 
