@@ -1,5 +1,11 @@
 # CosmoSim Change Log
 
+## 3.2.1 - 2026-07-09
+
+### Fixed
+
++ Bugfix, binding the drawCritical function.
+
 ## 3.2.0 - 2026-07-09
 
 ### Changed
