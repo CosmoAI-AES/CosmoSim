@@ -8,20 +8,13 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from ..Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
+from .. import getMS
 
 from .Generators import getSimulator, getLens, getSource
 
 from .Simulator import GenericSim
 from .Arguments import Parameters
 
-def getMS(minm,maxm=None):
-    if minm is None:
-        raise RuntimeError( "None argument to getMS()." )
-    if maxm is None:
-        maxm = minm
-        minm = 0
-    return [ (m,s) for m in range(minm,maxm+1)
-                                    for s in range(1-m%2,m+2,2) ]
 class SimImage(GenericSim):
     """
     This class simulates a single image.
