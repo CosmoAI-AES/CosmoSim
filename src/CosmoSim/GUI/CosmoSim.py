@@ -255,7 +255,7 @@ class CosmoSim:
         if self.resolution < self.imagesize:
             im = cv.resize( im, ( self.resolution, self.resolution ) )
         if caustics:
-            sim.drawCaustics( im )
+            self._sim.drawCaustics( im )
         im = np.array(im)
         if reflines:
             csimg.drawAxes( im )
