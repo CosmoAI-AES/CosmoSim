@@ -11,6 +11,7 @@ from ..Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, 
 from .. import getMS
 
 from .Generators import getSimulator, getLens, getSource
+from .Parser import RouletteParser
 
 from .Simulator import GenericSim
 from .Arguments import Parameters
@@ -36,7 +37,7 @@ class SimImage(GenericSim):
         a = np.array(nu)
         return ( a[0] - centrepoint[0], a[1] - centrepoint[1] )
 
-    def getData(self,precision=None,verbose=None):
+    def getData(self,precision=None,fn=None,verbose=None):
         """
         Get the data generated from the simulation, particularly the roulette
         amplitudes.  The return value is a pandas `Series` object.
@@ -172,3 +173,25 @@ class SimImage(GenericSim):
                     for (m,s) in getMS(maxm) }
         return pd.concat( [ pd.Series( ab1 ), pd.Series( ab2 ) ] )
 
+    def getAnnotated(self,centred=None,cropsize=None):
+        """
+        Get an image with annotations showing key points and the convergence ring.
+        This is incomplete and should be extended with addition annotations and
+        options.
+        """
+        if centred is not None:
+            raise NotImplementedError("centred option for getAnnotated() is not implemented yet.")
+        im = self.sim.getDistorted( )
+        self.sim.drawCritical( im )
+        im = np.array( im )
+        im = annotatePoint( im, self.centrepoint, colour=( 64, 255, 64 ) )
+        pt = self.getXiOffset( (0,0) )
+        im = annotatePoint( im, pt, colour=( 64, 64, 255 ) )
+        x, y = pt
+        convradius = np.sqrt( x*x + y*y )
+        im = annotateCircle( im, pt, radius=convradius, colour=( 64, 64, 255 ) )
+        if cropsize is None:
+            cropsize = self.param.get( "cropsize" )
+        if cropsize:
+            im = crop(im,int( cropsize ), verbose=self.verbose  )
+        return im

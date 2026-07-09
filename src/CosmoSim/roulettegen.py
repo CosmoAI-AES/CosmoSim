@@ -27,7 +27,7 @@ def processResim(frame,param,maxcount=None,verbose=0):
         if verbose: print( "[roulettegen.py] Processing", index )
         param.setRow( row )
         print( f"[processResim] {index}", param )
-        imsim = Resim( param, row, verbose=verbose )
+        imsim = Resim( row, param, verbose=verbose )
         imsim.saveImage()
 
         if param.get( "actual" ): imsim.getActual()

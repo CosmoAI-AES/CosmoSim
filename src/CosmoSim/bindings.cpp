@@ -138,6 +138,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("getRelativeEta", &SimulatorModel::getRelativeEtaPy)
         .def("getOffset", &SimulatorModel::getOffset)
         .def("getNu", &SimulatorModel::getNu)
+        .def("drawCritical", &SimulatorModel::drawCritical) 
         .def("setLens", &SimulatorModel::setLens) ;
     py::class_<RouletteModel,SimulatorModel>(m, "RouletteModel")
         .def(py::init<>())
