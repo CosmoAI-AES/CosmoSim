@@ -1,5 +1,12 @@
 # CosmoSim Change Log
 
+## 3.2.2b1 - 2026-07-09
+
+### Fixed
+
++ Bug failing to load amplitudes file for point mass
++ Bug causing exception showing critical curves in GUI
+
 ## 3.2.1 - 2026-07-09
 
 ### Fixed
