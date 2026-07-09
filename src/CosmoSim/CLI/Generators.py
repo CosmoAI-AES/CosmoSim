@@ -89,10 +89,12 @@ def getLens(param,verbose=1):
     elif lensDict[lensmode] == PsiSpec.PM:
         lens = cs.PointMass()
         lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
+        fn = param.get( ( "lens", "amplitudefile" ) )
+        if fn is None: fn = getPathFN( "pm50.txt" )
     elif lensDict[lensmode] == PsiSpec.SIS:
         lens = cs.SIS()
         lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
-        fn = param.get( ( "lens", "roulettefile" ) )
+        fn = param.get( ( "lens", "amplitudefile" ) )
         if fn is None: fn = getPathFN( "sis50.txt" )
         lens.setFile( fn )
     elif lensDict[lensmode] == PsiSpec.SIE:
@@ -100,7 +102,7 @@ def getLens(param,verbose=1):
         lens.setRatio( param.get( ( "lens", "ellipseratio" ) ) )
         lens.setOrientation( param.get( ( "lens", "orientation" ) ) )
         lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
-        fn = param.get( ( "lens", "roulettefile" ) )
+        fn = param.get( ( "lens", "amplitudefile" ) )
         if fn is None: fn = getPathFN( "sie05.txt" )
         lens.setFile( fn )
     elif lensmode is None:
