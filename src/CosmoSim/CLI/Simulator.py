@@ -107,7 +107,8 @@ class GenericSim:
         """
         if centred is not None:
             raise NotImplementedError("centred option for getAnnotated() is not implemented yet.")
-        im = self.sim.getDistortedImage( critical=True )
+        im = self.getDistortedImage( )
+        self.sim.drawCritical( im )
         im = annotatePoint( im, self.centrepoint, colour=( 64, 255, 64 ) )
         pt = self.sim.getXiOffset( (0,0) )
         im = annotatePoint( im, pt, colour=( 64, 64, 255 ) )
