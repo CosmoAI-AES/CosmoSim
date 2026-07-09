@@ -82,7 +82,8 @@ class Parameters:
 
 skel = { "simulator" : { "imagesize": 512, "model" : "Raytrace" }
         , "source" : { "sigma" : 10, "sigma2" : 20, "theta" : 45 }
-        , "lens" : { "mode" : "SIS" }
+        , "lens" : { "mode" : "SIS", "einsteinradius" : 20, "ellipseratio" : 0.6, 
+                    "orientation" : 45 }
          , "dataset" : {}
          , "annotation" : {}
          , "management" : { "maxcount" : None ,"filename" : "test.png" },

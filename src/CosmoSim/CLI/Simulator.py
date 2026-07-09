@@ -99,26 +99,6 @@ class GenericSim:
         im = self.sim.getActualImage( reflines=param.get( "reflines" ) )
         cv.imwrite(fn,im)
 
-    def getAnnotated(self,centred=None,cropsize=None):
-        """
-        Get an image with annotations showing key points and the convergence ring.
-        This is incomplete and should be extended with addition annotations and
-        options.
-        """
-        if centred is not None:
-            raise NotImplementedError("centred option for getAnnotated() is not implemented yet.")
-        im = self.sim.getDistortedImage( critical=True )
-        im = annotatePoint( im, self.centrepoint, colour=( 64, 255, 64 ) )
-        pt = self.sim.getXiOffset( (0,0) )
-        im = annotatePoint( im, pt, colour=( 64, 64, 255 ) )
-        x, y = pt
-        convradius = np.sqrt( x*x + y*y )
-        im = annotateCircle( im, pt, radius=convradius, colour=( 64, 64, 255 ) )
-        if cropsize is None:
-            cropsize = self.param.get( "cropsize" )
-        if cropsize:
-            im = crop(im,int( cropsize ), verbose=self.verbose  )
-        return im
     def getImage(self,centred=None,cropsize=None,reflines=None,verbose=None):
         if verbose is None: verbose = self.verbose
         if centred is None:

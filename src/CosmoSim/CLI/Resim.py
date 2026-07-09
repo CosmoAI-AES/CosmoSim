@@ -17,10 +17,12 @@ class Resim(GenericSim):
     The class sets up the infrastructure, and provides the methods to
     run the simulator for each iaage on a CSV file.
     """
-    def __init__(self,param,row,**kw):
+    def __init__(self,row,param=None,**kw):
         """
         Note that `args` overrides Boolean parameters.
         """
+        if param is None:
+            param = Parameters()
         super().__init__(param,**kw)
         if self.verbose>2: print( "[Resim.__init__]" )
 

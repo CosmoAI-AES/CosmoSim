@@ -94,9 +94,6 @@ void SimulatorModel::drawCaustics( cv::Mat img ) {
       std::cerr << "Caustics not drawn" << std::endl ;
    }
 }
-void SimulatorModel::drawCritical() {
-   drawCritical( imgDistorted ) ;
-}
 void SimulatorModel::drawCritical( cv::Mat img ) {
    try {
       for ( int i=0 ; i < 360*5 ; ++i ) {

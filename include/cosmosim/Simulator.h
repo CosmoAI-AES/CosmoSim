@@ -100,7 +100,6 @@ public:
     /* Critical Curves and Caustics */
     cv::Mat getCaustic() ;
     cv::Mat getCritical() ;
-    void drawCritical() ;
     void drawCritical( cv::Mat ) ;
     void drawCaustics( cv::Mat ) ;
 
