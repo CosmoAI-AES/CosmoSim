@@ -1,10 +1,15 @@
 # CosmoSim Change Log
 
-## 3.2.2b2 - 2026-07-??
+## 3.2.2b2 - 2026-07-10
 
 ### Fixed
 
 + Bugfix, binding the drawCaustics function.
+
+### Changed
+
++ Removed the factor ten in the effective radius for sersic profiles
+
 
 ## 3.2.2b1 - 2026-07-09
 
