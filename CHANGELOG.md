@@ -5,6 +5,7 @@
 ### Fixed
 
 + Fixed bug in GUI with premature garbage collection for sampled lenses.
++ Fixed binding of SIE::getXI to correct namespace
 
 ## 3.2.2b2 - 2026-07-10
 

@@ -103,7 +103,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("psiValue", &SIE::psiValue)
         .def("psiXvalue", &SIE::psiXvalue)
         .def("psiYvalue", &SIE::psiYvalue)
-        .def("getXi", &ClusterLens::getXi)
+        .def("getXi", &SIE::getXi)
         .def("criticalXi", &SIE::criticalXi)
         ;
     py::class_<PointMass,PsiFunctionLens>(m, "PointMass")
