@@ -166,7 +166,7 @@ class CosmoSim:
             sampling = self._sampling
         else:
             self._sampling = sampling
-        self._lens_ = self._lens  # Prevent garbage collection
+        _lens_ = self._lens  # Prevent garbage collection
         if sampling:
             size = self.imagesize
             if self.verbose>1: print( f"[initLens] Sampling (imagesize {size})" )
@@ -186,7 +186,7 @@ class CosmoSim:
             self.srcparam = param
         if param.get( "imagesize" ) == None:
            param.__setitem__( "imagesize", self.imagesize )
-        self._src_ = self._src # backup to prevent garbage collection
+        _src_ = self._src # backup to prevent garbage collection
         self._src = getSource(param,verbose=self.verbose)
         if self._sim is not None:
             if self.verbose:

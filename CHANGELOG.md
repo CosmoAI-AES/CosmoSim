@@ -1,5 +1,12 @@
 # CosmoSim Change Log
 
+## 3.2.2b3 - 2026-07-??
+
+### Fixed
+
++ Fixed bug in GUI with premature garbage collection for sampled lenses.
++ Fixed binding of SIE::getXI to correct namespace
+
 ## 3.2.2b2 - 2026-07-10
 
 ### Fixed
@@ -9,7 +16,6 @@
 ### Changed
 
 + Removed the factor ten in the effective radius for sersic profiles
-
 
 ## 3.2.2b1 - 2026-07-09
 
