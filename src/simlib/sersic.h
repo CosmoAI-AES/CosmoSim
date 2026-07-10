@@ -11,7 +11,7 @@ inline double sersic( double n_sersic, double luminosity,
    auto bn = 1.992*n_sersic - 0.3271;
    auto L = luminosity * 1000 ;
 
-   auto re = 10*sigma1 ; // effective radius
+   auto re = sigma1 ; // effective radius
 
    auto I_eff = L*std::pow(bn, 2.0 * n_sersic)
               / (2 * pi * sigma1*sigma2*n_sersic * std::exp(bn)
