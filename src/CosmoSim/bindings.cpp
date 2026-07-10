@@ -138,6 +138,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("getRelativeEta", &SimulatorModel::getRelativeEtaPy)
         .def("getOffset", &SimulatorModel::getOffset)
         .def("getNu", &SimulatorModel::getNu)
+        .def("getCritical", &SimulatorModel::getCritical) 
         .def("drawCritical", &SimulatorModel::drawCritical) 
         .def("drawCaustics", &SimulatorModel::drawCaustics) 
         .def("setLens", &SimulatorModel::setLens) ;

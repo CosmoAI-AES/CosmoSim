@@ -173,7 +173,12 @@ class SimImage(GenericSim):
                     for (m,s) in getMS(maxm) }
         return pd.concat( [ pd.Series( ab1 ), pd.Series( ab2 ) ] )
 
-    def getAnnotated(self,centred=None,cropsize=None):
+    def getAnnotated(self,
+                     critical=(128,128,64),
+                     centrePoint=(255,64,64),
+                     xiOffset=(64,64,255),
+                     convergenceRing=(64,64,255),
+                     centred=None,cropsize=None):
         """
         Get an image with annotations showing key points and the convergence ring.
         This is incomplete and should be extended with addition annotations and
@@ -181,15 +186,23 @@ class SimImage(GenericSim):
         """
         if centred is not None:
             raise NotImplementedError("centred option for getAnnotated() is not implemented yet.")
-        im = self.sim.getDistorted( )
-        self.sim.drawCritical( im )
-        im = np.array( im )
-        im = annotatePoint( im, self.centrepoint, colour=( 64, 255, 64 ) )
-        pt = self.getXiOffset( (0,0) )
-        im = annotatePoint( im, pt, colour=( 64, 64, 255 ) )
-        x, y = pt
-        convradius = np.sqrt( x*x + y*y )
-        im = annotateCircle( im, pt, radius=convradius, colour=( 64, 64, 255 ) )
+        im = self.getDistortedImage( )
+        if critical is not None:
+            crit = np.array( self.sim.getCritical( im ) )
+            crit = crit.astype( np.float64 )
+            crit /= 255
+            r,g,b = critical
+            crit = np.dstack( [ crit*r, crit*b, crit*c ] )
+        
+        if centrePoint is not None:
+            im = annotatePoint( im, self.centrepoint, colour=centrePoint )
+        if xiOffset is not None:
+            pt = self.getXiOffset( (0,0) )
+            im = annotatePoint( im, pt, colour=xiOffset )
+        if convergenceRing is not None:
+            x, y = pt
+            convradius = np.sqrt( x*x + y*y )
+            im = annotateCircle( im, pt, radius=convradius, colour=( 64, 64, 255 ) )
         if cropsize is None:
             cropsize = self.param.get( "cropsize" )
         if cropsize:

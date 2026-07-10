@@ -98,7 +98,6 @@ public:
     void maskImage( cv::InputOutputArray, double ) ;
 
     /* Critical Curves and Caustics */
-    cv::Mat getCaustic() ;
     cv::Mat getCritical() ;
     void drawCritical( cv::Mat ) ;
     void drawCaustics( cv::Mat ) ;

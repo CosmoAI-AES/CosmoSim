@@ -168,6 +168,9 @@ def drawAxes(im):
     im[:,(round(n/2))] = 127
     return im
 
+def overlay(im1,im2,alpha=1,beta=1,gamma=0):
+    return cv2.addWeighted(im1, alpha, im2, beta, gamma)
+
 def imageDiff(im1,im2):
     """
     Return the difference image of im1 and im2, scaling pixel values so that 
