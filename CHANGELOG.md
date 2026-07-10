@@ -1,5 +1,11 @@
 # CosmoSim Change Log
 
+## 3.2.2b2 - 2026-07-??
+
+### Fixed
+
++ Bugfix, binding the drawCaustics function.
+
 ## 3.2.2b1 - 2026-07-09
 
 ### Fixed
