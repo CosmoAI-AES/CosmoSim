@@ -74,8 +74,8 @@ PYBIND11_MODULE(CosmoSimPy, m) {
     py::class_<SampledLens,Lens>(m, "SampledLens") ;
     py::class_<SampledPsiFunctionLens,SampledLens,Lens>(m, "SampledPsiFunctionLens") 
         .def(py::init<PsiFunctionLens *>())
-        .def("criticalXi", &SampledPsiFunctionLens::criticalXi)
-        .def(py::init<PsiFunctionLens *,int>()) ;
+        .def(py::init<PsiFunctionLens *,int>())
+        .def("criticalXi", &SampledPsiFunctionLens::criticalXi) ;
     py::class_<PsiFunctionLens,Lens>(m, "PsiFunctionLens")
         .def(py::init<>())
         .def("calculateAlphaBeta", &PsiFunctionLens::calculateAlphaBeta)
