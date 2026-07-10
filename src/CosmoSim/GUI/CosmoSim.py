@@ -186,7 +186,7 @@ class CosmoSim:
             self.srcparam = param
         if param.get( "imagesize" ) == None:
            param.__setitem__( "imagesize", self.imagesize )
-        self._src_ = self._src # backup to prevent garbage collection
+        _src_ = self._src # backup to prevent garbage collection
         self._src = getSource(param,verbose=self.verbose)
         if self._sim is not None:
             if self.verbose:
