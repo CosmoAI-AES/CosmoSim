@@ -86,6 +86,8 @@ class SimImage(GenericSim):
                 , "sigma" : self.param.get( "sigma" )
                 , "sigma2" : self.param.get( "sigma2" )
                 , "theta" : self.param.get( "theta" )
+                , "luminosity" : self.param.get( "luminosity" )
+                , "n_sersic" : self.param.get( "n_sersic" )
                 , "lensX" : -centrepoint[0]
                 , "lensY" : -centrepoint[1]
                 , "centreX" : centrepoint[0]
