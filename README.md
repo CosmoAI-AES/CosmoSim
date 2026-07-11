@@ -17,6 +17,9 @@ Documentation is being written at
 [https://cosmoai-aes.github.io/](https://cosmoai-aes.github.io/),
 but it still incomplete and fragmented.
 
+Documentation is on the [web site](https://cosmoai-aes.github.io/),
+The notes below is just a brief synopsis.
+
 ## Installation Guide
 
 CosmoSim is set up to build python packages (wheels) that
@@ -24,6 +27,13 @@ can be installed with pip.
 ```sh
 pip install CosmoSim
 ```
+
+You can check the version installed with
+```sh
+python -m CosmoSim --version
+```
+
+## Local build
 
 We successfully build CosmoSim for 
 Linux/x86_64, MacOS/arm, and Windows/amd64, for python 3.11 through 3.14
