@@ -50,7 +50,11 @@ def getSource(param,verbose=1):
        elif mode == sourceDict.get( "Ellipsoid" ):
            r = cs.EllipsoidSource( size, float(param.get( "sigma" )),
                    float(param.get( "sigma2" )),
-                   float(param.get( "theta" ))*np.pi/180, ltprf)
+                   float(param.get( "theta" ))*np.pi/180, 
+                   ltprf,
+                   float(param.get( "luminosity" )),
+                   float(param.get( "n_sersic" )),
+                   )
        elif mode == sourceDict.get( "Triangle" ):
            r = cs.TriangleSource( size, float(param.get( "sigma" )),
                    float(param.get( "theta" ))*np.pi/180 )

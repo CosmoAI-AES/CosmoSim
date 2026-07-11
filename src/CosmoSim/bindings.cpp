@@ -46,6 +46,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         ;
     py::class_<EllipsoidSource,Source>(m, "EllipsoidSource")
         .def(py::init<int,double,double,double,LightProfileSpec>())
+        .def(py::init<int,double,double,double,LightProfileSpec,double,double>())
         ;
     py::class_<SourceConstellation,Source>(m, "SourceConstellation")
         .def(py::init<int>())
