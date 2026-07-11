@@ -103,7 +103,6 @@ class SampledPsiFunctionLens : public SampledLens {
       SampledPsiFunctionLens(PsiFunctionLens*) ;
       SampledPsiFunctionLens(PsiFunctionLens*,int) ;
       virtual void updatePsi( cv::Size ) ;
-      virtual double criticalXi( double ) const ;
       virtual cv::Point2d caustic( double phi ) const ;
 
 } ;

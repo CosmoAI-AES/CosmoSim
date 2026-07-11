@@ -1,5 +1,11 @@
 # CosmoSim Change Log
 
+## unreleased
+
+æææ Fixed
+
++ GUI removes the critical curve when the checkbox is unticked.
+
 ## 3.2.2 - 2026-07-11
 
 ### Fixed

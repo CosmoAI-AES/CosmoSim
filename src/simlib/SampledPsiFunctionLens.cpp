@@ -32,9 +32,6 @@ void SampledPsiFunctionLens::updatePsi( cv::Size size ) {
    if (DEBUG) std::cout << "[SampledPsiFunctionLens] (" << size << ") updatePsi() returns\n" ;
    return ; 
 }
-double SampledPsiFunctionLens::criticalXi( double phi ) const {
-   return lens->criticalXi( phi ) ;
-}
 cv::Point2d SampledPsiFunctionLens::caustic( double phi ) const {
    return lens->caustic( phi ) ;
 }
