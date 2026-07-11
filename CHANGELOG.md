@@ -1,28 +1,18 @@
 # CosmoSim Change Log
 
-## 3.2.2b3 - 2026-07-??
+## 3.2.2 - 2026-07-11
 
 ### Fixed
 
++ Fixed parameterisation of sersic ellipsoids for the notebook API
 + Fixed bug in GUI with premature garbage collection for sampled lenses.
 + Fixed binding of SIE::getXI to correct namespace
-
-## 3.2.2b2 - 2026-07-10
-
-### Fixed
-
 + Bugfix, binding the drawCaustics function.
-
-### Changed
-
-+ Removed the factor ten in the effective radius for sersic profiles
-
-## 3.2.2b1 - 2026-07-09
-
-### Fixed
-
-+ Bug failing to load amplitudes file for point mass
-+ Bug causing exception showing critical curves in GUI
++ Fixed failure to load amplitudes file for point mass
++ Fixed exception showing critical curves in GUI
++ Match startup parameters in the GUI display and the simulator. 
++ Fixed failure to run SIE lens in GUI.
++ Fixed segmentation vialation in GUI arising from garbage collection.
 
 ## 3.2.1 - 2026-07-09
 
