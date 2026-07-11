@@ -145,7 +145,7 @@ class CosmoSim:
         einsteinradius = param.get( "einsteinradius", None )
         if einsteinradius is not None:
               self._psilens.setEinsteinR( einsteinradius )
-        ratio = param.get( "ratio", None ) 
+        ratio = param.get( "ellipseratio", None ) 
         if ratio is not None:
               self._psilens.setRatio( ratio )
         orientation = param.get( "orientation", None ) 
