@@ -18,7 +18,7 @@ from .Dictionary import *
 Parameters = Arguments.Parameters
 setDebug = cs.setDebug
 
-__version__ = "3.2.2"
+__version__ = "3.2.3"
 
 def getPathFN(fn):
     """
