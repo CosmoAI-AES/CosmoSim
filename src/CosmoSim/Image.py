@@ -169,6 +169,13 @@ def drawAxes(im):
     return im
 
 def overlay(im1,im2,alpha=1,beta=1,gamma=0):
+    d1 = im1.shape
+    d2 = im2.shape
+    if len(d1) != len(d2):
+        if len(d1) == 2:
+            im1 = cv2.cvtColor( im1, cv2.COLOR_GRAY2RGB )
+        if len(d2) == 2:
+            im2 = cv2.cvtColor( im2, cv2.COLOR_GRAY2RGB )
     return cv2.addWeighted(im1, alpha, im2, beta, gamma)
 
 def imageDiff(im1,im2):

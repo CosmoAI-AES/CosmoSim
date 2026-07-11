@@ -7,7 +7,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from ..Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
+from ..Image import crop, annotatePoint, annotateCircle
+from .. import Image as csimg
 from .. import getMS
 
 from .Generators import getSimulator, getLens, getSource
@@ -136,13 +137,13 @@ class SimImage(GenericSim):
 
         if param.get( "centred" ):
             if self.verbose: print( "[movedImage] centred" )
-            (im,(cx,cy)) = centreImage(im)
+            (im,(cx,cy)) = csimg.centreImage(im)
         if param.get( "cropsize" ):
             cs = param.get( "cropsize", None )
             if cs is not None:
                 im = crop( int( cs ), verbose=self.verbose  )
         if param.get( "reflines" ):
-            drawAxes(im)
+            csimg.drawAxes(im)
 
         fn = os.path.join(param.get("directory"), str(name) + ".png" ) 
         cv.imwrite(fn,im)
@@ -188,19 +189,21 @@ class SimImage(GenericSim):
             raise NotImplementedError("centred option for getAnnotated() is not implemented yet.")
         im = self.getDistortedImage( )
         if critical is not None:
-            crit = np.array( self.sim.getCritical( im ) )
+            crit = np.array( self.sim.getCritical() )
             crit = crit.astype( np.float64 )
             crit /= 255
             r,g,b = critical
-            crit = np.dstack( [ crit*r, crit*b, crit*c ] )
+            crit = np.dstack( [ crit*r, crit*g, crit*b ] )
+            crit = crit.astype( np.uint8 )
+            im = csimg.overlay( im, crit )
         
         if centrePoint is not None:
             im = annotatePoint( im, self.centrepoint, colour=centrePoint )
+        pt = self.getXiOffset( (0,0) )
+        x, y = pt
         if xiOffset is not None:
-            pt = self.getXiOffset( (0,0) )
             im = annotatePoint( im, pt, colour=xiOffset )
         if convergenceRing is not None:
-            x, y = pt
             convradius = np.sqrt( x*x + y*y )
             im = annotateCircle( im, pt, radius=convradius, colour=( 64, 64, 255 ) )
         if cropsize is None:
