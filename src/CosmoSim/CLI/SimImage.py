@@ -181,6 +181,7 @@ class SimImage(GenericSim):
                      centrePoint=(255,64,64),
                      xiOffset=(64,64,255),
                      convergenceRing=(64,64,255),
+                     actualPosition=None,
                      centred=None,cropsize=None):
         """
         Get an image with annotations showing key points and the convergence ring.
@@ -208,6 +209,9 @@ class SimImage(GenericSim):
         if convergenceRing is not None:
             convradius = np.sqrt( x*x + y*y )
             im = annotateCircle( im, pt, radius=convradius, colour=( 64, 64, 255 ) )
+        if actualPosition is not None:
+            eta = np.array( self.sim.getEta() )
+            im = annotatePoint( im, eta, colour=actualPosition )
         if cropsize is None:
             cropsize = self.param.get( "cropsize" )
         if cropsize:
