@@ -90,9 +90,9 @@ class SourcePane(ttk.Frame):
         self.thetaSlider.var.trace_add( "write", self.push)
         self.nslider.var.trace_add("write", self.push)
         self.Lslider.var.trace_add("write", self.push)
-        self.push(runsim=False)
         modeVar.trace_add("write", self.push) 
         lightVar.trace_add( "write", self.push)
+        self.push(runsim=False)
     def push(self,*a,runsim=True):
         p = {
            "source": self.sourceVar.get(),
@@ -139,6 +139,7 @@ class ResolutionPane(ttk.Frame):
             toval=255,
             default=3 )
         self.bgSlider.var.trace_add( "write", self.push ) 
+        self.push(runsim=False)
     def push(self,*a,runsim=True):
         print( "[CosmoGUI] Push image resolution" )
         p = { "resolution" : self.resolutionSlider.get()
@@ -225,7 +226,12 @@ class LensPane(ttk.Frame):
         self.maskModeVar.set( False )
 
         self.push(runsim=False)
+        self.pushLens(runsim=False)
+        self.sim.setLensMode(lensValues[self.lensVar.get()])
+        self.sim.setModelMode(self.simVar.get())
+        self.sim.setSampled(self.sampleVar.get())
         print ( "Pushed parameters to Simulator" )
+
         self.maskModeVar.trace_add( "write",self.push )
         lensVar.trace_add("write", lambda *_ : 
             ( self.sim.setLensMode(lensValues[self.lensVar.get()])

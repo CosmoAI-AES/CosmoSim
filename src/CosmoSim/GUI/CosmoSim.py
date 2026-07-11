@@ -85,7 +85,6 @@ class CosmoSim:
         self._sim = sim
         self.setSimParameters()
         sim.setLens( self._lens )
-        sim.setSource( self._src )
         if self.verbose:
             print( f"[setModelMode ({model})] returns")
     def setSimParameters(self, param=None ):
@@ -146,7 +145,7 @@ class CosmoSim:
         einsteinradius = param.get( "einsteinradius", None )
         if einsteinradius is not None:
               self._psilens.setEinsteinR( einsteinradius )
-        ratio = param.get( "ratio", None ) 
+        ratio = param.get( "ellipseratio", None ) 
         if ratio is not None:
               self._psilens.setRatio( ratio )
         orientation = param.get( "orientation", None ) 
@@ -188,13 +187,6 @@ class CosmoSim:
            param.__setitem__( "imagesize", self.imagesize )
         _src_ = self._src # backup to prevent garbage collection
         self._src = getSource(param,verbose=self.verbose)
-        if self._sim is not None:
-            if self.verbose:
-                print( f"GUI.CosmoSim.makeSource() add source to simulator" )
-
-            self._sim.setSource( self._src )
-        if self.verbose:
-            print( f"GUI.CosmoSim.makeSource() returns (verbose={self.verbose})" )
 
     # Source Position
     def setXY(self,x,y):
@@ -223,7 +215,6 @@ class CosmoSim:
     def maskImage(self,scale=1):
         return super().maskImage( float(scale) )
 
-
     def setBGColour(self,s):
         self.bgcolour = s
     def simThread(self):
@@ -235,6 +226,8 @@ class CosmoSim:
             self.simEvent.wait()
             if self._continue:
                self.simEvent.clear()
+               _src = self._src
+               self._sim.setSource( _src )
                self._sim.update()
                self.updateEvent.set()
     def runSimulator(self):
