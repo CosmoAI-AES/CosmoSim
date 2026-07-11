@@ -227,7 +227,7 @@ class CosmoSim:
             if self._continue:
                self.simEvent.clear()
                _src = self._src
-               sim.setSource( _src )
+               self._sim.setSource( _src )
                self._sim.update()
                self.updateEvent.set()
     def runSimulator(self):
