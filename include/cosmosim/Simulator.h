@@ -29,7 +29,7 @@ protected:
         // Offset in the source plane resulting from moving xi
 
     virtual void updateInner();
-    cv::Mat imgDistorted;
+    cv::Mat imgDistorted, imgDistorted2 ;
 
     virtual void parallelDistort(const cv::Mat &src, cv::Mat &dst);
     virtual void distort(int row, int col, const cv::Mat &src, cv::Mat &dst);
@@ -70,7 +70,7 @@ public:
     /* Getters (images) */
     cv::Mat getActual() const ;
     virtual cv::Mat getApparent() const ;
-    cv::Mat getDistorted() const ;
+    cv::Mat getDistorted() ;
 
     /* Getters (Parameters) */
     cv::Point2d getNu() const ;
