@@ -52,8 +52,8 @@ def getSource(param,verbose=1):
                    float(param.get( "sigma2" )),
                    float(param.get( "theta" ))*np.pi/180, 
                    ltprf,
-                   float(param.get( "luminosity" )),
-                   float(param.get( "n_sersic" )),
+                   float(param.get( ("source","luminosity" ),20) ),
+                   float(param.get( ("source","n_sersic" ),4) ),
                    )
        elif mode == sourceDict.get( "Triangle" ):
            r = cs.TriangleSource( size, float(param.get( "sigma" )),
