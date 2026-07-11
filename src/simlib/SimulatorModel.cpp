@@ -64,15 +64,9 @@ void SimulatorModel::update( cv::Point2d xi ) {
    return updateInner() ;
 }
 
-cv::Mat SimulatorModel::getCaustic() {
-   cv::Mat src = getCritical() ;
-   cv::Mat img = cv::Mat::zeros(src.size(), src.type());
-   undistort( src, img ) ;
-   return img ;
-}
 cv::Mat SimulatorModel::getCritical() {
    cv::Mat src = getApparent() ;
-   cv::Mat img = cv::Mat::zeros(src.size(), src.type());
+   cv::Mat img = cv::Mat::zeros(src.size(), CV_8UC1 );
    drawCritical( img ) ;
    return img ;
 }

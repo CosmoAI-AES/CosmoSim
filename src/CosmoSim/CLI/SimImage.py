@@ -7,7 +7,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from ..Image import centreImage, drawAxes, crop, annotatePoint, annotateCircle, translateImage
+from ..Image import crop, annotatePoint, annotateCircle
+from .. import Image as csimg
 from .. import getMS
 
 from .Generators import getSimulator, getLens, getSource
@@ -136,13 +137,13 @@ class SimImage(GenericSim):
 
         if param.get( "centred" ):
             if self.verbose: print( "[movedImage] centred" )
-            (im,(cx,cy)) = centreImage(im)
+            (im,(cx,cy)) = csimg.centreImage(im)
         if param.get( "cropsize" ):
             cs = param.get( "cropsize", None )
             if cs is not None:
                 im = crop( int( cs ), verbose=self.verbose  )
         if param.get( "reflines" ):
-            drawAxes(im)
+            csimg.drawAxes(im)
 
         fn = os.path.join(param.get("directory"), str(name) + ".png" ) 
         cv.imwrite(fn,im)
@@ -173,7 +174,12 @@ class SimImage(GenericSim):
                     for (m,s) in getMS(maxm) }
         return pd.concat( [ pd.Series( ab1 ), pd.Series( ab2 ) ] )
 
-    def getAnnotated(self,centred=None,cropsize=None):
+    def getAnnotated(self,
+                     critical=(128,128,64),
+                     centrePoint=(255,64,64),
+                     xiOffset=(64,64,255),
+                     convergenceRing=(64,64,255),
+                     centred=None,cropsize=None):
         """
         Get an image with annotations showing key points and the convergence ring.
         This is incomplete and should be extended with addition annotations and
@@ -181,15 +187,25 @@ class SimImage(GenericSim):
         """
         if centred is not None:
             raise NotImplementedError("centred option for getAnnotated() is not implemented yet.")
-        im = self.sim.getDistorted( )
-        self.sim.drawCritical( im )
-        im = np.array( im )
-        im = annotatePoint( im, self.centrepoint, colour=( 64, 255, 64 ) )
+        im = self.getDistortedImage( )
+        if critical is not None:
+            crit = np.array( self.sim.getCritical() )
+            crit = crit.astype( np.float64 )
+            crit /= 255
+            r,g,b = critical
+            crit = np.dstack( [ crit*r, crit*g, crit*b ] )
+            crit = crit.astype( np.uint8 )
+            im = csimg.overlay( im, crit )
+        
+        if centrePoint is not None:
+            im = annotatePoint( im, self.centrepoint, colour=centrePoint )
         pt = self.getXiOffset( (0,0) )
-        im = annotatePoint( im, pt, colour=( 64, 64, 255 ) )
         x, y = pt
-        convradius = np.sqrt( x*x + y*y )
-        im = annotateCircle( im, pt, radius=convradius, colour=( 64, 64, 255 ) )
+        if xiOffset is not None:
+            im = annotatePoint( im, pt, colour=xiOffset )
+        if convergenceRing is not None:
+            convradius = np.sqrt( x*x + y*y )
+            im = annotateCircle( im, pt, radius=convradius, colour=( 64, 64, 255 ) )
         if cropsize is None:
             cropsize = self.param.get( "cropsize" )
         if cropsize:
