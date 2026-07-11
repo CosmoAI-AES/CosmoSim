@@ -55,7 +55,6 @@ protected:
 
     double getXiAbs() const ;
     double getEtaSquare() const ;
-    cv::Point2d getEta() const ;
 
 public:
     SimulatorModel();
@@ -73,6 +72,7 @@ public:
     cv::Mat getDistorted() const ;
 
     /* Getters (Parameters) */
+    cv::Point2d getEta() const ;
     cv::Point2d getNu() const ;
     cv::Point2d getXi() const ;
 
