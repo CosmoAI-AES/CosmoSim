@@ -121,6 +121,9 @@ public:
     virtual double psiValue( double, double ) const ;
     virtual double psiXvalue( double, double ) const ;
     virtual double psiYvalue( double, double ) const ;
+    virtual double psiXXvalue( double, double ) const ;
+    virtual double psiXYvalue( double, double ) const ;
+    virtual double psiYYvalue( double, double ) const ;
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
     virtual std::string idString() ;
@@ -177,6 +180,9 @@ public:
     virtual double psiValue( double, double ) const ;
     virtual double psiXvalue( double, double ) const ;
     virtual double psiYvalue( double, double ) const ;
+    virtual double psiXXvalue( double, double ) const ;
+    virtual double psiXYvalue( double, double ) const ;
+    virtual double psiYYvalue( double, double ) const ;
 
     virtual double getAlpha( cv::Point2d xi, int m, int s ) ; 
     virtual double getBeta( cv::Point2d xi, int m, int s ) ; 
