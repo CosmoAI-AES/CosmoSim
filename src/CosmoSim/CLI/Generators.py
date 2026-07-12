@@ -131,7 +131,7 @@ class ClusterLens(cs.ClusterLens):
         for lens in ll:
             lenstype = lens[0]
             lensparam = [ float(x) for x in lens[1:] ]
-            if self.verbose: print( lenstype, ":", lensparam )
+            if self.verbose>1: print( lenstype, ":", lensparam )
             self.fn = fn
             sys.stdout.flush()
             nl = len(lensparam)
@@ -140,11 +140,9 @@ class ClusterLens(cs.ClusterLens):
             x, y = lensparam[0], lensparam[1] ;
             if lenstype == "SIS":
                 l = cs.SIS()
-                print( "Cluster - SIS", fn )
                 if fn is None: fn = getPathFN( "sis50.txt" )
-                print( "Cluster - SIS", fn )
                 l.setFile( fn )
-                print( "Cluster - SIS", fn )
+                if verbose>2: print( "Cluster - SIS", fn )
             elif lenstype == "SIE":
                 l = cs.SIE()
                 if nl < 5:
@@ -159,20 +157,17 @@ class ClusterLens(cs.ClusterLens):
                 l.setFile( fn )
             else:
                 raise Exception( f"Lens Type not Supported {lenstype}" )
+            l.setEinsteinR( lensparam[2] )
+            self.addLens( l, x, y )
             if verbose > 1: 
                 print( "[ClusterLens] component lens instantiated" )
                 print( "[ClusterLens]", lensparam  )
-            l.setEinsteinR( lensparam[2] )
-            self.addLens( l, x, y )
-            if verbose > 1: print( "[ClusterLens] Done one component lens" )
         if self.verbose: print( f"[CosmoSim/py] setCluster calls setLens")
     def addLens(self,l,x,y):
+        super().addLens( l, x, y )
+        self.lenslist.append( l )
         if self.verbose > 1:
             print( "[ClusterLens] addLens", (x,y), l )
-        super().addLens( l, x, y )
-        if self.verbose > 1:
-            print( "[ClusterLens] addLens done" )
-        self.lenslist.append( l )
 
 class RouletteRegenerator(cs.RouletteRegenerator):
     """

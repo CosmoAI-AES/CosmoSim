@@ -46,17 +46,15 @@ class SimImage(GenericSim):
         if verbose is None: verbose = self.verbose
         sim = self.sim
         if self.param.get( "centred" ):
-            if verbose: print( "[getData] centred" )
             centrepoint = self.centrepoint
         else:
-            if verbose: print( "[getData] not centred" )
             centrepoint = (0,0)
         maxm = self.param.get( ( "simulator", "nterms" ), 16 )
         xireference = self.param.get( "xireference", True )
 
         releta = np.array(sim.getRelativeEta(centrepoint[0],centrepoint[1]))
         offset = np.array(sim.getOffset())
-        if verbose: print( "[getData] ", offset, centrepoint )
+        if verbose: print( f"[getData] offset={offset}, centre={centrepoint}" )
 
         xioffset = self.getXiOffset(centrepoint)
         if verbose>1:
@@ -74,7 +72,6 @@ class SimImage(GenericSim):
             if fn is None:
                 fn = self.getAmplitudeFile() 
             g = self.param.get( ( "lens", "einsteinradius" ) )
-            if verbose: print( "Einstein radius", g )
             rp = RouletteParser( fn, g=g, verbose=self.verbose )
             ab = rp.getAlphaBetas(xi,maxm=maxm)
 
@@ -135,10 +132,9 @@ class SimImage(GenericSim):
         im = sim.getDistortedImage( 
                  critical=param.get( "criticalcurves" ),
                  showmask=param.get( "showmask" ) ) 
-        print( "getDistortedImage() has returned", type(im) )
 
         if param.get( "centred" ):
-            if self.verbose: print( "[movedImage] centred" )
+            if self.verbose: print( "[moveImage] centred" )
             (im,(cx,cy)) = csimg.centreImage(im)
         if param.get( "cropsize" ):
             cs = param.get( "cropsize", None )
