@@ -127,7 +127,6 @@ class ClusterLens(cs.ClusterLens):
 
         ll = [ x.split("/") for x in s.split(";") ]
         self.lenslist = []
-        cluster = cs.ClusterLens()
         for lens in ll:
             lenstype = lens[0]
             lensparam = [ float(x) for x in lens[1:] ]
