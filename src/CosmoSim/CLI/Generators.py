@@ -159,10 +159,9 @@ class ClusterLens(cs.ClusterLens):
                 raise Exception( f"Lens Type not Supported {lenstype}" )
             l.setEinsteinR( lensparam[2] )
             self.addLens( l, x, y )
-            if verbose > 1: 
+            if verbose > 2: 
                 print( "[ClusterLens] component lens instantiated" )
                 print( "[ClusterLens]", lensparam  )
-        if self.verbose: print( f"[CosmoSim/py] setCluster calls setLens")
     def addLens(self,l,x,y):
         super().addLens( l, x, y )
         self.lenslist.append( l )

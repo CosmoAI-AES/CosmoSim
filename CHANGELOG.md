@@ -1,8 +1,18 @@
 # CosmoSim Change Log
 
+## unreleased
+
+### Fixed
+
++ Draw critical curve for GUI in python, resolving a memory leak.
+
+### Changed
+
++ Reduced diagnostic messages
+
 ## 3.2.3 - 2026-07-11
 
-æææ Fixed
+### Fixed
 
 + GUI removes the critical curve when the checkbox is unticked.
 

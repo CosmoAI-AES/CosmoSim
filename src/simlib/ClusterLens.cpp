@@ -4,7 +4,7 @@
 #include "simaux.h"
 
 void ClusterLens::addLens( PsiFunctionLens *l, double x, double y ) {
-   std::cout << "ClusterLens::addLens]] " << (x,y) << "\n" ;
+   if (DEBUG) std::cout << "ClusterLens::addLens]] (" << x << ", " << y << ")\n" ;
    this->xshift[this->nlens] = x ;
    this->yshift[this->nlens] = y ;
    this->lens[this->nlens++] = l ;
@@ -75,7 +75,6 @@ double ClusterLens::getBeta( cv::Point2d xi, int m, int s ) {
 }
 
 void ClusterLens::initAlphasBetas() {
-   std::cout << "[ClusterLens.initAlphasBetas] " << filename << "\n" ;
    for ( int i=0 ; i<this->nlens ; ++i ) {
       lens[i]->initAlphasBetas() ;
    }
