@@ -21,10 +21,6 @@ cv::Point2d RaytraceModel::calculateEta( cv::Point2d xi ) {
 }
 void RaytraceModel::distort(int begin, int end, const cv::Mat& src, cv::Mat& dst) {
 
-    if (DEBUG) {
-       std::cout << "[RaytraceModel] distort() " << lens->idString() 
-          << " (" << source->idString() << ")\n" ;
-    }
     for (int row = begin; row < end; row++) {
         for (int col = 0; col < dst.cols; col++) {
 
@@ -79,6 +75,11 @@ void RaytraceModel::parallelDistort(const cv::Mat& src, cv::Mat& dst) {
 
     std::vector<std::thread> threads_vec;
     int lower=0, rng=dst.rows, rng1 ; 
+
+    if (DEBUG) {
+       std::cout << "[RaytraceModel::parallelDistort] " << lens->idString() 
+          << " (" << source->idString() << ")\n" ;
+    }
 
     rng1 = ceil( (double) rng / (double) n_threads ) ;
 
