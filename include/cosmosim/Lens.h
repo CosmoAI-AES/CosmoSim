@@ -119,6 +119,7 @@ public:
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
     virtual std::string idString() ;
+    virtual double criticalXi( double ) const ;
 };
 class SIS : public PsiFunctionLens { 
 
