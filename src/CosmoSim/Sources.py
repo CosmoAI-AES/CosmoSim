@@ -36,14 +36,9 @@ def getSource(param,verbose=1):
        else:
            ltprf = lightProfileDict.get( ltprf0, LightProfileSpec.Gaussian ) 
            if verbose > 1: print( "[getSource] Lightprofile:", ltprf0, ltprf )
-       if verbose:
-          print( f"[getSource] mode={mode}, ltprf={ltprf}" )
        if mode == sourceDict.get( "Spherical" ):
            nsersic = float(param.get("n_sersic",4))
            luminosity = float(param.get("luminosity",10))
-           if verbose > 1: 
-               print( "[getSource] Spherical Source - "
-                     + f"n_sersic={nsersic}, luminosity={luminosity}" )
            r = SphericalSource( size, float(param.get( "sigma" )),
                                nsersic, luminosity, ltprf=ltprf,
                                verbose=verbose)
