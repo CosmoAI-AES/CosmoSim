@@ -17,7 +17,10 @@ SimulatorModel::SimulatorModel() :
         source(NULL)
 { }
 
-SimulatorModel::~SimulatorModel() { }
+SimulatorModel::~SimulatorModel() { 
+   imgDistorted.release() ;
+   imgDistorted2.release() ;
+}
 
 /* Getters for the images */
 
