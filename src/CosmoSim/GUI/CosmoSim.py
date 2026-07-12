@@ -13,10 +13,11 @@ from ..Sources import *
 from ..Lens import *
 from ..Dictionary import *
 from ..CosmoSimPy import RouletteModel,RaytraceModel
-from ..Image import drawAxes
+from .. import Image as csimg
 import numpy as np
 import threading as th
 import os, sys
+import cv2
 
 class CosmoSim:
     """
@@ -246,7 +247,7 @@ class CosmoSim:
         """
         im = self._sim.getActual()
         if self.resolution < self.imagesize:
-            im = cv.resize( im, ( self.resolution, self.resolution ) )
+            im = cv2.resize( im, ( self.resolution, self.resolution ) )
         if caustics:
             self._sim.drawCaustics( im )
         im = np.array(im)
@@ -268,17 +269,20 @@ class CosmoSim:
             if showmask: self.showMask()
         except:
             print( "Masking not supported for this lens model." )
-        im = self._sim.getDistorted()
+        imob = self._sim.getDistorted()
         if self.resolution < self.imagesize:
-            im = cv.resize( im, ( self.resolution, self.resolution ) )
-        if critical:
-            self._sim.drawCritical( im )
-        im = np.array(im)
-        if reflines:
-            drawAxes( im )
+            imob = cv2.resize( imob, ( self.resolution, self.resolution ) )
+        im = np.array(imob)
         if im.shape[2] == 1:
-            im.shape = im.shape[:2]
+            im = cv2.cvtColor( im, cv2.COLOR_GRAY2BGR )
+        if reflines:
+            csimg.drawAxes( im )
         if im.shape[0]*im.shape[1] == 0:
             print( "[getDistortedImage] No image yet" )
+        if critical:
+            crit = np.array( self._sim.getCritical( ) )
+            z = np.zeros_like( crit )
+            crit = cv2.merge( (crit,z,z) )
+            im = csimg.overlay( im, crit )
         return np.maximum(im,self.bgcolour)
 

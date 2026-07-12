@@ -45,7 +45,7 @@ cv::Mat SimulatorModel::getApparent() const {
 }
 cv::Mat SimulatorModel::getDistorted() const {
    if (DEBUG) std::cout << "[SimulatorModel::getDistorted()]\n" ;
-   return imgDistorted.clone() ;
+   return imgDistorted ;
 }
 
 void SimulatorModel::update( ) {
