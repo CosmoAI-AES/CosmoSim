@@ -85,6 +85,20 @@ double SampledLens::psiYvalue( double x, double y ) const {
    cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
    return -psiX.at<double>( ij ) ;
 }
+
+double SampledLens::psiXXvalue( double x, double y ) const { 
+   cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
+   return -psiYY.at<double>( ij ) ;
+}
+double SampledLens::psiXYvalue( double x, double y ) const { 
+   cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
+   return -psiYX.at<double>( ij ) ;
+}
+double SampledLens::psiYYvalue( double x, double y ) const { 
+   cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
+   return -psiXX.at<double>( ij ) ;
+}
+
 cv::Mat SampledLens::getPsi() const {
    return psi ;
 }
@@ -109,3 +123,9 @@ double SampledLens::getBetaXi( int m, int s ) {
    return betas_val[m][s] ;
 }
 
+
+void SampledLens::updateDerivatives() {
+   gradient( -psi, psiX, psiY ) ;
+   gradient( psiX, psiXX, psiXY ) ;
+   gradient( psiY, psiYX, psiYY ) ;
+}

@@ -51,6 +51,7 @@ protected:
     cv::Mat psi, psiX, psiY, psiXX, psiXY, psiYX, psiYY ;
 public:
     virtual void calculateAlphaBeta( cv::Point2d, int );
+    void updateDerivatives( );
 
     virtual double getAlphaXi( int m, int s ) ;
     virtual double getBetaXi( int m, int s ) ;
@@ -60,6 +61,9 @@ public:
     virtual double psiValue( double, double ) const ;
     virtual double psiXvalue( double, double ) const ;
     virtual double psiYvalue( double, double ) const ;
+    virtual double psiXXvalue( double, double ) const ; /* Not Implemented */
+    virtual double psiXYvalue( double, double ) const ; /* Not Implemented */
+    virtual double psiYYvalue( double, double ) const ; /* Not Implemented */
 
     virtual void updatePsi( cv::Size ) ;
     virtual void updatePsi( ) ;
@@ -137,6 +141,9 @@ public:
     virtual double psiValue( double, double ) const ;
     virtual double psiXvalue( double, double ) const ;
     virtual double psiYvalue( double, double ) const ;
+    virtual double psiXXvalue( double, double ) const ; /* Not Implemented */
+    virtual double psiXYvalue( double, double ) const ; /* Not Implemented */
+    virtual double psiYYvalue( double, double ) const ; /* Not Implemented */
 
     virtual cv::Point2d getXi( cv::Point2d ) ;
 

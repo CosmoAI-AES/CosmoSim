@@ -30,6 +30,22 @@ double SIS::psiYvalue( double x, double y ) const {
    return einsteinR*y/s ;
 }
 
+double SIS::psiXXvalue( double x, double y ) const {
+   double x2 = x*x, y2 = y*y ;
+   double r = x2+y2 ;
+   return einsteinR*y2 / ( r*sqrt(r) );
+}
+double SIS::psiXYvalue( double x, double y ) const {
+   double x2 = x*x, y2 = y*y ;
+   double r = x2+y2 ;
+   return -einsteinR*x*y / ( r*sqrt(r) );
+}
+double SIS::psiYYvalue( double x, double y ) const {
+   double x2 = x*x, y2 = y*y ;
+   double r = x2+y2 ;
+   return einsteinR*x2 / ( r*sqrt(r) );
+}
+
 double SIS::criticalXi( double phi ) const {
    return einsteinR ;
 }
