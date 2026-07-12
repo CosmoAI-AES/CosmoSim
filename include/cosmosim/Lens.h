@@ -48,7 +48,7 @@ private:
     std::array<std::array<double, 202>, 201> alphas_val;
     std::array<std::array<double, 202>, 201> betas_val;
 protected:
-    cv::Mat psi, psiX, psiY ;
+    cv::Mat psi, psiX, psiY, psiXX, psiXY, psiYX, psiYY ;
 public:
     virtual void calculateAlphaBeta( cv::Point2d, int );
 

@@ -57,8 +57,6 @@ double factorial_(unsigned int n){
 void gradient(cv::InputArray src, cv::OutputArray outX, cv::OutputArray outY) {
    Sobel(src, outX, CV_64F, 1, 0, 3, -1.0/8 ) ;
    Sobel(src, outY, CV_64F, 0, 1, 3, 1.0/8 ) ;
-   // Sobel(src, out, ddepth, 1, 0, ksize, scale, delta, BORDER_DEFAULT);
-   // Sobel(src, out, ddepth, 0, 1, ksize, scale, delta, BORDER_DEFAULT);
 }
 
 cv::Point2d imageCoordinate( cv::Point2d pt, cv::Mat im ) {
