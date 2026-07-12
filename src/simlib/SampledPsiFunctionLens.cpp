@@ -27,7 +27,7 @@ void SampledPsiFunctionLens::updatePsi( cv::Size size ) {
       }
    }
 
-   gradient( -psi, psiX, psiY ) ;
+   gradient( psi, psiX, psiY ) ;
 
    if (DEBUG) std::cout << "[SampledPsiFunctionLens] (" << size << ") updatePsi() returns\n" ;
    return ; 
