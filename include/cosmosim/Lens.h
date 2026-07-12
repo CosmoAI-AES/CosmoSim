@@ -32,6 +32,11 @@ public:
     virtual double psiXvalue( double, double ) const ; /* Not Implemented */
     virtual double psiYvalue( double, double ) const ; /* Not Implemented */
 
+    virtual double psiXXvalue( double, double ) const ; /* Not Implemented */
+    virtual double psiXYvalue( double, double ) const ; /* Not Implemented */
+    virtual double psiYYvalue( double, double ) const ; /* Not Implemented */
+    virtual double detA( double, double ) const ; /* Not Implemented */
+
     virtual double criticalXi( double ) const ;
     virtual cv::Point2d caustic( double ) const ;
 

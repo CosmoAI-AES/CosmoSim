@@ -9,8 +9,6 @@ cv::Point2d Lens::getXi( cv::Point2d eta ) {
    int cont = 1, count = 0, maxcount = 200 ;
    double dist, dist0=pow(10,12), threshold = 0.02 ;
 
-   if (DEBUG) std::cout << "[Lens::getXi] " << eta << "\n" ;
-
    /** This block makes a fix-point iteration to find \xi. */
    while ( cont ) {
       xi0 = xi1 ;
@@ -62,7 +60,7 @@ double Lens::criticalXi( double phi ) const {
       double x = psiXvalue( xi.x, xi.y ),
              y = psiYvalue( xi.x, xi.y ) ;
       if (DEBUG) std::cout
-	   << "[Lens] Fix pt it'n " << count << "; r0=" << r0 << std::endl ;
+	   << "[Lens::criticalXi] Fix pt it'n " << count << "; r0=" << r0 << std::endl ;
       r1 = sqrt( x * x + y * y ) ;
       dist = r0 - r1 ;
       if ( dist < threshold ) cont = 0 ;
@@ -70,10 +68,10 @@ double Lens::criticalXi( double phi ) const {
    }
    if (DEBUG) {
       if ( dist > threshold ) {
-         std::cout << "[Lens::criticalCurve] Bad approximation: r0=" << r0 
+         std::cout << "[Lens::criticalXi] Bad approximation: r0=" << r0 
             << "; r1=" << r1 << "; dist=" << dist << "\n" ;
       } else {
-         std::cout << "[Lens::criticalCurve] [Lens] Good approximation: r0=" << r0 
+         std::cout << "[Lens::criticalXi] [Lens] Good approximation: r0=" << r0 
             << "; r1=" << r1 << "\n" ;
       }
    }
@@ -83,6 +81,17 @@ cv::Point2d Lens::caustic( double phi ) const { throw NotImplemented() ; }
 double Lens::psiValue( double x, double y ) const { throw NotImplemented() ; }
 double Lens::psiXvalue( double x, double y ) const { throw NotImplemented() ; }
 double Lens::psiYvalue( double x, double y ) const { throw NotImplemented() ; }
+
+double Lens::psiXXvalue( double x, double y ) const { throw NotImplemented() ; }
+double Lens::psiXYvalue( double x, double y ) const { throw NotImplemented() ; }
+double Lens::psiYYvalue( double x, double y ) const { throw NotImplemented() ; }
+
+double Lens::detA( double x, double y ) const { 
+   double xx = this->psiXXvalue( x, y ) ;
+   double xy = this->psiXYvalue( x, y ) ;
+   double yy = this->psiYYvalue( x, y ) ;
+   return 1 - xx - yy + xx*yy + 2*xy ;
+}
 
 std::string Lens::idString() {
    return "Lens (Superclass)" ;
