@@ -33,3 +33,6 @@ cv::Point2d PointMass::getXi( cv::Point2d eta ) {
    if (DEBUG) std::cout << "[PointMass::getXi] " << eta << " -> " << r << "\n" ;
    return r ;
 }
+double PointMass::criticalXi( double phi ) const {
+   return einsteinR ;
+}
