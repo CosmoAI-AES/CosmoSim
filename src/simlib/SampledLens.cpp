@@ -78,15 +78,12 @@ double SampledLens::psiValue( double x, double y ) const {
    return psi.at<double>( ij ) ;
 }
 double SampledLens::psiXvalue( double x, double y ) const {
-   // std::cout << "[SampledLens::psiXvalue]\n" ;
    cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
-   // std::cout << "[SampledLens::psiXvalue]" << ij << std::endl  ;
-   // std::cout << "[SampledLens::psiXvalue]" << psiY << std::endl  ;
-   return -psiY.at<double>( ij ) ;
+   return psiY.at<double>( ij ) ;
 }
 double SampledLens::psiYvalue( double x, double y ) const { 
    cv::Point2d ij = imageCoordinate( cv::Point2d( x, y ), psi ) ;
-   return -psiX.at<double>( ij ) ;
+   return psiX.at<double>( ij ) ;
 }
 cv::Mat SampledLens::getPsi() const {
    return psi ;
