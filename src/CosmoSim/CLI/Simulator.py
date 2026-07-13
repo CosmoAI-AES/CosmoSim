@@ -63,7 +63,7 @@ class GenericSim:
         self.image = self.getDistortedImage( )
 
         (self.centreimage,self.centrepoint) = centreImage(self.image)
-        if self.verbose: 
+        if self.verbose>1: 
             print( "[Simulator] Centre Point",
                 f"({self.centrepoint[0]:.2f},{self.centrepoint[1]:.2f})",
                 "(Centre of Luminence in Planar Co-ordinates)" )

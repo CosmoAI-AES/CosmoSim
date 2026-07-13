@@ -69,7 +69,7 @@ public:
     /* Getters (images) */
     cv::Mat getActual() const ;
     virtual cv::Mat getApparent() const ;
-    cv::Mat getDistorted() ;
+    cv::Mat getDistorted() const ;
 
     /* Getters (Parameters) */
     cv::Point2d getEta() const ;

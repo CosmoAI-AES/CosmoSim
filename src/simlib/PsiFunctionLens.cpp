@@ -19,8 +19,6 @@ void PsiFunctionLens::initAlphasBetas() {
     auto p = SymEngine::symbol("p"); /* theta  */
 
     std::ifstream input;
-    if (DEBUG) std::cout << "[PsiFunctionLens.initAlphasBetas] Amplitudes file "
-        << filename << "\n" ;
 
     if ( filename.compare("nosuchfile") == 0 )  return ;
 
@@ -30,7 +28,7 @@ void PsiFunctionLens::initAlphasBetas() {
         throw std::runtime_error("Could not open file: " + filename);
     } else {
         if (DEBUG) std::cout 
-           << "[initAlphasBetas] opened file " << filename << "\n" ;
+           << "[PsiFunctionLens::initAlphasBetas] opened file " << filename << "\n" ;
     }
 
     while (input) {
@@ -56,12 +54,10 @@ void PsiFunctionLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
               << einsteinR << " - " << xi << "\n"  ;
 
     // calculate all amplitudes for given xi, einsteinR
-    for (int m = 1; m <= nterms; m++) {
+    for (int m = 0; m <= nterms; m++) {
         for (int s = (m+1)%2; s <= (m+1); s+=2) {
             alphas_val[m][s] = getAlpha( xi, m, s ) ;
             betas_val[m][s] = getBeta( xi, m, s ) ;
-            // std::cout << "PsiFunctionLens (" << m << ", " << s << ") " << std::endl ;
-              // << alphas_val[m][s]  << "/" << betas_val[m][s] << "\n"  ;
         }
     }
 }

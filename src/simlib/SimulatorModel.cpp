@@ -17,7 +17,9 @@ SimulatorModel::SimulatorModel() :
         source(NULL)
 { }
 
-SimulatorModel::~SimulatorModel() { }
+SimulatorModel::~SimulatorModel() { 
+   imgDistorted.release() ;
+}
 
 /* Getters for the images */
 
@@ -41,10 +43,9 @@ cv::Mat SimulatorModel::getActual() const {
 cv::Mat SimulatorModel::getApparent() const {
    return source->getImage() ;
 }
-cv::Mat SimulatorModel::getDistorted() {
+cv::Mat SimulatorModel::getDistorted() const {
    if (DEBUG) std::cout << "[SimulatorModel::getDistorted()]\n" ;
-   imgDistorted2 = imgDistorted.clone() ;
-   return imgDistorted2 ;
+   return imgDistorted ;
 }
 
 void SimulatorModel::update( ) {

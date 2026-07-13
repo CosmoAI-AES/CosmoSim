@@ -13,7 +13,7 @@ EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2, double thet,
         luminosity(luminosity),
         n_sersic(nsersic),
         Source::Source(sz)
-{ if (DEBUG) std::cout << "[EllipsoidSource ] sz=" << sz
+{ if (DEBUG) std::cout << "[EllipsoidSource] sz=" << sz
                        << "; sigma1=" << sig1
                        << "; sigma2=" << sig2
                        << "; theta=" << thet
@@ -28,10 +28,12 @@ EllipsoidSource::EllipsoidSource( int sz, double sig1, double sig2, double thet,
         luminosity(15),
         n_sersic(4),
         Source::Source(sz)
-{ if (DEBUG) std::cout << "[EllipsoidSource ] sz=" << sz
+{ if (DEBUG) std::cout << "[EllipsoidSource] sz=" << sz
                        << "; sigma1=" << sig1
                        << "; sigma2=" << sig2
                        << "; theta=" << thet
+                       << "; luminosity=" << luminosity
+                       << "; n_sersic=" << n_sersic
                        << "; lightprf=" << lightprf
 		       << std::endl ;
 }
