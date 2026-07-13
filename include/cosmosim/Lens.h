@@ -16,6 +16,8 @@ using namespace SymEngine;
 
 class Lens {
 public:
+    Lens();
+    virtual ~Lens();
 
     virtual void calculateAlphaBeta( cv::Point2d, int ) ; /* Not implemented */
 
@@ -144,6 +146,8 @@ private:
     // double psifunctionAligned( double, double ) const ;
 
 public:
+    SIE();
+    virtual ~SIE();
     virtual double psiValue( double, double ) const ;
     virtual double psiXvalue( double, double ) const ;
     virtual double psiYvalue( double, double ) const ;
@@ -164,6 +168,8 @@ private:
     double xshift[MAXCLUSTER], yshift[MAXCLUSTER] ;
     int nlens = 0 ;
 public:
+    ClusterLens();
+    virtual ~ClusterLens();
     // virtual void addLens( PsiFunctionLens* );
     virtual void addLens( PsiFunctionLens*, double, double );
     virtual void initAlphasBetas();

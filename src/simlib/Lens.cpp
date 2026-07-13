@@ -3,6 +3,14 @@
 #include "cosmosim/Lens.h"
 #include "simaux.h"
 
+Lens::Lens() { 
+   if (DEBUG>1) std::cout << "[Lens] init " << this->idString() << "\n" ;
+}
+
+Lens::~Lens() { 
+   if (DEBUG>1) std::cout << "[Lens] destructing " << idString() << "\n" ;
+}
+
 cv::Point2d Lens::getXi( cv::Point2d eta ) {
 
    cv::Point2d xi0, xi1 = eta ;

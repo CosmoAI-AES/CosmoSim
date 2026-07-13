@@ -15,10 +15,13 @@ int debug = 0 ;
 SimulatorModel::SimulatorModel() :
         nterms(10),
         source(NULL)
-{ }
+{ 
+   if (DEBUG>1) std::cout << "[SimulatorModel] instantiating\n" ;
+}
 
 SimulatorModel::~SimulatorModel() { 
    imgDistorted.release() ;
+   if (DEBUG>1) std::cout << "[SimulatorModel] destructing\n" ;
 }
 
 /* Getters for the images */

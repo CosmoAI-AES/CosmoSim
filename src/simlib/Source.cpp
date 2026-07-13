@@ -11,14 +11,15 @@
 #include <thread>
 
 Source::~Source() {
-   if (DEBUG>1) std::cout << "[Source] Destructor - destructed\n" ;
+   if (DEBUG>1) std::cout << "[Source] Destructor " << this->idString() << std::endl ;
 }
 Source::Source(int sz) :
         size(sz)
 { 
    drawn = 0 ;
    imgApparent = cv::Mat(size, size, CV_8UC1, cv::Scalar(0, 0, 0)) ;
-   if (DEBUG>1) std::cout << "[Source] Constructor\n" ;
+   if (DEBUG>1) std::cout << "[Source] Constructor "
+                          << this->idString() << std::endl ;
 }
 Source::Source() : Source(512) {}
 
