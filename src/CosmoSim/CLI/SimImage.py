@@ -158,7 +158,7 @@ class SimImage(GenericSim):
         """
         if self.verbose>1:
             print ( "[getAlphaBetas] pt=", pt, "in Planar Co-ordinates"  )
-        if pt == None:
+        if pt is None:
            ab1 = { f"alpha[{m}][{s}]" : self.lens.getAlphaXi(m,s) 
                    for (m,s) in getMS(maxm) }
            ab2 = { f"beta[{m}][{s}]" : self.lens.getBetaXi(m,s)
