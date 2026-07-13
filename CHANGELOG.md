@@ -1,14 +1,15 @@
 # CosmoSim Change Log
 
-## unreleased
-
-### Fixed
-
-+ Draw critical curve for GUI in python, resolving a memory leak.
+## 3.2.4 - unreleased
 
 ### Changed
 
 + Reduced diagnostic messages
+
+### Fixed
+
++ Draw critical curve for GUI in python, resolving a memory leak.
++ include zeroth order amplitudes in roulette CSV output
 
 ## 3.2.3 - 2026-07-11
 
