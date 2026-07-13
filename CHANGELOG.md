@@ -1,5 +1,11 @@
 # CosmoSim Change Log
 
+## 3.2.4 - unreleased
+
+### Fixed
+
++ include zeroth order amplitudes in roulette CSV output
+
 ## 3.2.3 - 2026-07-11
 
 æææ Fixed
