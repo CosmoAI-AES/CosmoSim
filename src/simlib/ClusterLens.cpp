@@ -12,7 +12,7 @@ ClusterLens::~ClusterLens() {
 }
 
 void ClusterLens::addLens( PsiFunctionLens *l, double x, double y ) {
-   if (DEBUG) std::cout << "ClusterLens::addLens]] (" << x << ", " << y << ")\n" ;
+   if (DEBUG) std::cout << "[ClusterLens::addLens] (" << x << ", " << y << ")\n" ;
    this->xshift[this->nlens] = x ;
    this->yshift[this->nlens] = y ;
    this->lens[this->nlens++] = l ;
