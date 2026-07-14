@@ -90,7 +90,7 @@ double Lens::detA( double x, double y ) const {
    double xx = this->psiXXvalue( x, y ) ;
    double xy = this->psiXYvalue( x, y ) ;
    double yy = this->psiYYvalue( x, y ) ;
-   return 1 - xx - yy + xx*yy + 2*xy ;
+   return 1 - xx - yy + xx*yy + xy*xy ;
 }
 
 std::string Lens::idString() {
