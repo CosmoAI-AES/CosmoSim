@@ -14,6 +14,14 @@ from . import getPathFN
 
 _amp = {}
 
+def getPathFN(fn):
+    """
+    Get the absolute path name for file given relative to the location of
+    the referencing file.
+    """
+    dir = os.path.dirname(os.path.abspath(__file__))
+    return  os.path.join( dir, fn )
+
 def getPointMassAmplitudes():
     """Get the default Amplitudes object for PointMass."""
     return getAmplitudes( getPathFN( "pm50.txt" ) )
@@ -25,6 +33,16 @@ def getSISAmplitudes():
 def getSIEAmplitudes():
     """Get the default Amplitudes object for SIE."""
     return getAmplitudes( getPathFN( "sie05.txt" ) )
+
+def getAmplitudesByMode( mode ):
+    if mode == PsiSpec.PM:
+        return getPointMassAmplitudes()
+    elif mode == PsiSpec.SIS:
+        return getSISAmplitudes()
+    elif mode == PsiSpec.SIE:
+        return getSIEAmplitudes()
+    else:
+        raise RuntimeError( "[getAmplitudesByMode] No such lens model" )
 
 def getAmplitudes(filename):
     """Get an Amplitudes object created from the given file."""
