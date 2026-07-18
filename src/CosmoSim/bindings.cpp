@@ -123,6 +123,8 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("psiYvalue", &ClusterLens::psiYvalue)
         ;
 
+    py::class_<Amplitudes>(m, "Amplitudes")
+        .def(py::init<>()) ;
     py::class_<SimulatorModel>(m, "SimulatorModel")
         .def(py::init<>())
         .def("update", py::overload_cast<>(&SimulatorModel::update))

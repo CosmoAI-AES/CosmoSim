@@ -20,8 +20,8 @@ public:
     ~Amplitudes() ;
     double alpha( cv::Point2d xi, int m, int s, double, double, double ) ;
     double beta( cv::Point2d xi, int m, int s, double, double, double ) ;
-    std::string filename ;
 private:
+    std::string filename ;
     std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> alphas_l;
     std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> betas_l;
 } ;
