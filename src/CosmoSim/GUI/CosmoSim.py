@@ -8,7 +8,7 @@ The root module provides wrappers around most of the C++ classes,
 to make the python API more streamlined.
 """
 
-from .. import CosmoSimPy as cs, getPathFN
+from .. import CosmoSimPy as cs, AmplitudeManager as ampmgr
 from ..Sources import *
 from ..Lens import *
 from ..Dictionary import *
@@ -32,10 +32,6 @@ class CosmoSim:
         if self.verbose>1: print( f"[CosmoSim] init (verbose={self.verbose}) ..." )
 
         # Default parameters
-        self.amplitudefiles = { PsiSpec.PM : getPathFN( "pm50.txt" )
-                 , PsiSpec.SIS : getPathFN( "sis50.txt" )
-                 , PsiSpec.SIE : getPathFN( "sie05.txt" )
-                 }
         self.bgcolour = 0
         self.imagesize = 512
         self.resolution = self.imagesize
@@ -125,7 +121,7 @@ class CosmoSim:
             raise RuntimeError( "Invalid lens mode" )
         self._psilens_ = self._psilens # backup to prevent garbage collection
         self._psilens = lens
-        lens.setFile( self.amplitudefiles[lensmode] )
+        lens.setAmplitudes( ampmgr.getAmplitudesByMode( lensmode ) )
         self.setLensParameters()
         if self._sim is not None:
             if self.verbose:
