@@ -1,14 +1,6 @@
 # CosmoSim Change Log
 
-## 3.2.4b2 - 2026-07-18
-
-### Fixed
-
-+ Fixed memory leak crashing bulk generation.  There is probably still
-  a memory leak, but as long as Amplitudes files are instantiated sparingly, 
-  it is not a problem.
-
-## 3.2.4b1 - 2026-07-13
+## 3.2.4 - 2026-07-18
 
 ### Changed
 
@@ -16,6 +8,9 @@
 
 ### Fixed
 
++ Fixed memory leak crashing bulk generation.  There is probably still
+  a memory leak, but as long as Amplitudes files are instantiated sparingly, 
+  it is not a problem.
 + Draw critical curve for GUI in python, resolving a memory leak.
 + include zeroth order amplitudes in roulette CSV output
 
