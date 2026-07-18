@@ -107,7 +107,6 @@ def getLens(param,verbose=1):
         raise RuntimeError( "[getLens] Unknown lens specification" )
     if fn is not None:
         lens.setFile( fn )
-    lens.initAlphasBetas()
     smp = param.get( ( "simulator", "sampled"), None )
     if smp is not None:
         size = param.get( ( "simulator", "imagesize" ), 512 )

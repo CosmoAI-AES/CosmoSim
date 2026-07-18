@@ -14,6 +14,7 @@ set(SimLibFiles
         simlib/SimulatorModel.cpp
         simlib/PointMass.cpp
         simlib/RouletteRegenerator.cpp
+        simlib/Amplitudes.cpp
         simlib/simaux.cpp
         simlib/Source.cpp
         simlib/SphericalSource.cpp
