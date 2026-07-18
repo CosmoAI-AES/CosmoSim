@@ -124,7 +124,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         ;
 
     py::class_<Amplitudes>(m, "Amplitudes")
-        .def(py::init<>()) ;
+        .def(py::init<std::string>()) ;
     py::class_<SimulatorModel>(m, "SimulatorModel")
         .def(py::init<>())
         .def("update", py::overload_cast<>(&SimulatorModel::update))
