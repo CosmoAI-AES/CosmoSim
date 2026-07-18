@@ -1,5 +1,11 @@
 # CosmoSim Change Log
 
+## 3.2.4b3 - 2026-07-18
+
+### Fixed
+
++ Introduced the AmplitudesManager in the GUI as well as in CLI.
+
 ## 3.2.4b2 - 2026-07-18
 
 ### Fixed
