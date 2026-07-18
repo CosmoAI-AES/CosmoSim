@@ -8,7 +8,7 @@ Fanctions to create lenses, sources, and simulators.
 """
 
 from .. import CosmoSimPy as cs
-from .. import ampmgr
+from .. import AmplitudeManager as ampmgr
 from ..Sources import *
 from ..Lens import *
 from CosmoSim.Dictionary import *
@@ -95,12 +95,16 @@ def getLens(param,verbose=1):
         lens = cs.PointMass()
         lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
         if amp is None: 
-            amp = ampmgr.getSISAmplitudes()
+            if verbose: print( "[getLens] Point Mass Amplitudes" )
+            amp = ampmgr.getPointMassAmplitudes()
+        if verbose: print( "[getLens] instantiated PointMass" )
     elif lensDict[lensmode] == PsiSpec.SIS:
         lens = cs.SIS()
         lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
         if amp is None: 
+            if verbose: print( "[getLens] SIS Amplitudes" )
             amp = ampmgr.getSISAmplitudes()
+        if verbose: print( "[getLens] instantiated SIS" )
     elif lensDict[lensmode] == PsiSpec.SIE:
         lens = cs.SIE()
         lens.setRatio( param.get( ( "lens", "ellipseratio" ) ) )
@@ -112,6 +116,8 @@ def getLens(param,verbose=1):
         raise RuntimeError( "[getLens] No lens" )
     else:
         raise RuntimeError( "[getLens] Unknown lens specification" )
+    if amp is not None:
+        lens.setAmplitudes( amp )
     smp = param.get( ( "simulator", "sampled"), None )
     if smp is not None:
         size = param.get( ( "simulator", "imagesize" ), 512 )
@@ -148,8 +154,7 @@ class ClusterLens(cs.ClusterLens):
             if lenstype == "SIS":
                 l = cs.SIS()
                 if amp is None: 
-                    amp = getSISAmplitudes()
-                l.setAmplitudes( amp )
+                    amp = ampmgr.getSISAmplitudes()
             elif lenstype == "SIE":
                 l = cs.SIE()
                 if nl < 5:
@@ -157,15 +162,15 @@ class ClusterLens(cs.ClusterLens):
                 l.setRatio( lensparam[3] )
                 l.setOrientation( lensparam[4] )
                 if amp is None: 
-                    amp = getSIEAmplitudes()
-                l.setAmplitudes( amp )
+                    amp = ampmgr.getSIEAmplitudes()
             elif lenstype == "PointMass":
                 l = cs.PointMass()
                 if amp is None: 
-                    amp = getPointMassAmplitudes()
-                l.setAmplitudes( amp )
+                    amp = ampmgr.getPointMassAmplitudes()
             else:
                 raise Exception( f"Lens Type not Supported {lenstype}" )
+            if amp is not None:
+                l.setAmplitudes( amp )
             l.setEinsteinR( lensparam[2] )
             self.addLens( l, x, y )
             if verbose > 2: 

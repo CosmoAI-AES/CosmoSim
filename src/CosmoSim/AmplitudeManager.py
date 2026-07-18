@@ -10,22 +10,23 @@ so that the suspected memory leak in symengine is minimised.
 """
 
 from .CosmoSimPy import Amplitudes
+from . import getPathFN
 
 _amp = {}
 
-def getPointMassAmplitudes(self):
+def getPointMassAmplitudes():
     """Get the default Amplitudes object for PointMass."""
     return getAmplitudes( getPathFN( "pm50.txt" ) )
 
-def getSISAmplitudes(self):
+def getSISAmplitudes():
     """Get the default Amplitudes object for SIS."""
     return getAmplitudes( getPathFN( "sis50.txt" ) )
 
-def getSIEAmplitudes(self):
+def getSIEAmplitudes():
     """Get the default Amplitudes object for SIE."""
     return getAmplitudes( getPathFN( "sie05.txt" ) )
 
-def getAmplitudes(self,filename):
+def getAmplitudes(filename):
     """Get an Amplitudes object created from the given file."""
     if not filename in _amp:
         _amp[filename] = Amplitudes(filename)

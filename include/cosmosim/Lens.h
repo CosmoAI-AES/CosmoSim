@@ -82,7 +82,7 @@ class PsiFunctionLens : public Lens {
 private:
     std::array<std::array<double, 202>, 201> alphas_val;
     std::array<std::array<double, 202>, 201> betas_val;
-    Amplitudes *amp ;
+    Amplitudes *amp = NULL ;
     bool local=false ; /* Is amp allocated by this instance? */ 
 protected:
     double einsteinR /* R_E or \xi_0 */,

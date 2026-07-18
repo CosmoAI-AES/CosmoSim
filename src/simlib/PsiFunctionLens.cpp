@@ -24,23 +24,35 @@ std::string PsiFunctionLens::idString() {
 void PsiFunctionLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
     if (DEBUG) std::cout 
               << "[PsiFunctionLens.calculateAlphaBeta()] " << nterms << "; " 
-              << einsteinR << " - " << xi << "\n"  ;
+              << einsteinR << " - " << xi << "\n" ;
 
     // calculate all amplitudes for given xi, einsteinR
     for (int m = 0; m <= nterms; m++) {
+        if (DEBUG>2) std::cout 
+              << "[PsiFunctionLens.calculateAlphaBeta()] m="<<m<<"\n" 
+              << std::flush ;
         for (int s = (m+1)%2; s <= (m+1); s+=2) {
             alphas_val[m][s] = getAlpha( xi, m, s ) ;
             betas_val[m][s] = getBeta( xi, m, s ) ;
         }
     }
+    if (DEBUG>1) std::cout 
+              << "[PsiFunctionLens.calculateAlphaBeta()] done\n" 
+              << std::flush ;
 }
 
 double PsiFunctionLens::getAlpha( cv::Point2d xi, int m, int s ) {
    double theta = orientation*PI/180 ;
+   if ( amp == NULL ) {
+      throw std::runtime_error( "Amplitudes not initialised.\n" ) ;
+   }
    return amp->alpha( xi, m, s, einsteinR, ellipseratio, theta );
 }
 double PsiFunctionLens::getBeta( cv::Point2d xi, int m, int s ) {
    double theta = orientation*PI/180 ;
+   if ( amp == NULL ) {
+      throw std::runtime_error( "Amplitudes not initialised.\n" ) ;
+   }
    return amp->beta( xi, m, s, einsteinR, ellipseratio, theta );
 }
 
@@ -53,10 +65,10 @@ double PsiFunctionLens::getBetaXi( int m, int s ) {
 
 void PsiFunctionLens::setAmplitudes( Amplitudes *a ) {
    if ( local ) {
-      delete amp ;
+      delete this->amp ;
       local = false ;
    }
-   amp = a ;
+   this->amp = a ;
 }
 void PsiFunctionLens::setFile( std::string fn ) {
    if ( local ) {
