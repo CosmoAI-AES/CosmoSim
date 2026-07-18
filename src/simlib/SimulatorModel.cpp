@@ -248,6 +248,8 @@ void SimulatorModel::calculateAlphaBeta() {
         cv::Point2d xi = getXi() ;
         if (DEBUG) std::cout << "[calculateAlphaBeta] [" << xi << "] ... \n" ;
         lens->calculateAlphaBeta( xi, nterms ) ;
+        if (DEBUG>1) std::cout << "[calculateAlphaBeta] done\n" 
+           << std::flush ;
     }
 }
 
@@ -379,7 +381,7 @@ void SimulatorModel::setXi( cv::Point2d xi1 ) {
 }
 void SimulatorModel::setLens( Lens *l ) {
    lens = l ;
-   if (DEBUG) std::cout << "[SimulatorMode::setLens] " << lens->idString() << std::endl ;
+   if (DEBUG) std::cout << "[SimulatorModel::setLens] " << lens->idString() << std::endl ;
 }
 
 cv::Point2d SimulatorModel::getRelativeEtaPy( double x, double y ) {

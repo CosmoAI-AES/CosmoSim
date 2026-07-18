@@ -8,7 +8,7 @@ Fanctions to create lenses, sources, and simulators.
 """
 
 from .. import CosmoSimPy as cs
-from .. import getPathFN
+from .. import AmplitudeManager as ampmgr
 from ..Sources import *
 from ..Lens import *
 from CosmoSim.Dictionary import *
@@ -85,29 +85,39 @@ def getLens(param,verbose=1):
     lensmode = param.get( ( "lens", "mode" ), None )
     cluster = param.get( ( "lens", "cluster" ), None )
     fn = param.get( ( "lens", "amplitudefile" ) )
+    if fn is not None:
+        amp = ampmgr.getAmplitudes( fn )
+    else: 
+        amp = None
     if cluster is not None:
         lens = ClusterLens( cluster, verbose=verbose )
     elif lensDict[lensmode] == PsiSpec.PM:
         lens = cs.PointMass()
         lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
-        if fn is None: fn = getPathFN( "pm50.txt" )
+        if amp is None: 
+            if verbose: print( "[getLens] Point Mass Amplitudes" )
+            amp = ampmgr.getPointMassAmplitudes()
+        if verbose: print( "[getLens] instantiated PointMass" )
     elif lensDict[lensmode] == PsiSpec.SIS:
         lens = cs.SIS()
         lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
-        if fn is None: fn = getPathFN( "sis50.txt" )
+        if amp is None: 
+            if verbose: print( "[getLens] SIS Amplitudes" )
+            amp = ampmgr.getSISAmplitudes()
+        if verbose: print( "[getLens] instantiated SIS" )
     elif lensDict[lensmode] == PsiSpec.SIE:
         lens = cs.SIE()
         lens.setRatio( param.get( ( "lens", "ellipseratio" ) ) )
         lens.setOrientation( param.get( ( "lens", "orientation" ) ) )
         lens.setEinsteinR( param.get( ( "lens", "einsteinradius" ) ) )
-        if fn is None: fn = getPathFN( "sie05.txt" )
+        if amp is None: 
+            amp = ampmgr.getSIEAmplitudes()
     elif lensmode is None:
         raise RuntimeError( "[getLens] No lens" )
     else:
         raise RuntimeError( "[getLens] Unknown lens specification" )
-    if fn is not None:
-        lens.setFile( fn )
-    lens.initAlphasBetas()
+    if amp is not None:
+        lens.setAmplitudes( amp )
     smp = param.get( ( "simulator", "sampled"), None )
     if smp is not None:
         size = param.get( ( "simulator", "imagesize" ), 512 )
@@ -127,11 +137,15 @@ class ClusterLens(cs.ClusterLens):
 
         ll = [ x.split("/") for x in s.split(";") ]
         self.lenslist = []
+        self.fn = fn
+        if fn is not None:
+            amp = ampmgr.getAmplitudes( fn )
+        else:
+            amp = None
         for lens in ll:
             lenstype = lens[0]
             lensparam = [ float(x) for x in lens[1:] ]
             if self.verbose>1: print( lenstype, ":", lensparam )
-            self.fn = fn
             sys.stdout.flush()
             nl = len(lensparam)
             if nl < 3:
@@ -139,23 +153,24 @@ class ClusterLens(cs.ClusterLens):
             x, y = lensparam[0], lensparam[1] ;
             if lenstype == "SIS":
                 l = cs.SIS()
-                if fn is None: fn = getPathFN( "sis50.txt" )
-                l.setFile( fn )
-                if verbose>2: print( "Cluster - SIS", fn )
+                if amp is None: 
+                    amp = ampmgr.getSISAmplitudes()
             elif lenstype == "SIE":
                 l = cs.SIE()
                 if nl < 5:
                     raise Exception( f"Too few parameters for SIE lens" )
                 l.setRatio( lensparam[3] )
                 l.setOrientation( lensparam[4] )
-                if fn is None: fn = getPathFN( "sie05.txt" )
-                l.setFile( fn )
+                if amp is None: 
+                    amp = ampmgr.getSIEAmplitudes()
             elif lenstype == "PointMass":
                 l = cs.PointMass()
-                if fn is None: fn = getPathFN( "pm50.txt" )
-                l.setFile( fn )
+                if amp is None: 
+                    amp = ampmgr.getPointMassAmplitudes()
             else:
                 raise Exception( f"Lens Type not Supported {lenstype}" )
+            if amp is not None:
+                l.setAmplitudes( amp )
             l.setEinsteinR( lensparam[2] )
             self.addLens( l, x, y )
             if verbose > 2: 

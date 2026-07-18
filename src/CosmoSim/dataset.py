@@ -179,8 +179,8 @@ def lensString(toml,verbose=0):
 def getline(toml,idx=0,fn=None,verbose=1):
     """
     Get random parameters for one lensing system, using the distribution defined
-    by argument `toml`.  The return value is a pandas Series object, which includes
-    the index `idx` and filename `fn` as fields.
+    by argument `toml`.  The return value is a pandas Series object,
+    which includes the index `idx` and filename `fn` as fields.
     """
 
     if verbose:
