@@ -10,7 +10,8 @@ so that the suspected memory leak in symengine is minimised.
 """
 
 from .CosmoSimPy import Amplitudes
-from . import getPathFN
+from .Dictionary import *
+import os
 
 _amp = {}
 

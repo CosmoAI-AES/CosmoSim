@@ -9,17 +9,13 @@ to make the python API more streamlined.
 """
 
 from . import CosmoSimPy as cs
-import os
 
 from .CLI import Arguments
-
-from .Dictionary import *
 
 Parameters = Arguments.Parameters
 setDebug = cs.setDebug
 
 __version__ = "3.2.4b3"
-
 
 def getMS(minm,maxm=None):
     if minm is None:
