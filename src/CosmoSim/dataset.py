@@ -183,6 +183,9 @@ def getline(toml,idx=0,fn=None,verbose=1):
     which includes the index `idx` and filename `fn` as fields.
     """
 
+    if verbose:
+        print( f"[getline] idx={idx}" )
+
     if fn is None: fn = f"image-{idx:06}.png"
 
     r = pd.Series ( { "index" : idx

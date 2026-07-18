@@ -6,69 +6,54 @@
 #include <symengine/parser.h>
 #include <fstream>
 
+PsiFunctionLens::PsiFunctionLens() { 
+   if (DEBUG>1) std::cout << "[PsiFunctionLens] init " << this->idString() << "\n" ;
+}
+PsiFunctionLens::~PsiFunctionLens() { 
+   if ( local ) {
+       delete amp ;
+   }
+   if (DEBUG>1) std::cout << "[PsiFunctionLens] destructing " << idString() << "\n" ;
+}
+
 std::string PsiFunctionLens::idString() {
    return "PsiFunctionLens" ;
 };
 
-void PsiFunctionLens::initAlphasBetas() {
-
-    auto x = SymEngine::symbol("x");
-    auto y = SymEngine::symbol("y");
-    auto g = SymEngine::symbol("g"); /* Einstein Radius */
-    auto f = SymEngine::symbol("f"); /* Ellipse Ratio */
-    auto p = SymEngine::symbol("p"); /* theta  */
-
-    std::ifstream input;
-
-    if ( filename.compare("nosuchfile") == 0 )  return ;
-
-    input.open(filename);
-
-    if (!input.is_open()) {
-        throw std::runtime_error("Could not open file: " + filename);
-    } else {
-        if (DEBUG) std::cout 
-           << "[PsiFunctionLens::initAlphasBetas] opened file " << filename << "\n" ;
-    }
-
-    while (input) {
-        std::string m, s;
-        std::string alpha;
-        std::string beta;
-        std::getline(input, m, ':');
-        std::getline(input, s, ':');
-        std::getline(input, alpha, ':');
-        std::getline(input, beta);
-        if (input) {
-            auto alpha_sym = SymEngine::parse(alpha);
-            auto beta_sym = SymEngine::parse(beta);
-            alphas_l[std::stoi(m)][std::stoi(s)].init({x, y, g, f, p}, *alpha_sym);
-            betas_l[std::stoi(m)][std::stoi(s)].init({x, y, g, f, p}, *beta_sym);
-        }
-    }
-}
 
 void PsiFunctionLens::calculateAlphaBeta( cv::Point2d xi, int nterms ) {
     if (DEBUG) std::cout 
               << "[PsiFunctionLens.calculateAlphaBeta()] " << nterms << "; " 
-              << einsteinR << " - " << xi << "\n"  ;
+              << einsteinR << " - " << xi << "\n" ;
 
     // calculate all amplitudes for given xi, einsteinR
     for (int m = 0; m <= nterms; m++) {
+        if (DEBUG>2) std::cout 
+              << "[PsiFunctionLens.calculateAlphaBeta()] m="<<m<<"\n" 
+              << std::flush ;
         for (int s = (m+1)%2; s <= (m+1); s+=2) {
             alphas_val[m][s] = getAlpha( xi, m, s ) ;
             betas_val[m][s] = getBeta( xi, m, s ) ;
         }
     }
+    if (DEBUG>1) std::cout 
+              << "[PsiFunctionLens.calculateAlphaBeta()] done\n" 
+              << std::flush ;
 }
 
 double PsiFunctionLens::getAlpha( cv::Point2d xi, int m, int s ) {
    double theta = orientation*PI/180 ;
-   return alphas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio, theta});
+   if ( amp == NULL ) {
+      throw std::runtime_error( "Amplitudes not initialised.\n" ) ;
+   }
+   return amp->alpha( xi, m, s, einsteinR, ellipseratio, theta );
 }
 double PsiFunctionLens::getBeta( cv::Point2d xi, int m, int s ) {
    double theta = orientation*PI/180 ;
-   return betas_l[m][s].call({xi.x, xi.y, einsteinR, ellipseratio, theta});
+   if ( amp == NULL ) {
+      throw std::runtime_error( "Amplitudes not initialised.\n" ) ;
+   }
+   return amp->beta( xi, m, s, einsteinR, ellipseratio, theta );
 }
 
 double PsiFunctionLens::getAlphaXi( int m, int s ) {
@@ -78,9 +63,21 @@ double PsiFunctionLens::getBetaXi( int m, int s ) {
    return betas_val[m][s] ;
 }
 
+void PsiFunctionLens::setAmplitudes( Amplitudes *a ) {
+   if ( local ) {
+      delete this->amp ;
+      local = false ;
+   }
+   this->amp = a ;
+}
 void PsiFunctionLens::setFile( std::string fn ) {
-   filename = fn ;
-   if (DEBUG) std::cout << "setFile " << filename << "\n" ;
+   if ( local ) {
+      delete amp ;
+   } else {
+      local = true ;
+   }
+   if (DEBUG) std::cout << "setFile " << fn << "\n" ;
+   amp = new Amplitudes( fn ) ;
 } 
 
 void PsiFunctionLens::setEinsteinR( double r ) { einsteinR = r ; }

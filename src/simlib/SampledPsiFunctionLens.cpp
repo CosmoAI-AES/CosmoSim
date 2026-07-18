@@ -8,6 +8,7 @@ SampledPsiFunctionLens::SampledPsiFunctionLens( PsiFunctionLens *psilens ) :
 SampledPsiFunctionLens::SampledPsiFunctionLens( PsiFunctionLens *psilens, int size ) {
    lens = psilens ;
    this->updatePsi( cv::Size( size, size ) ) ;
+   if (DEBUG>1) std::cout << "[SampledPsiFunctionLens] init " << this->idString() << "\n" ;
 }
 
 void SampledPsiFunctionLens::updatePsi( cv::Size size ) { 

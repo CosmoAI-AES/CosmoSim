@@ -14,8 +14,22 @@ using namespace SymEngine;
 
 #define MAXCLUSTER 50
 
+class Amplitudes {
+public:
+    Amplitudes( std::string ) ;
+    ~Amplitudes() ;
+    double alpha( cv::Point2d xi, int m, int s, double, double, double ) ;
+    double beta( cv::Point2d xi, int m, int s, double, double, double ) ;
+private:
+    std::string filename ;
+    std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> alphas_l;
+    std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> betas_l;
+} ;
+
 class Lens {
 public:
+    Lens();
+    virtual ~Lens();
 
     virtual void calculateAlphaBeta( cv::Point2d, int ) ; /* Not implemented */
 
@@ -66,21 +80,21 @@ public:
 
 class PsiFunctionLens : public Lens {
 private:
-    std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> alphas_l;
-    std::array<std::array<LambdaRealDoubleVisitor, 202>, 201> betas_l;
     std::array<std::array<double, 202>, 201> alphas_val;
     std::array<std::array<double, 202>, 201> betas_val;
+    Amplitudes *amp = NULL ;
+    bool local=false ; /* Is amp allocated by this instance? */ 
 protected:
-    std::string filename = "nosuchfile" ;
-
     double einsteinR /* R_E or \xi_0 */,
            ellipseratio=1 /* f */,
 	   orientation=0 /* \phi */ ;
 public:
-    virtual void initAlphasBetas();
+    PsiFunctionLens() ;
+    virtual ~PsiFunctionLens() ;
     virtual void calculateAlphaBeta( cv::Point2d, int );
 
     void setFile(std::string) ;
+    void setAmplitudes(Amplitudes*) ;
 
     virtual double getAlphaXi( int m, int s ) ;
     virtual double getBetaXi( int m, int s ) ;
@@ -144,6 +158,8 @@ private:
     // double psifunctionAligned( double, double ) const ;
 
 public:
+    SIE();
+    virtual ~SIE();
     virtual double psiValue( double, double ) const ;
     virtual double psiXvalue( double, double ) const ;
     virtual double psiYvalue( double, double ) const ;
@@ -164,9 +180,10 @@ private:
     double xshift[MAXCLUSTER], yshift[MAXCLUSTER] ;
     int nlens = 0 ;
 public:
+    ClusterLens();
+    virtual ~ClusterLens();
     // virtual void addLens( PsiFunctionLens* );
     virtual void addLens( PsiFunctionLens*, double, double );
-    virtual void initAlphasBetas();
     virtual void calculateAlphaBeta( cv::Point2d, int );
 
     virtual double psiValue( double, double ) const ;

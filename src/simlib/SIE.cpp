@@ -6,6 +6,17 @@
 #include "cosmosim/Lens.h"
 #include "simaux.h"
 
+SIE::SIE() { 
+   if (DEBUG>1) std::cout << "[SIE] init " << this->idString() << "\n" ;
+}
+
+SIE::~SIE() { 
+   if (DEBUG>1) {
+      std::cout << "[SIE] destructing " << idString() << "\n" ;
+      std::cout.flush();
+   }
+}
+
 std::string SIE::idString() {
    return "SIE" ;
 };

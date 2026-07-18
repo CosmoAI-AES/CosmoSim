@@ -88,7 +88,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setOrientation", &PsiFunctionLens::setOrientation)
         .def("setRatio", &PsiFunctionLens::setRatio)
         .def("setFile", &PsiFunctionLens::setFile)
-        .def("initAlphasBetas", &PsiFunctionLens::initAlphasBetas)
+        .def("setAmplitudes", &PsiFunctionLens::setAmplitudes)
         .def("getEinsteinR", &PsiFunctionLens::getEinsteinR)
         ;
     py::class_<SIS,PsiFunctionLens>(m, "SIS")
@@ -121,9 +121,10 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("psiValue", &ClusterLens::psiValue)
         .def("psiXvalue", &ClusterLens::psiXvalue)
         .def("psiYvalue", &ClusterLens::psiYvalue)
-        .def("initAlphasBetas", &ClusterLens::initAlphasBetas)
         ;
 
+    py::class_<Amplitudes>(m, "Amplitudes")
+        .def(py::init<std::string>()) ;
     py::class_<SimulatorModel>(m, "SimulatorModel")
         .def(py::init<>())
         .def("update", py::overload_cast<>(&SimulatorModel::update))
