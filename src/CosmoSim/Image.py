@@ -145,7 +145,13 @@ def translateImage(im,pt):
         m,n,_ = im.shape
     else:
         m,n = im.shape
-    return cv2.warpAffine(im,R,(n,m))
+    try:
+        ret = cv2.warpAffine(im,R,(n,m))
+    except Exception as e:
+        print( "Error in warpAffine.  Image", im )
+        print( "Image shape", (m,n) )
+        raise e
+    return ret
 
 def crop(im,cropsize=256,verbose=1):
     """
