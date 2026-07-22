@@ -98,7 +98,7 @@ class Resim(GenericSim):
         """
         if self.verbose>2: print( "[loadData]" )
         if not isinstance(row,pd.Series):
-            raise RuntimeException( "Should have a pandas Series as a row object." )
+            raise RuntimeError( "Should have a pandas Series as a row object." )
         cols = row.axes[0]
         if self.verbose>1: print( "columns:", cols )
     

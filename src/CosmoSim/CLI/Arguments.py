@@ -54,11 +54,13 @@ class Parameters:
         self.config = self._base.cascade( {})
     def __str__(self): 
         return self.config.__str__()
-    def setRow(self,row):
+    def setRow(self,row,verbose=None):
+        if verbose is None:
+            verbose = self.verbosity
         if self.verbosity > 1: print( row )
         self._row = row
-        c = getConfig( self._row, verbose=self.verbosity ) 
-        if self.verbosity: print( c )
+        c = getConfig( self._row, verbose=verbose ) 
+        if verbose: print( c )
         self.config = self._base.cascade( c )
     def get(self,key,default=None,verbose=0):
         if isinstance( key, str ):
