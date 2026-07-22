@@ -43,6 +43,16 @@ def imageCompare(im1,im2,title1=None,title2=None,axiscross=False):
     If `axiscross` is true, an axis cross marking the centre of the image
     is added to the two original images, but not to the difference image.
     """
+    if im1.shape[:2] != im2.shape[:2]:
+        raise RuntimeError( "[imageCompare] Different size images" )
+    elif len(im1.shape) > len(im2.shape):
+        im2 = cv2.cvtColor(im2,cv2.COLOR_GRAY2RGB)
+    elif len(im1.shape) < len(im2.shape):
+        im2 = cv2.cvtColor(im2,cv2.COLOR_GRAY2RGB)
+    elif im1.shape != im2.shape:
+        raise RuntimeError( "[imageCompare] Incompatible image size:"
+                           + f"{im1.shape} and {im2.shape}" )
+
     diff = imageDiff(im1,im2)
     if axiscross:
         im1 = im1.copy()
