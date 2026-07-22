@@ -86,6 +86,7 @@ class Resim(GenericSim):
                 self.sim.setBetaXi( m, s, beta )
         if self.verbose>1:
             print( "Source spec:", self.param.get( "source" ) )
+            print( self.param.get( ( "source", ) ) )
         self.src = getSource( param )
         self.sim.setSource( self.src )
 
