@@ -15,7 +15,7 @@ from .CLI import Arguments
 Parameters = Arguments.Parameters
 setDebug = cs.setDebug
 
-__version__ = "3.2.4"
+__version__ = "3.3.0b1"
 
 def getMS(minm,maxm=None):
     if minm is None:
