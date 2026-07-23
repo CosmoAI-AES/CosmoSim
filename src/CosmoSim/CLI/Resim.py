@@ -26,11 +26,14 @@ class Resim(GenericSim):
         super().__init__(param,**kw)
         if self.verbose>2: print( "[Resim.__init__]" )
 
-        drawmode = param.get( ( "resimulation", "drawmpde" ) )
+        drawmode = param.get( ( "resimulation", "drawmode" ) )
+        if drawmode is None: drawmode == "xi"
         if drawmode == "xi":
             xi = ( row["xiX"], row["xiY"] )
-        else:
+        elif drawmode == "origin":
             xi = None
+        else:
+            raise RuntimeError( "Unknown drawmode" )
 
         self.sim = RouletteRegenerator(xi=xi,verbose=self.verbose)
         self.xireference = self.param.get( "xireference", True )
@@ -42,10 +45,11 @@ class Resim(GenericSim):
         self.runSim()
 
         im = self.image
-        if drawmode == "xi":
-              self.image = im
-        elif self.xireference:
-              self.image = translateImage( im, (-row["xiX"],-row["xiY"]) )
+        if self.xireference:
+            if drawmode == "xi":
+                self.image = im
+            else:
+                self.image = translateImage( im, (-row["xiX"],-row["xiY"]) )
         else:
             print( "xireference=False is not tested" )
             # raise NotImplementedError( "Only xireference-mode is supported." )
