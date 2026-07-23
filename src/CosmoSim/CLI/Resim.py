@@ -1,12 +1,12 @@
 # (C) 2026: Hans Georg Schaathun <georg@schaathun.net>
 
-import cv2 as cv
 import numpy as np
 import pandas as pd
 
 from .Arguments import Parameters
 from .Simulator import GenericSim 
 
+from ..Image import translateImage
 from ..RouletteAmplitudes import RouletteAmplitudes 
 from .Generators import RouletteRegenerator, getSource
 
@@ -26,8 +26,22 @@ class Resim(GenericSim):
         super().__init__(param,**kw)
         if self.verbose>2: print( "[Resim.__init__]" )
 
-        self.sim = RouletteRegenerator(verbose=self.verbose)
+        drawmode = param.get( ( "resimulation", "drawmode" ) )
         self.xireference = self.param.get( "xireference", True )
+
+        if drawmode is None:
+            if self.xireference: drawmode = "xi"
+            else: drawmode = "centre"
+        if drawmode == "xi":
+            xi = ( row["xiX"], row["xiY"] )
+        elif drawmode == "centre":
+            xi = None
+        elif drawmode == "origin":
+            xi = None
+        else:
+            raise RuntimeError( f"Unknown drawmode: {drawmode}" )
+
+        self.sim = RouletteRegenerator(xi=xi,verbose=self.verbose)
         self.nterms = self.param.get( "nterms" )
         if self.verbose>1: print( "[Resim] nterms =", self.nterms )
 
@@ -36,15 +50,10 @@ class Resim(GenericSim):
         self.runSim()
 
         im = self.image
-        if self.xireference:
-              R = np.float32( [ [ 1, 0, row["xiX"] ], [ 0, 1, -row["xiY"] ] ] )
-              m,n = im.shape
-              try:
-                  self.image = cv.warpAffine(im,R,(n,m))
-              except Exception as e:
-                  print( "Error in warpAffine.  Image", im )
-                  print( "Image shape", (m,n) )
-                  raise e
+        if drawmode == "xi":
+            self.image = im
+        elif drawmode == "origin":
+            self.image = translateImage( im, (-row["xiX"],-row["xiY"]) )
     def initSim(self):
         """
         Initialise the simulator with the given data row.
@@ -86,6 +95,7 @@ class Resim(GenericSim):
                 self.sim.setBetaXi( m, s, beta )
         if self.verbose>1:
             print( "Source spec:", self.param.get( "source" ) )
+            print( self.param.get( ( "source", ) ) )
         self.src = getSource( param )
         self.sim.setSource( self.src )
 
@@ -98,7 +108,7 @@ class Resim(GenericSim):
         """
         if self.verbose>2: print( "[loadData]" )
         if not isinstance(row,pd.Series):
-            raise RuntimeException( "Should have a pandas Series as a row object." )
+            raise RuntimeError( "Should have a pandas Series as a row object." )
         cols = row.axes[0]
         if self.verbose>1: print( "columns:", cols )
     

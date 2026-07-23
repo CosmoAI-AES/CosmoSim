@@ -43,6 +43,16 @@ def imageCompare(im1,im2,title1=None,title2=None,axiscross=False):
     If `axiscross` is true, an axis cross marking the centre of the image
     is added to the two original images, but not to the difference image.
     """
+    if im1.shape[:2] != im2.shape[:2]:
+        raise RuntimeError( "[imageCompare] Different size images" )
+    elif len(im1.shape) > len(im2.shape):
+        im2 = cv2.cvtColor(im2,cv2.COLOR_GRAY2RGB)
+    elif len(im1.shape) < len(im2.shape):
+        im2 = cv2.cvtColor(im2,cv2.COLOR_GRAY2RGB)
+    elif im1.shape != im2.shape:
+        raise RuntimeError( "[imageCompare] Incompatible image size:"
+                           + f"{im1.shape} and {im2.shape}" )
+
     diff = imageDiff(im1,im2)
     if axiscross:
         im1 = im1.copy()
@@ -62,7 +72,7 @@ def imageCoordinate( pt, im ):
     (x,y) = pt
     return (  round(x + ncols/2), round(nrows/2 - y) )
 
-def annotateCircle(im,pt,radius,colour=(0,0,255)):
+def annotateCircle(im,pt,radius,colour=(0,0,255),verbose=0):
     """
     Mark a point on an image.
     This is crude and should be extended with different shapes as
@@ -71,10 +81,11 @@ def annotateCircle(im,pt,radius,colour=(0,0,255)):
     if len(im.shape) == 2:
         im = cv2.cvtColor(im, cv2.COLOR_GRAY2BGR)
     pt = imageCoordinate( pt, im )
-    print( "Annotation at", pt, "colour", colour )
+    if verbose > 1:
+        print( "Annotation at", pt, "colour", colour )
     im = cv2.circle(im,center=pt,radius=round(radius),color=colour, thickness=1)
     return im
-def annotatePoint(im,pt,colour=(0,0,255)):
+def annotatePoint(im,pt,colour=(0,0,255),verbose=0):
     """
     Mark a point on an image.
     This is crude and should be extended with different shapes as
@@ -84,7 +95,8 @@ def annotatePoint(im,pt,colour=(0,0,255)):
         im = cv2.cvtColor(im, cv2.COLOR_GRAY2BGR)
     r = 4
     pt = imageCoordinate( pt, im )
-    print( "Annotation at", pt, "colour", colour )
+    if verbose > 1:
+        print( "Annotation at", pt, "colour", colour )
     im = cv2.circle(im,center=pt,radius=r,color=colour, thickness=1)
     im = cv2.circle(im,center=pt,radius=1,color=colour, thickness=-1)
     return im
@@ -135,7 +147,13 @@ def translateImage(im,pt):
         m,n,_ = im.shape
     else:
         m,n = im.shape
-    return cv2.warpAffine(im,R,(n,m))
+    try:
+        ret = cv2.warpAffine(im,R,(n,m))
+    except Exception as e:
+        print( "Error in warpAffine.  Image", im )
+        print( "Image shape", (m,n) )
+        raise e
+    return ret
 
 def crop(im,cropsize=256,verbose=1):
     """

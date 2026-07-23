@@ -150,6 +150,7 @@ PYBIND11_MODULE(CosmoSimPy, m) {
         .def("setLens", &RouletteModel::setLens) ;
     py::class_<RouletteRegenerator,RouletteModel>(m, "RouletteRegenerator")
         .def(py::init<>())
+        .def("setNu", &RouletteRegenerator::setNuPy)
         .def("setCentrePy", &RouletteRegenerator::setCentrePy)
         .def("setAlphaXi", &RouletteRegenerator::setAlphaXi)
         .def("setBetaXi", &RouletteRegenerator::setBetaXi) ;

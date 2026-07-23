@@ -49,7 +49,7 @@ class RouletteParser:
                 b = parse_expr( b )
             except:
                 print( x )
-                raise RuntimeException( "Parse error in amplitudes file." )
+                raise RuntimeError( "Parse error in amplitudes file." )
             self.alpha[(m,s)] = a
             self.beta[(m,s)] = b
     def getAlpha(self,x,y,g,m,s):
