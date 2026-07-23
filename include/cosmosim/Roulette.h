@@ -34,6 +34,7 @@ class RouletteRegenerator : public RouletteModel {
     void setCentrePy( double, double ) ;
     void setAlphaXi( int, int, double ) ;
     void setBetaXi( int, int, double ) ;
+    void setNuPy( double, double) ;
   protected:
     virtual void updateApparentAbs() ;
   private:

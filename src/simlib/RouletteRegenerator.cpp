@@ -12,7 +12,6 @@ void RouletteRegenerator::setCentrePy( double x, double y ) {
 }
 
 void RouletteRegenerator::setCentre( cv::Point2d pt, cv::Point2d eta ) {
-   setNu( cv::Point2d( 0,0 ) ) ;
    setXY( eta.x, eta.y ) ;
    etaOffset = pt ;
    if (DEBUG) std::cout << "[RouletteRegenerator::setCentre] etaOffset = " 
@@ -24,4 +23,7 @@ void RouletteRegenerator::setAlphaXi( int m, int s, double val ) {
 }
 void RouletteRegenerator::setBetaXi( int m, int s, double val ) {
    betas_val[m][s] = val ;
+}
+void RouletteRegenerator::setNuPy( double x, double y ) {
+   this->setNu( cv::Point2d( x, y ) ) ;
 }

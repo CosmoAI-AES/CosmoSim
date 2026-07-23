@@ -19,8 +19,8 @@ extern int debug ;
 
 class SimulatorModel {
 private:
-    cv::Point2d eta ;  // Actual position in the source plane
-    cv::Point2d nu ;   // Apparent position in the source plane
+    cv::Point2d eta = cv::Point2d(0,0);  // Actual position in the source plane
+    cv::Point2d nu = cv::Point2d(0,0);   // Apparent position in the source plane
 
     cv::Point2d referenceXi = cv::Point2d(0,0) ;   // Local origin in the lens plane
 

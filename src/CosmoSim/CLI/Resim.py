@@ -26,7 +26,13 @@ class Resim(GenericSim):
         super().__init__(param,**kw)
         if self.verbose>2: print( "[Resim.__init__]" )
 
-        self.sim = RouletteRegenerator(verbose=self.verbose)
+        drawmode = param.get( ( "resimulation", "drawmpde" ) )
+        if drawmode == "xi":
+            xi = ( row["xiX"], row["xiY"] )
+        else:
+            xi = None
+
+        self.sim = RouletteRegenerator(xi=xi,verbose=self.verbose)
         self.xireference = self.param.get( "xireference", True )
         self.nterms = self.param.get( "nterms" )
         if self.verbose>1: print( "[Resim] nterms =", self.nterms )
@@ -36,10 +42,13 @@ class Resim(GenericSim):
         self.runSim()
 
         im = self.image
-        if self.xireference:
+        if drawmode == "xi":
+              self.image = im
+        elif self.xireference:
               self.image = translateImage( im, (-row["xiX"],-row["xiY"]) )
         else:
-            raise NotImplementedError( "Only xireference-mode is supported." )
+            print( "xireference=False is not tested" )
+            # raise NotImplementedError( "Only xireference-mode is supported." )
     def initSim(self):
         """
         Initialise the simulator with the given data row.
