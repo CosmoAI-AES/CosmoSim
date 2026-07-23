@@ -188,9 +188,14 @@ class RouletteRegenerator(cs.RouletteRegenerator):
     on pre-computed roulette amplitudes.
 
     This class is a wrapper around the corresponding C++ class.
+
+    The parameter `xi` is the reference point for the roulette formalism,
+    and controls where the distorted image is drawn.
     """
-    def __init__(self,*a,verbose=1,**kw):
+    def __init__(self,*a,xi=None,verbose=1,**kw):
         super().__init__(*a,**kw)
+        if xi is not None:
+            self.setNu( *xi )
         self.verbose = verbose
         self.bgcolour = 0
     def makeSource(self,param):

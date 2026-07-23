@@ -1,5 +1,13 @@
 # CosmoSim Change Log
 
+## 3.3.0 - 2026-07-23
+
+### Added
+
++ Added a new `resimulation.drawmode` option, where `"xi"` avoids 
+  post-processing which has caused a discrepancy between resimulation
+  and original roulette simulation.
+
 ## 3.2.4 - 2026-07-18
 
 ### Changed
