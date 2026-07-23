@@ -1,12 +1,12 @@
 # (C) 2026: Hans Georg Schaathun <georg@schaathun.net>
 
-import cv2 as cv
 import numpy as np
 import pandas as pd
 
 from .Arguments import Parameters
 from .Simulator import GenericSim 
 
+from ..Image import translateImage
 from ..RouletteAmplitudes import RouletteAmplitudes 
 from .Generators import RouletteRegenerator, getSource
 
@@ -37,14 +37,7 @@ class Resim(GenericSim):
 
         im = self.image
         if self.xireference:
-              R = np.float32( [ [ 1, 0, row["xiX"] ], [ 0, 1, -row["xiY"] ] ] )
-              m,n = im.shape
-              try:
-                  self.image = cv.warpAffine(im,R,(n,m))
-              except Exception as e:
-                  print( "Error in warpAffine.  Image", im )
-                  print( "Image shape", (m,n) )
-                  raise e
+              self.image = translateImage( im, (-row["xiX"],-row["xiY"]) )
     def initSim(self):
         """
         Initialise the simulator with the given data row.
