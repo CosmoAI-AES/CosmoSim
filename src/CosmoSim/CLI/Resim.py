@@ -38,6 +38,8 @@ class Resim(GenericSim):
         im = self.image
         if self.xireference:
               self.image = translateImage( im, (-row["xiX"],-row["xiY"]) )
+        else:
+            raise NotImplementedError( "Only xireference-mode is supported." )
     def initSim(self):
         """
         Initialise the simulator with the given data row.

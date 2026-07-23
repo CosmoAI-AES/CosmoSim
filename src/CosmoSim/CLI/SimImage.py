@@ -150,7 +150,7 @@ class SimImage(GenericSim):
     def getAmplitudeFile(self):
         fn = self.param.get( ( "lens", "amplitudefile" ) )
         if fn is None: 
-            raise NotImplemented( "Not implemented lookup of default amplitudes file." )
+            raise NotImplementedError( "Not implemented lookup of default amplitudes file." )
         return fn
     def getAlphaBetas(self,maxm=2,pt=None):
         """
