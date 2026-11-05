@@ -20,6 +20,11 @@ from .libamplitudes import *
 from sympy import symbols, diff, sin, cos, asin, atan2, asinh, binomial
 
 def firstworker(q,resDict,maxm=6):
+    """
+    Computes the next partial derivatives of psi.
+    The function takes the order to be computed from the queue `q`,
+    and submits new jobs for the subsequent order if required.
+    """
     print ( os.getpid(),"working" )
     while True:
         i,j,psi,x,y = q.get(True)   # Blocks until there is a job on the queue
