@@ -3,7 +3,11 @@
 
 ## Unreleased
 
-## [2.7.0] - 2026-XX-XX
+## [2.7.0] - 2026-03-26
+
+v2.7.0 was tagged 26 March 2026.
+Due to a glitch, it was only officially made a release on github
+on 9 November 2026.
 
 ### Added
 
