@@ -6,7 +6,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.19.4
+    jupytext_version: 1.19.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -34,6 +34,8 @@ display( bl.head() )
 ```
 
 ```{code-cell} ipython3
+df = df.drop( "source", axis=1 )
+bl = bl.drop( "source", axis=1 )
 diff = df - bl
 ```
 
@@ -43,4 +45,12 @@ display( diff.mean() )
 
 ```{code-cell} ipython3
 display( diff.abs().mean() )
+```
+
+```{code-cell} ipython3
+display( diff.abs().max().max() )
+```
+
+```{code-cell} ipython3
+
 ```
