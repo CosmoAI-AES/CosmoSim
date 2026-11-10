@@ -167,100 +167,61 @@ def optimize_function(exponents_inter,coefficients_inter):
 
 # %%
 # Completes the g(xi) to g'(xi) convertion shown in (22) in the documentation
-def der_1(exponents_inp,coefficients_inp,d):
-    # The derivative of g(xi) is calculated. Spesifically, the derivative of g multiplied by R^2
-    der_exponents_inp=np.zeros((5*len(exponents_inp),8))
-    der_coefficients_inp=np.zeros(5*len(coefficients_inp))
-    k=0
-    for i in range(len(coefficients_inp)):
-        der_exponents_inp[k]=exponents_inp[i]+[-1,0,0,0,0,0,2,0]
-        der_coefficients_inp[k]=exponents_inp[i][0]*coefficients_inp[i]
-        k+=1
-    for i in range(len(coefficients_inp)):
-        der_exponents_inp[k]=exponents_inp[i]+[1,0,0,0,0,0,0,0]
-        der_coefficients_inp[k]=(exponents_inp[i][2]+exponents_inp[i][3]+exponents_inp[i][6]+exponents_inp[i][7])*coefficients_inp[i]
-        k+=1
-    for i in range(len(coefficients_inp)):
-        der_exponents_inp[k]=exponents_inp[i]+[0,1,-1,1,0,0,0,0]
-        der_coefficients_inp[k]=exponents_inp[i][2]*coefficients_inp[i]
-        k+=1
-    for i in range(len(coefficients_inp)):
-        der_exponents_inp[k]=exponents_inp[i]+[0,1,1,-1,0,0,0,0]
-        der_coefficients_inp[k]=-exponents_inp[i][3]*coefficients_inp[i]
-        k+=1
-    for i in range(len(coefficients_inp)):
-        der_exponents_inp[k]=exponents_inp[i]+[0,1,1,1,0,2,0,-2]
-        der_coefficients_inp[k]=exponents_inp[i][7]*coefficients_inp[i]
-        k+=1
-    der_exponents_inp,der_coefficients_inp=zero_term_remove(der_exponents_inp,der_coefficients_inp)
-    exponents_inter=np.zeros((7*len(exponents_inp),8))
-    coefficients_inter=np.zeros(7*len(coefficients_inp))
+def der_1( ls, d ):
+    """
+    The derivative of g(xi) is calculated.
+    Spesifically, the derivative of g multiplied by R^2
+    """
+
+    rs = []
+    for cof,exp in ls:
+        terms = [ (  exp[0]*cof, exp+[-1,0,0,0,0,0,2,0] )
+                , ( ( exp[2]+ exp[3]+ exp[6]+ exp[7])*cof
+                    , exp+[1,0,0,0,0,0,0,0] )
+                , (  exp[2]*cof, exp+[0,1,-1,1,0,0,0,0] )
+                , ( - exp[3]*cof, exp+[0,1,1,-1,0,0,0,0] )
+                , (  exp[7]*cof,  exp+[0,1,1,1,0,2,0,-2] ) ]
+        terms = [ (x,y) for (x,y) in terms if x != 0 ]
+        rs.extend( terms )
+
+    rr = [ ( cof, exp+np.array([0,0,0,0,0,0,2,2]) ) for cof,exp in ls ]
     # The g(xi) to g'(xi) conversion is preformed
-    k=0
-    for i in range(len(der_coefficients_inp)):
-        coefficients_inter[k]=der_coefficients_inp[i]
-        exp=der_exponents_inp[i]+np.array([0,0,0,0,0,0,2,2])
-        exponents_inter[k]=exp
-        k+=1
-    for i in range(len(coefficients_inp)):
-        coefficients_inter[k]=-(2*d-3)*coefficients_inp[i]*3
-        exp=exponents_inp[i]+np.array([1,0,0,0,0,0,2,2])
-        exponents_inter[k]=exp
-        k+=1
-    for i in range(len(coefficients_inp)):
-        coefficients_inter[k]=-(2*d-3)*coefficients_inp[i]
-        exp=exponents_inp[i]+np.array([0,1,1,1,0,2,2,0])
-        exponents_inter[k]=exp
-        k+=1
-    return optimize_function(exponents_inter,coefficients_inter)
+    for cof,exp in rs:
+        rr.extend( [ ( -(2*d-3)*cof*3, exp+np.array([1,0,0,0,0,0,2,2]) )
+                    , ( -(2*d-3)*cof, exp+np.array([0,1,1,1,0,2,2,0]) ) ] )
+
+    # return optimize_function(exponents_inter,coefficients_inter)
+    cof1 = np.array( [ x for x in rr[0] ] )
+    exp1 = np.array( [ x for x in rr[1] ] )
+    return optimize_function(exp1,cof1)
 
 # Completes the g(xi) to g'(xi) convertion shown in (23) in the documentation
-def der_2(exponents_inp,coefficients_inp,d):
-    # The derivative of g(xi) is calculated. Spesifically, the derivative of g multiplied by R^2
-    der_exponents_inp=np.zeros((5*len(exponents_inp),8))
-    der_coefficients_inp=np.zeros(5*len(coefficients_inp))
-    k=0
-    for i in range(len(coefficients_inp)):
-        der_exponents_inp[i]=exponents_inp[i]+[0,-1,0,0,0,0,2,0]
-        der_coefficients_inp[i]=exponents_inp[i][1]*coefficients_inp[i]
-        k+=1
-    for i in range(len(coefficients_inp)):
-        der_exponents_inp[k]=exponents_inp[i]+[0,1,0,0,0,0,0,0]
-        der_coefficients_inp[k]=(exponents_inp[i][2]+exponents_inp[i][3]+exponents_inp[i][6]+exponents_inp[i][7])*coefficients_inp[i]
-        k+=1
-    for i in range(len(coefficients_inp)):
-        der_exponents_inp[k]=exponents_inp[i]+[1,0,-1,1,0,0,0,0]
-        der_coefficients_inp[k]=-exponents_inp[i][2]*coefficients_inp[i]
-        k+=1
-    for i in range(len(coefficients_inp)):
-        der_exponents_inp[k]=exponents_inp[i]+[1,0,1,-1,0,0,0,0]
-        der_coefficients_inp[k]=exponents_inp[i][3]*coefficients_inp[i]
-        k+=1
-    for i in range(len(coefficients_inp)):
-        der_exponents_inp[k]=exponents_inp[i]+[1,0,1,1,0,2,0,-2]
-        der_coefficients_inp[k]=-exponents_inp[i][7]*coefficients_inp[i]
-        k+=1
-    der_exponents_inp,der_coefficients_inp=zero_term_remove(der_exponents_inp,der_coefficients_inp)
-    exponents_inter=np.zeros((7*len(exponents_inp),8))
-    coefficients_inter=np.zeros(7*len(coefficients_inp))
+def der_2( ls, d ):
+    """
+    The derivative of g(xi) is calculated.
+    Spesifically, the derivative of g multiplied by R^2
+    """
+    rs = []
+    for cof,exp in ls:
+        terms = [ ( cof*exp[1],  exp + [0,-1,0,0,0,0,2,0] )
+                , ( (exp[2]+exp[3]+exp[6]+exp[7])*cof
+                    , exp + [0,1,0,0,0,0,0,0] )
+                , ( -exp[2]*cof, exp+[1,0,-1,1,0,0,0,0] )
+                , ( exp[3]*cof, exp+[1,0,1,-1,0,0,0,0] )
+                , ( -exp[7]*cof, exp+[1,0,1,1,0,2,0,-2] )
+                 ]
+        terms = [ (x,y) for (x,y) in terms if x != 0 ]
+        rs.extend( terms )
+
+    rr = [ ( cof, exp+np.array([0,0,0,0,0,0,2,2]) ) for cof,exp in ls ]
     # The g(xi) to g'(xi) conversion is preformed
-    k=0
-    for i in range(len(der_coefficients_inp)):
-        coefficients_inter[k]=der_coefficients_inp[i]
-        exp=der_exponents_inp[i]+np.array([0,0,0,0,0,0,2,2])
-        exponents_inter[k]=exp
-        k+=1
-    for i in range(len(coefficients_inp)):
-        coefficients_inter[k]=-(2*d-3)*coefficients_inp[i]*3
-        exp=exponents_inp[i]+np.array([0,1,0,0,0,0,2,2])
-        exponents_inter[k]=exp
-        k+=1
-    for i in range(len(coefficients_inp)):
-        coefficients_inter[k]=(2*d-3)*coefficients_inp[i]
-        exp=exponents_inp[i]+np.array([1,0,1,1,0,2,2,0])
-        exponents_inter[k]=exp
-        k+=1
-    return optimize_function(exponents_inter,coefficients_inter)
+    for cof,exp in ls:
+        rr.extend( [ ( -(2*d-3)*cof*3, exp+np.array([0,1,0,0,0,0,2,2]) )
+                   , ( (2*d-3)*cof, exp+np.array([1,0,1,1,0,2,2,0]) )
+                   ] )
+    cof1 = np.array( [ x for x in rr[0] ] )
+    exp1 = np.array( [ x for x in rr[1] ] )
+    return optimize_function(exp1,cof1)
 
 
 # %%
@@ -270,32 +231,28 @@ def der_2(exponents_inp,coefficients_inp,d):
 
 def find_exp_cof( order=10 ):
 
-    dd = { (1,1) : [ ( 1, [0,2,0,0,0,0,0,0] ) ],
-           (1,2) : [ ( -1, [1,1,0,0,0,0,0,0] ) ],
-           (2,2) : [ ( 1, [2,0,0,0,0,0,0,0] ) ] }
+    dd = { (2,0) : [ (  1, np.array( [0,2,0,0,0,0,0,0] ) ) ],
+           (1,1) : [ ( -1, np.array( [1,1,0,0,0,0,0,0] ) ) ],
+           (0,2) : [ (  1, np.array( [2,0,0,0,0,0,0,0] ) ) ] }
 
     # Compute $\partial^d/(\partial x^i\partial y^j) \psi$
 
-    for d in range(2,order+1):
+    for d in range(3,order+1):
         for j in range(d+1):
 
             i = d-j
 
-            if i <= j:
-                l = dd[ (i-1, j) ]
-                cof = np.array( [ x for x in l[0] ] )
-                exp = np.array( [ x for x in l[1] ] )
-                exp_out,cof_out = der_1(exp,cof,d-1)
+            if i >= j:
+                ls = dd[ (i-1, j) ]
+                exp_out,cof_out = der_1( ls, d-1 )
             else:
-                l = dd[ (i, j-1) ]
-                cof = np.array( [ x for x in l[0] ] )
-                exp = np.array( [ x for x in l[1] ] )
-                exp_out,cof_out = der_2(exp,cof,d-1)
+                ls = dd[ (i, j-1) ]
+                exp_out,cof_out = der_2( ls, d-1 )
 
-            dd[(i,j)] = ( cof_out, exp_out )
+            dd[(i,j)] = list( zip( cof_out, exp_out ) )
 
     return dd
 
 
 import json
-print( json.dumps( find_exp_cof ) )
+print( json.dumps( find_exp_cof() ) )
