@@ -24,7 +24,10 @@ from .sie import thirdworker, RouletteManager
 from .sie2026 import find_exp_cof
 
 def symdiff( dd ):
-    x, y, f = sympy.symbols( "x y f", real=True )
+    x, y = sympy.symbols( "x y f", real=True )
+    f = sympy.symbols("f", positive=True, real=True)
+    g = sympy.symbols( "g", positive=True, real=True )
+
     theta = sympy.symbols( "p", real=True )
     x1 = sympy.cos(theta)*x+sympy.sin(theta)*y
     y1 = -sympy.sin(theta)*x+sympy.cos(theta)*y 
@@ -33,10 +36,22 @@ def symdiff( dd ):
     r1 = sympy.sqrt( r**2 - f1**2*y1**2 )
 
     ss = [ x, y, x1, y1, f, f1, r, r1 ]
+    prf = g*sympy.sqrt( f )
 
-    return { k : sum( [ c*sympy.prod( [ a**b for a,b in zip(ss,e) ] ) 
+    # Compute higher order derivatives using Theorem 3.
+    r = { k : prf*sum( [ c*sympy.prod( [ a**b for a,b in zip(ss,e) ] ) 
                       for (c,e) in dd[k] ] )
            for k in dd }
+
+    # Add the first order derivatives using Theorem 1.
+    prf1 = prf/f1
+    a = sympy.asinh( ( sqrt( 1-f*f ) / f ) * x1/r )
+    b = sympy.asin( sqrt( 1-f*f )* y1/r )
+    r[(1,0)] = prf1*(sympy.cos(theta)*a - sympy.sin(theta)*b)
+    r[(0,1)] = prf1*(sympy.sin(theta)*a + sympy.cos(theta)*b)
+
+    return r
+
 
 class FastRoulette(RouletteManager):
     def __init__(self,thirdworker=thirdworker):
@@ -47,15 +62,11 @@ class FastRoulette(RouletteManager):
     def getDict(self,n=50,nproc=None):
         pass
     def getDiff(self,n,nproc):
-
         dd = find_exp_coff( order=n )
         self.psidiff = symdiff( dd )
 
-        # TODO Add first derivatives
-
         print( "[fastsie] getDiff returns")
-
-        return psidiff
+        return self.psidiff
 
 
 if __name__ == "__main__":
