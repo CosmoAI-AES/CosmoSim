@@ -17,14 +17,13 @@ import queue
 
 import sympy
 from .libamplitudes import *
-from sympy import symbols, diff, sin, cos, asin, atan2, asinh, binomial
 
 from .sie import thirdworker, RouletteManager
 # def thirdworker(q,ampdict,indict, var=[] ):
 from .sie2026 import find_exp_cof
 
 def symdiff( dd ):
-    x, y = sympy.symbols( "x y f", real=True )
+    x, y = sympy.symbols( "x y", real=True )
     f = sympy.symbols("f", positive=True, real=True)
     g = sympy.symbols( "g", positive=True, real=True )
 
@@ -39,7 +38,7 @@ def symdiff( dd ):
     prf = g*sympy.sqrt( f )
 
     # Compute higher order derivatives using Theorem 3.
-    r = { k : prf*sum( [ c*sympy.prod( [ a**b for a,b in zip(ss,e) ] ) 
+    res = { k : prf*sum( [ c*sympy.prod( [ a**b for a,b in zip(ss,e) ] ) 
                       for (c,e) in dd[k] ] )
            for k in dd }
 
@@ -47,10 +46,10 @@ def symdiff( dd ):
     prf1 = prf/f1
     a = sympy.asinh( ( sqrt( 1-f*f ) / f ) * x1/r )
     b = sympy.asin( sqrt( 1-f*f )* y1/r )
-    r[(1,0)] = prf1*(sympy.cos(theta)*a - sympy.sin(theta)*b)
-    r[(0,1)] = prf1*(sympy.sin(theta)*a + sympy.cos(theta)*b)
+    res[(1,0)] = prf1*(sympy.cos(theta)*a - sympy.sin(theta)*b)
+    res[(0,1)] = prf1*(sympy.sin(theta)*a + sympy.cos(theta)*b)
 
-    return r
+    return res
 
 
 class FastRoulette(RouletteManager):
@@ -58,11 +57,12 @@ class FastRoulette(RouletteManager):
        self.mgr = mp.Manager()      
        self.psivec = psiSIE()
        self.thirdworker = thirdworker
+       self.vars = sympy.symbols( "x y", real=True )
 
     def getDict(self,n=50,nproc=None):
         pass
     def getDiff(self,n,nproc):
-        dd = find_exp_coff( order=n )
+        dd = find_exp_cof( order=n+1 )
         self.psidiff = symdiff( dd )
 
         print( "[fastsie] getDiff returns")
