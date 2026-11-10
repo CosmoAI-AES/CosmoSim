@@ -3,7 +3,6 @@
 import numpy as np
 from scipy.special import factorial
 
-
 # %%
 # These functions serve to simplify the g(xi)-functions.
 # Defines a function which removes zero terms within the components.
@@ -245,6 +244,6 @@ def find_exp_cof( order=10 ):
 
     return dd
 
-
-import json
-print( find_exp_cof(order=10) )
+if __name__ == "__main__":
+    dd = find_exp_cof( order=10 )
+    print( dd )
