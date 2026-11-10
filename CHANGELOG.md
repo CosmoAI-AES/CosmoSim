@@ -1,5 +1,11 @@
 # CosmoSim Change Log
 
+## 3.4.0 - 
+
+### Added
+
++ SIE amplitudes up to order 15, with faster calculation of formulas.
+
 ## 3.3.0 - 2026-07-23
 
 ### Added
