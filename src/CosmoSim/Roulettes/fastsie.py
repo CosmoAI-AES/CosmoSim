@@ -40,12 +40,13 @@ def symdiff( dd ):
     # Compute higher order derivatives using Theorem 3.
     res = { k : prf*sum( [ c*sympy.prod( [ a**b for a,b in zip(ss,e) ] ) 
                       for (c,e) in dd[k] ] )
+                   / (r*r*r1)**(2*sum(k)-3)
            for k in dd }
 
     # Add the first order derivatives using Theorem 1.
     prf1 = prf/f1
-    a = sympy.asinh( ( sqrt( 1-f*f ) / f ) * x1/r )
-    b = sympy.asin( sqrt( 1-f*f )* y1/r )
+    a = sympy.asinh( ( f1 / f ) * x1/r )
+    b = sympy.asin( f1* y1/r )
     res[(1,0)] = prf1*(sympy.cos(theta)*a - sympy.sin(theta)*b)
     res[(0,1)] = prf1*(sympy.sin(theta)*a + sympy.cos(theta)*b)
 

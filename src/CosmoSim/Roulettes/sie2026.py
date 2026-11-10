@@ -177,7 +177,7 @@ def der_1( ls, d ):
         terms = [ (x,y) for (x,y) in terms if x != 0 ]
         rs.extend( terms )
 
-    rr = [ ( cof, exp+np.array([0,0,0,0,0,0,2,2]) ) for cof,exp in ls ]
+    rr = [ ( cof, exp+np.array([0,0,0,0,0,0,2,2]) ) for cof,exp in rs ]
     # The g(xi) to g'(xi) conversion is preformed
     for cof,exp in ls:
         rr.append( ( -(2*d-3)*cof*3, exp+np.array([1,0,0,0,0,0,2,2]) ) )
@@ -205,7 +205,7 @@ def der_2( ls, d ):
         terms = [ (x,y) for (x,y) in terms if x != 0 ]
         rs.extend( terms )
 
-    rr = [ ( cof, exp+np.array([0,0,0,0,0,0,2,2]) ) for cof,exp in ls ]
+    rr = [ ( cof, exp+np.array([0,0,0,0,0,0,2,2]) ) for cof,exp in rs ]
     # The g(xi) to g'(xi) conversion is preformed
     for cof,exp in ls:
         rr.append( ( -(2*d-3)*cof*3, exp+np.array([0,1,0,0,0,0,2,2]) ) )
