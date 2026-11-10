@@ -1,19 +1,5 @@
-# ---
-# jupyter:
-#   jupytext:
-#     default_lexer: ipython3
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.19.4
-#   kernelspec:
-#     display_name: Python [conda env:base] *
-#     language: python
-#     name: conda-base-py
-# ---
+# (C) 2026: Hans Georg Schaathun <georg+professor@schaathun.net> 
 
-# %%
 import numpy as np
 from scipy.special import factorial
 
@@ -38,8 +24,10 @@ def zero_term_remove(exponents_inter,coefficients_inter):
             t+=1
     return exponents,coefficients
 
-# Sums components which have the same exponents
 def sum_components(exponents_inter1,coefficients_inter1,width):
+    """
+    Sums components which have the same exponents
+    """
     exponents_inter2=np.zeros((len(coefficients_inter1),width))
     coefficients_inter2=np.zeros(len(coefficients_inter1))
     index_used=np.zeros(len(coefficients_inter1))
@@ -64,8 +52,10 @@ def sum_components(exponents_inter1,coefficients_inter1,width):
 
 # The next three function combined uses relations between the elements with the components (x,y,x_prime,y_prime,f,f_prime,R,R_prime).
 # It can only compare two components. Allowing for more would further simplify the final g(xi)-functions.
-# match_case_formula lists the possible convertions
 def match_case_formula(mode):
+    """
+    match_case_formula lists the possible convertions
+    """
     match mode:
         case 0:
             # Checks from a component g(~)*f^2 to find a component g(~)*f'^2, the sum of which results in g(~)
@@ -89,8 +79,10 @@ def match_case_formula(mode):
         case _:
             return "ERROR"
 
-# match_case_arangment lists the possible arrangements of the convertions
 def match_case_arangment(arangment,x01,x02,x03,sign01,sign02,sign03):
+    """
+    match_case_arangment lists the possible arrangements of the convertions
+    """
     match arangment:
         case 0:
             # x+y=z
@@ -114,8 +106,10 @@ def match_case_arangment(arangment,x01,x02,x03,sign01,sign02,sign03):
         case _:
             return "ERROR"
 
-# formula_simplification is responsible for the actual simplififaction
 def formula_simplification(exponents_inter1,coefficients_inter1,width,mode,arangment):
+    """
+    formula_simplification is responsible for the actual simplififaction
+    """
     exponents_inter2=np.zeros((len(coefficients_inter1),width))
     coefficients_inter2=np.zeros(len(coefficients_inter1))
     x01,x02,x03,sign01,sign02,sign03=match_case_formula(mode)
@@ -146,8 +140,10 @@ def formula_simplification(exponents_inter1,coefficients_inter1,width,mode,arang
             t+=1
     return zero_term_remove(exponents_inter2,coefficients_inter2)
 
-# combines the functions in this block to preform the overall simplififaction
 def optimize_function(exponents_inter,coefficients_inter):
+    """
+    Combines the functions in this block to preform the overall simplififaction
+    """
     width=8
     # Components with coefficients of 0 are removed
     exponents_inter1,coefficients_inter1=zero_term_remove(exponents_inter,coefficients_inter)
@@ -165,11 +161,9 @@ def optimize_function(exponents_inter,coefficients_inter):
     return exponents_inter1,coefficients_inter1
 
 
-# %%
-# Completes the g(xi) to g'(xi) convertion shown in (22) in the documentation
 def der_1( ls, d ):
     """
-    The derivative of g(xi) is calculated.
+    Does the g(xi) to g'(xi) convertion shown in (22) in the documentation
     Spesifically, the derivative of g multiplied by R^2
     """
 
@@ -186,19 +180,18 @@ def der_1( ls, d ):
 
     rr = [ ( cof, exp+np.array([0,0,0,0,0,0,2,2]) ) for cof,exp in ls ]
     # The g(xi) to g'(xi) conversion is preformed
-    for cof,exp in rs:
-        rr.extend( [ ( -(2*d-3)*cof*3, exp+np.array([1,0,0,0,0,0,2,2]) )
-                    , ( -(2*d-3)*cof, exp+np.array([0,1,1,1,0,2,2,0]) ) ] )
+    for cof,exp in ls:
+        rr.append( ( -(2*d-3)*cof*3, exp+np.array([1,0,0,0,0,0,2,2]) ) )
+        rr.append( ( -(2*d-3)*cof, exp+np.array([0,1,1,1,0,2,2,0]) ) )
 
     # return optimize_function(exponents_inter,coefficients_inter)
-    cof1 = np.array( [ x for x in rr[0] ] )
-    exp1 = np.array( [ x for x in rr[1] ] )
+    cof1 = np.array( [ x[0] for x in rr ] )
+    exp1 = np.array( [ x[1] for x in rr ] )
     return optimize_function(exp1,cof1)
 
-# Completes the g(xi) to g'(xi) convertion shown in (23) in the documentation
 def der_2( ls, d ):
     """
-    The derivative of g(xi) is calculated.
+    Does the g(xi) to g'(xi) convertion shown in (23) in the documentation.
     Spesifically, the derivative of g multiplied by R^2
     """
     rs = []
@@ -216,20 +209,18 @@ def der_2( ls, d ):
     rr = [ ( cof, exp+np.array([0,0,0,0,0,0,2,2]) ) for cof,exp in ls ]
     # The g(xi) to g'(xi) conversion is preformed
     for cof,exp in ls:
-        rr.extend( [ ( -(2*d-3)*cof*3, exp+np.array([0,1,0,0,0,0,2,2]) )
-                   , ( (2*d-3)*cof, exp+np.array([1,0,1,1,0,2,2,0]) )
-                   ] )
-    cof1 = np.array( [ x for x in rr[0] ] )
-    exp1 = np.array( [ x for x in rr[1] ] )
+        rr.append( ( -(2*d-3)*cof*3, exp+np.array([0,1,0,0,0,0,2,2]) ) )
+        rr.append( ( (2*d-3)*cof, exp+np.array([1,0,1,1,0,2,2,0]) ) )
+    cof1 = np.array( [ x[0] for x in rr ] )
+    exp1 = np.array( [ x[1] for x in rr ] )
     return optimize_function(exp1,cof1)
 
 
-# %%
-# der_1 and der_2 are used to calculate the g(xi)-functions for all the derivatives of the lens potential up to and including
-# what is set by the order variable. The variable width determines how many components in g(xi) there can be.
-# It is kept as low as possible to avoid storage of needless values. 
-
 def find_exp_cof( order=10 ):
+    """
+    Compute the SIE derivatives up to the given order.
+    This depends on der_1() and der(2) to compute the different g()-functions.
+    """
 
     dd = { (2,0) : [ (  1, np.array( [0,2,0,0,0,0,0,0] ) ) ],
            (1,1) : [ ( -1, np.array( [1,1,0,0,0,0,0,0] ) ) ],
@@ -241,6 +232,7 @@ def find_exp_cof( order=10 ):
         for j in range(d+1):
 
             i = d-j
+            print( "[find_exp_cof]", (i,j) )
 
             if i >= j:
                 ls = dd[ (i-1, j) ]
@@ -255,4 +247,4 @@ def find_exp_cof( order=10 ):
 
 
 import json
-print( json.dumps( find_exp_cof() ) )
+print( find_exp_cof(order=10) )
