@@ -1,4 +1,4 @@
-all: pm50.txt sis50.txt sie05.txt
+all: pm50.txt sis50.txt sie05.txt sie10fast.txt
 
 fast: sie05fast.txt
 sis: sis50.txt sis200.txt
