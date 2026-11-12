@@ -3,6 +3,7 @@
 
 """
 Symbolically differentiate the lens potential of the SIE lens.
+This is the legacy implementation, used until v3.3.
 
 - `n` is the maximum number of terms
 - `nproc` is the number of threads

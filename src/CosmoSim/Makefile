@@ -1,8 +1,7 @@
-all: pm50.txt sis50.txt sie05.txt sie10fast.txt
+all: pm50.txt sis50.txt sie10.txt
 
-fast: sie05fast.txt
-sis: sis50.txt sis200.txt
-sis100.txt sis50.txt sie05.txt:
+sis: sis50.txt 
+pm50.txt sis50.txt sie10.txt:
 
 P=./Roulettes
 
@@ -19,12 +18,12 @@ sis%.raw:  $P/__main__.py
 pm%.raw:  $P/__main__.py
 	time python3 -m CosmoSim.Roulettes --lens PM --output $@ $* 8
 
-sie%fast.raw: $P/fastsie.py 
+sie%.raw: $P/fastsie.py 
 	time python -m CosmoSim.Roulettes.fastsie --output $@ $* 7
-sie%.raw: $P/sie.py 
+sie%old.raw: $P/sie.py 
 	time python -m CosmoSim.Roulettes.sie --output $@ $* 7
 sie%.tex: $P/sie.py 
-	time python -m CosmoSim.Roulettes.sie --tex $@ $* 7
+	time python -m CosmoSim.Roulettes.fastsie --tex $@ $* 7
 
 %.pdf: %.tex
 	pdflatex $<
