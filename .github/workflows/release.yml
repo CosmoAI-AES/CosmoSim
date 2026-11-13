@@ -26,6 +26,9 @@ jobs:
         uses: ./.github/actions/build
 
       - name: Build sdist
+        env:
+          CC: gcc
+          CXX: g++
         run: pipx run build --sdist
 
       - uses: actions/upload-artifact@v4

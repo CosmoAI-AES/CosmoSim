@@ -62,11 +62,12 @@ before-all = [
 [tool.cibuildwheel.linux]
 before-all = [ "yum -y install libva-devel libvdpau-devel xkeyboard-config-devel libfontenc-devel libXaw-devel libXcomposite-devel libXcursor-devel libXdmcp-devel libXtst-devel libXinerama-devel libxkbfile-devel libXrandr-devel libXres-devel libXScrnSaver-devel xcb-util-wm-devel xcb-util-image-devel xcb-util-keysyms-devel xcb-util-renderutil-devel libXdamage-devel libXxf86vm-devel libXv-devel xcb-util-devel libuuid-devel xcb-util-cursor-devel perl perl-IPC-Cmd perl-Digest-SHA",
   "pipx install conan ",
+  "conan profile detect --name skbuild_conan_py --force",
   "echo 'CONAN START' ",
-  "conan install --profile:all=./Setup/conanlinux --requires=libcap/2.78 '--build=*' ",
-  "conan install --profile:all=./Setup/conanlinux --requires=libx264/cci.20240224 '--build=*' ",
-  "conan install --profile:all=./Setup/conanlinux --requires=openssl/3.5.1 '--build=*' ",
-  "conan install --profile:all=./Setup/conanlinux --requires=xkbcommon/1.5.0 '--build=*' ",
+  "conan install --profile:all=skbuild_conan_py --requires=libcap/2.78 '--build=*' ",
+  "conan install --profile:all=skbuild_conan_py --requires=libx264/cci.20240224 '--build=*' ",
+  "conan install --profile:all=skbuild_conan_py --requires=openssl/3.5.1 '--build=*' ",
+  "conan install --profile:all=skbuild_conan_py --requires=xkbcommon/1.5.0 '--build=*' ",
   "echo 'CONAN DONE' && uname -a"
   ]
 environment = { CC="gcc", CXX="g++" }
