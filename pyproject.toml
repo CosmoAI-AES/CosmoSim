@@ -64,7 +64,7 @@ before-all = [ "yum -y install libva-devel libvdpau-devel xkeyboard-config-devel
   "pipx install conan ",
   "conan profile detect --name skbuild_conan_py ",
   "echo 'CONAN START' ",
-  "conan install --profile:all=skbuild_conan_py --requires=libcap/2.69 '--build=*' ",
+  "conan install --profile:all=skbuild_conan_py --requires=libcap/2.78 '--build=*' ",
   "conan install --profile:all=skbuild_conan_py --requires=libx264/cci.20240224 '--build=*' ",
   "conan install --profile:all=skbuild_conan_py --requires=openssl/3.5.1 '--build=*' ",
   "conan install --profile:all=skbuild_conan_py --requires=xkbcommon/1.5.0 '--build=*' ",
