@@ -12,8 +12,8 @@ setup(  # https://scikit-build.readthedocs.io/en/latest/usage.html#setup-options
     conan_requirements=[ "symengine/0.14.0", "opencv/4.12.0" ], 
        # C++ Dependencies
     conan_env={
-        "CC": "",
-        "CXX": "",
+        "CC": "gcc",
+        "CXX": "g++",
     },
     cmake_minimum_required_version="3.15",
     cmake_install_dir="src/",
