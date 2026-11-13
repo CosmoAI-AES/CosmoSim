@@ -9,7 +9,12 @@ setup(  # https://scikit-build.readthedocs.io/en/latest/usage.html#setup-options
     license="MIT",
     package_dir={"": "src"},  # The root for our python package is in `./src`.
     include_package_data=True,
-    conan_requirements=[ "symengine/0.14.0", "opencv/4.12.0" ],  # C++ Dependencies
+    conan_requirements=[ "symengine/0.14.0", "opencv/4.12.0" ], 
+       # C++ Dependencies
+    conan_env={
+        "CC": "",
+        "CXX": "",
+    },
     cmake_minimum_required_version="3.15",
     cmake_install_dir="src/",
     package_data={ "CosmoSim" : [ "*.txt", "*.png", "*.so", "*.pyd" ] },

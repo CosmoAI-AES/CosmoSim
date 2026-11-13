@@ -26,11 +26,9 @@ jobs:
         uses: ./.github/actions/build
 
       - name: Build sdist
-        env:
-          CC: gcc
-          CXX: g++
         run: >
           conan profile detect --force
+          conan profile show --profile default
           pipx run build --sdist
 
       - uses: actions/upload-artifact@v4
