@@ -33,7 +33,7 @@ def getSISAmplitudes():
 
 def getSIEAmplitudes():
     """Get the default Amplitudes object for SIE."""
-    return getAmplitudes( getPathFN( "sie05.txt" ) )
+    return getAmplitudes( getPathFN( "sie10.txt" ) )
 
 def getAmplitudesByMode( mode ):
     if mode == PsiSpec.PM:

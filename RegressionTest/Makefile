@@ -36,8 +36,8 @@ cpptests:
 	cd cluster-sampled-raytrace ; $(MAKE) alltests
 	cd roulettegen-old ; $(MAKE) alltests
 	cd roulettegen ; $(MAKE) alltests
-	cd sersic ; $(MAKE) $@
-	cd rouletteoutput ; $(MAKE) $@
+	cd sersic ; $(MAKE) alltests
+	cd rouletteoutput ; $(MAKE) alltests
 
 baselines:
 	cd raytrace ; $(MAKE) baseline`date "+%Y%m%d"` 
