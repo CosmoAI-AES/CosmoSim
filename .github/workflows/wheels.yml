@@ -15,7 +15,7 @@ description: |
 
 on: 
    push:
-       branches: [ "build/pypi*", "refactor/workflow*" ]
+       branches: [ "build/pypi*", "refactor/workflow*", "test/release/*" ]
    workflow_call:
    workflow_dispatch:
 
@@ -93,9 +93,6 @@ jobs:
            compiler-version: 13
 
       - name: Build sdist
-        env:
-          CC: gcc
-          CXX: g++
         run: pipx run build --sdist
 
       - uses: actions/upload-artifact@v4

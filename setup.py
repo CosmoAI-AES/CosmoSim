@@ -1,5 +1,16 @@
 from skbuild_conan import setup
 from setuptools import find_packages
+
+import os, sys
+print( "[setup.py]", os.name, sys.platform )
+
+kw = {}
+if sys.platform == "linux":   # Linux
+    kw["conan_env"] = {
+        "CC": "gcc",
+        "CXX": "g++",
+      }
+
 setup(  # https://scikit-build.readthedocs.io/en/latest/usage.html#setup-options
     name="CosmoSim",
     packages=find_packages("src"),  # Include all packages in `./src`.
@@ -11,12 +22,9 @@ setup(  # https://scikit-build.readthedocs.io/en/latest/usage.html#setup-options
     include_package_data=True,
     conan_requirements=[ "symengine/0.14.0", "opencv/4.12.0" ], 
        # C++ Dependencies
-    conan_env={
-        "CC": "gcc",
-        "CXX": "g++",
-    },
     cmake_minimum_required_version="3.15",
     cmake_install_dir="src/",
     package_data={ "CosmoSim" : [ "*.txt", "*.png", "*.so", "*.pyd" ] },
+    **kw
 )
 
